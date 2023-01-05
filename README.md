@@ -3,7 +3,7 @@
 
 </br>
 
-## ERD (진행중)
+## ERD (친구 기능 고민중)
 - ERD Cloud
 - https://www.erdcloud.com/d/fTpq4mpS53n96ga7E  
 ![20230105044525](https://user-images.githubusercontent.com/114793764/210636671-bd5e71f4-f703-4c70-8ad7-7e5eb732d099.png)  
