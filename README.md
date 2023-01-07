@@ -6,9 +6,10 @@
 ## ERD
 - ERD Cloud
 - https://www.erdcloud.com/d/fTpq4mpS53n96ga7E  
-  
- ![20230106082602](https://user-images.githubusercontent.com/114793764/210948696-8d91aabb-0a93-4413-b957-3fd04f63ba1f.png)
 
+  ![20230107101858](https://user-images.githubusercontent.com/114793764/211124654-50b7c32a-9084-4143-a403-76c7e72d7b4f.png)
+
+  
 
 
 - 실제로 사진을 DB에 저장 할 경우
