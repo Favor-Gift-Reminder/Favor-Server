@@ -37,6 +37,7 @@ public class Reminder extends TimeStamped {
     private LocalDateTime alarmTime;
 
 
+    // 리마인더 보유 회원
     @ManyToOne(cascade = CascadeType.REMOVE)
     @JoinColumn(name = "user_user_no")
     private User owner;
