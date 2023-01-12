@@ -6,7 +6,8 @@
 ## ERD
 - ERD Cloud
 - https://www.erdcloud.com/d/fTpq4mpS53n96ga7E  
-![20230110065822](https://user-images.githubusercontent.com/114793764/211416678-55462c1b-9988-4b4c-940a-15a7fc1ef4f4.png)
+![20230112195445](https://user-images.githubusercontent.com/114793764/212048642-eca722a6-cdeb-44a2-98ee-643e83460bb3.png)
+
 
 
 
@@ -30,10 +31,12 @@
 
 </br>
 
-## API 명세서 (진행중)
+## API 명세서
 - https://www.notion.so/5bca3cd4be2343b9a006aff1daaa2007?v=6ca569ec7a5b416ab064a22ca5abf6a2  
   
-![20230106160309](https://user-images.githubusercontent.com/114793764/210948684-9432e5a8-3b4c-460b-9b1a-399194b47032.png)  
+![20230112195409](https://user-images.githubusercontent.com/114793764/212048704-d65f2d0f-5e9b-4225-a01c-e80dcaa50ccf.png)
+![20230112195416](https://user-images.githubusercontent.com/114793764/212048712-4e2cb5eb-7b7d-4eb2-9ce4-4b0ecbbdc0cc.png)
+
 
 
 
