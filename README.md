@@ -6,6 +6,8 @@
 ## ERD
 - ERD Cloud
 - https://www.erdcloud.com/d/fTpq4mpS53n96ga7E  
+![20230110065822](https://user-images.githubusercontent.com/114793764/211416678-55462c1b-9988-4b4c-940a-15a7fc1ef4f4.png)
+
 
 
   
