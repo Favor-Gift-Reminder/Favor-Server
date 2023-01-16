@@ -24,12 +24,12 @@ public class Photo extends TimeStamped {
 
     //프로필사진용
     @OneToOne
-    @JoinColumn(name = "user_no")
+    @JoinColumn(name = "user1_no")
     private User profileUser;
 
     //배경사진용
     @OneToOne
-    @JoinColumn(name = "user_no")
+    @JoinColumn(name = "user2_no")
     private User backgroundUser;
 
     //친구프로필사진용

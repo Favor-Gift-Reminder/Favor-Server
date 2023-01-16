@@ -11,7 +11,9 @@ import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
 import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @Entity
 @Getter
@@ -44,7 +46,7 @@ public class User extends TimeStamped {
 
     //기념일 목록
     @ElementCollection
-    private List<LocalDate> eventList;
+    private Map<String, LocalDate> eventList = new HashMap<>();
 
     //선물 목록
     @OneToMany(mappedBy = "owner", orphanRemoval = true)
@@ -58,7 +60,7 @@ public class User extends TimeStamped {
     // 회원친구 목록
     @ManyToMany
     @JoinTable(name = "user",
-            joinColumns = {@JoinColumn(name = "userNo")},
+            joinColumns = {@JoinColumn(name = "userFriendNo")},
             inverseJoinColumns = {@JoinColumn(name = "ownerNo")})
     private List<User> userFriendList = new ArrayList<>();
 
