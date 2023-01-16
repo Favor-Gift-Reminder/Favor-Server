@@ -1,4 +1,4 @@
-package com.favor.favor.domain;
+package com.favor.favor.Domain;
 
 import com.favor.favor.Common.TimeStamped;
 import lombok.AccessLevel;

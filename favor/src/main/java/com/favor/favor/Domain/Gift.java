@@ -1,7 +1,7 @@
-package com.favor.favor.domain;
+package com.favor.favor.Domain;
 
 import com.favor.favor.Common.CategoryType;
-import com.favor.favor.Common.FavorType;
+import com.favor.favor.Common.Emotion;
 import com.favor.favor.Common.TimeStamped;
 import lombok.AccessLevel;
 import lombok.Getter;
@@ -10,6 +10,7 @@ import org.springframework.lang.Nullable;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
@@ -33,16 +34,17 @@ public class Gift extends TimeStamped {
     private String memo;
 
     @Nullable
-    private String emotion;
+    private CategoryType categoryType;
+
+    @Nullable
+    private Emotion emotion;
 
     @NotBlank
     private Boolean isPinned;
 
-
-    // 관련 취향 목록
-    @ElementCollection
-    private List<FavorType> favorList = new ArrayList<>();
-
+    @NotNull
+    @Column()
+    private Boolean isGiven;
 
     // 선물 보유 회원
     @ManyToOne(cascade = CascadeType.REMOVE)
