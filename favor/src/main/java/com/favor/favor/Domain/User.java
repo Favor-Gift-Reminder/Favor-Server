@@ -1,6 +1,7 @@
 package com.favor.favor.Domain;
 
 import com.favor.favor.Common.FavorType;
+import com.favor.favor.Common.Role;
 import com.favor.favor.Common.TimeStamped;
 import lombok.AccessLevel;
 import lombok.Getter;
@@ -9,6 +10,7 @@ import org.springframework.lang.Nullable;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -30,17 +32,18 @@ public class User extends TimeStamped {
     @NotBlank(message = "비밀번호를 입력해주세요")
     private String password;
 
+    @NotBlank(message = "아이디를 입력해주세요")
+    private String userId;
+
     @NotBlank(message = "이름을 입럭해주세요")
     private String name;
-
-    @NotBlank(message = "아이디를 입력해주세요")
 
     @Nullable
     private LocalDate birth;
 
 
 
-    // 취향 목록
+    //취향 목록
     @ElementCollection
     private List<FavorType> favorList;
 
@@ -48,29 +51,19 @@ public class User extends TimeStamped {
     @ElementCollection
     private Map<String, LocalDate> eventList = new HashMap<>();
 
+
     //선물 목록
     @OneToMany(mappedBy = "owner", orphanRemoval = true)
     private List<Gift> giftList = new ArrayList<>();
 
-    // 리마인더 목록
+    //리마인더 목록
     @OneToMany(mappedBy = "owner", orphanRemoval = true)
     private List<Reminder> reminderList = new ArrayList<>();
 
-
-    // 회원친구 목록
-    @ManyToMany
-    @JoinTable(name = "user",
-            joinColumns = {@JoinColumn(name = "userFriendNo")},
-            inverseJoinColumns = {@JoinColumn(name = "ownerNo")})
-    private List<User> userFriendList = new ArrayList<>();
-
-    //비회원친구 목록
+    //친구 목록
     @OneToMany(mappedBy = "user", orphanRemoval = true)
     private List<Friend> friendList = new ArrayList<>();
 
-
-//    @Nullable
-//    private GroupType group;
 
 
     @OneToOne
@@ -82,4 +75,9 @@ public class User extends TimeStamped {
     @JoinColumn(name = "background_photo_photo_no")
     @Nullable
     private Photo backgroundPhoto;
+
+
+
+    @NotNull
+    private Role role;
 }
