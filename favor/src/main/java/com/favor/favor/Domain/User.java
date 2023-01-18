@@ -3,12 +3,11 @@ package com.favor.favor.Domain;
 import com.favor.favor.Common.FavorType;
 import com.favor.favor.Common.Role;
 import com.favor.favor.Common.TimeStamped;
-import lombok.AccessLevel;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 import org.springframework.lang.Nullable;
 
 import javax.persistence.*;
+import javax.transaction.Transactional;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import java.time.LocalDate;
@@ -20,6 +19,9 @@ import java.util.Map;
 @Entity
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
+@AllArgsConstructor
+@Builder
+@Transactional
 public class User extends TimeStamped {
 
     @Id
@@ -38,6 +40,11 @@ public class User extends TimeStamped {
     @NotBlank(message = "이름을 입럭해주세요")
     private String name;
 
+    @NotNull
+    private String role;
+
+
+
     @Nullable
     private LocalDate birth;
 
@@ -51,33 +58,4 @@ public class User extends TimeStamped {
     @ElementCollection
     private Map<String, LocalDate> eventList = new HashMap<>();
 
-
-    //선물 목록
-    @OneToMany(mappedBy = "owner", orphanRemoval = true)
-    private List<Gift> giftList = new ArrayList<>();
-
-    //리마인더 목록
-    @OneToMany(mappedBy = "owner", orphanRemoval = true)
-    private List<Reminder> reminderList = new ArrayList<>();
-
-    //친구 목록
-    @OneToMany(mappedBy = "user", orphanRemoval = true)
-    private List<Friend> friendList = new ArrayList<>();
-
-
-
-    @OneToOne
-    @JoinColumn(name = "profile_photo_photo_no")
-    @Nullable
-    private Photo profilePhoto;
-
-    @OneToOne
-    @JoinColumn(name = "background_photo_photo_no")
-    @Nullable
-    private Photo backgroundPhoto;
-
-
-
-    @NotNull
-    private Role role;
 }
