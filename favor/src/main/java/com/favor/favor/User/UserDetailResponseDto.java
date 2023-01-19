@@ -10,17 +10,19 @@ import java.util.List;
 @Getter
 @AllArgsConstructor
 @Builder
-public class UserResponseDto {
+public class UserDetailResponseDto {
     private final Long userNo;
     private String name;
     private String userid;
     private String role;
 
+    private List<ReminderListResponseDto> list;
     @Builder
-    public UserResponseDto(User user){
+    public UserDetailResponseDto(User user, List<ReminderListResponseDto> list){
         this.userNo = user.getUserNo();
         this.name = user.getName();
         this.userid = user.getUserId();
         this.role = user.getRole();
+        this.list = list;
     }
 }

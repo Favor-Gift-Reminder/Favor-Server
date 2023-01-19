@@ -3,6 +3,7 @@ package com.favor.favor.User;
 
 import com.favor.favor.Reminder.Reminder;
 import com.favor.favor.Reminder.ReminderListResponseDto;
+import com.favor.favor.Reminder.ReminderResponseDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -36,13 +37,21 @@ public class UserService {
         return userResponseDtoList;
     }
 
-    public UserResponseDto readUser(Long userNo){
+    @Transactional
+    public UserDetailResponseDto readUser(Long userNo){
         User user = userRepository.findByUserNo(userNo).orElseThrow(
                 () -> new RuntimeException("회원을 찾지 못했습니다")
         );
 
-        UserResponseDto userResponseDto = new UserResponseDto(user);
-        return userResponseDto;
+        List<ReminderListResponseDto> list = new ArrayList<>();
+        List<Reminder> reminderList = user.getReminderList();
+        for(Reminder r : reminderList){
+            ReminderListResponseDto responseDto = new ReminderListResponseDto(r);
+            list.add(responseDto);
+        }
+
+        UserDetailResponseDto dto = new UserDetailResponseDto(user, list);
+        return dto;
     }
 
     public Long updateUser(Long userNo, UserUpdateRequestDto dto){

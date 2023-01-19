@@ -30,8 +30,8 @@ public class UserController {
 
     @ApiOperation("단일회원 조회")
     @GetMapping("/{userNo}")
-    public UserResponseDto readUser(@PathVariable Long userNo){
-        UserResponseDto foundUser = userService.readUser(userNo);
+    public UserDetailResponseDto readUser(@PathVariable Long userNo){
+        UserDetailResponseDto foundUser = userService.readUser(userNo);
         return foundUser;
     }
 

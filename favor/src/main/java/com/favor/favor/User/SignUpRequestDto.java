@@ -7,6 +7,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.hibernate.validator.constraints.Length;
 
+import javax.transaction.Transactional;
 import javax.validation.constraints.Email;
 
 @Getter
