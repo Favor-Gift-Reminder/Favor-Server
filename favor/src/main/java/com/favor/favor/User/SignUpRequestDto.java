@@ -1,6 +1,7 @@
-package com.favor.favor.Dto.UserDto;
+package com.favor.favor.User;
 
 import io.swagger.annotations.ApiModelProperty;
+import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -9,7 +10,7 @@ import org.hibernate.validator.constraints.Length;
 import javax.validation.constraints.Email;
 
 @Getter
-@NoArgsConstructor
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor
 public class SignUpRequestDto {
     @ApiModelProperty(position = 1, required = true, dataType = "String", value = "이메일", example = "favor@gmail.com")

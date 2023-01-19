@@ -1,20 +1,16 @@
-package com.favor.favor.Domain;
+package com.favor.favor.User;
 
-import com.favor.favor.Common.FavorType;
-import com.favor.favor.Common.Role;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.favor.favor.Common.TimeStamped;
+import com.favor.favor.Reminder.Reminder;
 import lombok.*;
-import org.springframework.lang.Nullable;
 
 import javax.persistence.*;
 import javax.transaction.Transactional;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
-import java.time.LocalDate;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 @Entity
 @Getter
@@ -43,19 +39,17 @@ public class User extends TimeStamped {
     @NotNull
     private String role;
 
+    public void setName(String name) {
+        this.name = name;
+    }
+    public void setUserId(String userId){
+        this.userId = userId;
+    }
 
 
-    @Nullable
-    private LocalDate birth;
 
-
-
-    //취향 목록
-    @ElementCollection
-    private List<FavorType> favorList;
-
-    //기념일 목록
-    @ElementCollection
-    private Map<String, LocalDate> eventList = new HashMap<>();
+    @JsonIgnore
+    @OneToMany(mappedBy = "user", orphanRemoval = true)
+    private List<Reminder> reminderList = new ArrayList<>();
 
 }
