@@ -2,6 +2,7 @@ package com.favor.favor.User;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.favor.favor.Common.TimeStamped;
+import com.favor.favor.Gift.Gift;
 import com.favor.favor.Reminder.Reminder;
 import lombok.*;
 
@@ -51,5 +52,9 @@ public class User extends TimeStamped {
     @JsonIgnore
     @OneToMany(mappedBy = "user", orphanRemoval = true)
     private List<Reminder> reminderList = new ArrayList<>();
+
+    @JsonIgnore
+    @OneToMany(mappedBy = "user", orphanRemoval = true)
+    private List<Gift> giftList = new ArrayList<>();
 
 }
