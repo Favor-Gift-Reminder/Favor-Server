@@ -27,10 +27,10 @@ public class Reminder {
     private String title;
 
     @NotNull
-    private LocalDate eventDate;
+    private LocalDate reminderDate;
 
     @Nullable
-    private String memo;
+    private String reminderMemo;
 
     @NotNull
     private Boolean isAlarmSet;
@@ -47,8 +47,8 @@ public class Reminder {
     public void setTitle(String title){
         this.title = title;
     }
-    public void setEventDate(LocalDate eventDate){
-        this.eventDate = eventDate;
+    public void setReminderDate(LocalDate reminderDate){
+        this.reminderDate = reminderDate;
     }
     public void setIsAlarmSet(Boolean isAlarmSet){
         this.isAlarmSet = isAlarmSet;
@@ -56,7 +56,7 @@ public class Reminder {
     public void setAlarmTime(LocalDateTime alarmTime){
         this.alarmTime = alarmTime;
     }
-    public void setMemo(String memo){
-        this.memo = memo;
+    public void setReminderMemo(String memo){
+        this.reminderMemo = memo;
     }
 }

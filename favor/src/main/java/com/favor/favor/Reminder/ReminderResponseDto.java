@@ -13,7 +13,7 @@ import java.time.LocalDateTime;
 public class ReminderResponseDto {
     private final Long reminderNo;
     private String title;
-    private LocalDate eventDate;
+    private LocalDate reminderDate;
     private String memo;
     private Boolean isAlarmSet;
     private LocalDateTime alarmTime;
@@ -24,8 +24,8 @@ public class ReminderResponseDto {
     public ReminderResponseDto(Reminder reminder){
         this.reminderNo = reminder.getReminderNo();
         this.title = reminder.getTitle();
-        this.eventDate = reminder.getEventDate();
-        this.memo = reminder.getMemo();
+        this.reminderDate = reminder.getReminderDate();
+        this.memo = reminder.getReminderMemo();
         this.isAlarmSet = reminder.getIsAlarmSet();
         this.alarmTime = reminder.getAlarmTime();
         this.userNo = reminder.getUser().getUserNo();

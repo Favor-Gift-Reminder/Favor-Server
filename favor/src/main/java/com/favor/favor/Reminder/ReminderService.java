@@ -31,10 +31,10 @@ public class ReminderService {
                 () -> new RuntimeException()
         );
         reminder.setTitle(dto.getTitle());
-        reminder.setEventDate(dto.getEventDate());
+        reminder.setReminderDate(dto.getReminderDate());
         reminder.setIsAlarmSet(dto.getIsAlarmSet());
         reminder.setAlarmTime(dto.getAlarmTime());
-        reminder.setMemo(dto.getMemo());
+        reminder.setReminderMemo(dto.getMemo());
 
         reminderRepository.save(reminder);
         return reminderNo;

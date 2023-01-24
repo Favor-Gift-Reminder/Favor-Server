@@ -19,7 +19,7 @@ public class ReminderRequestDto {
     private String title;
 
     @ApiModelProperty(position = 2, required = true, dataType = "LocalDate", value = "날짜", example = "1996-02-29")
-    private LocalDate eventDate;
+    private LocalDate reminderDate;
 
     @ApiModelProperty(position = 3, required = true, dataType = "Boolean", value = "알람세팅여부", example = "False")
     private Boolean isAlarmSet;
@@ -28,14 +28,14 @@ public class ReminderRequestDto {
     private LocalDateTime alarmTime;
 
     @ApiModelProperty(position = 5, required = true, dataType = "String", value = "메모", example = "메모")
-    private String memo;
+    private String reminderMemo;
 
     @Transactional
     public Reminder toEntity(User user){
         return Reminder.builder()
                 .title(title)
-                .eventDate(eventDate)
-                .memo(memo)
+                .reminderDate(reminderDate)
+                .reminderMemo(reminderMemo)
                 .isAlarmSet(isAlarmSet)
                 .alarmTime(alarmTime)
                 .user(user)

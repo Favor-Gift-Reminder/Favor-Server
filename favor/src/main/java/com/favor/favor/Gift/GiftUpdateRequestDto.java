@@ -1,8 +1,8 @@
 package com.favor.favor.Gift;
 
 import com.favor.favor.User.User;
-import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiModelProperty;
+import io.swagger.annotations.ApiOperation;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -14,7 +14,8 @@ import java.time.LocalDate;
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor
-public class GiftRequestDto {
+public class GiftUpdateRequestDto {
+    //giftName, giftDate, giftMemo, category, emotion, isPinned, isGiven 수정 가능
     @ApiModelProperty(position = 1, required = true, dataType = "String", value = "선물이름", example = "선물이름")
     private String giftName;
 
@@ -30,6 +31,9 @@ public class GiftRequestDto {
     @ApiModelProperty(position = 5, required = true, dataType = "String", value = "감정", example = "")
     private String emotion;
 
+    @ApiModelProperty(position = 6, required = true, dataType = "Boolean", value = "핀 여부", example = "false")
+    private Boolean isPinned;
+
     @ApiModelProperty(position = 7, required = true, dataType = "Boolean", value = "받은선물 여부", example = "false")
     private Boolean isGiven;
 
@@ -41,7 +45,7 @@ public class GiftRequestDto {
                 .giftMemo(giftMemo)
                 .category(category)
                 .emotion(emotion)
-                .isPinned(false)
+                .isPinned(isPinned)
                 .isGiven(isGiven)
                 .user(user)
                 .build();

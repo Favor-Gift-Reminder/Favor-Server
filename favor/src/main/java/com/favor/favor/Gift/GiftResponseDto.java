@@ -9,7 +9,7 @@ import java.time.LocalDate;
 @Getter
 @AllArgsConstructor
 @Builder
-public class GiftRespondDto {
+public class GiftResponseDto {
     private String giftName;
     private LocalDate giftDate;
     private String giftMemo;
@@ -20,7 +20,7 @@ public class GiftRespondDto {
     private Boolean isGiven;
 
     @Builder
-    public GiftRespondDto(Gift gift){
+    public GiftResponseDto(Gift gift){
         this.giftName = gift.getGiftName();
         this.giftDate = gift.getGiftDate();
         this.giftMemo = gift.getGiftMemo();

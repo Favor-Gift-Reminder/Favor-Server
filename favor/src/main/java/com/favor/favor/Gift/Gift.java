@@ -43,4 +43,28 @@ public class Gift extends TimeStamped {
     @ManyToOne(cascade = CascadeType.REMOVE)
     @JoinColumn(name = "user_user_no")
     private User user;
+
+    public void setGiftName(String giftName){
+        this.giftName = giftName;
+    }
+    public void setGiftDate(LocalDate giftDate){
+        this.giftDate = giftDate;
+    }
+    public void setGiftMemo(String giftMemo){
+        this.giftMemo = giftMemo;
+    }
+    public void setCategory(String category){
+        this.category = category;
+    }
+    public void setEmotion(String emotion) {
+        this.emotion = emotion;
+    }
+    public void setIsPinned(Boolean isPinned){
+        this.isPinned = isPinned;
+    }
+    public void setIsGiven(Boolean isGiven){
+        this.isGiven = isGiven;
+    }
+
+    is
 }
