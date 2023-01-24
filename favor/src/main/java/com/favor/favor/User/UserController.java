@@ -1,7 +1,7 @@
 package com.favor.favor.User;
 
 
-import com.favor.favor.Reminder.ReminderListResponseDto;
+import com.favor.favor.Reminder.ReminderResponseDto;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
@@ -18,8 +18,8 @@ public class UserController {
 
     @ApiOperation("회원가입")
     @PostMapping("/sign-up")
-    public void signUp(@RequestBody SignUpRequestDto signUpRequestDto){
-        userService.signUp(signUpRequestDto);
+    public void signUp(@RequestBody UserRequestDto userRequestDto){
+        userService.signUp(userRequestDto);
     }
 
     @ApiOperation("전체회원 조회")
@@ -52,7 +52,7 @@ public class UserController {
 
     @ApiOperation("회원의 리마인더 전체 조회")
     @GetMapping("/reminder-list/{userNo}")
-    public List<ReminderListResponseDto> readReminderList(@PathVariable Long userNo){
+    public List<ReminderResponseDto> readReminderList(@PathVariable Long userNo){
         return userService.readReminderList(userNo);
     }
 }

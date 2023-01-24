@@ -1,6 +1,7 @@
 package com.favor.favor.Gift;
 
 import com.favor.favor.Common.TimeStamped;
+import com.favor.favor.Friend.Friend;
 import com.favor.favor.User.User;
 import lombok.*;
 
@@ -44,6 +45,11 @@ public class Gift extends TimeStamped {
     @JoinColumn(name = "user_user_no")
     private User user;
 
+    @ManyToOne(cascade = CascadeType.REMOVE)
+    @JoinColumn(name = "friend_friend_no")
+    private Friend friend;
+
+
     public void setGiftName(String giftName){
         this.giftName = giftName;
     }
@@ -65,6 +71,7 @@ public class Gift extends TimeStamped {
     public void setIsGiven(Boolean isGiven){
         this.isGiven = isGiven;
     }
-
-    is
+    public void setFriend(Friend friend){
+        this.friend = friend;
+    }
 }

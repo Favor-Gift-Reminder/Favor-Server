@@ -7,13 +7,12 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.hibernate.validator.constraints.Length;
 
-import javax.transaction.Transactional;
 import javax.validation.constraints.Email;
 
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor
-public class SignUpRequestDto {
+public class UserRequestDto {
     @ApiModelProperty(position = 1, required = true, dataType = "String", value = "이메일", example = "favor@gmail.com")
     @Email(message = "이메일 형식이 잘못되었습니다")
     private String email;

@@ -23,7 +23,7 @@ public class ReminderController {
 
     @ApiOperation("리마인더 조회")
     @GetMapping("/{reminderNo}")
-    public ReminderResponseDto readReminder(@PathVariable Long reminderNo){
+    public ReminderDetailResponseDto readReminder(@PathVariable Long reminderNo){
         return reminderService.readReminder(reminderNo);
     }
 

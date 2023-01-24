@@ -1,5 +1,6 @@
 package com.favor.favor.Gift;
 
+import com.favor.favor.Friend.Friend;
 import com.favor.favor.User.User;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiModelProperty;
@@ -18,23 +19,23 @@ public class GiftRequestDto {
     @ApiModelProperty(position = 1, required = true, dataType = "String", value = "선물이름", example = "선물이름")
     private String giftName;
 
-    @ApiModelProperty(position = 2, required = true, dataType = "LocalDate", value = "선물날짜", example = "")
+    @ApiModelProperty(position = 2, required = false, dataType = "LocalDate", value = "선물날짜", example = "")
     private LocalDate giftDate;
 
-    @ApiModelProperty(position = 3, required = true, dataType = "String", value = "선물메모", example = "선물메모")
+    @ApiModelProperty(position = 3, required = false, dataType = "String", value = "선물메모", example = "선물메모")
     private String giftMemo;
 
-    @ApiModelProperty(position = 4, required = true, dataType = "String", value = "카데고리", example = "")
+    @ApiModelProperty(position = 4, required = false, dataType = "String", value = "카테고리", example = "")
     private String category;
 
-    @ApiModelProperty(position = 5, required = true, dataType = "String", value = "감정", example = "")
+    @ApiModelProperty(position = 5, required = false, dataType = "String", value = "감정", example = "HAPPY")
     private String emotion;
 
     @ApiModelProperty(position = 7, required = true, dataType = "Boolean", value = "받은선물 여부", example = "false")
     private Boolean isGiven;
 
     @Transactional
-    public Gift toEntity(User user){
+    public Gift toEntity(User user, Friend friend){
         return Gift.builder()
                 .giftName(giftName)
                 .giftDate(giftDate)
@@ -44,6 +45,7 @@ public class GiftRequestDto {
                 .isPinned(false)
                 .isGiven(isGiven)
                 .user(user)
+                .friend(friend)
                 .build();
     }
 }

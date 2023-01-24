@@ -1,5 +1,7 @@
 package com.favor.favor.Gift;
 
+import com.favor.favor.Friend.Friend;
+import com.favor.favor.Friend.FriendRepository;
 import com.favor.favor.User.User;
 import com.favor.favor.User.UserRepository;
 import lombok.RequiredArgsConstructor;
@@ -10,19 +12,23 @@ import org.springframework.stereotype.Service;
 public class GiftService {
     private final GiftRepository giftRepository;
     private final UserRepository userRepository;
+    private final FriendRepository friendRepository;
 
-    public void createGift(GiftRequestDto giftRequestDto, Long userNo){
+    public void createGift(GiftRequestDto giftRequestDto, Long userNo, Long friendNo){
         User user =  userRepository.findByUserNo(userNo).orElseThrow(
                 () -> new RuntimeException()
         );
-        giftRepository.save(giftRequestDto.toEntity(user));
+        Friend friend = friendRepository.findById(friendNo).orElseThrow(
+                () -> new RuntimeException()
+        );
+        giftRepository.save(giftRequestDto.toEntity(user, friend));
     }
 
-    public GiftResponseDto readGift(Long giftNo){
+    public GiftDetailResponseDto readGift(Long giftNo){
         Gift gift = giftRepository.findById(giftNo).orElseThrow(
                 () -> new RuntimeException()
         );
-        GiftResponseDto dto = new GiftResponseDto(gift);
+        GiftDetailResponseDto dto = new GiftDetailResponseDto(gift);
         return dto;
     }
 
@@ -37,10 +43,14 @@ public class GiftService {
         gift.setEmotion(dto.getEmotion());
         gift.setIsPinned(dto.getIsPinned());
         gift.setIsGiven(dto.getIsGiven());
+        gift.setFriend(dto.getFriend());
 
         giftRepository.save(gift);
         return giftNo;
     }
 
-    public Long 
+    public Long deleteGift(Long giftNo){
+        giftRepository.deleteById(giftNo);
+        return giftNo;
+    }
 }

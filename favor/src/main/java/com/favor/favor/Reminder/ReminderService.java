@@ -18,11 +18,11 @@ public class ReminderService {
         reminderRepository.save(reminderRequestDto.toEntity(user));
     }
 
-    public ReminderResponseDto readReminder(Long reminderNo){
+    public ReminderDetailResponseDto readReminder(Long reminderNo){
         Reminder reminder = reminderRepository.findById(reminderNo).orElseThrow(
                 () -> new RuntimeException()
         );
-        ReminderResponseDto dto = new ReminderResponseDto(reminder);
+        ReminderDetailResponseDto dto = new ReminderDetailResponseDto(reminder);
         return dto;
     }
 

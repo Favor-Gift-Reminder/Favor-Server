@@ -1,8 +1,9 @@
 
 package com.favor.favor.User;
 
+import com.favor.favor.Gift.Gift;
+import com.favor.favor.Gift.GiftResponseDto;
 import com.favor.favor.Reminder.Reminder;
-import com.favor.favor.Reminder.ReminderListResponseDto;
 import com.favor.favor.Reminder.ReminderResponseDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -16,13 +17,13 @@ import java.util.List;
 public class UserService {
     private final UserRepository userRepository;
 
-    public void signUp(SignUpRequestDto signUpRequestDto){
+    public void signUp(UserRequestDto userRequestDto){
         User user = User.builder()
-                .email(signUpRequestDto.getEmail())
-                .password(signUpRequestDto.getPassword())
-                .userId(signUpRequestDto.getUserId())
-                .name(signUpRequestDto.getName())
-                .role(signUpRequestDto.getRole())
+                .email(userRequestDto.getEmail())
+                .password(userRequestDto.getPassword())
+                .userId(userRequestDto.getUserId())
+                .name(userRequestDto.getName())
+                .role(userRequestDto.getRole())
                 .build();
         userRepository.save(user);
     }
@@ -43,14 +44,21 @@ public class UserService {
                 () -> new RuntimeException("회원을 찾지 못했습니다")
         );
 
-        List<ReminderListResponseDto> list = new ArrayList<>();
+        List<ReminderResponseDto> r_list = new ArrayList<>();
         List<Reminder> reminderList = user.getReminderList();
         for(Reminder r : reminderList){
-            ReminderListResponseDto responseDto = new ReminderListResponseDto(r);
-            list.add(responseDto);
+            ReminderResponseDto responseDto = new ReminderResponseDto(r);
+            r_list.add(responseDto);
         }
 
-        UserDetailResponseDto dto = new UserDetailResponseDto(user, list);
+        List<GiftResponseDto> g_list = new ArrayList<>();
+        List<Gift> giftList = user.getGiftList();
+        for(Gift g : giftList){
+            GiftResponseDto responseDto = new GiftResponseDto(g);
+            g_list.add(responseDto);
+        }
+
+        UserDetailResponseDto dto = new UserDetailResponseDto(user, r_list, g_list);
         return dto;
     }
 
@@ -71,13 +79,13 @@ public class UserService {
     }
 
     @Transactional
-    public List<ReminderListResponseDto> readReminderList(Long userNo){
+    public List<ReminderResponseDto> readReminderList(Long userNo){
         User user = userRepository.findById(userNo).orElseThrow(
                 () -> new RuntimeException()
         );
-        List<ReminderListResponseDto> reminderDtoList = new ArrayList<>();
+        List<ReminderResponseDto> reminderDtoList = new ArrayList<>();
         for(Reminder r : user.getReminderList()){
-            ReminderListResponseDto dto = new ReminderListResponseDto(r);
+            ReminderResponseDto dto = new ReminderResponseDto(r);
             reminderDtoList.add(dto);
         }
         return reminderDtoList;

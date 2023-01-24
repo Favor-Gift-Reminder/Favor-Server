@@ -4,25 +4,30 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 
-import javax.transaction.Transactional;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 @Getter
 @AllArgsConstructor
 @Builder
-public class ReminderListResponseDto {
+public class ReminderDetailResponseDto {
     private final Long reminderNo;
     private String title;
-    private LocalDate eventDate;
+    private LocalDate reminderDate;
+    private String memo;
     private Boolean isAlarmSet;
+    private LocalDateTime alarmTime;
+
     private Long userNo;
 
     @Builder
-    public ReminderListResponseDto(Reminder reminder){
+    public ReminderDetailResponseDto(Reminder reminder){
         this.reminderNo = reminder.getReminderNo();
         this.title = reminder.getTitle();
-        this.eventDate = reminder.getEventDate();
+        this.reminderDate = reminder.getReminderDate();
+        this.memo = reminder.getReminderMemo();
         this.isAlarmSet = reminder.getIsAlarmSet();
+        this.alarmTime = reminder.getAlarmTime();
         this.userNo = reminder.getUser().getUserNo();
     }
 }
