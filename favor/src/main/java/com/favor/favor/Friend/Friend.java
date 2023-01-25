@@ -9,6 +9,7 @@ import lombok.*;
 import javax.persistence.*;
 import javax.transaction.Transactional;
 import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -53,4 +54,6 @@ public class Friend extends TimeStamped {
     @OneToMany(mappedBy = "friend", orphanRemoval = true)
     private List<Reminder> reminderList = new ArrayList<>();
 
+    @NotNull
+    private Boolean isUser;
 }
