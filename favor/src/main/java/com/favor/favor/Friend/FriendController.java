@@ -14,6 +14,7 @@ public class FriendController {
 
     @ApiOperation("친구추가")
     @PostMapping
+    public Long createFriend
 
     @ApiOperation("친구조회")
     @GetMapping("/{friendNo}")

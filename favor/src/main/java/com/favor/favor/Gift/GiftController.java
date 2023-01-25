@@ -16,8 +16,8 @@ public class GiftController {
 
     @ApiOperation("선물 생성")
     @PostMapping
-    public void createGift(@RequestBody GiftRequestDto dto, Long userNo, Long friendNo){
-        giftService.createGift(dto, userNo, friendNo);
+    public Long createGift(@RequestBody GiftRequestDto dto, Long userNo, Long friendNo){
+        return giftService.createGift(dto, userNo, friendNo);
     }
 
     @ApiOperation("단일선물 조회")

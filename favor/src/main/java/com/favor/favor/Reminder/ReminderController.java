@@ -17,8 +17,8 @@ public class ReminderController {
 
     @ApiOperation("리마인더 생성")
     @PostMapping
-    public void createReminder(@RequestBody ReminderRequestDto reminderRequestDto, Long userNo){
-        reminderService.createReminder(reminderRequestDto, userNo);
+    public Long createReminder(@RequestBody ReminderRequestDto reminderRequestDto, Long userNo){
+        return reminderService.createReminder(reminderRequestDto, userNo);
     }
 
     @ApiOperation("리마인더 조회")

@@ -18,8 +18,8 @@ public class UserController {
 
     @ApiOperation("회원가입")
     @PostMapping("/sign-up")
-    public void signUp(@RequestBody UserRequestDto userRequestDto){
-        userService.signUp(userRequestDto);
+    public Long signUp(@RequestBody UserRequestDto userRequestDto){
+        return userService.signUp(userRequestDto);
     }
 
     @ApiOperation("전체회원 조회")

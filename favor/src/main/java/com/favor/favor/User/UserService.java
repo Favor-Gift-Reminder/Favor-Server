@@ -17,7 +17,7 @@ import java.util.List;
 public class UserService {
     private final UserRepository userRepository;
 
-    public void signUp(UserRequestDto userRequestDto){
+    public Long signUp(UserRequestDto userRequestDto){
         User user = User.builder()
                 .email(userRequestDto.getEmail())
                 .password(userRequestDto.getPassword())
@@ -26,6 +26,7 @@ public class UserService {
                 .role(userRequestDto.getRole())
                 .build();
         userRepository.save(user);
+        return user.getUserNo();
     }
 
     public List<UserResponseDto> readAll(){
