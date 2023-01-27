@@ -19,13 +19,13 @@ public class GiftRequestDto {
     @ApiModelProperty(position = 1, required = true, dataType = "String", value = "선물이름", example = "선물이름")
     private String giftName;
 
-    @ApiModelProperty(position = 2, required = false, dataType = "LocalDate", value = "선물날짜", example = "")
+    @ApiModelProperty(position = 2, required = false, dataType = "LocalDate", value = "선물날짜", example = "1996-02-29")
     private LocalDate giftDate;
 
     @ApiModelProperty(position = 3, required = false, dataType = "String", value = "선물메모", example = "선물메모")
     private String giftMemo;
 
-    @ApiModelProperty(position = 4, required = false, dataType = "String", value = "카테고리", example = "")
+    @ApiModelProperty(position = 4, required = false, dataType = "String", value = "카테고리", example = "생일")
     private String category;
 
     @ApiModelProperty(position = 5, required = false, dataType = "String", value = "감정", example = "HAPPY")

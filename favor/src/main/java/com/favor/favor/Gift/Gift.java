@@ -4,6 +4,7 @@ import com.favor.favor.Common.TimeStamped;
 import com.favor.favor.Friend.Friend;
 import com.favor.favor.User.User;
 import lombok.*;
+import org.springframework.lang.Nullable;
 
 import javax.persistence.*;
 import javax.transaction.Transactional;
@@ -25,12 +26,16 @@ public class Gift extends TimeStamped {
     @NotBlank
     private String giftName;
 
+    @Nullable
     private LocalDate giftDate;
 
+    @Nullable
     private String giftMemo;
 
+    @Nullable
     private String category;
 
+    @Nullable
     private String emotion;
 
 
@@ -71,7 +76,5 @@ public class Gift extends TimeStamped {
     public void setIsGiven(Boolean isGiven){
         this.isGiven = isGiven;
     }
-    public void setFriend(Friend friend){
-        this.friend = friend;
-    }
+    public void setFriend(Friend friend){ this.friend = friend; }
 }

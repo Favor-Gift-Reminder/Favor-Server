@@ -32,7 +32,7 @@ public class FriendUpdateRequestDto {
     public Friend toEntity(){
         return Friend.builder()
                 .friendName(friendName)
-                .group(group)
+                .friendGroup(group)
                 .friendMemo(friendMemo)
                 .build();
     }

@@ -22,13 +22,7 @@ public class UserController {
         return userService.signUp(userRequestDto);
     }
 
-    @ApiOperation("전체회원 조회")
-    @GetMapping
-    public List<UserResponseDto> readAll(){
-        return userService.readAll();
-    }
-
-    @ApiOperation("단일회원 조회")
+    @ApiOperation("단일 회원 조회")
     @GetMapping("/{userNo}")
     public UserDetailResponseDto readUser(@PathVariable Long userNo){
         UserDetailResponseDto foundUser = userService.readUser(userNo);
@@ -54,5 +48,12 @@ public class UserController {
     @GetMapping("/reminder-list/{userNo}")
     public List<ReminderResponseDto> readReminderList(@PathVariable Long userNo){
         return userService.readReminderList(userNo);
+    }
+
+
+    @ApiOperation("전체 회원 조회")
+    @GetMapping
+    public List<UserResponseDto> readAll(){
+        return userService.readAll();
     }
 }

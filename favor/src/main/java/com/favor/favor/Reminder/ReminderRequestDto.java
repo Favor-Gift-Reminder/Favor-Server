@@ -1,5 +1,6 @@
 package com.favor.favor.Reminder;
 
+import com.favor.favor.Friend.Friend;
 import com.favor.favor.User.User;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.AccessLevel;
@@ -31,7 +32,7 @@ public class ReminderRequestDto {
     private String reminderMemo;
 
     @Transactional
-    public Reminder toEntity(User user){
+    public Reminder toEntity(User user, Friend friend){
         return Reminder.builder()
                 .title(title)
                 .reminderDate(reminderDate)
@@ -39,6 +40,7 @@ public class ReminderRequestDto {
                 .isAlarmSet(isAlarmSet)
                 .alarmTime(alarmTime)
                 .user(user)
+                .friend(friend)
                 .build();
     }
 }

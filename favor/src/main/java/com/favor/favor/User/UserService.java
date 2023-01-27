@@ -1,6 +1,9 @@
 
 package com.favor.favor.User;
 
+import com.favor.favor.Friend.Friend;
+import com.favor.favor.Friend.FriendListResponseDto;
+import com.favor.favor.Friend.FriendResponseDto;
 import com.favor.favor.Gift.Gift;
 import com.favor.favor.Gift.GiftResponseDto;
 import com.favor.favor.Reminder.Reminder;
@@ -29,16 +32,6 @@ public class UserService {
         return user.getUserNo();
     }
 
-    public List<UserResponseDto> readAll(){
-        List<UserResponseDto> userResponseDtoList = new ArrayList<>();
-        List<User> userList = userRepository.findAll();
-        for(User user : userList){
-            UserResponseDto userResponseDto = new UserResponseDto(user);
-            userResponseDtoList.add(userResponseDto);
-        }
-        return userResponseDtoList;
-    }
-
     @Transactional
     public UserDetailResponseDto readUser(Long userNo){
         User user = userRepository.findByUserNo(userNo).orElseThrow(
@@ -48,18 +41,25 @@ public class UserService {
         List<ReminderResponseDto> r_list = new ArrayList<>();
         List<Reminder> reminderList = user.getReminderList();
         for(Reminder r : reminderList){
-            ReminderResponseDto responseDto = new ReminderResponseDto(r);
-            r_list.add(responseDto);
+            ReminderResponseDto dto = new ReminderResponseDto(r);
+            r_list.add(dto);
         }
 
         List<GiftResponseDto> g_list = new ArrayList<>();
         List<Gift> giftList = user.getGiftList();
         for(Gift g : giftList){
-            GiftResponseDto responseDto = new GiftResponseDto(g);
-            g_list.add(responseDto);
+            GiftResponseDto dto = new GiftResponseDto(g);
+            g_list.add(dto);
         }
 
-        UserDetailResponseDto dto = new UserDetailResponseDto(user, r_list, g_list);
+        List<FriendListResponseDto> f_list = new ArrayList<>();
+        List<Friend> friendList = user.getFriendList();
+        for(Friend f : friendList){
+            FriendListResponseDto dto = new FriendListResponseDto(f);
+            f_list.add(dto);
+        }
+
+        UserDetailResponseDto dto = new UserDetailResponseDto(user, r_list, g_list, f_list);
         return dto;
     }
 
@@ -90,5 +90,15 @@ public class UserService {
             reminderDtoList.add(dto);
         }
         return reminderDtoList;
+    }
+
+    public List<UserResponseDto> readAll(){
+        List<UserResponseDto> u_List = new ArrayList<>();
+        List<User> userList = userRepository.findAll();
+        for(User user : userList){
+            UserResponseDto userResponseDto = new UserResponseDto(user);
+            u_List.add(userResponseDto);
+        }
+        return u_List;
     }
 }

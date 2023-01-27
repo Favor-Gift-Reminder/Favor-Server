@@ -17,11 +17,11 @@ public class ReminderController {
 
     @ApiOperation("리마인더 생성")
     @PostMapping
-    public Long createReminder(@RequestBody ReminderRequestDto reminderRequestDto, Long userNo){
-        return reminderService.createReminder(reminderRequestDto, userNo);
+    public Long createReminder(@RequestBody ReminderRequestDto reminderRequestDto, Long userNo, Long friendNo){
+        return reminderService.createReminder(reminderRequestDto, userNo, friendNo);
     }
 
-    @ApiOperation("리마인더 조회")
+    @ApiOperation("단일리마인더 조회")
     @GetMapping("/{reminderNo}")
     public ReminderDetailResponseDto readReminder(@PathVariable Long reminderNo){
         return reminderService.readReminder(reminderNo);

@@ -20,7 +20,7 @@ public class GiftController {
         return giftService.createGift(dto, userNo, friendNo);
     }
 
-    @ApiOperation("단일선물 조회")
+    @ApiOperation("단일 선물 조회")
     @GetMapping("/{giftNo}")
     public GiftDetailResponseDto readGift(@PathVariable Long giftNo){
         return giftService.readGift(giftNo);
@@ -31,7 +31,6 @@ public class GiftController {
     public Long updateGift(@PathVariable Long giftNo, @RequestBody GiftUpdateRequestDto dto){
         return giftService.updateGift(giftNo, dto);
     }
-
 
     @ApiOperation("선물 삭제")
     @DeleteMapping("/{giftNo}")

@@ -5,6 +5,7 @@ import com.favor.favor.Gift.Gift;
 import com.favor.favor.Reminder.Reminder;
 import com.favor.favor.User.User;
 import lombok.*;
+import org.springframework.lang.Nullable;
 
 import javax.persistence.*;
 import javax.transaction.Transactional;
@@ -30,15 +31,17 @@ public class Friend extends TimeStamped {
     @NotBlank(message = "친구의 이름을 입력해주세요")
     private String friendName;
 
-    private String group;
+    @Nullable
+    private String friendGroup;
 
+    @Nullable
     private String friendMemo;
 
     public void setFriendName(String friendName) {
         this.friendName = friendName;
     }
-    public void setGroup(String group) {
-        this.group = group;
+    public void setGroup(String friendGroup) {
+        this.friendGroup = friendGroup;
     }
     public void setFriendMemo(String friendMemo) {
         this.friendMemo = friendMemo;
@@ -56,4 +59,7 @@ public class Friend extends TimeStamped {
 
     @NotNull
     private Boolean isUser;
+
+    @Nullable
+    private Long userFriendNo;
 }

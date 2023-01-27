@@ -46,7 +46,6 @@ public class GiftService {
         gift.setIsGiven(dto.getIsGiven());
         gift.setFriend(dto.getFriend());
 
-
         giftRepository.save(gift);
         return giftNo;
     }
