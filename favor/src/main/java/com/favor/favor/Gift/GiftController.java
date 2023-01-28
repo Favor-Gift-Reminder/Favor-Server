@@ -45,22 +45,4 @@ public class GiftController {
     public List<GiftResponseDto> readAll(){
         return giftService.readAll();
     }
-
-    @ApiOperation("이름으로 회원 선물 조회")
-    @GetMapping("/by-name/{userNo}/{giftName}")
-    public List<GiftDetailResponseDto> readGiftListByname (@PathVariable("userNo") Long userNo, @PathVariable("giftName") String giftName){
-        return giftService.readGiftListByName(userNo, giftName);
-    }
-
-    @ApiOperation("카테고리로 회원 선물 조회")
-    @GetMapping("/by-dategory/{userNo}/{category}")
-    public List<GiftDetailResponseDto> readGiftListByCategory(@PathVariable("userNo") Long userNo, @PathVariable("category") String category){
-        return giftService.readGiftListByCategory(userNo, category);
-    }
-
-    @ApiOperation("감정으로 회원 선물 검색")
-    @GetMapping("/by-emotion/{userNo}/{emotion}")
-    public List<GiftDetailResponseDto> readGiftListByEmotion(@PathVariable("userNo") Long userNo, @PathVariable("emotion") String emotion){
-        return giftService.readGiftListByEmotion(userNo, emotion);
-    }
 }

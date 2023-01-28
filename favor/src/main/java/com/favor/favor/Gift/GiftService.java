@@ -70,46 +70,4 @@ public class GiftService {
         }
         return g_List;
     }
-
-    public List<GiftDetailResponseDto> readGiftListByName(Long userNo, String giftName){
-        User user = userRepository.findByUserNo(userNo).orElseThrow(
-                () -> new RuntimeException()
-        );
-        List<Gift> giftList = giftRepository.findGiftsByUserAndGiftName(user, giftName);
-        List<GiftDetailResponseDto> g_List = new ArrayList<>();
-        for(Gift g : giftList){
-            GiftDetailResponseDto dto = new GiftDetailResponseDto(g);
-            g_List.add(dto);
-        }
-
-        return g_List;
-    }
-
-    public List<GiftDetailResponseDto> readGiftListByCategory(Long userNo, String category){
-        User user = userRepository.findByUserNo(userNo).orElseThrow(
-                () -> new RuntimeException()
-        );
-        List<Gift> giftList = giftRepository.findGiftsByUserAndCategory(user, category);
-        List<GiftDetailResponseDto> g_List = new ArrayList<>();
-        for(Gift g : giftList){
-            GiftDetailResponseDto dto = new GiftDetailResponseDto(g);
-            g_List.add(dto);
-        }
-
-        return g_List;
-    }
-
-    public List<GiftDetailResponseDto> readGiftListByEmotion(Long userNo, String emotion){
-        User user = userRepository.findByUserNo(userNo).orElseThrow(
-                () -> new RuntimeException()
-        );
-        List<Gift> giftList = giftRepository.findGiftsByUserAndEmotion(user, emotion);
-        List<GiftDetailResponseDto> g_List = new ArrayList<>();
-        for(Gift g : giftList){
-            GiftDetailResponseDto dto = new GiftDetailResponseDto(g);
-            g_List.add(dto);
-        }
-
-        return g_List;
-    }
 }

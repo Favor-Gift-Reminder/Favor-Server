@@ -23,7 +23,7 @@ public class FriendController {
         return friendService.createFriend(dto, userNo);
     }
     @ApiOperation("회원친구 추가")
-    @PostMapping("/add-friend")
+    @PostMapping("/add")
     public Long addFriend(@RequestBody UserFriendRequestDto dto, Long userNo){
         return friendService.addFriend(dto, userNo);
     }

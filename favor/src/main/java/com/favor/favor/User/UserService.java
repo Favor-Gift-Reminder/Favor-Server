@@ -4,6 +4,8 @@ package com.favor.favor.User;
 import com.favor.favor.Friend.Friend;
 import com.favor.favor.Friend.FriendListResponseDto;
 import com.favor.favor.Gift.Gift;
+import com.favor.favor.Gift.GiftDetailResponseDto;
+import com.favor.favor.Gift.GiftRepository;
 import com.favor.favor.Gift.GiftResponseDto;
 import com.favor.favor.Reminder.Reminder;
 import com.favor.favor.Reminder.ReminderResponseDto;
@@ -18,6 +20,7 @@ import java.util.List;
 @RequiredArgsConstructor
 public class UserService {
     private final UserRepository userRepository;
+    private final GiftRepository giftRepository;
 
     public Long signUp(UserRequestDto userRequestDto){
         User user = User.builder()
@@ -127,5 +130,58 @@ public class UserService {
             u_List.add(userResponseDto);
         }
         return u_List;
+    }
+
+
+
+
+    public List<GiftDetailResponseDto> readGiftListByName(Long userNo, String giftName){
+        User user = userRepository.findByUserNo(userNo).orElseThrow(
+                () -> new RuntimeException()
+        );
+        List<Gift> giftList = giftRepository.findGiftsByUserAndGiftName(user, giftName);
+        List<GiftDetailResponseDto> g_List = new ArrayList<>();
+        for(Gift g : giftList){
+            GiftDetailResponseDto dto = new GiftDetailResponseDto(g);
+            g_List.add(dto);
+        }
+
+        return g_List;
+    }
+
+    public List<GiftDetailResponseDto> readGiftListByCategory(Long userNo, String category){
+        User user = userRepository.findByUserNo(userNo).orElseThrow(
+                () -> new RuntimeException()
+        );
+        List<Gift> giftList = giftRepository.findGiftsByUserAndCategory(user, category);
+        List<GiftDetailResponseDto> g_List = new ArrayList<>();
+        for(Gift g : giftList){
+            GiftDetailResponseDto dto = new GiftDetailResponseDto(g);
+            g_List.add(dto);
+        }
+
+        return g_List;
+    }
+
+    public List<GiftDetailResponseDto> readGiftListByEmotion(Long userNo, String emotion){
+        User user = userRepository.findByUserNo(userNo).orElseThrow(
+                () -> new RuntimeException()
+        );
+        List<Gift> giftList = giftRepository.findGiftsByUserAndEmotion(user, emotion);
+        List<GiftDetailResponseDto> g_List = new ArrayList<>();
+        for(Gift g : giftList){
+            GiftDetailResponseDto dto = new GiftDetailResponseDto(g);
+            g_List.add(dto);
+        }
+
+        return g_List;
+    }
+
+    public UserResponseDto readUserByUserId(String userId){
+        User user = userRepository.findUserByUserId(userId).orElseThrow(
+                () -> new RuntimeException()
+        );
+        UserResponseDto dto = new UserResponseDto(user);
+        return dto;
     }
 }

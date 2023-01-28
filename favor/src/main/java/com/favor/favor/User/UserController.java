@@ -2,6 +2,7 @@ package com.favor.favor.User;
 
 
 import com.favor.favor.Friend.FriendListResponseDto;
+import com.favor.favor.Gift.GiftDetailResponseDto;
 import com.favor.favor.Gift.GiftResponseDto;
 import com.favor.favor.Reminder.ReminderResponseDto;
 import io.swagger.annotations.Api;
@@ -58,11 +59,11 @@ public class UserController {
         return userService.readGiftList(userNo);
     }
 
-     @ApiOperation("회원의 친구 전체 조회")
-     @GetMapping("/friend-list/{userNo}")
-     public List<FriendListResponseDto> readFriendList(@PathVariable Long userNo){
+    @ApiOperation("회원의 친구 전체 조회")
+    @GetMapping("/friend-list/{userNo}")
+    public List<FriendListResponseDto> readFriendList(@PathVariable Long userNo){
         return userService.readFriendList(userNo);
-     }
+    }
 
 
     @ApiOperation("전체 회원 조회")
@@ -70,4 +71,33 @@ public class UserController {
     public List<UserResponseDto> readAll(){
         return userService.readAll();
     }
+
+
+
+
+    @ApiOperation("이름으로 회원 선물 조회")
+    @GetMapping("/gift-by-name/{userNo}/{giftName}")
+    public List<GiftDetailResponseDto> readGiftListByname (@PathVariable("userNo") Long userNo, @PathVariable("giftName") String giftName){
+        return userService.readGiftListByName(userNo, giftName);
+    }
+
+    @ApiOperation("카테고리로 회원 선물 조회")
+    @GetMapping("/gift-by-category/{userNo}/{category}")
+    public List<GiftDetailResponseDto> readGiftListByCategory(@PathVariable("userNo") Long userNo, @PathVariable("category") String category){
+        return userService.readGiftListByCategory(userNo, category);
+    }
+
+    @ApiOperation("감정으로 회원 선물 검색")
+    @GetMapping("/gift-by-emotion/{userNo}/{emotion}")
+    public List<GiftDetailResponseDto> readGiftListByEmotion(@PathVariable("userNo") Long userNo, @PathVariable("emotion") String emotion){
+        return userService.readGiftListByEmotion(userNo, emotion);
+    }
+
+
+    @ApiOperation("아이디로 회원 조회")
+    @GetMapping("id/{userId}")
+    public UserResponseDto readUserByUserId(@PathVariable("userId") String userId){
+        return userService.readUserByUserId(userId);
+    }
+
 }
