@@ -7,6 +7,8 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @Api(tags = "Reminder")
 @RestController
 @RequestMapping("/reminders")
@@ -29,8 +31,8 @@ public class ReminderController {
 
     @ApiOperation("리마인더 수정")
     @PatchMapping("/{reminderNo}")
-    public Long updateReminder(@RequestBody ReminderUpdateRequestDto dto, @PathVariable Long reminderNo){
-        return reminderService.updateReminder(reminderNo, dto);
+    public Long updateReminder(@RequestBody ReminderUpdateRequestDto dto, @PathVariable Long reminderNo, Long friendNo){
+        return reminderService.updateReminder(reminderNo, dto, friendNo);
     }
 
     @ApiOperation("리마인더 삭제")
@@ -40,4 +42,9 @@ public class ReminderController {
         return reminderNo;
     }
 
+    @ApiOperation("전체 리마인더 조회")
+    @GetMapping
+    public List<ReminderResponseDto> readAll(){
+        return reminderService.readAll();
+    }
 }

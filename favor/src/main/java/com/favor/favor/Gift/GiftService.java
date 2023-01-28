@@ -7,6 +7,9 @@ import com.favor.favor.User.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
+import java.util.List;
+
 @Service
 @RequiredArgsConstructor
 public class GiftService {
@@ -18,7 +21,7 @@ public class GiftService {
         User user =  userRepository.findByUserNo(userNo).orElseThrow(
                 () -> new RuntimeException()
         );
-        Friend friend = friendRepository.findById(friendNo).orElseThrow(
+        Friend friend = friendRepository.findByFriendNo(friendNo).orElseThrow(
                 () -> new RuntimeException()
         );
         Gift gift = giftRepository.save(giftRequestDto.toEntity(user, friend));
@@ -26,15 +29,18 @@ public class GiftService {
     }
 
     public GiftDetailResponseDto readGift(Long giftNo){
-        Gift gift = giftRepository.findById(giftNo).orElseThrow(
+        Gift gift = giftRepository.findByGiftNo(giftNo).orElseThrow(
                 () -> new RuntimeException()
         );
         GiftDetailResponseDto dto = new GiftDetailResponseDto(gift);
         return dto;
     }
 
-    public Long updateGift(Long giftNo, GiftUpdateRequestDto dto){
-        Gift gift = giftRepository.findById(giftNo).orElseThrow(
+    public Long updateGift(Long giftNo, GiftUpdateRequestDto dto, Long friendNo){
+        Gift gift = giftRepository.findByGiftNo(giftNo).orElseThrow(
+                () -> new RuntimeException()
+        );
+        Friend friend = friendRepository.findByFriendNo(friendNo).orElseThrow(
                 () -> new RuntimeException()
         );
         gift.setGiftName(dto.getGiftName());
@@ -44,7 +50,7 @@ public class GiftService {
         gift.setEmotion(dto.getEmotion());
         gift.setIsPinned(dto.getIsPinned());
         gift.setIsGiven(dto.getIsGiven());
-        gift.setFriend(dto.getFriend());
+        gift.setFriend(friend);
 
         giftRepository.save(gift);
         return giftNo;
@@ -54,4 +60,41 @@ public class GiftService {
         giftRepository.deleteById(giftNo);
         return giftNo;
     }
+
+
+    public List<GiftResponseDto> readAll(){
+        List<GiftResponseDto> g_List = new ArrayList<>();
+        for(Gift g : giftRepository.findAll()){
+            GiftResponseDto dto = new GiftResponseDto(g);
+            g_List.add(dto);
+        }
+        return g_List;
+    }
+
+    public List<GiftDetailResponseDto> readGiftByName(Long userNo, String giftName){
+        User user = userRepository.findByUserNo(userNo).orElseThrow(
+                () -> new RuntimeException()
+        );
+        List<Gift> giftList = giftRepository.findGiftsByGiftNameAndUser(userNo, giftName);
+        List<GiftDetailResponseDto> g_List = new ArrayList<>();
+        for(Gift g : giftList){
+            GiftDetailResponseDto dto = new GiftDetailResponseDto(g);
+            g_List.add(dto);
+        }
+
+        return g_List;
+    }
+
+    public GiftDetailResponseDto readGiftListByCategory(Long userNo, String category){
+        User user = userRepository.findByUserNo(userNo).orElseThrow(
+                () -> new RuntimeException()
+        );
+        Gift g = giftRepository.findByCategoryAndUser(userNo, category).orElseThrow(
+                () -> new RuntimeException()
+        );
+        GiftDetailResponseDto dto = new GiftDetailResponseDto(g);
+        return dto;
+    }
+
+
 }

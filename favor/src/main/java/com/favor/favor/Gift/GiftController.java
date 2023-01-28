@@ -6,6 +6,8 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @Api(tags = "Gift")
 @RestController
 @RequestMapping("/gifts")
@@ -28,8 +30,8 @@ public class GiftController {
 
     @ApiOperation("선물 수정")
     @PatchMapping("/{giftNo}")
-    public Long updateGift(@PathVariable Long giftNo, @RequestBody GiftUpdateRequestDto dto){
-        return giftService.updateGift(giftNo, dto);
+    public Long updateGift(@RequestBody GiftUpdateRequestDto dto, @PathVariable Long giftNo, Long userNo, Long friendNo){
+        return giftService.updateGift(giftNo, dto, friendNo);
     }
 
     @ApiOperation("선물 삭제")
@@ -38,4 +40,25 @@ public class GiftController {
         return giftService.deleteGift(giftNo);
     }
 
+    @ApiOperation("전체 선물 조회")
+    @GetMapping
+    public List<GiftResponseDto> readAll(){
+        return giftService.readAll();
+    }
+
+    @ApiOperation("이름으로 회원 선물 조회")
+    @GetMapping("/by-name/{userNo}/{giftName}")
+    public List<GiftDetailResponseDto> readGiftByname (@PathVariable Long userNo, @PathVariable String giftName){
+        return giftService.readGiftByName(userNo, giftName);
+    }
+
+//    @ApiOperation("카테고리로 회원 선물 조회")
+//    @GetMapping("/by-dategory/{userNo}/{category}")
+//    public GiftDetailResponseDto readGiftByCategory(@PathVariable Long userNo, @PathVariable String category){
+//        return giftService.readGiftListByCategory(userNo, category);
+//    }
+
+//    @ApiOperation("감정으로 회원 선물 검색")
+//    @GetMapping("/by-emotion/{user-no}/{emotion}")
+//    public GiftDetailResponseDto
 }

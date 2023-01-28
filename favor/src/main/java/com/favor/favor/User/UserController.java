@@ -1,6 +1,8 @@
 package com.favor.favor.User;
 
 
+import com.favor.favor.Friend.FriendListResponseDto;
+import com.favor.favor.Gift.GiftResponseDto;
 import com.favor.favor.Reminder.ReminderResponseDto;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -49,6 +51,18 @@ public class UserController {
     public List<ReminderResponseDto> readReminderList(@PathVariable Long userNo){
         return userService.readReminderList(userNo);
     }
+
+    @ApiOperation("회원의 선물 전체 조회")
+    @GetMapping("/gift-list/{userNo}")
+    public List<GiftResponseDto> readGiftList(@PathVariable Long userNo){
+        return userService.readGiftList(userNo);
+    }
+
+     @ApiOperation("회원의 친구 전체 조회")
+     @GetMapping("/friend-list/{userNo}")
+     public List<FriendListResponseDto> readFriendList(@PathVariable Long userNo){
+        return userService.readFriendList(userNo);
+     }
 
 
     @ApiOperation("전체 회원 조회")

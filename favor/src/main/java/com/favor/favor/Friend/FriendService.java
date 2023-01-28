@@ -42,7 +42,7 @@ public class FriendService {
 
     @Transactional
     public FriendResponseDto readFriend(Long friendNo){
-        Friend friend = friendRepository.findById(friendNo).orElseThrow(
+        Friend friend = friendRepository.findByFriendNo(friendNo).orElseThrow(
                 () -> new RuntimeException()
         );
         FriendResponseDto returnDto = new FriendResponseDto();
@@ -91,7 +91,7 @@ public class FriendService {
     }
 
     public Long updateFriend(Long friendNo, FriendUpdateRequestDto dto){
-        Friend friend = friendRepository.findById(friendNo).orElseThrow(
+        Friend friend = friendRepository.findByFriendNo(friendNo).orElseThrow(
                 () -> new RuntimeException()
         );
         friend.setFriendName(dto.getFriendName());

@@ -65,4 +65,7 @@ public class Reminder {
     public void setReminderMemo(String memo){
         this.reminderMemo = memo;
     }
+    public void setFriend(Friend friend){
+        this.friend = friend;
+    }
 }

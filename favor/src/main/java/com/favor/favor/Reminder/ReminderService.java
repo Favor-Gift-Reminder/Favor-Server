@@ -7,6 +7,9 @@ import com.favor.favor.User.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
+import java.util.List;
+
 @Service
 @RequiredArgsConstructor
 public class ReminderService {
@@ -18,7 +21,7 @@ public class ReminderService {
         User user = userRepository.findByUserNo(userNo).orElseThrow(
                 () -> new RuntimeException()
         );
-        Friend friend = friendRepository.findById(friendNo).orElseThrow(
+        Friend friend = friendRepository.findByFriendNo(friendNo).orElseThrow(
                 () -> new RuntimeException()
         );
         Reminder reminder = reminderRepository.save(reminderRequestDto.toEntity(user, friend));
@@ -26,15 +29,18 @@ public class ReminderService {
     }
 
     public ReminderDetailResponseDto readReminder(Long reminderNo){
-        Reminder reminder = reminderRepository.findById(reminderNo).orElseThrow(
+        Reminder reminder = reminderRepository.findByReminderNo(reminderNo).orElseThrow(
                 () -> new RuntimeException()
         );
         ReminderDetailResponseDto dto = new ReminderDetailResponseDto(reminder);
         return dto;
     }
 
-    public Long updateReminder(Long reminderNo, ReminderUpdateRequestDto dto){
-        Reminder reminder = reminderRepository.findById(reminderNo).orElseThrow(
+    public Long updateReminder(Long reminderNo, ReminderUpdateRequestDto dto, Long friendNo){
+        Reminder reminder = reminderRepository.findByReminderNo(reminderNo).orElseThrow(
+                () -> new RuntimeException()
+        );
+        Friend friend = friendRepository.findByFriendNo(friendNo).orElseThrow(
                 () -> new RuntimeException()
         );
         reminder.setTitle(dto.getTitle());
@@ -42,6 +48,7 @@ public class ReminderService {
         reminder.setIsAlarmSet(dto.getIsAlarmSet());
         reminder.setAlarmTime(dto.getAlarmTime());
         reminder.setReminderMemo(dto.getMemo());
+        reminder.setFriend(friend);
 
         reminderRepository.save(reminder);
         return reminderNo;
@@ -50,5 +57,14 @@ public class ReminderService {
     public Long deleteReminder(Long reminderNo){
         reminderRepository.deleteById(reminderNo);
         return reminderNo;
+    }
+
+    public List<ReminderResponseDto> readAll(){
+        List<ReminderResponseDto> r_List = new ArrayList<>();
+        for(Reminder r : reminderRepository.findAll()){
+            ReminderResponseDto dto = new ReminderResponseDto(r);
+            r_List.add(dto);
+        }
+        return r_List;
     }
 }

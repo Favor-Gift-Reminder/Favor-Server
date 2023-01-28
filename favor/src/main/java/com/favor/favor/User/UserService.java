@@ -3,7 +3,6 @@ package com.favor.favor.User;
 
 import com.favor.favor.Friend.Friend;
 import com.favor.favor.Friend.FriendListResponseDto;
-import com.favor.favor.Friend.FriendResponseDto;
 import com.favor.favor.Gift.Gift;
 import com.favor.favor.Gift.GiftResponseDto;
 import com.favor.favor.Reminder.Reminder;
@@ -79,18 +78,46 @@ public class UserService {
         return userNo;
     }
 
+
     @Transactional
     public List<ReminderResponseDto> readReminderList(Long userNo){
-        User user = userRepository.findById(userNo).orElseThrow(
+        User user = userRepository.findByUserNo(userNo).orElseThrow(
                 () -> new RuntimeException()
         );
-        List<ReminderResponseDto> reminderDtoList = new ArrayList<>();
+        List<ReminderResponseDto> r_List = new ArrayList<>();
         for(Reminder r : user.getReminderList()){
             ReminderResponseDto dto = new ReminderResponseDto(r);
-            reminderDtoList.add(dto);
+            r_List.add(dto);
         }
-        return reminderDtoList;
+        return r_List;
     }
+
+    @Transactional
+    public List<GiftResponseDto> readGiftList(Long userNo){
+        User user = userRepository.findByUserNo(userNo).orElseThrow(
+                () -> new RuntimeException()
+        );
+        List<GiftResponseDto> g_List = new ArrayList<>();
+        for(Gift g : user.getGiftList()){
+            GiftResponseDto dto = new GiftResponseDto(g);
+            g_List.add(dto);
+        }
+        return g_List;
+    }
+
+    @Transactional
+    public List<FriendListResponseDto> readFriendList(Long userNo){
+        User user = userRepository.findByUserNo(userNo).orElseThrow(
+                () -> new RuntimeException()
+        );
+        List<FriendListResponseDto> f_List = new ArrayList<>();
+        for(Friend f : user.getFriendList()){
+            FriendListResponseDto dto = new FriendListResponseDto(f);
+            f_List.add(dto);
+        }
+        return f_List;
+    }
+
 
     public List<UserResponseDto> readAll(){
         List<UserResponseDto> u_List = new ArrayList<>();

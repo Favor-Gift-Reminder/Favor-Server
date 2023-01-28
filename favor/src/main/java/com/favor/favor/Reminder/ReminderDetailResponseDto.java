@@ -19,6 +19,7 @@ public class ReminderDetailResponseDto {
     private LocalDateTime alarmTime;
 
     private Long userNo;
+    private Long friendNo;
 
     @Builder
     public ReminderDetailResponseDto(Reminder reminder){
@@ -29,5 +30,6 @@ public class ReminderDetailResponseDto {
         this.isAlarmSet = reminder.getIsAlarmSet();
         this.alarmTime = reminder.getAlarmTime();
         this.userNo = reminder.getUser().getUserNo();
+        this.friendNo = reminder.getFriend().getFriendNo();
     }
 }
