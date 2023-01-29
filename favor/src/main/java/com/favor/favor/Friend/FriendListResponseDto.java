@@ -7,11 +7,13 @@ import lombok.*;
 @AllArgsConstructor
 public class FriendListResponseDto {
     private Boolean isUser;
+    private Long friendNo;
     private String friendName;
 
     @Builder
     public FriendListResponseDto(Friend friend){
         this.isUser = friend.getIsUser();
+        this.friendNo = friend.getFriendNo();
         this.friendName = friend.getFriendName();
     }
 }

@@ -43,4 +43,6 @@ public class ReminderRequestDto {
                 .friend(friend)
                 .build();
     }
+
+
 }

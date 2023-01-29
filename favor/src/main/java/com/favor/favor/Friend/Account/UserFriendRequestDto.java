@@ -2,6 +2,10 @@ package com.favor.favor.Friend.Account;
 
 import com.favor.favor.Common.Group;
 import com.favor.favor.Friend.Friend;
+import com.favor.favor.Gift.Gift;
+import com.favor.favor.Gift.GiftResponseDto;
+import com.favor.favor.Reminder.Reminder;
+import com.favor.favor.Reminder.ReminderResponseDto;
 import com.favor.favor.User.User;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.AccessLevel;
@@ -10,6 +14,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import javax.transaction.Transactional;
+import java.util.List;
 
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)

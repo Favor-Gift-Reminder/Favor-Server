@@ -69,4 +69,7 @@ public class Friend extends TimeStamped {
     public void setFriendMemo(String friendMemo) {
         this.friendMemo = friendMemo;
     }
+    public void setGiftList(List<Gift> giftList) { this.giftList = giftList; }
+    public void setReminderList(List<Reminder> reminderList) { this.reminderList = reminderList; }
+
 }

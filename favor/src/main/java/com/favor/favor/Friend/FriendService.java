@@ -31,6 +31,7 @@ public class FriendService {
         return friend.getFriendNo();
     }
 
+    @Transactional
     public Long addFriend(UserFriendRequestDto dto, Long userNo){
         User user = userRepository.findByUserNo(userNo).orElseThrow(
                 () -> new RuntimeException()
@@ -54,6 +55,8 @@ public class FriendService {
 
             friend.setFriendName(userFriend.getName());
 
+            friendRepository.save(friend);
+            
             List<GiftResponseDto> g_List = new ArrayList<>();
             List<Gift> giftList = userFriend.getGiftList();
             for(Gift g : giftList){
@@ -67,7 +70,7 @@ public class FriendService {
                 ReminderResponseDto dto = new ReminderResponseDto(r);
                 r_List.add(dto);
             }
-            friendRepository.save(friend);
+
             returnDto = new FriendResponseDto(friend, g_List, r_List);
         }
         else{
@@ -84,6 +87,7 @@ public class FriendService {
                 ReminderResponseDto dto = new ReminderResponseDto(r);
                 r_List.add(dto);
             }
+            friendRepository.save(friend);
             returnDto = new FriendResponseDto(friend, g_List, r_List);
         }
 
