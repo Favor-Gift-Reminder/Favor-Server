@@ -1,5 +1,6 @@
 package com.favor.favor.User;
 
+import com.favor.favor.Common.Role;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -11,7 +12,7 @@ public class UserResponseDto {
     private final Long userNo;
     private String name;
     private String userid;
-    private String role;
+    private Role role;
 
     @Builder
     public UserResponseDto(User user){

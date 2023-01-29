@@ -1,5 +1,7 @@
 package com.favor.favor.Gift;
 
+import com.favor.favor.Common.Category;
+import com.favor.favor.Common.Emotion;
 import com.favor.favor.Common.TimeStamped;
 import com.favor.favor.Friend.Friend;
 import com.favor.favor.User.User;
@@ -33,10 +35,10 @@ public class Gift extends TimeStamped {
     private String giftMemo;
 
     @Nullable
-    private String category;
+    private Category category;
 
     @Nullable
-    private String emotion;
+    private Emotion emotion;
 
 
     @NotNull
@@ -64,10 +66,10 @@ public class Gift extends TimeStamped {
     public void setGiftMemo(String giftMemo){
         this.giftMemo = giftMemo;
     }
-    public void setCategory(String category){
+    public void setCategory(Category category){
         this.category = category;
     }
-    public void setEmotion(String emotion) {
+    public void setEmotion(Emotion emotion) {
         this.emotion = emotion;
     }
     public void setIsPinned(Boolean isPinned){

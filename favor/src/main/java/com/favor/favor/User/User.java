@@ -1,18 +1,24 @@
 package com.favor.favor.User;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.favor.favor.Common.Favor;
+import com.favor.favor.Common.Role;
 import com.favor.favor.Common.TimeStamped;
 import com.favor.favor.Friend.Friend;
 import com.favor.favor.Gift.Gift;
 import com.favor.favor.Reminder.Reminder;
 import lombok.*;
+import org.springframework.lang.Nullable;
 
 import javax.persistence.*;
 import javax.transaction.Transactional;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
+import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @Entity
 @Getter
@@ -38,21 +44,10 @@ public class User extends TimeStamped {
     @NotBlank(message = "이름을 입럭해주세요")
     private String name;
 
-    @NotNull
-    private String role;
 
-    public void setName(String name) {
-        this.name = name;
-    }
-    public void setUserId(String userId){
-        this.userId = userId;
-    }
-
-
-
-    @JsonIgnore
-    @OneToMany(mappedBy = "user", orphanRemoval = true)
-    private List<Reminder> reminderList = new ArrayList<>();
+    @Nullable
+    @ElementCollection
+    private List<Favor> favorList = new ArrayList<>();
 
     @JsonIgnore
     @OneToMany(mappedBy = "user", orphanRemoval = true)
@@ -60,6 +55,28 @@ public class User extends TimeStamped {
 
     @JsonIgnore
     @OneToMany(mappedBy = "user", orphanRemoval = true)
+    private List<Reminder> reminderList = new ArrayList<>();
+
+    @JsonIgnore
+    @OneToMany(mappedBy = "user", orphanRemoval = true)
     private List<Friend> friendList = new ArrayList<>();
+
+
+    @NotNull
+    private Role role;
+
+
+
+
+
+
+    public void setName(String name) {
+        this.name = name;
+    }
+    public void setUserId(String userId){
+        this.userId = userId;
+    }
+    public void setFavorList(List<Favor> favorList) { this.favorList = favorList; }
+
 
 }

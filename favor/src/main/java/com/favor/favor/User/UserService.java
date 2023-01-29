@@ -1,6 +1,6 @@
-
 package com.favor.favor.User;
 
+import com.favor.favor.Common.Favor;
 import com.favor.favor.Friend.Friend;
 import com.favor.favor.Friend.FriendListResponseDto;
 import com.favor.favor.Gift.Gift;
@@ -61,7 +61,12 @@ public class UserService {
             f_list.add(dto);
         }
 
-        UserDetailResponseDto dto = new UserDetailResponseDto(user, r_list, g_list, f_list);
+        List<Favor> favor_List = new ArrayList<>();
+        for(Favor f : user.getFavorList()){
+            favor_List.add(f);
+        }
+
+        UserDetailResponseDto dto = new UserDetailResponseDto(user, r_list, g_list, f_list, favor_List);
         return dto;
     }
 
@@ -71,6 +76,7 @@ public class UserService {
         );
         user.setName(dto.getName());
         user.setUserId(dto.getUserId());
+        user.setFavorList(dto.getFavorList());
 
         userRepository.save(user);
         return userNo;

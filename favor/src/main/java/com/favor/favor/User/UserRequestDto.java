@@ -1,5 +1,7 @@
 package com.favor.favor.User;
 
+import com.favor.favor.Common.Favor;
+import com.favor.favor.Common.Role;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
@@ -28,5 +30,5 @@ public class UserRequestDto {
     private String userId;
 
     @ApiModelProperty(position = 5, required = true, dataType = "Role", value = "권한", example = "USER")
-    private String role;
+    private Role role;
 }

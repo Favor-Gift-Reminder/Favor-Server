@@ -1,7 +1,8 @@
 package com.favor.favor.User;
 
+import com.favor.favor.Common.Favor;
+import com.favor.favor.Common.Role;
 import com.favor.favor.Friend.FriendListResponseDto;
-import com.favor.favor.Friend.FriendResponseDto;
 import com.favor.favor.Gift.GiftResponseDto;
 import com.favor.favor.Reminder.ReminderResponseDto;
 import lombok.AllArgsConstructor;
@@ -17,13 +18,14 @@ public class UserDetailResponseDto {
     private final Long userNo;
     private String name;
     private String userid;
-    private String role;
+    private Role role;
     private List<ReminderResponseDto> reminderList;
     private List<GiftResponseDto> giftlist;
     private List<FriendListResponseDto> friendList;
+    private List<Favor> favorList;
 
     @Builder
-    public UserDetailResponseDto(User user, List<ReminderResponseDto> reminderList, List<GiftResponseDto> giftlist, List<FriendListResponseDto> friendList){
+    public UserDetailResponseDto(User user, List<ReminderResponseDto> reminderList, List<GiftResponseDto> giftlist, List<FriendListResponseDto> friendList, List<Favor> favor_List){
         this.userNo = user.getUserNo();
         this.name = user.getName();
         this.userid = user.getUserId();
@@ -31,5 +33,6 @@ public class UserDetailResponseDto {
         this.reminderList = reminderList;
         this.giftlist = giftlist;
         this.friendList = friendList;
+        this.favorList = favor_List;
     }
 }

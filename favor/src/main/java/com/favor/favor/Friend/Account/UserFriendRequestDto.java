@@ -1,5 +1,6 @@
 package com.favor.favor.Friend.Account;
 
+import com.favor.favor.Common.Group;
 import com.favor.favor.Friend.Friend;
 import com.favor.favor.User.User;
 import io.swagger.annotations.ApiModelProperty;
@@ -17,8 +18,8 @@ public class UserFriendRequestDto {
     @ApiModelProperty(position = 1, required = true, dataType = "Long", value = "회원친구번호", example = "1")
     private Long userFriendNo;
 
-    @ApiModelProperty(position = 2, required = false, dataType = "String", value = "회원친구그룹", example = "친구")
-    private String userFriendGroup;
+    @ApiModelProperty(position = 2, required = false, dataType = "Group", value = "회원친구그룹", example = "친구")
+    private Group userFriendGroup;
 
     @ApiModelProperty(position = 3, required = false, dataType = "String", value = "회원친구메모", example = "메모")
     private String userFriendMemo;

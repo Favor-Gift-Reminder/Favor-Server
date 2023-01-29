@@ -1,5 +1,6 @@
 package com.favor.favor.Friend;
 
+import com.favor.favor.Common.Group;
 import com.favor.favor.Common.TimeStamped;
 import com.favor.favor.Gift.Gift;
 import com.favor.favor.Reminder.Reminder;
@@ -32,24 +33,15 @@ public class Friend extends TimeStamped {
     private String friendName;
 
     @Nullable
-    private String friendGroup;
+    private Group friendGroup;
 
     @Nullable
     private String friendMemo;
 
-    public void setFriendName(String friendName) {
-        this.friendName = friendName;
-    }
-    public void setGroup(String friendGroup) {
-        this.friendGroup = friendGroup;
-    }
-    public void setFriendMemo(String friendMemo) {
-        this.friendMemo = friendMemo;
-    }
-
     @ManyToOne(cascade = CascadeType.REMOVE)
     @JoinColumn(name = "user_user_no")
     private User user;
+
 
     @OneToMany(mappedBy = "friend", orphanRemoval = true)
     private List<Gift> giftList = new ArrayList<>();
@@ -57,9 +49,24 @@ public class Friend extends TimeStamped {
     @OneToMany(mappedBy = "friend", orphanRemoval = true)
     private List<Reminder> reminderList = new ArrayList<>();
 
+
     @NotNull
     private Boolean isUser;
 
     @Nullable
     private Long userFriendNo;
+
+
+
+
+
+    public void setFriendName(String friendName) {
+        this.friendName = friendName;
+    }
+    public void setGroup(Group friendGroup) {
+        this.friendGroup = friendGroup;
+    }
+    public void setFriendMemo(String friendMemo) {
+        this.friendMemo = friendMemo;
+    }
 }

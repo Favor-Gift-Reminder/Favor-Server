@@ -73,8 +73,6 @@ public class UserController {
     }
 
 
-
-
     @ApiOperation("이름으로 회원 선물 조회")
     @GetMapping("/gift-by-name/{userNo}/{giftName}")
     public List<GiftDetailResponseDto> readGiftListByname (@PathVariable("userNo") Long userNo, @PathVariable("giftName") String giftName){
@@ -92,7 +90,6 @@ public class UserController {
     public List<GiftDetailResponseDto> readGiftListByEmotion(@PathVariable("userNo") Long userNo, @PathVariable("emotion") String emotion){
         return userService.readGiftListByEmotion(userNo, emotion);
     }
-
 
     @ApiOperation("아이디로 회원 조회")
     @GetMapping("id/{userId}")

@@ -1,5 +1,7 @@
 package com.favor.favor.Gift;
 
+import com.favor.favor.Common.Category;
+import com.favor.favor.Common.Emotion;
 import com.favor.favor.Friend.Friend;
 import com.favor.favor.User.User;
 import lombok.AllArgsConstructor;
@@ -17,8 +19,8 @@ public class GiftDetailResponseDto {
     private String giftName;
     private LocalDate giftDate;
     private String giftMemo;
-    private String category;
-    private String emotion;
+    private Category category;
+    private Emotion emotion;
 
     private Boolean isPinned;
     private Boolean isGiven;

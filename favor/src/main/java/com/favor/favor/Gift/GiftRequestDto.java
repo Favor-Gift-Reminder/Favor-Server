@@ -1,5 +1,7 @@
 package com.favor.favor.Gift;
 
+import com.favor.favor.Common.Category;
+import com.favor.favor.Common.Emotion;
 import com.favor.favor.Friend.Friend;
 import com.favor.favor.User.User;
 import io.swagger.annotations.Api;
@@ -25,11 +27,11 @@ public class GiftRequestDto {
     @ApiModelProperty(position = 3, required = false, dataType = "String", value = "선물메모", example = "선물메모")
     private String giftMemo;
 
-    @ApiModelProperty(position = 4, required = false, dataType = "String", value = "카테고리", example = "생일")
-    private String category;
+    @ApiModelProperty(position = 4, required = false, dataType = "Category", value = "카테고리", example = "생일")
+    private Category category;
 
-    @ApiModelProperty(position = 5, required = false, dataType = "String", value = "감정", example = "HAPPY")
-    private String emotion;
+    @ApiModelProperty(position = 5, required = false, dataType = "Emotion", value = "감정", example = "HAPPY")
+    private Emotion emotion;
 
     @ApiModelProperty(position = 7, required = true, dataType = "Boolean", value = "받은선물 여부", example = "false")
     private Boolean isGiven;
