@@ -2,8 +2,6 @@ package com.favor.favor.Gift;
 
 import com.favor.favor.Common.Category;
 import com.favor.favor.Common.Emotion;
-import com.favor.favor.Friend.Friend;
-import com.favor.favor.User.User;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;

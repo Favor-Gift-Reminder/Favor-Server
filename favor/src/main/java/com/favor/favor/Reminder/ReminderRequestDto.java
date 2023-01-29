@@ -36,9 +36,9 @@ public class ReminderRequestDto {
         return Reminder.builder()
                 .title(title)
                 .reminderDate(reminderDate)
-                .reminderMemo(reminderMemo)
                 .isAlarmSet(isAlarmSet)
                 .alarmTime(alarmTime)
+                .reminderMemo(reminderMemo)
                 .user(user)
                 .friend(friend)
                 .build();

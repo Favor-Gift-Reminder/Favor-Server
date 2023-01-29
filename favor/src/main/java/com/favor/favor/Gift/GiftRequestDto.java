@@ -4,7 +4,6 @@ import com.favor.favor.Common.Category;
 import com.favor.favor.Common.Emotion;
 import com.favor.favor.Friend.Friend;
 import com.favor.favor.User.User;
-import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;

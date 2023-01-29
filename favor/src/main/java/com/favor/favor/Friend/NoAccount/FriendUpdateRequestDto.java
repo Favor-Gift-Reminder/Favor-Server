@@ -2,8 +2,6 @@ package com.favor.favor.Friend.NoAccount;
 
 import com.favor.favor.Common.Group;
 import com.favor.favor.Friend.Friend;
-import com.favor.favor.Reminder.Reminder;
-import com.favor.favor.User.User;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;

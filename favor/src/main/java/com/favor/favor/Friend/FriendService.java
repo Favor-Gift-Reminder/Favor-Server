@@ -49,27 +49,34 @@ public class FriendService {
         FriendResponseDto returnDto = new FriendResponseDto();
 
         if(friend.getIsUser() == true){
-            User userFriend = userRepository.findByUserNo(friend.getUserFriendNo()).orElseThrow(
+            User user = userRepository.findByUserNo(friend.getUserFriendNo()).orElseThrow(
                     () -> new RuntimeException()
             );
 
-            friend.setFriendName(userFriend.getName());
+            friend.setFriendName(user.getName());
 
-            friendRepository.save(friend);
-            
+            List<Gift> giftList = friend.getGiftList();
+            for(Gift g : user.getGiftList()){
+                giftList.add(g);
+            }
+            List<Reminder> reminderList = friend.getReminderList();
+            for(Reminder r : user.getReminderList()){
+                reminderList.add(r);
+            }
+
             List<GiftResponseDto> g_List = new ArrayList<>();
-            List<Gift> giftList = userFriend.getGiftList();
             for(Gift g : giftList){
+
                 GiftResponseDto dto = new GiftResponseDto(g);
                 g_List.add(dto);
             }
-
             List<ReminderResponseDto> r_List = new ArrayList<>();
-            List<Reminder> reminderList = userFriend.getReminderList();
             for(Reminder r : reminderList){
                 ReminderResponseDto dto = new ReminderResponseDto(r);
                 r_List.add(dto);
             }
+
+            friendRepository.save(friend);
 
             returnDto = new FriendResponseDto(friend, g_List, r_List);
         }
@@ -88,6 +95,7 @@ public class FriendService {
                 r_List.add(dto);
             }
             friendRepository.save(friend);
+
             returnDto = new FriendResponseDto(friend, g_List, r_List);
         }
 

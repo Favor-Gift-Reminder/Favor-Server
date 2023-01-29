@@ -1,9 +1,9 @@
 package com.favor.favor.Friend;
 
 import com.favor.favor.Common.Group;
-import com.favor.favor.Friend.Friend;
 import com.favor.favor.Gift.GiftResponseDto;
 import com.favor.favor.Reminder.ReminderResponseDto;
+import com.favor.favor.User.User;
 import lombok.*;
 
 import java.util.List;
@@ -21,8 +21,12 @@ public class FriendResponseDto {
     private Group friendGroup;
     private String friendMemo;
 
+
     private List<GiftResponseDto> giftList;
     private List<ReminderResponseDto> reminderList;
+
+
+    private Long userFriendNo;
 
 
     private Long userNo;
@@ -35,5 +39,6 @@ public class FriendResponseDto {
         this.friendMemo = friend.getFriendMemo();
         this.giftList = giftList;
         this.reminderList = reminderList;
+        this.userFriendNo = friend.getUserFriendNo();
     }
 }
