@@ -1,6 +1,8 @@
 package com.favor.favor.User;
 
 
+import com.favor.favor.Common.Category;
+import com.favor.favor.Common.Emotion;
 import com.favor.favor.Friend.FriendListResponseDto;
 import com.favor.favor.Gift.GiftDetailResponseDto;
 import com.favor.favor.Gift.GiftResponseDto;
@@ -81,13 +83,13 @@ public class UserController {
 
     @ApiOperation("카테고리로 회원 선물 조회")
     @GetMapping("/gift-by-category/{userNo}/{category}")
-    public List<GiftDetailResponseDto> readGiftListByCategory(@PathVariable("userNo") Long userNo, @PathVariable("category") String category){
+    public List<GiftDetailResponseDto> readGiftListByCategory(@PathVariable("userNo") Long userNo, @PathVariable("category") Category category){
         return userService.readGiftListByCategory(userNo, category);
     }
 
     @ApiOperation("감정으로 회원 선물 검색")
     @GetMapping("/gift-by-emotion/{userNo}/{emotion}")
-    public List<GiftDetailResponseDto> readGiftListByEmotion(@PathVariable("userNo") Long userNo, @PathVariable("emotion") String emotion){
+    public List<GiftDetailResponseDto> readGiftListByEmotion(@PathVariable("userNo") Long userNo, @PathVariable("emotion") Emotion emotion){
         return userService.readGiftListByEmotion(userNo, emotion);
     }
 

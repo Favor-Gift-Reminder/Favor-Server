@@ -1,5 +1,7 @@
 package com.favor.favor.User;
 
+import com.favor.favor.Common.Category;
+import com.favor.favor.Common.Emotion;
 import com.favor.favor.Common.Favor;
 import com.favor.favor.Friend.Friend;
 import com.favor.favor.Friend.FriendListResponseDto;
@@ -155,7 +157,7 @@ public class UserService {
         return g_List;
     }
 
-    public List<GiftDetailResponseDto> readGiftListByCategory(Long userNo, String category){
+    public List<GiftDetailResponseDto> readGiftListByCategory(Long userNo, Category category){
         User user = userRepository.findByUserNo(userNo).orElseThrow(
                 () -> new RuntimeException()
         );
@@ -169,7 +171,7 @@ public class UserService {
         return g_List;
     }
 
-    public List<GiftDetailResponseDto> readGiftListByEmotion(Long userNo, String emotion){
+    public List<GiftDetailResponseDto> readGiftListByEmotion(Long userNo, Emotion emotion){
         User user = userRepository.findByUserNo(userNo).orElseThrow(
                 () -> new RuntimeException()
         );

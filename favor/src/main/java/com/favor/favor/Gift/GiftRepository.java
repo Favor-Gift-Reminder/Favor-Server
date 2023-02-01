@@ -1,5 +1,7 @@
 package com.favor.favor.Gift;
 
+import com.favor.favor.Common.Category;
+import com.favor.favor.Common.Emotion;
 import com.favor.favor.User.User;
 import org.springframework.data.jpa.repository.JpaRepository;
 
@@ -11,7 +13,7 @@ public interface GiftRepository extends JpaRepository<Gift, Long> {
 
     List<Gift> findGiftsByUserAndGiftName(User user, String giftName);
 
-    List<Gift> findGiftsByUserAndCategory(User user, String category);
+    List<Gift> findGiftsByUserAndCategory(User user, Category category);
 
-    List<Gift> findGiftsByUserAndEmotion(User user, String emotion);
+    List<Gift> findGiftsByUserAndEmotion(User user, Emotion emotion);
 }
