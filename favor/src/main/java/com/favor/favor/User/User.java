@@ -6,6 +6,7 @@ import com.favor.favor.Common.Role;
 import com.favor.favor.Common.TimeStamped;
 import com.favor.favor.Friend.Friend;
 import com.favor.favor.Gift.Gift;
+import com.favor.favor.Photo.Photo;
 import com.favor.favor.Reminder.Reminder;
 import lombok.*;
 import org.springframework.lang.Nullable;
@@ -21,7 +22,6 @@ import java.util.List;
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor
-@Builder
 @Transactional
 public class User extends TimeStamped {
 
@@ -37,14 +37,21 @@ public class User extends TimeStamped {
 
     @NotBlank(message = "아이디를 입력해주세요")
     private String userId;
+    public void setUserId(String userId){
+        this.userId = userId;
+    }
 
     @NotBlank(message = "이름을 입럭해주세요")
     private String name;
+    public void setName(String name) {
+        this.name = name;
+    }
 
 
     @Nullable
     @ElementCollection
     private List<Favor> favorList = new ArrayList<>();
+    public void setFavorList(List<Favor> favorList) { this.favorList = favorList; }
 
     @JsonIgnore
     @OneToMany(mappedBy = "user", orphanRemoval = true)
@@ -59,21 +66,16 @@ public class User extends TimeStamped {
     private List<Friend> friendList = new ArrayList<>();
 
 
+    @JsonIgnore
+    @OneToOne(mappedBy = "user", cascade = CascadeType.REMOVE, orphanRemoval = true)
+    private Photo userProfilePhoto;
+    public void setUserProfilePhoto(Photo photo){
+        this.userProfilePhoto = userProfilePhoto;
+    }
+
     @NotNull
     private Role role;
 
-
-
-
-
-
-    public void setName(String name) {
-        this.name = name;
-    }
-    public void setUserId(String userId){
-        this.userId = userId;
-    }
-    public void setFavorList(List<Favor> favorList) { this.favorList = favorList; }
 
 
 }

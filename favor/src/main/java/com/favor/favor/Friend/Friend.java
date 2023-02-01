@@ -31,12 +31,22 @@ public class Friend extends TimeStamped {
 
     @NotBlank(message = "친구의 이름을 입력해주세요")
     private String friendName;
+    public void setFriendName(String friendName) {
+        this.friendName = friendName;
+    }
 
     @Nullable
     private Group friendGroup;
+    public void setGroup(Group friendGroup) {
+        this.friendGroup = friendGroup;
+    }
 
     @Nullable
     private String friendMemo;
+
+    public void setFriendMemo(String friendMemo) {
+        this.friendMemo = friendMemo;
+    }
 
     @ManyToOne(cascade = CascadeType.REMOVE)
     @JoinColumn(name = "user_user_no")
@@ -58,18 +68,5 @@ public class Friend extends TimeStamped {
 
 
 
-
-
-    public void setFriendName(String friendName) {
-        this.friendName = friendName;
-    }
-    public void setGroup(Group friendGroup) {
-        this.friendGroup = friendGroup;
-    }
-    public void setFriendMemo(String friendMemo) {
-        this.friendMemo = friendMemo;
-    }
-    public void setGiftList(List<Gift> giftList) { this.giftList = giftList; }
-    public void setReminderList(List<Reminder> reminderList) { this.reminderList = reminderList; }
 
 }
