@@ -1,17 +1,20 @@
 package com.favor.favor.Photo;
 
 import com.favor.favor.Common.TimeStamped;
-import com.favor.favor.User.User;
 import lombok.*;
 
-import javax.persistence.*;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
 import javax.transaction.Transactional;
-import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
 
 @Entity
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor
+@Builder
 @Transactional
 public class Photo extends TimeStamped {
 
@@ -19,25 +22,16 @@ public class Photo extends TimeStamped {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long photoNo;
 
-    @NotBlank
+    @NotNull
+    private Long photoIdx;
+
+    @NotNull
     private String originalFileName;
 
-    @NotBlank
-    private String filePath;
+    @NotNull
+    private String storedFileName;
 
-    @OneToOne(orphanRemoval = true)
-    @JoinTable(name = "photo_user",
-            joinColumns = @JoinColumn(name = "photo_photo_no"),
-            inverseJoinColumns = @JoinColumn(name = "user_user_no"))
-    private User user;
+    private long fileSize;
 
-    @Builder
-    public Photo(String originalFileName, String filePath){
-        this.originalFileName = originalFileName;
-        this.filePath = filePath;
-    }
 
-    public void setUser(User user){
-        this.user = user;
-    }
 }

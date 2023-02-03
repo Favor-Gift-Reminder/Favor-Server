@@ -12,7 +12,11 @@ import com.favor.favor.Gift.GiftResponseDto;
 import com.favor.favor.Reminder.Reminder;
 import com.favor.favor.Reminder.ReminderResponseDto;
 import lombok.RequiredArgsConstructor;
+import org.apache.commons.fileupload.FileUploadBase;
+import org.apache.tomcat.util.http.fileupload.FileUpload;
 import org.springframework.stereotype.Service;
+import org.springframework.util.StringUtils;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.transaction.Transactional;
 import java.util.ArrayList;
@@ -24,7 +28,7 @@ public class UserService {
     private final UserRepository userRepository;
     private final GiftRepository giftRepository;
 
-    public Long signUp(UserRequestDto userRequestDto){
+    public Long signUp(UserRequestDto userRequestDto) {
         User user = User.builder()
                 .email(userRequestDto.getEmail())
                 .password(userRequestDto.getPassword())
@@ -33,6 +37,7 @@ public class UserService {
                 .role(userRequestDto.getRole())
                 .build();
         userRepository.save(user);
+
         return user.getUserNo();
     }
 

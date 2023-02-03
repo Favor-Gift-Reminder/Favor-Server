@@ -20,7 +20,7 @@ public class UserRequestDto {
     private String email;
 
     @ApiModelProperty(position = 2, required = true, dataType = "String", value = "비밀번호", example = "********")
-    @Length(min = 10, message = "8자 이상 입력해주세요")
+    @Length(min = 8, message = "8자 이상 입력해주세요")
     private String password;
 
     @ApiModelProperty(position = 3, required = true, dataType = "String", value = "이름", example = "페이버")
@@ -31,4 +31,5 @@ public class UserRequestDto {
 
     @ApiModelProperty(position = 5, required = true, dataType = "Role", value = "권한", example = "USER")
     private Role role;
+
 }

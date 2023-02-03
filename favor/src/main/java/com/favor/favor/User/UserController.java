@@ -6,12 +6,17 @@ import com.favor.favor.Common.Emotion;
 import com.favor.favor.Friend.FriendListResponseDto;
 import com.favor.favor.Gift.GiftDetailResponseDto;
 import com.favor.favor.Gift.GiftResponseDto;
+import com.favor.favor.Photo.PhotoService;
 import com.favor.favor.Reminder.ReminderResponseDto;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
+import springfox.documentation.schema.Model;
 
+import java.io.File;
+import java.util.ArrayList;
 import java.util.List;
 
 @Api(tags = "User")
@@ -20,10 +25,11 @@ import java.util.List;
 @RequiredArgsConstructor
 public class UserController {
     private final UserService userService;
+    private final PhotoService photoService;
 
     @ApiOperation("회원가입")
     @PostMapping("/sign-up")
-    public Long signUp(@RequestBody UserRequestDto userRequestDto){
+    public Long signUp(@RequestBody UserRequestDto userRequestDto) {
         return userService.signUp(userRequestDto);
     }
 
