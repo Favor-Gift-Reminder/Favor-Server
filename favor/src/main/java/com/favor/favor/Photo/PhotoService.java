@@ -10,5 +10,5 @@ public class PhotoService {
     private final PhotoRepository photoRepository;
     private final FileHandler fileHandler;
 
-    
+
 }
