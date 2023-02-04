@@ -9,8 +9,6 @@ import com.favor.favor.Gift.Gift;
 import com.favor.favor.Reminder.Reminder;
 import lombok.*;
 import org.springframework.lang.Nullable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.multipart.MultipartFile;
 
 import javax.persistence.*;
 import javax.transaction.Transactional;

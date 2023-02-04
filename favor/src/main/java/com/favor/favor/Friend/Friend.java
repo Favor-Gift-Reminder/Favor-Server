@@ -1,6 +1,5 @@
 package com.favor.favor.Friend;
 
-import com.favor.favor.Common.Group;
 import com.favor.favor.Common.TimeStamped;
 import com.favor.favor.Gift.Gift;
 import com.favor.favor.Reminder.Reminder;
@@ -12,11 +11,8 @@ import javax.persistence.*;
 import javax.transaction.Transactional;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
-import java.time.LocalDate;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 @Entity
 @Getter
@@ -33,12 +29,6 @@ public class Friend extends TimeStamped {
     private String friendName;
     public void setFriendName(String friendName) {
         this.friendName = friendName;
-    }
-
-    @Nullable
-    private Group friendGroup;
-    public void setGroup(Group friendGroup) {
-        this.friendGroup = friendGroup;
     }
 
     @Nullable
