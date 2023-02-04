@@ -29,7 +29,7 @@ public class GiftRequestDto {
     @ApiModelProperty(position = 4, required = false, dataType = "Category", value = "카테고리", example = "생일")
     private Category category;
 
-    @ApiModelProperty(position = 5, required = false, dataType = "Emotion", value = "감정", example = "HAPPY")
+    @ApiModelProperty(position = 5, required = false, dataType = "Emotion", value = "감정", example = "기뻐요")
     private Emotion emotion;
 
     @ApiModelProperty(position = 7, required = true, dataType = "Boolean", value = "받은선물 여부", example = "false")
