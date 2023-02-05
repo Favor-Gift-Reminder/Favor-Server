@@ -68,5 +68,4 @@ public class User extends TimeStamped {
 
     @NotNull
     private Role role;
-
 }

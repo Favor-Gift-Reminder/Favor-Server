@@ -107,7 +107,6 @@ public class FriendService {
                 () -> new RuntimeException()
         );
         friend.setFriendName(dto.getFriendName());
-        friend.setGroup(dto.getGroup());
         friend.setFriendMemo(dto.getFriendMemo());
 
         friendRepository.save(friend);

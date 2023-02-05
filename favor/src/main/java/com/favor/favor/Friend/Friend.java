@@ -21,6 +21,7 @@ import java.util.List;
 @Builder
 @Transactional
 public class Friend extends TimeStamped {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long friendNo;
