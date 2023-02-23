@@ -25,31 +25,26 @@ public class Gift extends TimeStamped {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long giftNo;
 
-    @NotBlank
     private String giftName;
     public void setGiftName(String giftName){
         this.giftName = giftName;
     }
 
-    @Nullable
     private LocalDate giftDate;
     public void setGiftDate(LocalDate giftDate){
         this.giftDate = giftDate;
     }
 
-    @Nullable
     private String giftMemo;
     public void setGiftMemo(String giftMemo){
         this.giftMemo = giftMemo;
     }
 
-    @Nullable
     private Category category;
     public void setCategory(Category category){
         this.category = category;
     }
 
-    @Nullable
     private Emotion emotion;
     public void setEmotion(Emotion emotion) {
         this.emotion = emotion;
@@ -62,7 +57,6 @@ public class Gift extends TimeStamped {
         this.isPinned = isPinned;
     }
 
-    @NotNull
     private Boolean isGiven;
     public void setIsGiven(Boolean isGiven){
         this.isGiven = isGiven;

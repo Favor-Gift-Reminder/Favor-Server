@@ -26,13 +26,11 @@ public class Friend extends TimeStamped {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long friendNo;
 
-    @NotBlank(message = "친구의 이름을 입력해주세요")
     private String friendName;
     public void setFriendName(String friendName) {
         this.friendName = friendName;
     }
 
-    @Nullable
     private String friendMemo;
 
     public void setFriendMemo(String friendMemo) {
@@ -51,10 +49,8 @@ public class Friend extends TimeStamped {
     private List<Reminder> reminderList = new ArrayList<>();
 
 
-    @NotNull
     private Boolean isUser;
 
-    @Nullable
     private Long userFriendNo;
 
 

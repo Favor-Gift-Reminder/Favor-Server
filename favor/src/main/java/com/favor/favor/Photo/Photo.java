@@ -22,13 +22,10 @@ public class Photo extends TimeStamped {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long photoNo;
 
-    @NotNull
     private Long photoIdx;
 
-    @NotNull
     private String originalFileName;
 
-    @NotNull
     private String storedFileName;
 
     private long fileSize;

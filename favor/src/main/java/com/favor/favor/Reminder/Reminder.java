@@ -24,19 +24,14 @@ public class Reminder {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long reminderNo;
 
-    @NotBlank
     private String title;
 
-    @NotNull
     private LocalDate reminderDate;
 
-    @Nullable
     private String reminderMemo;
 
-    @NotNull
     private Boolean isAlarmSet;
 
-    @Nullable
     private LocalDateTime alarmTime;
 
 

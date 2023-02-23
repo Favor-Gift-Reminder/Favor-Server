@@ -29,26 +29,21 @@ public class User extends TimeStamped {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long userNo;
 
-    @NotBlank(message = "이메일을 입력해주세요")
     private String email;
 
-    @NotBlank(message = "비밀번호를 입력해주세요")
     private String password;
 
-    @NotBlank(message = "아이디를 입력해주세요")
     private String userId;
     public void setUserId(String userId){
         this.userId = userId;
     }
 
-    @NotBlank(message = "이름을 입럭해주세요")
     private String name;
     public void setName(String name) {
         this.name = name;
     }
 
 
-    @Nullable
     @ElementCollection
     private List<Favor> favorList = new ArrayList<>();
     public void setFavorList(List<Favor> favorList) { this.favorList = favorList; }
@@ -66,6 +61,5 @@ public class User extends TimeStamped {
     private List<Friend> friendList = new ArrayList<>();
 
 
-    @NotNull
     private Role role;
 }
