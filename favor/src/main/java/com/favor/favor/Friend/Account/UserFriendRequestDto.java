@@ -21,11 +21,11 @@ public class UserFriendRequestDto {
     private String userFriendMemo;
 
     @Transactional
-    public Friend toEntity(User user){
+    public Friend toEntity(User user, User userFriend){
         return Friend.builder()
                 .isUser(true)
                 .userFriendNo(userFriendNo)
-                .friendName("temp")
+                .friendName(userFriend.getName())
                 .friendMemo(userFriendMemo)
                 .user(user)
                 .build();

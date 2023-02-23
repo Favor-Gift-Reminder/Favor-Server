@@ -17,7 +17,7 @@ public class GiftService {
     private final UserRepository userRepository;
     private final FriendRepository friendRepository;
 
-    public Long createGift(GiftRequestDto giftRequestDto, Long userNo, Long friendNo){
+    public GiftDetailResponseDto createGift(GiftRequestDto giftRequestDto, Long userNo, Long friendNo){
         User user =  userRepository.findByUserNo(userNo).orElseThrow(
                 () -> new RuntimeException()
         );
@@ -25,7 +25,7 @@ public class GiftService {
                 () -> new RuntimeException()
         );
         Gift gift = giftRepository.save(giftRequestDto.toEntity(user, friend));
-        return gift.getGiftNo();
+        return new GiftDetailResponseDto(gift);
     }
 
     public GiftDetailResponseDto readGift(Long giftNo){

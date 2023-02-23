@@ -17,7 +17,7 @@ public class ReminderService {
     private final UserRepository userRepository;
     private final FriendRepository friendRepository;
 
-    public Long createReminder(ReminderRequestDto reminderRequestDto, Long userNo, Long friendNo){
+    public ReminderDetailResponseDto createReminder(ReminderRequestDto reminderRequestDto, Long userNo, Long friendNo){
         User user = userRepository.findByUserNo(userNo).orElseThrow(
                 () -> new RuntimeException()
         );
@@ -25,7 +25,7 @@ public class ReminderService {
                 () -> new RuntimeException()
         );
         Reminder reminder = reminderRepository.save(reminderRequestDto.toEntity(user, friend));
-        return reminder.getReminderNo();
+        return new ReminderDetailResponseDto(reminder);
     }
 
     public ReminderDetailResponseDto readReminder(Long reminderNo){

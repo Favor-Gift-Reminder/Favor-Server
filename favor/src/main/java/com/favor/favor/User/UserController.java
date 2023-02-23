@@ -3,10 +3,9 @@ package com.favor.favor.User;
 
 import com.favor.favor.Common.Category;
 import com.favor.favor.Common.Emotion;
-import com.favor.favor.Friend.FriendListResponseDto;
+import com.favor.favor.Friend.FriendResponseDto;
 import com.favor.favor.Gift.GiftDetailResponseDto;
 import com.favor.favor.Gift.GiftResponseDto;
-import com.favor.favor.Photo.PhotoService;
 import com.favor.favor.Reminder.ReminderResponseDto;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -24,7 +23,7 @@ public class UserController {
 
     @ApiOperation("회원가입")
     @PostMapping("/sign-up")
-    public Long signUp(@RequestBody UserRequestDto userRequestDto) {
+    public UserDetailResponseDto signUp(@RequestBody UserRequestDto userRequestDto) {
         return userService.signUp(userRequestDto);
     }
 
@@ -64,7 +63,7 @@ public class UserController {
 
     @ApiOperation("회원의 친구 전체 조회")
     @GetMapping("/friend-list/{userNo}")
-    public List<FriendListResponseDto> readFriendList(@PathVariable Long userNo){
+    public List<FriendResponseDto> readFriendList(@PathVariable Long userNo){
         return userService.readFriendList(userNo);
     }
 

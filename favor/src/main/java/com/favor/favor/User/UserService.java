@@ -4,7 +4,7 @@ import com.favor.favor.Common.Category;
 import com.favor.favor.Common.Emotion;
 import com.favor.favor.Common.Favor;
 import com.favor.favor.Friend.Friend;
-import com.favor.favor.Friend.FriendListResponseDto;
+import com.favor.favor.Friend.FriendResponseDto;
 import com.favor.favor.Gift.Gift;
 import com.favor.favor.Gift.GiftDetailResponseDto;
 import com.favor.favor.Gift.GiftRepository;
@@ -12,16 +12,11 @@ import com.favor.favor.Gift.GiftResponseDto;
 import com.favor.favor.Reminder.Reminder;
 import com.favor.favor.Reminder.ReminderResponseDto;
 import lombok.RequiredArgsConstructor;
-import org.apache.commons.fileupload.FileUploadBase;
-import org.apache.tomcat.util.http.fileupload.FileUpload;
 import org.springframework.stereotype.Service;
-import org.springframework.util.StringUtils;
-import org.springframework.web.multipart.MultipartFile;
 
 import javax.transaction.Transactional;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -29,7 +24,7 @@ public class UserService {
     private final UserRepository userRepository;
     private final GiftRepository giftRepository;
 
-    public Long signUp(UserRequestDto userRequestDto) {
+    public UserDetailResponseDto signUp(UserRequestDto userRequestDto) {
         User user = User.builder()
                 .email(userRequestDto.getEmail())
                 .password(userRequestDto.getPassword())
@@ -39,7 +34,7 @@ public class UserService {
                 .build();
         userRepository.save(user);
 
-        return user.getUserNo();
+        return new UserDetailResponseDto(user);
     }
 
     @Transactional
@@ -62,10 +57,10 @@ public class UserService {
             g_list.add(dto);
         }
 
-        List<FriendListResponseDto> f_list = new ArrayList<>();
+        List<FriendResponseDto> f_list = new ArrayList<>();
         List<Friend> friendList = user.getFriendList();
         for(Friend f : friendList){
-            FriendListResponseDto dto = new FriendListResponseDto(f);
+            FriendResponseDto dto = new FriendResponseDto(f);
             f_list.add(dto);
         }
 
@@ -123,13 +118,13 @@ public class UserService {
     }
 
     @Transactional
-    public List<FriendListResponseDto> readFriendList(Long userNo){
+    public List<FriendResponseDto> readFriendList(Long userNo){
         User user = userRepository.findByUserNo(userNo).orElseThrow(
                 () -> new RuntimeException()
         );
-        List<FriendListResponseDto> f_List = new ArrayList<>();
+        List<FriendResponseDto> f_List = new ArrayList<>();
         for(Friend f : user.getFriendList()){
-            FriendListResponseDto dto = new FriendListResponseDto(f);
+            FriendResponseDto dto = new FriendResponseDto(f);
             f_List.add(dto);
         }
         return f_List;

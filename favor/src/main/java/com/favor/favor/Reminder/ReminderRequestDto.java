@@ -16,19 +16,19 @@ import java.time.LocalDateTime;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor
 public class ReminderRequestDto {
-    @ApiModelProperty(position = 1, required = true, dataType = "String", value = "제목", example = "제목")
+    @ApiModelProperty(position = 1, required = true, value = "제목", example = "제목")
     private String title;
 
-    @ApiModelProperty(position = 2, required = true, dataType = "LocalDate", value = "날짜", example = "1996-02-29")
+    @ApiModelProperty(position = 2, required = true, value = "날짜", example = "1996-02-29")
     private LocalDate reminderDate;
 
-    @ApiModelProperty(position = 3, required = true, dataType = "Boolean", value = "알람세팅여부", example = "False")
+    @ApiModelProperty(position = 3, required = true, value = "알람세팅여부", example = "False")
     private Boolean isAlarmSet;
 
-    @ApiModelProperty(position = 4, required = true, dataType = "LocalDateTime", value = "알람세팅시간", example = "")
+    @ApiModelProperty(position = 4, required = true, value = "알람세팅시간", example = "")
     private LocalDateTime alarmTime;
 
-    @ApiModelProperty(position = 5, required = true, dataType = "String", value = "메모", example = "메모")
+    @ApiModelProperty(position = 5, required = true, value = "메모", example = "메모")
     private String reminderMemo;
 
     @Transactional

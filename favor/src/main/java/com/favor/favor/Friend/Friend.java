@@ -37,7 +37,7 @@ public class Friend extends TimeStamped {
         this.friendMemo = friendMemo;
     }
 
-    @ManyToOne(cascade = CascadeType.REMOVE)
+    @ManyToOne(cascade = CascadeType.REFRESH)
     @JoinColumn(name = "user_user_no")
     private User user;
 

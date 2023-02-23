@@ -14,10 +14,10 @@ import javax.transaction.Transactional;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor
 public class FriendRequestDto {
-    @ApiModelProperty(position = 1, required = true, dataType = "String", value = "친구이름", example = "이름")
+    @ApiModelProperty(position = 1, required = true, value = "친구이름", example = "이름")
     private String friendName;
 
-    @ApiModelProperty(position = 2, required = false, dataType = "String", value = "친구메모", example = "메모")
+    @ApiModelProperty(position = 2, required = false, value = "친구메모", example = "메모")
     private String friendMemo;
 
     @Transactional

@@ -22,33 +22,37 @@ public class FriendService {
     private final FriendRepository friendRepository;
     private final UserRepository userRepository;
 
-    public Long createFriend(FriendRequestDto dto, Long userNo){
+    public FriendDetailResponseDto createFriend(FriendRequestDto dto, Long userNo){
         User user = userRepository.findByUserNo(userNo).orElseThrow(
                 () -> new RuntimeException()
         );
 
         Friend friend = friendRepository.save(dto.toEntity(user));
-        return friend.getFriendNo();
+        return new FriendDetailResponseDto(friend);
     }
 
     @Transactional
-    public Long addFriend(UserFriendRequestDto dto, Long userNo){
+    public FriendDetailResponseDto addFriend(UserFriendRequestDto dto, Long userNo){
         User user = userRepository.findByUserNo(userNo).orElseThrow(
                 () -> new RuntimeException()
         );
+        Long userFriendNo = dto.getUserFriendNo();
+        User friendUser = userRepository.findByUserNo(userFriendNo).orElseThrow(
+                () -> new RuntimeException()
+        );
+        Friend userFriend = friendRepository.save(dto.toEntity(user, friendUser));
 
-        Friend userFriend = friendRepository.save(dto.toEntity(user));
-        return userFriend.getFriendNo();
+        return new FriendDetailResponseDto(userFriend);
     }
 
     @Transactional
-    public FriendResponseDto readFriend(Long friendNo){
+    public FriendDetailResponseDto readFriend(Long friendNo){
         Friend friend = friendRepository.findByFriendNo(friendNo).orElseThrow(
                 () -> new RuntimeException()
         );
-        FriendResponseDto returnDto = new FriendResponseDto();
+        FriendDetailResponseDto returnDto = new FriendDetailResponseDto();
 
-        if(friend.getIsUser() == true){
+        if(friend.getIsUser()){
             User user = userRepository.findByUserNo(friend.getUserFriendNo()).orElseThrow(
                     () -> new RuntimeException()
             );
@@ -78,7 +82,7 @@ public class FriendService {
 
             friendRepository.save(friend);
 
-            returnDto = new FriendResponseDto(friend, g_List, r_List);
+            returnDto = new FriendDetailResponseDto(friend, g_List, r_List);
         }
         else{
             List<GiftResponseDto> g_List = new ArrayList<>();
@@ -96,7 +100,7 @@ public class FriendService {
             }
             friendRepository.save(friend);
 
-            returnDto = new FriendResponseDto(friend, g_List, r_List);
+            returnDto = new FriendDetailResponseDto(friend, g_List, r_List);
         }
 
         return returnDto;
@@ -114,15 +118,23 @@ public class FriendService {
     }
 
     public Long deleteFriend(Long friendNo){
-        friendRepository.deleteById(friendNo);
+        Friend friend = friendRepository.findByFriendNo(friendNo).orElseThrow(
+                () -> new RuntimeException()
+        );
+        if(friend.getIsUser()){
+            friendRepository.deleteById(friendNo);
+        }
+        else{
+            friendRepository.deleteById(friendNo);
+        }
         return friendNo;
     }
 
-    public List<FriendListResponseDto> readAll(){
-        List<FriendListResponseDto> f_List = new ArrayList<>();
+    public List<FriendResponseDto> readAll(){
+        List<FriendResponseDto> f_List = new ArrayList<>();
         List<Friend> friendList = friendRepository.findAll();
         for(Friend f : friendList){
-            FriendListResponseDto dto = new FriendListResponseDto(f);
+            FriendResponseDto dto = new FriendResponseDto(f);
             f_List.add(dto);
         }
         return f_List;

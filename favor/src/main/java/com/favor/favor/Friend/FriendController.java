@@ -19,18 +19,18 @@ public class FriendController {
 
     @ApiOperation("친구 생성")
     @PostMapping
-    public Long createFriend(@RequestBody FriendRequestDto dto, Long userNo){
+    public FriendDetailResponseDto createFriend(@RequestBody FriendRequestDto dto, Long userNo){
         return friendService.createFriend(dto, userNo);
     }
     @ApiOperation("회원친구 추가")
     @PostMapping("/add")
-    public Long addFriend(@RequestBody UserFriendRequestDto dto, Long userNo){
+    public FriendDetailResponseDto addFriend(@RequestBody UserFriendRequestDto dto, Long userNo){
         return friendService.addFriend(dto, userNo);
     }
 
     @ApiOperation("단일 친구 조회")
     @GetMapping("/{friendNo}")
-    public FriendResponseDto readFriend(@PathVariable Long friendNo){
+    public FriendDetailResponseDto readFriend(@PathVariable Long friendNo){
         return friendService.readFriend(friendNo);
     }
 
@@ -48,7 +48,7 @@ public class FriendController {
 
     @ApiOperation("전체 친구 조회")
     @GetMapping
-    public List<FriendListResponseDto> readAll(){
+    public List<FriendResponseDto> readAll(){
         return friendService.readAll();
     }
 }
