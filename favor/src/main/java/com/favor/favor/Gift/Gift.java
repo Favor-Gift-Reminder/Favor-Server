@@ -40,14 +40,14 @@ public class Gift extends TimeStamped {
         this.giftMemo = giftMemo;
     }
 
-    private Category category;
+    private Integer category;
     public void setCategory(Category category){
-        this.category = category;
+        this.category = category.getType();
     }
 
-    private Emotion emotion;
+    private Integer emotion;
     public void setEmotion(Emotion emotion) {
-        this.emotion = emotion;
+        this.emotion = emotion.getType();
     }
 
 

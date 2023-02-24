@@ -45,8 +45,16 @@ public class User extends TimeStamped {
 
 
     @ElementCollection
-    private List<Favor> favorList = new ArrayList<>();
-    public void setFavorList(List<Favor> favorList) { this.favorList = favorList; }
+    private List<Integer> favorList = new ArrayList<>();
+    @Transactional
+    public void setFavorList(List<Favor> favorList) {
+        ArrayList<Integer> favorTypeList = new ArrayList<>();
+        for(Favor favor : favorList){
+            favorTypeList.add(favor.getType());
+        }
+        this.favorList = favorTypeList;
+
+    }
 
     @JsonIgnore
     @OneToMany(mappedBy = "user", orphanRemoval = true)
