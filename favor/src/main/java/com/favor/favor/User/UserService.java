@@ -65,8 +65,8 @@ public class UserService {
         }
 
         List<Favor> favor_List = new ArrayList<>();
-        for(Favor f : user.getFavorList()){
-            favor_List.add(f);
+        for(Integer favorType : user.getFavorList()){
+            favor_List.add(Favor.valueOf(favorType));
         }
 
         UserDetailResponseDto dto = new UserDetailResponseDto(user, r_list, g_list, f_list, favor_List);

@@ -19,6 +19,15 @@ public enum Category {
         this.type = type;
     }
 
+    public static Category validateType(String category){
+        try{
+            return Category.valueOf(category);
+        }catch(IllegalStateException e){
+            //커스텀 전 임시
+            throw new IllegalArgumentException();
+        }
+    }
+
     public static Category valueOf(Integer type){
         Category category = null;
         switch (type){

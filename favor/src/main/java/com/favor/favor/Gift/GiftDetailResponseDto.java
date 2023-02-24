@@ -32,8 +32,8 @@ public class GiftDetailResponseDto {
         this.giftName = gift.getGiftName();
         this.giftDate = gift.getGiftDate();
         this.giftMemo = gift.getGiftMemo();
-        this.category = gift.getCategory();
-        this.emotion = gift.getEmotion();
+        this.category = Category.valueOf(gift.getCategory());
+        this.emotion = Emotion.valueOf(gift.getEmotion());
         this.isPinned = gift.getIsPinned();
         this.isGiven = gift.getIsGiven();
         this.userNo = gift.getUser().getUserNo();

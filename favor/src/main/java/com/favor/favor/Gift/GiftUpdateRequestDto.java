@@ -2,12 +2,15 @@ package com.favor.favor.Gift;
 
 import com.favor.favor.Common.Category;
 import com.favor.favor.Common.Emotion;
+import com.favor.favor.Friend.Friend;
+import com.favor.favor.User.User;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
+import javax.transaction.Transactional;
 import java.time.LocalDate;
 
 @Getter
@@ -35,4 +38,5 @@ public class GiftUpdateRequestDto {
 
     @ApiModelProperty(position = 7, required = false, dataType = "Boolean", value = "받은선물 여부", example = "false")
     private Boolean isGiven;
+
 }
