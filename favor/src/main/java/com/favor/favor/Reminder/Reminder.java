@@ -35,11 +35,11 @@ public class Reminder {
     private LocalDateTime alarmTime;
 
 
-    @ManyToOne(cascade = CascadeType.REMOVE)
+    @ManyToOne(cascade = CascadeType.REFRESH)
     @JoinColumn(name = "user_user_no")
     private User user;
 
-    @ManyToOne(cascade = CascadeType.REMOVE)
+    @ManyToOne(cascade = CascadeType.REFRESH)
     @JoinColumn(name = "friend_friend_no")
     private Friend friend;
 
