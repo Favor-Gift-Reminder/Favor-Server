@@ -1,6 +1,5 @@
 package com.favor.favor.Common;
 
-import lombok.AllArgsConstructor;
 import lombok.Getter;
 
 public enum Category {

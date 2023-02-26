@@ -8,12 +8,9 @@ import com.favor.favor.Friend.Friend;
 import com.favor.favor.Gift.Gift;
 import com.favor.favor.Reminder.Reminder;
 import lombok.*;
-import org.springframework.lang.Nullable;
 
 import javax.persistence.*;
 import javax.transaction.Transactional;
-import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.NotNull;
 import java.util.ArrayList;
 import java.util.List;
 
