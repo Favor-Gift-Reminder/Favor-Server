@@ -5,12 +5,9 @@ import com.favor.favor.Gift.Gift;
 import com.favor.favor.Reminder.Reminder;
 import com.favor.favor.User.User;
 import lombok.*;
-import org.springframework.lang.Nullable;
 
 import javax.persistence.*;
-import javax.transaction.Transactional;
-import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.NotNull;
+import javax.transaction.Transactional
 import java.util.ArrayList;
 import java.util.List;
 
