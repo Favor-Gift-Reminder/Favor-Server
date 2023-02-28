@@ -36,7 +36,7 @@ public class ReminderService {
         return dto;
     }
 
-    public Long updateReminder(Long reminderNo, ReminderUpdateRequestDto dto, Long friendNo){
+    public ReminderDetailResponseDto updateReminder(Long reminderNo, ReminderUpdateRequestDto dto, Long friendNo){
         Reminder reminder = reminderRepository.findByReminderNo(reminderNo).orElseThrow(
                 () -> new RuntimeException()
         );
@@ -51,12 +51,18 @@ public class ReminderService {
         reminder.setFriend(friend);
 
         reminderRepository.save(reminder);
-        return reminderNo;
+
+
+        return new ReminderDetailResponseDto(reminder);
     }
 
-    public Long deleteReminder(Long reminderNo){
+    public ReminderDetailResponseDto deleteReminder(Long reminderNo){
+        Reminder reminder = reminderRepository.findByReminderNo(reminderNo).orElseThrow(
+                () -> new RuntimeException()
+        );
+        ReminderDetailResponseDto returnDto = new ReminderDetailResponseDto(reminder);
         reminderRepository.deleteById(reminderNo);
-        return reminderNo;
+        return returnDto;
     }
 
     public List<ReminderResponseDto> readAll(){

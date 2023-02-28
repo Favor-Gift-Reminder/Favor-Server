@@ -31,15 +31,14 @@ public class ReminderController {
 
     @ApiOperation("리마인더 수정")
     @PatchMapping("/{reminderNo}")
-    public Long updateReminder(@RequestBody ReminderUpdateRequestDto dto, @PathVariable Long reminderNo, Long friendNo){
+    public ReminderDetailResponseDto updateReminder(@RequestBody ReminderUpdateRequestDto dto, @PathVariable Long reminderNo, Long friendNo){
         return reminderService.updateReminder(reminderNo, dto, friendNo);
     }
 
     @ApiOperation("리마인더 삭제")
     @DeleteMapping("/{reminderNo}")
-    public Long deleteReminder(@PathVariable Long reminderNo){
-        reminderService.deleteReminder(reminderNo);
-        return reminderNo;
+    public ReminderDetailResponseDto deleteReminder(@PathVariable Long reminderNo){
+        return reminderService.deleteReminder(reminderNo);
     }
 
     @ApiOperation("전체 리마인더 조회")

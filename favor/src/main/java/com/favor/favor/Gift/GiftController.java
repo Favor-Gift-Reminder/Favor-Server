@@ -36,7 +36,7 @@ public class GiftController {
 
     @ApiOperation("선물 삭제")
     @DeleteMapping("/{giftNo}")
-    public Long deleteGift(@PathVariable Long giftNo){
+    public GiftDetailResponseDto deleteGift(@PathVariable Long giftNo){
         return giftService.deleteGift(giftNo);
     }
 

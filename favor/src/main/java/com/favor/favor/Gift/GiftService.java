@@ -56,9 +56,13 @@ public class GiftService {
         return new GiftDetailResponseDto(gift);
     }
 
-    public Long deleteGift(Long giftNo){
+    public GiftDetailResponseDto deleteGift(Long giftNo){
+        Gift gift = giftRepository.findByGiftNo(giftNo).orElseThrow(
+                () -> new RuntimeException()
+        );
+        GiftDetailResponseDto returnDto = new GiftDetailResponseDto(gift);
         giftRepository.deleteById(giftNo);
-        return giftNo;
+        return returnDto;
     }
 
 
