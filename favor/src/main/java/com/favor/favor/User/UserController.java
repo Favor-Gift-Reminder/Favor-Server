@@ -42,7 +42,7 @@ public class UserController {
 
     @ApiOperation("회원 탈퇴")
     @DeleteMapping("/{userNo}")
-    public UserResponseDto deleteUser(@PathVariable Long userNo){
+    public UserDetailResponseDto deleteUser(@PathVariable Long userNo){
         return userService.deleteUser(userNo);
     }
 

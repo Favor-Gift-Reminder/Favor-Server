@@ -113,13 +113,41 @@ public class UserService {
         return userDetailResponseDto;
     }
 
-    public UserResponseDto deleteUser(Long userNo){
+    @Transactional
+    public UserDetailResponseDto deleteUser(Long userNo){
         User user = userRepository.findByUserNo(userNo).orElseThrow(
                 () -> new RuntimeException()
         );
-        UserResponseDto dto = new UserResponseDto(user);
         userRepository.deleteById(userNo);
-        return dto;
+
+        List<ReminderResponseDto> r_list = new ArrayList<>();
+        List<Reminder> reminderList = user.getReminderList();
+        for(Reminder r : reminderList){
+            ReminderResponseDto dto = new ReminderResponseDto(r);
+            r_list.add(dto);
+        }
+
+        List<GiftResponseDto> g_list = new ArrayList<>();
+        List<Gift> giftList = user.getGiftList();
+        for(Gift g : giftList){
+            GiftResponseDto dto = new GiftResponseDto(g);
+            g_list.add(dto);
+        }
+
+        List<FriendResponseDto> f_list = new ArrayList<>();
+        List<Friend> friendList = user.getFriendList();
+        for(Friend f : friendList){
+            FriendResponseDto dto = new FriendResponseDto(f);
+            f_list.add(dto);
+        }
+
+        List<Favor> favor_List = new ArrayList<>();
+        for(Integer favorType : user.getFavorList()){
+            favor_List.add(Favor.valueOf(favorType));
+        }
+
+        return new UserDetailResponseDto(user, r_list, g_list, f_list, favor_List);
+
     }
 
 
