@@ -25,7 +25,7 @@ public class ReminderRequestDto {
     @ApiModelProperty(position = 3, required = true, value = "알람세팅여부", example = "False")
     private Boolean isAlarmSet;
 
-    @ApiModelProperty(position = 4, required = true, value = "알람세팅시간", example = "")
+    @ApiModelProperty(position = 4, required = true, value = "알람세팅시간")
     private LocalDateTime alarmTime;
 
     @ApiModelProperty(position = 5, required = true, value = "메모", example = "메모")

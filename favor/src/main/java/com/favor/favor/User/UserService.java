@@ -194,7 +194,8 @@ public class UserService {
         User user = userRepository.findByUserNo(userNo).orElseThrow(
                 () -> new RuntimeException()
         );
-        List<Gift> giftList = giftRepository.findGiftsByUserAndCategory(user, category);
+        Integer categoryNo = category.getType();
+        List<Gift> giftList = giftRepository.findGiftsByUserAndCategory(user, categoryNo);
         List<GiftDetailResponseDto> g_List = new ArrayList<>();
         for(Gift g : giftList){
             GiftDetailResponseDto dto = new GiftDetailResponseDto(g);
@@ -208,7 +209,8 @@ public class UserService {
         User user = userRepository.findByUserNo(userNo).orElseThrow(
                 () -> new RuntimeException()
         );
-        List<Gift> giftList = giftRepository.findGiftsByUserAndEmotion(user, emotion);
+        Integer emotionNo = emotion.getType();
+        List<Gift> giftList = giftRepository.findGiftsByUserAndEmotion(user, emotionNo);
         List<GiftDetailResponseDto> g_List = new ArrayList<>();
         for(Gift g : giftList){
             GiftDetailResponseDto dto = new GiftDetailResponseDto(g);

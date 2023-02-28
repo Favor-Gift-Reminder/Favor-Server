@@ -167,17 +167,63 @@ public class FriendService {
         return returnDto;
     }
 
-    public Long deleteFriend(Long friendNo){
+    @Transactional
+    public FriendDetailResponseDto deleteFriend(Long friendNo){
         Friend friend = friendRepository.findByFriendNo(friendNo).orElseThrow(
                 () -> new RuntimeException()
         );
+
+        FriendDetailResponseDto returnDto = new FriendDetailResponseDto();
+
         if(friend.getIsUser()){
-            friendRepository.deleteById(friendNo);
+            User user = userRepository.findByUserNo(friend.getUserFriendNo()).orElseThrow(
+                    () -> new RuntimeException()
+            );
+
+            friend.setFriendName(user.getName());
+
+            List<Gift> giftList = friend.getGiftList();
+            for(Gift g : user.getGiftList()){
+                giftList.add(g);
+            }
+            List<Reminder> reminderList = friend.getReminderList();
+            for(Reminder r : user.getReminderList()){
+                reminderList.add(r);
+            }
+
+            List<GiftResponseDto> g_List = new ArrayList<>();
+            for(Gift g : giftList){
+
+                GiftResponseDto dto = new GiftResponseDto(g);
+                g_List.add(dto);
+            }
+            List<ReminderResponseDto> r_List = new ArrayList<>();
+            for(Reminder r : reminderList){
+                ReminderResponseDto dto = new ReminderResponseDto(r);
+                r_List.add(dto);
+            }
+            returnDto = new FriendDetailResponseDto(friend, g_List, r_List);
         }
         else{
-            friendRepository.deleteById(friendNo);
+            List<GiftResponseDto> g_List = new ArrayList<>();
+            List<Gift> giftList = friend.getGiftList();
+            for(Gift g : giftList){
+                GiftResponseDto dto = new GiftResponseDto(g);
+                g_List.add(dto);
+            }
+
+            List<ReminderResponseDto> r_List = new ArrayList<>();
+            List<Reminder> reminderList = friend.getReminderList();
+            for(Reminder r : reminderList){
+                ReminderResponseDto dto = new ReminderResponseDto(r);
+                r_List.add(dto);
+            }
+            returnDto = new FriendDetailResponseDto(friend, g_List, r_List);
         }
-        return friendNo;
+
+        friendRepository.deleteById(friendNo);
+
+        return returnDto;
     }
 
     public List<FriendResponseDto> readAll(){

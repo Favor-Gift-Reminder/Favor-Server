@@ -42,7 +42,7 @@ public class FriendController {
 
     @ApiOperation("친구 삭제")
     @DeleteMapping("/{friendNo}")
-    public Long deleteFriend(@PathVariable Long friendNo){
+    public FriendDetailResponseDto deleteFriend(@PathVariable Long friendNo){
         return friendService.deleteFriend(friendNo);
     }
 
