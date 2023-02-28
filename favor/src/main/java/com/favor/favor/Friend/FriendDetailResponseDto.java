@@ -37,6 +37,7 @@ public class FriendDetailResponseDto {
         this.friendName = friend.getFriendName();
         this.friendMemo = friend.getFriendMemo();
         this.userFriendNo = friend.getUserFriendNo();
+        this.userNo = friend.getUser().getUserNo();
     }
 
     @Builder
@@ -48,5 +49,6 @@ public class FriendDetailResponseDto {
         this.giftList = giftList;
         this.reminderList = reminderList;
         this.userFriendNo = friend.getUserFriendNo();
+        this.userNo = friend.getUser().getUserNo();
     }
 }

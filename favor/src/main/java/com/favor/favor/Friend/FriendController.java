@@ -18,13 +18,13 @@ public class FriendController {
     private final FriendService friendService;
 
     @ApiOperation("친구 생성")
-    @PostMapping
-    public FriendDetailResponseDto createFriend(@RequestBody FriendRequestDto dto, Long userNo){
+    @PostMapping("/{userNo}")
+    public FriendDetailResponseDto createFriend(@RequestBody FriendRequestDto dto, @PathVariable Long userNo){
         return friendService.createFriend(dto, userNo);
     }
     @ApiOperation("회원친구 추가")
-    @PostMapping("/add")
-    public FriendDetailResponseDto addFriend(@RequestBody UserFriendRequestDto dto, Long userNo){
+    @PostMapping("/add/{userNo}")
+    public FriendDetailResponseDto addFriend(@RequestBody UserFriendRequestDto dto, @PathVariable Long userNo){
         return friendService.addFriend(dto, userNo);
     }
 
@@ -36,7 +36,7 @@ public class FriendController {
 
     @ApiOperation("친구 수정")
     @PatchMapping("/{friendNo}")
-    public Long updateFriend(@PathVariable Long friendNo, @RequestBody FriendUpdateRequestDto dto){
+    public FriendDetailResponseDto updateFriend(@PathVariable Long friendNo, @RequestBody FriendUpdateRequestDto dto){
         return friendService.updateFriend(friendNo, dto);
     }
 

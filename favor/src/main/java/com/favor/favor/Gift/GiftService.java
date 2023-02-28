@@ -36,7 +36,7 @@ public class GiftService {
         return dto;
     }
 
-    public Long updateGift(Long giftNo, GiftUpdateRequestDto dto, Long friendNo){
+    public GiftDetailResponseDto updateGift(GiftUpdateRequestDto dto, Long giftNo, Long friendNo){
         Gift gift = giftRepository.findByGiftNo(giftNo).orElseThrow(
                 () -> new RuntimeException()
         );
@@ -53,7 +53,7 @@ public class GiftService {
         gift.setFriend(friend);
 
         giftRepository.save(gift);
-        return giftNo;
+        return new GiftDetailResponseDto(gift);
     }
 
     public Long deleteGift(Long giftNo){

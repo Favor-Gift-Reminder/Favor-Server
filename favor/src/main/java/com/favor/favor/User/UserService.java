@@ -73,21 +73,53 @@ public class UserService {
         return dto;
     }
 
-    public Long updateUser(Long userNo, UserUpdateRequestDto dto){
+    @Transactional
+    public UserDetailResponseDto updateUser(Long userNo, UserUpdateRequestDto userUpdateRequestDto){
         User user = userRepository.findByUserNo(userNo).orElseThrow(
                 () ->new RuntimeException("회원을 찾지 못했습니다")
         );
-        user.setName(dto.getName());
-        user.setUserId(dto.getUserId());
-        user.setFavorList(dto.getFavorList());
-
+        user.setName(userUpdateRequestDto.getName());
+        user.setUserId(userUpdateRequestDto.getUserId());
+        user.setFavorList(userUpdateRequestDto.getFavorList());
         userRepository.save(user);
-        return userNo;
+
+        List<ReminderResponseDto> r_list = new ArrayList<>();
+        List<Reminder> reminderList = user.getReminderList();
+        for(Reminder r : reminderList){
+            ReminderResponseDto dto = new ReminderResponseDto(r);
+            r_list.add(dto);
+        }
+
+        List<GiftResponseDto> g_list = new ArrayList<>();
+        List<Gift> giftList = user.getGiftList();
+        for(Gift g : giftList){
+            GiftResponseDto dto = new GiftResponseDto(g);
+            g_list.add(dto);
+        }
+
+        List<FriendResponseDto> f_list = new ArrayList<>();
+        List<Friend> friendList = user.getFriendList();
+        for(Friend f : friendList){
+            FriendResponseDto dto = new FriendResponseDto(f);
+            f_list.add(dto);
+        }
+
+        List<Favor> favor_List = new ArrayList<>();
+        for(Integer favorType : user.getFavorList()){
+            favor_List.add(Favor.valueOf(favorType));
+        }
+
+        UserDetailResponseDto userDetailResponseDto = new UserDetailResponseDto(user, r_list, g_list, f_list, favor_List);
+        return userDetailResponseDto;
     }
 
-    public Long deleteUser(Long userNo){
+    public UserResponseDto deleteUser(Long userNo){
+        User user = userRepository.findByUserNo(userNo).orElseThrow(
+                () -> new RuntimeException()
+        );
+        UserResponseDto dto = new UserResponseDto(user);
         userRepository.deleteById(userNo);
-        return userNo;
+        return dto;
     }
 
 

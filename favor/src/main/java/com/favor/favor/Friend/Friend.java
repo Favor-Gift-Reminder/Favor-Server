@@ -7,7 +7,7 @@ import com.favor.favor.User.User;
 import lombok.*;
 
 import javax.persistence.*;
-import javax.transaction.Transactional
+import javax.transaction.Transactional;
 import java.util.ArrayList;
 import java.util.List;
 

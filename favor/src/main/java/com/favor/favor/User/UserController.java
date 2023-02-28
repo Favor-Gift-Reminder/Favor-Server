@@ -36,16 +36,14 @@ public class UserController {
 
     @ApiOperation("회원 수정")
     @PatchMapping("/{userNo}")
-    public Long updateUser(@PathVariable Long userNo, @RequestBody UserUpdateRequestDto userUpdateRequestDto){
-        userService.updateUser(userNo, userUpdateRequestDto);
-        return userNo;
+    public UserDetailResponseDto updateUser(@PathVariable Long userNo, @RequestBody UserUpdateRequestDto userUpdateRequestDto){
+        return userService.updateUser(userNo, userUpdateRequestDto);
     }
 
     @ApiOperation("회원 탈퇴")
     @DeleteMapping("/{userNo}")
-    public Long deleteUser(@PathVariable Long userNo){
-        userService.deleteUser(userNo);
-        return userNo;
+    public UserResponseDto deleteUser(@PathVariable Long userNo){
+        return userService.deleteUser(userNo);
     }
 
 

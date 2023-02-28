@@ -17,8 +17,8 @@ public class GiftController {
     private final GiftService giftService;
 
     @ApiOperation("선물 생성")
-    @PostMapping
-    public GiftDetailResponseDto createGift(@RequestBody GiftRequestDto dto, Long userNo, Long friendNo){
+    @PostMapping("/{userNo}")
+    public GiftDetailResponseDto createGift(@RequestBody GiftRequestDto dto, @PathVariable Long userNo, Long friendNo){
         return giftService.createGift(dto, userNo, friendNo);
     }
 
@@ -30,8 +30,8 @@ public class GiftController {
 
     @ApiOperation("선물 수정")
     @PatchMapping("/{giftNo}")
-    public Long updateGift(@RequestBody GiftUpdateRequestDto dto, @PathVariable Long giftNo, Long userNo, Long friendNo){
-        return giftService.updateGift(giftNo, dto, friendNo);
+    public GiftDetailResponseDto updateGift(@RequestBody GiftUpdateRequestDto dto, @PathVariable Long giftNo, Long friendNo){
+        return giftService.updateGift(dto, giftNo, friendNo);
     }
 
     @ApiOperation("선물 삭제")
