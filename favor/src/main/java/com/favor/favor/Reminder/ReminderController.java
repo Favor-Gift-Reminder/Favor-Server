@@ -18,8 +18,8 @@ public class ReminderController {
     private final ReminderService reminderService;
 
     @ApiOperation("리마인더 생성")
-    @PostMapping
-    public ReminderDetailResponseDto createReminder(@RequestBody ReminderRequestDto reminderRequestDto, Long userNo, Long friendNo){
+    @PostMapping("/{userNo}/{friendNo}")
+    public ReminderDetailResponseDto createReminder(@RequestBody ReminderRequestDto reminderRequestDto, @PathVariable Long userNo, @PathVariable Long friendNo){
         return reminderService.createReminder(reminderRequestDto, userNo, friendNo);
     }
 

@@ -17,8 +17,8 @@ public class GiftController {
     private final GiftService giftService;
 
     @ApiOperation("선물 생성")
-    @PostMapping("/{userNo}")
-    public GiftDetailResponseDto createGift(@RequestBody GiftRequestDto dto, @PathVariable Long userNo, Long friendNo){
+    @PostMapping("/{userNo}/{friendNo}")
+    public GiftDetailResponseDto createGift(@RequestBody GiftRequestDto dto, @PathVariable Long userNo, @PathVariable Long friendNo){
         return giftService.createGift(dto, userNo, friendNo);
     }
 
