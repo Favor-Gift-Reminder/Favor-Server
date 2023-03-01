@@ -1,5 +1,6 @@
 package com.favor.favor.Friend;
 
+import com.favor.favor.Common.Favor;
 import com.favor.favor.Common.TimeStamped;
 import com.favor.favor.Gift.Gift;
 import com.favor.favor.Reminder.Reminder;
@@ -29,7 +30,6 @@ public class Friend extends TimeStamped {
     }
 
     private String friendMemo;
-
     public void setFriendMemo(String friendMemo) {
         this.friendMemo = friendMemo;
     }
@@ -45,6 +45,9 @@ public class Friend extends TimeStamped {
     @OneToMany(mappedBy = "friend", orphanRemoval = true)
     private List<Reminder> reminderList = new ArrayList<>();
 
+
+    @ElementCollection
+    private List<Integer> favorList = new ArrayList<>();
 
     private Boolean isUser;
 

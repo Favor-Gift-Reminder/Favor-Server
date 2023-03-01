@@ -1,5 +1,6 @@
 package com.favor.favor.Friend;
 
+import com.favor.favor.Common.Favor;
 import com.favor.favor.Gift.GiftResponseDto;
 import com.favor.favor.Reminder.ReminderResponseDto;
 import lombok.*;
@@ -21,9 +22,8 @@ public class FriendDetailResponseDto {
     private String friendMemo;
 
 
-    private List<GiftResponseDto> giftList;
     private List<ReminderResponseDto> reminderList;
-
+    private List<Favor> favorList;
 
     private Long userFriendNo;
 
@@ -41,13 +41,25 @@ public class FriendDetailResponseDto {
     }
 
     @Builder
-    public FriendDetailResponseDto(Friend friend, List<GiftResponseDto> giftList, List<ReminderResponseDto> reminderList){
+    public FriendDetailResponseDto(Friend friend, List<ReminderResponseDto> reminderList){
         this.isUser = friend.getIsUser();
         this.friendNo = friend.getFriendNo();
         this.friendName = friend.getFriendName();
         this.friendMemo = friend.getFriendMemo();
-        this.giftList = giftList;
         this.reminderList = reminderList;
+        this.favorList = favorList;
+        this.userFriendNo = friend.getUserFriendNo();
+        this.userNo = friend.getUser().getUserNo();
+    }
+
+    @Builder
+    public FriendDetailResponseDto(Friend friend, List<ReminderResponseDto> reminderList, List<Favor> favorList){
+        this.isUser = friend.getIsUser();
+        this.friendNo = friend.getFriendNo();
+        this.friendName = friend.getFriendName();
+        this.friendMemo = friend.getFriendMemo();
+        this.reminderList = reminderList;
+        this.favorList = favorList;
         this.userFriendNo = friend.getUserFriendNo();
         this.userNo = friend.getUser().getUserNo();
     }
