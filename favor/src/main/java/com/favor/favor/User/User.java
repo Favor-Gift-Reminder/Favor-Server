@@ -40,7 +40,7 @@ public class User extends TimeStamped {
         this.name = name;
     }
 
-
+    @Builder.Default
     @ElementCollection
     private List<Integer> favorList = new ArrayList<>();
     @Transactional
@@ -53,14 +53,17 @@ public class User extends TimeStamped {
 
     }
 
+    @Builder.Default
     @JsonIgnore
     @OneToMany(mappedBy = "user", orphanRemoval = true)
     private List<Gift> giftList = new ArrayList<>();
 
+    @Builder.Default
     @JsonIgnore
     @OneToMany(mappedBy = "user", orphanRemoval = true)
     private List<Reminder> reminderList = new ArrayList<>();
 
+    @Builder.Default
     @JsonIgnore
     @OneToMany(mappedBy = "user", orphanRemoval = true)
     private List<Friend> friendList = new ArrayList<>();

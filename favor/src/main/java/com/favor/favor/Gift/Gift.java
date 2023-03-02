@@ -6,12 +6,9 @@ import com.favor.favor.Common.TimeStamped;
 import com.favor.favor.Friend.Friend;
 import com.favor.favor.User.User;
 import lombok.*;
-import org.springframework.lang.Nullable;
 
 import javax.persistence.*;
 import javax.transaction.Transactional;
-import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.NotNull;
 import java.time.LocalDate;
 
 @Entity
@@ -51,7 +48,6 @@ public class Gift extends TimeStamped {
     }
 
 
-    @NotNull
     private Boolean isPinned;
     public void setIsPinned(Boolean isPinned){
         this.isPinned = isPinned;

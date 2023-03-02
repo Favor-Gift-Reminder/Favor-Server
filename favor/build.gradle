@@ -39,6 +39,7 @@ dependencies {
     implementation 'commons-io:commons-io:2.11.0'    /* Apache commons-io */
     implementation group: 'commons-fileupload', name: 'commons-fileupload', version: '1.4' /* Apache Commons FileUpload */
 
+    implementation 'com.google.code.findbugs:jsr305:3.0.2'
 }
 
 tasks.named('test') {
