@@ -3,12 +3,9 @@ package com.favor.favor.Reminder;
 import com.favor.favor.Friend.Friend;
 import com.favor.favor.User.User;
 import lombok.*;
-import org.springframework.lang.Nullable;
 
 import javax.persistence.*;
 import javax.transaction.Transactional;
-import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.NotNull;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 
