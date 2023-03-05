@@ -1,11 +1,13 @@
 package com.favor.favor.Friend;
 
+
+import lombok.*;
+
 import com.favor.favor.Common.Favor;
 import com.favor.favor.Common.TimeStamped;
 import com.favor.favor.Gift.Gift;
 import com.favor.favor.Reminder.Reminder;
 import com.favor.favor.User.User;
-import lombok.*;
 
 import javax.persistence.*;
 import javax.transaction.Transactional;
