@@ -3,6 +3,7 @@ package com.favor.favor.User;
 import com.favor.favor.Common.Category;
 import com.favor.favor.Common.Emotion;
 import com.favor.favor.Common.Favor;
+import com.favor.favor.Common.Role;
 import com.favor.favor.Friend.Friend;
 import com.favor.favor.Friend.FriendResponseDto;
 import com.favor.favor.Gift.Gift;
@@ -24,14 +25,23 @@ public class UserService {
     private final UserRepository userRepository;
     private final GiftRepository giftRepository;
 
-    public UserDetailResponseDto signUp(UserRequestDto userRequestDto) {
+    public UserDetailResponseDto signUp(signUpDto signUpDto) {
         User user = User.builder()
-                .email(userRequestDto.getEmail())
-                .password(userRequestDto.getPassword())
-                .userId(userRequestDto.getUserId())
-                .name(userRequestDto.getName())
-                .role(userRequestDto.getRole())
+                .email(signUpDto.getEmail())
+                .password(signUpDto.getPassword())
+                .role(Role.USER)
                 .build();
+        userRepository.save(user);
+
+        return new UserDetailResponseDto(user);
+    }
+
+    public UserDetailResponseDto createProfile(profileDto profileDto, Long userNo) {
+        User user = userRepository.findByUserNo(userNo).orElseThrow(
+                () -> new RuntimeException()
+        );
+        user.setName(profileDto.getName());
+        user.setUserId(profileDto.getUserId());
         userRepository.save(user);
 
         return new UserDetailResponseDto(user);

@@ -23,8 +23,14 @@ public class UserController {
 
     @ApiOperation("회원가입")
     @PostMapping("/sign-up")
-    public UserDetailResponseDto signUp(@RequestBody UserRequestDto userRequestDto) {
-        return userService.signUp(userRequestDto);
+    public UserDetailResponseDto signUp(@RequestBody signUpDto signUpDto) {
+        return userService.signUp(signUpDto);
+    }
+
+    @ApiOperation("프로필생성")
+    @PatchMapping("/profile")
+    public UserDetailResponseDto createProfile(@RequestBody profileDto profileDto, Long userNo) {
+        return userService.createProfile(profileDto, userNo);
     }
 
     @ApiOperation("단일 회원 조회")
