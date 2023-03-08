@@ -7,8 +7,7 @@ import com.favor.favor.Friend.FriendResponseDto;
 import com.favor.favor.Gift.GiftDetailResponseDto;
 import com.favor.favor.Gift.GiftResponseDto;
 import com.favor.favor.Reminder.ReminderResponseDto;
-import io.swagger.annotations.Api;
-import io.swagger.annotations.ApiOperation;
+import io.swagger.annotations.*;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
@@ -23,6 +22,9 @@ public class UserController {
 
     @ApiOperation("회원가입")
     @PostMapping("/sign-up")
+    @ApiResponses(value={
+            @ApiResponse(code = 200, message = "success")
+    })
     public UserDetailResponseDto signUp(@RequestBody signUpDto signUpDto) {
         return userService.signUp(signUpDto);
     }
