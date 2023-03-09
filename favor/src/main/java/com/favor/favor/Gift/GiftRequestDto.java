@@ -32,6 +32,8 @@ public class GiftRequestDto {
     @ApiModelProperty(position = 5, required = false, value = "감정", example = "기뻐요")
     private Emotion emotion;
 
+    @ApiModelProperty(position = 6, required = false, value = "핀 여부", example = "false")
+    private Boolean isPinned;
     @ApiModelProperty(position = 7, required = true, value = "받은선물 여부", example = "false")
     private Boolean isGiven;
 
