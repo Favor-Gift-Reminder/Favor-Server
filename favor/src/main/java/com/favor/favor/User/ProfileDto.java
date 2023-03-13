@@ -9,7 +9,7 @@ import lombok.NoArgsConstructor;
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor
-public class profileDto {
+public class ProfileDto {
     @ApiModelProperty(position = 1, required = true, value = "아이디", example = "Favor")
     private String userId;
 

@@ -25,7 +25,7 @@ public class UserService {
     private final UserRepository userRepository;
     private final GiftRepository giftRepository;
 
-    public UserDetailResponseDto signUp(signUpDto signUpDto) {
+    public UserDetailResponseDto signUp(SignUpDto signUpDto) {
         User user = User.builder()
                 .email(signUpDto.getEmail())
                 .password(signUpDto.getPassword())
@@ -36,7 +36,7 @@ public class UserService {
         return new UserDetailResponseDto(user);
     }
 
-    public UserDetailResponseDto createProfile(profileDto profileDto, Long userNo) {
+    public UserDetailResponseDto createProfile(ProfileDto profileDto, Long userNo) {
         User user = userRepository.findByUserNo(userNo).orElseThrow(
                 () -> new RuntimeException()
         );

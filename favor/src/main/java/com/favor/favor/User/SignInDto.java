@@ -1,4 +1,4 @@
 package com.favor.favor.User;
 
-public class signInDto {
+public class SignInDto {
 }

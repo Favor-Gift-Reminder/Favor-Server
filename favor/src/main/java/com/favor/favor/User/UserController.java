@@ -25,13 +25,13 @@ public class UserController {
     @ApiResponses(value={
             @ApiResponse(code = 200, message = "success")
     })
-    public UserDetailResponseDto signUp(@RequestBody signUpDto signUpDto) {
+    public UserDetailResponseDto signUp(@RequestBody SignUpDto signUpDto) {
         return userService.signUp(signUpDto);
     }
 
     @ApiOperation("프로필생성")
     @PatchMapping("/profile")
-    public UserDetailResponseDto createProfile(@RequestBody profileDto profileDto, Long userNo) {
+    public UserDetailResponseDto createProfile(@RequestBody ProfileDto profileDto, Long userNo) {
         return userService.createProfile(profileDto, userNo);
     }
 
