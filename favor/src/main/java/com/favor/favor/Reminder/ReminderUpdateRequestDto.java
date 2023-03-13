@@ -27,5 +27,5 @@ public class ReminderUpdateRequestDto {
     private LocalDateTime alarmTime;
 
     @ApiModelProperty(position = 5, required = false, dataType = "String", value = "메모", example = "페이버")
-    private String memo;
+    private String reminderMemo;
 }
