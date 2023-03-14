@@ -1,16 +1,13 @@
 package com.favor.favor.Gift;
 
-import com.favor.favor.Common.Category;
-import com.favor.favor.Common.Emotion;
-import com.favor.favor.Friend.Friend;
-import com.favor.favor.User.User;
+import com.favor.favor.Enum.Category;
+import com.favor.favor.Enum.Emotion;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
-import javax.transaction.Transactional;
 import java.time.LocalDate;
 
 @Getter

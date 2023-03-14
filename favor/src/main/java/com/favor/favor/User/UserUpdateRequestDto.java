@@ -1,6 +1,6 @@
 package com.favor.favor.User;
 
-import com.favor.favor.Common.Favor;
+import com.favor.favor.Enum.Favor;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Getter;
 

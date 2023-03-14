@@ -1,4 +1,4 @@
-package com.favor.favor.Common;
+package com.favor.favor.Enum;
 
 import lombok.Getter;
 

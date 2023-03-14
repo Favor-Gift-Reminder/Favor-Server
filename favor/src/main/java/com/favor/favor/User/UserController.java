@@ -1,8 +1,8 @@
 package com.favor.favor.User;
 
 
-import com.favor.favor.Common.Category;
-import com.favor.favor.Common.Emotion;
+import com.favor.favor.Enum.Category;
+import com.favor.favor.Enum.Emotion;
 import com.favor.favor.Friend.FriendResponseDto;
 import com.favor.favor.Gift.GiftDetailResponseDto;
 import com.favor.favor.Gift.GiftResponseDto;

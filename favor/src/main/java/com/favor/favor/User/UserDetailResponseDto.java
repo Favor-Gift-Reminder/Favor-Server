@@ -1,7 +1,7 @@
 package com.favor.favor.User;
 
-import com.favor.favor.Common.Favor;
-import com.favor.favor.Common.Role;
+import com.favor.favor.Enum.Favor;
+import com.favor.favor.Enum.Role;
 import com.favor.favor.Friend.FriendResponseDto;
 import com.favor.favor.Gift.GiftResponseDto;
 import com.favor.favor.Reminder.ReminderResponseDto;

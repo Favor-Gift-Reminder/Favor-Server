@@ -1,8 +1,8 @@
 package com.favor.favor.User;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.favor.favor.Common.Favor;
-import com.favor.favor.Common.Role;
+import com.favor.favor.Enum.Favor;
+import com.favor.favor.Enum.Role;
 import com.favor.favor.Common.TimeStamped;
 import com.favor.favor.Friend.Friend;
 import com.favor.favor.Gift.Gift;

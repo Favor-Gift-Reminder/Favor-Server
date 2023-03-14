@@ -1,7 +1,5 @@
 package com.favor.favor.Gift;
 
-import com.favor.favor.Common.Category;
-import com.favor.favor.Common.Emotion;
 import com.favor.favor.User.User;
 import org.springframework.data.jpa.repository.JpaRepository;
 

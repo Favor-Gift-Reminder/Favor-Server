@@ -1,6 +1,6 @@
 package com.favor.favor.User;
 
-import com.favor.favor.Common.Role;
+import com.favor.favor.Enum.Role;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;

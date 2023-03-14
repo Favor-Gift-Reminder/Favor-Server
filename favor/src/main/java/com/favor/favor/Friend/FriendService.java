@@ -1,6 +1,6 @@
 package com.favor.favor.Friend;
 
-import com.favor.favor.Common.Favor;
+import com.favor.favor.Enum.Favor;
 import com.favor.favor.Friend.Account.UserFriendRequestDto;
 import com.favor.favor.Friend.NoAccount.FriendRequestDto;
 import com.favor.favor.Friend.NoAccount.FriendUpdateRequestDto;

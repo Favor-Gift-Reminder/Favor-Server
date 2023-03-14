@@ -1,7 +1,7 @@
 package com.favor.favor.Gift;
 
-import com.favor.favor.Common.Category;
-import com.favor.favor.Common.Emotion;
+import com.favor.favor.Enum.Category;
+import com.favor.favor.Enum.Emotion;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
