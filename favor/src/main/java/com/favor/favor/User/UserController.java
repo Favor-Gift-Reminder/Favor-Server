@@ -1,6 +1,7 @@
 package com.favor.favor.User;
 
 
+import com.favor.favor.Common.DefaultResponseDto;
 import com.favor.favor.Enum.Category;
 import com.favor.favor.Enum.Emotion;
 import com.favor.favor.Friend.FriendResponseDto;
@@ -8,9 +9,13 @@ import com.favor.favor.Gift.GiftDetailResponseDto;
 import com.favor.favor.Gift.GiftResponseDto;
 import com.favor.favor.Reminder.ReminderResponseDto;
 import io.swagger.annotations.*;
+import jdk.jfr.ContentType;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.util.List;
 
 @Api(tags = "User")
@@ -20,13 +25,29 @@ import java.util.List;
 public class UserController {
     private final UserService userService;
 
-    @ApiOperation("회원가입")
-    @PostMapping("/sign-up")
+    @ApiOperation(value = "회원가입")
     @ApiResponses(value={
-            @ApiResponse(code = 200, message = "success")
+            @ApiResponse(
+                    code = 201,
+                    message = "USER_REGISTERED",
+                    response = UserResponseDto.class
+            )
     })
-    public UserDetailResponseDto signUp(@RequestBody SignUpDto signUpDto) {
-        return userService.signUp(signUpDto);
+    @ResponseStatus(HttpStatus.CREATED)
+    @PostMapping("/sign-up")
+    public ResponseEntity<DefaultResponseDto<Object>> signUp(
+            @RequestBody @Valid SignUpDto signUpDto
+    ) {
+
+        User user = userService.signUp(signUpDto);
+        UserDetailResponseDto dto = new UserDetailResponseDto(user);
+
+        return ResponseEntity.status(201)
+                .body(DefaultResponseDto.builder()
+                        .responseCode("USER_REGISTERED")
+                        .responseMessage("User 회원가입 완료")
+                        .data(dto)
+                        .build());
     }
 
     @ApiOperation("프로필생성")

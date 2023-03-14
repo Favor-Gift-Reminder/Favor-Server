@@ -4,6 +4,8 @@ import com.favor.favor.Enum.Category;
 import com.favor.favor.Enum.Emotion;
 import com.favor.favor.Enum.Favor;
 import com.favor.favor.Enum.Role;
+import com.favor.favor.Exception.CustomException;
+import com.favor.favor.Exception.ExceptionCode;
 import com.favor.favor.Friend.Friend;
 import com.favor.favor.Friend.FriendResponseDto;
 import com.favor.favor.Gift.Gift;
@@ -19,21 +21,33 @@ import javax.transaction.Transactional;
 import java.util.ArrayList;
 import java.util.List;
 
+import static com.favor.favor.Exception.ExceptionCode.*;
+
 @Service
 @RequiredArgsConstructor
 public class UserService {
     private final UserRepository userRepository;
     private final GiftRepository giftRepository;
 
-    public UserDetailResponseDto signUp(SignUpDto signUpDto) {
+    @Transactional
+    public User save(User user){
+        try{
+            return userRepository.save(user);
+        } catch(RuntimeException e){
+            //500
+            throw new CustomException(e, SERVER_ERROR);
+        }
+    }
+
+    public User signUp(SignUpDto signUpDto) {
         User user = User.builder()
                 .email(signUpDto.getEmail())
                 .password(signUpDto.getPassword())
                 .role(Role.USER)
                 .build();
-        userRepository.save(user);
+        save(user);
 
-        return new UserDetailResponseDto(user);
+        return user;
     }
 
     public UserDetailResponseDto createProfile(ProfileDto profileDto, Long userNo) {
