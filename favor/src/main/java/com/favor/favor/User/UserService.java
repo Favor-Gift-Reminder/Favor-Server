@@ -46,8 +46,19 @@ public class UserService {
                 .role(Role.USER)
                 .build();
         save(user);
-
         return user;
+    }
+
+    public void isExistingEmail(String email){
+        Boolean isExistingEmail = null;
+        try{
+            isExistingEmail = userRepository.existsByEmail(email);
+        } catch(RuntimeException e) {
+            throw new CustomException(e, SERVER_ERROR);
+        }
+        if(isExistingEmail){
+            throw new CustomException(null, DUPLICATE_EMAIL);
+        }
     }
 
     public UserDetailResponseDto createProfile(ProfileDto profileDto, Long userNo) {

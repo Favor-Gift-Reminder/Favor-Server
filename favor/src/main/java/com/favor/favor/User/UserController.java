@@ -27,11 +27,19 @@ public class UserController {
 
     @ApiOperation(value = "회원가입")
     @ApiResponses(value={
-            @ApiResponse(
-                    code = 201,
+            @ApiResponse(code = 201,
                     message = "USER_REGISTERED",
-                    response = UserResponseDto.class
-            )
+                    response = UserResponseDto.class),
+            @ApiResponse(code = 400,
+                    message = "FILED_REQUIRED / *_CHARACTER_INVALID / *_LENGTH_INVALID"),
+            @ApiResponse(code = 401,
+                    message = "UNAUTHORIZED_EMAIL"),
+            @ApiResponse(code = 404,
+                    message = "EMAIL_NOT_FOUND"),
+            @ApiResponse(code = 409,
+                    message = "DUPLICATE_EMAIL"),
+            @ApiResponse(code = 500,
+                    message = "SERVER_ERROR")
     })
     @ResponseStatus(HttpStatus.CREATED)
     @PostMapping("/sign-up")
@@ -39,13 +47,15 @@ public class UserController {
             @RequestBody @Valid SignUpDto signUpDto
     ) {
 
+        userService.isExistingEmail(signUpDto.getEmail());
+
         User user = userService.signUp(signUpDto);
         UserDetailResponseDto dto = new UserDetailResponseDto(user);
 
         return ResponseEntity.status(201)
                 .body(DefaultResponseDto.builder()
                         .responseCode("USER_REGISTERED")
-                        .responseMessage("User 회원가입 완료")
+                        .responseMessage("USER 회원가입 완료")
                         .data(dto)
                         .build());
     }

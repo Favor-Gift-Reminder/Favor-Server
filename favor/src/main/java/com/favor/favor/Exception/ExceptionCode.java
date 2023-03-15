@@ -47,27 +47,17 @@ public enum ExceptionCode {
     EMAIL_NOT_FOUND(NOT_FOUND, "등록된 이메일이 없습니다."),
     USER_NOT_FOUND(NOT_FOUND, "등록된 회원이 없습니다."),
 
-    DELETED_POST(NOT_FOUND, "삭제된 게시글입니다."),
-    DELETED_COMMENT(NOT_FOUND, "삭제된 댓글입니다."),
-
     /**
      * 405 METHOD_NOT_ALLOWED : 대상 리소스가 해당 메서드를 지원하지 않음
      */
     METHOD_NOT_ALLOWED(HttpStatus.METHOD_NOT_ALLOWED, "지원하지 않는 메서드입니다."),
 
     /**
-     * 409 CONFLICT : Resource 의 현재 상태와 충돌. 보통 중복된 데이터 존재
+     * 409 CONFLICT : Resource 의 현재 상태와 충돌. 중복된 데이터
      */
-
     DUPLICATE_EMAIL(CONFLICT, "이미 등록된 이메일입니다."),
     DUPLICATE_USER(CONFLICT, "이미 등록된 회원입니다."),
     DUPLICATE_ID(CONFLICT, "이미 등록된 아이디입니다."),
-
-    CANNOT_UPDATE_ID(CONFLICT, "아이디는 30일마다 변경할 수 있습니다."),
-    CANNOT_LIKED_SELF(CONFLICT, "본인의 글에 공감할 수 없습니다."),
-    USER_CANNOT_SELFREPORT(CONFLICT, "본인은 신고할 수 없습니다."),
-    POST_CANNOT_SELFREPORT(CONFLICT, "본인의 게시글은 신고할 수 없습니다."),
-    COMMENT_CANNOT_SELFREPORT(CONFLICT, "본인의 댓글은 신고할 수 없습니다."),
 
     /**
      * 413 PAYLOAD_TOO_LARGE
