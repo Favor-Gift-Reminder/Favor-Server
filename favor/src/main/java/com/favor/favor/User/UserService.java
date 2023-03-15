@@ -5,7 +5,6 @@ import com.favor.favor.Enum.Emotion;
 import com.favor.favor.Enum.Favor;
 import com.favor.favor.Enum.Role;
 import com.favor.favor.Exception.CustomException;
-import com.favor.favor.Exception.ExceptionCode;
 import com.favor.favor.Friend.Friend;
 import com.favor.favor.Friend.FriendResponseDto;
 import com.favor.favor.Gift.Gift;
@@ -61,136 +60,49 @@ public class UserService {
         }
     }
 
-    public UserDetailResponseDto createProfile(ProfileDto profileDto, Long userNo) {
-        User user = userRepository.findByUserNo(userNo).orElseThrow(
-                () -> new RuntimeException()
-        );
+    public User createProfile(ProfileDto profileDto, Long userNo) {
+        User user = findUserByUserNo(userNo);
+
         user.setName(profileDto.getName());
         user.setUserId(profileDto.getUserId());
         userRepository.save(user);
 
-        return new UserDetailResponseDto(user);
+        return user;
     }
 
     @Transactional
     public UserDetailResponseDto readUser(Long userNo){
-        User user = userRepository.findByUserNo(userNo).orElseThrow(
-                () -> new RuntimeException("회원을 찾지 못했습니다")
-        );
+        User user = findUserByUserNo(userNo);
 
-        List<ReminderResponseDto> r_list = new ArrayList<>();
-        List<Reminder> reminderList = user.getReminderList();
-        for(Reminder r : reminderList){
-            ReminderResponseDto dto = new ReminderResponseDto(r);
-            r_list.add(dto);
-        }
-
-        List<GiftResponseDto> g_list = new ArrayList<>();
-        List<Gift> giftList = user.getGiftList();
-        for(Gift g : giftList){
-            GiftResponseDto dto = new GiftResponseDto(g);
-            g_list.add(dto);
-        }
-
-        List<FriendResponseDto> f_list = new ArrayList<>();
-        List<Friend> friendList = user.getFriendList();
-        for(Friend f : friendList){
-            FriendResponseDto dto = new FriendResponseDto(f);
-            f_list.add(dto);
-        }
-
-        List<Favor> favor_List = new ArrayList<>();
-        for(Integer favorType : user.getFavorList()){
-            favor_List.add(Favor.valueOf(favorType));
-        }
-
-        UserDetailResponseDto dto = new UserDetailResponseDto(user, r_list, g_list, f_list, favor_List);
-        return dto;
+        return returnUserDetailDto(user);
     }
 
     @Transactional
     public UserDetailResponseDto updateUser(Long userNo, UserUpdateRequestDto userUpdateRequestDto){
-        User user = userRepository.findByUserNo(userNo).orElseThrow(
-                () ->new RuntimeException("회원을 찾지 못했습니다")
-        );
+        User user = findUserByUserNo(userNo);
+
         user.setName(userUpdateRequestDto.getName());
         user.setUserId(userUpdateRequestDto.getUserId());
         user.setFavorList(userUpdateRequestDto.getFavorList());
         userRepository.save(user);
 
-        List<ReminderResponseDto> r_list = new ArrayList<>();
-        List<Reminder> reminderList = user.getReminderList();
-        for(Reminder r : reminderList){
-            ReminderResponseDto dto = new ReminderResponseDto(r);
-            r_list.add(dto);
-        }
-
-        List<GiftResponseDto> g_list = new ArrayList<>();
-        List<Gift> giftList = user.getGiftList();
-        for(Gift g : giftList){
-            GiftResponseDto dto = new GiftResponseDto(g);
-            g_list.add(dto);
-        }
-
-        List<FriendResponseDto> f_list = new ArrayList<>();
-        List<Friend> friendList = user.getFriendList();
-        for(Friend f : friendList){
-            FriendResponseDto dto = new FriendResponseDto(f);
-            f_list.add(dto);
-        }
-
-        List<Favor> favor_List = new ArrayList<>();
-        for(Integer favorType : user.getFavorList()){
-            favor_List.add(Favor.valueOf(favorType));
-        }
-
-        UserDetailResponseDto userDetailResponseDto = new UserDetailResponseDto(user, r_list, g_list, f_list, favor_List);
-        return userDetailResponseDto;
+        return returnUserDetailDto(user);
     }
 
     @Transactional
     public UserDetailResponseDto deleteUser(Long userNo){
-        User user = userRepository.findByUserNo(userNo).orElseThrow(
-                () -> new RuntimeException()
-        );
+        User user = findUserByUserNo(userNo);
         userRepository.deleteById(userNo);
 
-        List<ReminderResponseDto> r_list = new ArrayList<>();
-        List<Reminder> reminderList = user.getReminderList();
-        for(Reminder r : reminderList){
-            ReminderResponseDto dto = new ReminderResponseDto(r);
-            r_list.add(dto);
-        }
-
-        List<GiftResponseDto> g_list = new ArrayList<>();
-        List<Gift> giftList = user.getGiftList();
-        for(Gift g : giftList){
-            GiftResponseDto dto = new GiftResponseDto(g);
-            g_list.add(dto);
-        }
-
-        List<FriendResponseDto> f_list = new ArrayList<>();
-        List<Friend> friendList = user.getFriendList();
-        for(Friend f : friendList){
-            FriendResponseDto dto = new FriendResponseDto(f);
-            f_list.add(dto);
-        }
-
-        List<Favor> favor_List = new ArrayList<>();
-        for(Integer favorType : user.getFavorList()){
-            favor_List.add(Favor.valueOf(favorType));
-        }
-
-        return new UserDetailResponseDto(user, r_list, g_list, f_list, favor_List);
+        return returnUserDetailDto(user);
 
     }
 
 
     @Transactional
     public List<ReminderResponseDto> readReminderList(Long userNo){
-        User user = userRepository.findByUserNo(userNo).orElseThrow(
-                () -> new RuntimeException()
-        );
+        User user = findUserByUserNo(userNo);
+
         List<ReminderResponseDto> r_List = new ArrayList<>();
         for(Reminder r : user.getReminderList()){
             ReminderResponseDto dto = new ReminderResponseDto(r);
@@ -201,9 +113,8 @@ public class UserService {
 
     @Transactional
     public List<GiftResponseDto> readGiftList(Long userNo){
-        User user = userRepository.findByUserNo(userNo).orElseThrow(
-                () -> new RuntimeException()
-        );
+        User user = findUserByUserNo(userNo);
+
         List<GiftResponseDto> g_List = new ArrayList<>();
         for(Gift g : user.getGiftList()){
             GiftResponseDto dto = new GiftResponseDto(g);
@@ -214,9 +125,8 @@ public class UserService {
 
     @Transactional
     public List<FriendResponseDto> readFriendList(Long userNo){
-        User user = userRepository.findByUserNo(userNo).orElseThrow(
-                () -> new RuntimeException()
-        );
+        User user = findUserByUserNo(userNo);
+
         List<FriendResponseDto> f_List = new ArrayList<>();
         for(Friend f : user.getFriendList()){
             FriendResponseDto dto = new FriendResponseDto(f);
@@ -240,9 +150,8 @@ public class UserService {
 
 
     public List<GiftDetailResponseDto> readGiftListByName(Long userNo, String giftName){
-        User user = userRepository.findByUserNo(userNo).orElseThrow(
-                () -> new RuntimeException()
-        );
+        User user = findUserByUserNo(userNo);
+
         List<Gift> giftList = giftRepository.findGiftsByUserAndGiftName(user, giftName);
         List<GiftDetailResponseDto> g_List = new ArrayList<>();
         for(Gift g : giftList){
@@ -254,9 +163,8 @@ public class UserService {
     }
 
     public List<GiftDetailResponseDto> readGiftListByCategory(Long userNo, Category category){
-        User user = userRepository.findByUserNo(userNo).orElseThrow(
-                () -> new RuntimeException()
-        );
+        User user = findUserByUserNo(userNo);
+
         Integer categoryNo = category.getType();
         List<Gift> giftList = giftRepository.findGiftsByUserAndCategory(user, categoryNo);
         List<GiftDetailResponseDto> g_List = new ArrayList<>();
@@ -269,9 +177,8 @@ public class UserService {
     }
 
     public List<GiftDetailResponseDto> readGiftListByEmotion(Long userNo, Emotion emotion){
-        User user = userRepository.findByUserNo(userNo).orElseThrow(
-                () -> new RuntimeException()
-        );
+        User user = findUserByUserNo(userNo);
+
         Integer emotionNo = emotion.getType();
         List<Gift> giftList = giftRepository.findGiftsByUserAndEmotion(user, emotionNo);
         List<GiftDetailResponseDto> g_List = new ArrayList<>();
@@ -283,11 +190,48 @@ public class UserService {
         return g_List;
     }
 
-    public UserResponseDto readUserByUserId(String userId){
+    public User findUserByUserNo(Long userNo){
+        User user = userRepository.findByUserNo(userNo).orElseThrow(
+                () -> new RuntimeException()
+        );
+        return user;
+    }
+
+    public UserResponseDto findUserByUserId(String userId){
         User user = userRepository.findUserByUserId(userId).orElseThrow(
                 () -> new RuntimeException()
         );
         UserResponseDto dto = new UserResponseDto(user);
+        return dto;
+    }
+
+    public UserDetailResponseDto returnUserDetailDto(User user){
+        List<ReminderResponseDto> r_list = new ArrayList<>();
+        List<Reminder> reminderList = user.getReminderList();
+        for(Reminder r : reminderList){
+            ReminderResponseDto dto = new ReminderResponseDto(r);
+            r_list.add(dto);
+        }
+        List<GiftResponseDto> g_list = new ArrayList<>();
+        List<Gift> giftList = user.getGiftList();
+        for(Gift g : giftList){
+            GiftResponseDto dto = new GiftResponseDto(g);
+            g_list.add(dto);
+        }
+
+        List<FriendResponseDto> f_list = new ArrayList<>();
+        List<Friend> friendList = user.getFriendList();
+        for(Friend f : friendList){
+            FriendResponseDto dto = new FriendResponseDto(f);
+            f_list.add(dto);
+        }
+
+        List<Favor> favor_List = new ArrayList<>();
+        for(Integer favorType : user.getFavorList()){
+            favor_List.add(Favor.valueOf(favorType));
+        }
+
+        UserDetailResponseDto dto = new UserDetailResponseDto(user, r_list, g_list, f_list, favor_List);
         return dto;
     }
 }

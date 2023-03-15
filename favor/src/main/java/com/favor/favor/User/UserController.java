@@ -50,20 +50,46 @@ public class UserController {
         userService.isExistingEmail(signUpDto.getEmail());
 
         User user = userService.signUp(signUpDto);
-        UserDetailResponseDto dto = new UserDetailResponseDto(user);
+        UserDetailResponseDto dto = userService.returnUserDetailDto(user);
 
         return ResponseEntity.status(201)
                 .body(DefaultResponseDto.builder()
                         .responseCode("USER_REGISTERED")
-                        .responseMessage("USER 회원가입 완료")
+                        .responseMessage("회원가입 완료")
                         .data(dto)
                         .build());
     }
 
     @ApiOperation("프로필생성")
+    @ApiResponses(value={
+            @ApiResponse(code = 201,
+                    message = "PROFILE_CREATED",
+                    response = UserResponseDto.class),
+            @ApiResponse(code = 400,
+                    message = "FILED_REQUIRED / *_CHARACTER_INVALID / *_LENGTH_INVALID"),
+            @ApiResponse(code = 401,
+                    message = "UNAUTHORIZED_EMAIL"),
+            @ApiResponse(code = 404,
+                    message = "USER_NOT_FOUND"),
+            @ApiResponse(code = 409,
+                    message = "DUPLICATE_ID"),
+            @ApiResponse(code = 500,
+                    message = "SERVER_ERROR")
+    })
+    @ResponseStatus(HttpStatus.CREATED)
     @PatchMapping("/profile")
-    public UserDetailResponseDto createProfile(@RequestBody ProfileDto profileDto, Long userNo) {
-        return userService.createProfile(profileDto, userNo);
+    public ResponseEntity<DefaultResponseDto<Object>> createProfile(
+            @RequestBody @Valid ProfileDto profileDto, Long userNo) {
+
+        User user =  userService.createProfile(profileDto, userNo);
+        UserDetailResponseDto dto = userService.returnUserDetailDto(user);
+
+        return ResponseEntity.status(200)
+                .body(DefaultResponseDto.builder()
+                        .responseCode("PROFILE_UPDATED")
+                        .responseMessage("프로필 업데이트")
+                        .data(dto)
+                        .build());
     }
 
     @ApiOperation("단일 회원 조회")
@@ -133,7 +159,7 @@ public class UserController {
     @ApiOperation("아이디로 회원 조회")
     @GetMapping("id/{userId}")
     public UserResponseDto readUserByUserId(@PathVariable("userId") String userId){
-        return userService.readUserByUserId(userId);
+        return userService.findUserByUserId(userId);
     }
 
 }
