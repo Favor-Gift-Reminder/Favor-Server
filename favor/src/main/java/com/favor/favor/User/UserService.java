@@ -49,11 +49,11 @@ public class UserService {
         return user;
     }
 
-    public void isExistingEmail(String email){
+    public void isExistingEmail (String email){
         Boolean isExistingEmail = null;
         try{
             isExistingEmail = userRepository.existsByEmail(email);
-        } catch(RuntimeException e) {
+        } catch(RuntimeException e){
             throw new CustomException(e, SERVER_ERROR);
         }
         if(isExistingEmail){
@@ -70,6 +70,18 @@ public class UserService {
         userRepository.save(user);
 
         return user;
+    }
+
+    public void isExistingUserId (String id){
+        Boolean isExistingId = null;
+        try{
+            isExistingId = userRepository.existsByUserId(id);
+        } catch(RuntimeException e){
+            throw new CustomException(e, SERVER_ERROR);
+        }
+        if(isExistingId){
+            throw new CustomException(null, DUPLICATE_ID);
+        }
     }
 
     @Transactional

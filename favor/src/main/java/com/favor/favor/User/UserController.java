@@ -83,6 +83,8 @@ public class UserController {
     public ResponseEntity<DefaultResponseDto<Object>> createProfile(
             @RequestBody @Valid ProfileDto profileDto, Long userNo) {
 
+        userService.isExistingUserId(profileDto.getUserId());
+
         User user =  userService.createProfile(profileDto, userNo);
         UserDetailResponseDto dto = userService.returnUserDetailDto(user);
 
