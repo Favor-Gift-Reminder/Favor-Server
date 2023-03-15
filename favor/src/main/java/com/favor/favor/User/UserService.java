@@ -38,6 +38,7 @@ public class UserService {
         }
     }
 
+    @Transactional
     public User signUp(SignUpDto signUpDto) {
         User user = User.builder()
                 .email(signUpDto.getEmail())
@@ -60,6 +61,7 @@ public class UserService {
         }
     }
 
+    @Transactional
     public User createProfile(ProfileDto profileDto, Long userNo) {
         User user = findUserByUserNo(userNo);
 
@@ -205,6 +207,7 @@ public class UserService {
         return dto;
     }
 
+    @Transactional
     public UserDetailResponseDto returnUserDetailDto(User user){
         List<ReminderResponseDto> r_list = new ArrayList<>();
         List<Reminder> reminderList = user.getReminderList();

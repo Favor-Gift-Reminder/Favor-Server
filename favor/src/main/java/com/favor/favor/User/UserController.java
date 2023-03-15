@@ -15,6 +15,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import javax.transaction.Transactional;
 import javax.validation.Valid;
 import java.util.List;
 
@@ -77,6 +78,7 @@ public class UserController {
                     message = "SERVER_ERROR")
     })
     @ResponseStatus(HttpStatus.CREATED)
+    @Transactional
     @PatchMapping("/profile")
     public ResponseEntity<DefaultResponseDto<Object>> createProfile(
             @RequestBody @Valid ProfileDto profileDto, Long userNo) {

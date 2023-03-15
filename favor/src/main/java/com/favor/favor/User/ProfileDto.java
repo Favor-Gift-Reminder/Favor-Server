@@ -14,7 +14,7 @@ import javax.validation.constraints.Pattern;
 @AllArgsConstructor
 public class ProfileDto {
     @ApiModelProperty(position = 1, required = true, value = "아이디", example = "Favor")
-    @Pattern(regexp = "^(?=.*[a-zA-Z])(?=.*[0-9]).{8,20}$", message = "비밀번호는 영문과 숫자를 포함하여 8자 이상이어야 합니다.")
+    @Pattern(regexp = "^[a-zA-Z0-9._]{3,20}$", message = "아이디는 3글자 이상으로 영문이나 숫자, ._ 만 사용 가능합니다.")
     private String userId;
 
     @ApiModelProperty(position = 2, required = true, value = "이름", example = "페이버")
