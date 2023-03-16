@@ -12,7 +12,6 @@ import org.springframework.http.ResponseEntity;
 public class DefaultExceptionResponseDto {
     @ApiModelProperty(position = 1, value = "에러 코드", example = "EXCEPTION_CODE")
     private String responseCode;
-
     @ApiModelProperty(position = 2, value = "에러 메세지", example = "에러 메세지")
     private String responseMessage;
 

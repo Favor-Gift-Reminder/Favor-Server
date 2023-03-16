@@ -85,7 +85,7 @@ public class UserController {
 
         userService.isExistingUserId(profileDto.getUserId());
 
-        User user =  userService.createProfile(profileDto, userNo);
+        User user = userService.createProfile(profileDto, userNo);
         UserDetailResponseDto dto = userService.returnUserDetailDto(user);
 
         return ResponseEntity.status(200)
