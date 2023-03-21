@@ -24,7 +24,7 @@ public class FriendDetailResponseDto {
     private List<ReminderResponseDto> reminderList;
     private List<Favor> favorList;
 
-    private Long userFriendNo;
+    private Long friendUserNo;
 
 
     private Long userNo;
@@ -35,7 +35,7 @@ public class FriendDetailResponseDto {
         this.friendNo = friend.getFriendNo();
         this.friendName = friend.getFriendName();
         this.friendMemo = friend.getFriendMemo();
-        this.userFriendNo = friend.getUserFriendNo();
+        this.friendUserNo = friend.getFriendUserNo();
         this.userNo = friend.getUser().getUserNo();
     }
 
@@ -47,7 +47,7 @@ public class FriendDetailResponseDto {
         this.friendMemo = friend.getFriendMemo();
         this.reminderList = reminderList;
         this.favorList = favorList;
-        this.userFriendNo = friend.getUserFriendNo();
+        this.friendUserNo = friend.getFriendUserNo();
         this.userNo = friend.getUser().getUserNo();
     }
 
@@ -59,7 +59,7 @@ public class FriendDetailResponseDto {
         this.friendMemo = friend.getFriendMemo();
         this.reminderList = reminderList;
         this.favorList = favorList;
-        this.userFriendNo = friend.getUserFriendNo();
+        this.friendUserNo = friend.getFriendUserNo();
         this.userNo = friend.getUser().getUserNo();
     }
 }

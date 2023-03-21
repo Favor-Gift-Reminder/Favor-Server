@@ -55,7 +55,7 @@ public class Friend extends TimeStamped {
 
     private Boolean isUser;
 
-    private Long userFriendNo;
+    private Long friendUserNo;
 
 
 

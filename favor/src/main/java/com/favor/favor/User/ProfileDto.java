@@ -25,10 +25,10 @@ import javax.validation.constraints.Pattern;
 
 @ApiModel(value = "프로필 등록")
 public class ProfileDto {
-    @ApiModelProperty(position = 1, required = true, value = "아이디", example = "Favor")
+    @ApiModelProperty(position = 1, required = true, value = "아이디", example = "favor")
     @NotBlank(message = "아이디를 입력해주세요", groups = ValidationSequence.NotBlank.class)
     @Length(min = 3, max = 20, message = "아이디는 3~20자로 입력해주세요", groups = ValidationSequence.Size.class)
-    @Pattern(regexp = "^[a-zA-Z0-9._]{3,20}$", message = "아이디는 3글자 이상이고 영문이나 숫자, . _ 만 사용 가능합니다.", groups = ValidationSequence.Pattern.class)
+    @Pattern(regexp = "^[a-z0-9._]{3,20}$", message = "아이디는 3글자 이상이고 소문자 영문과 숫자와 . _ 만 사용 가능합니다.", groups = ValidationSequence.Pattern.class)
     private String userId;
 
     @ApiModelProperty(position = 2, required = true, value = "이름", example = "페이버")

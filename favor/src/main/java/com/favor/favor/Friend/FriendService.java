@@ -37,7 +37,7 @@ public class FriendService {
         User user = userRepository.findByUserNo(userNo).orElseThrow(
                 () -> new RuntimeException()
         );
-        Long userFriendNo = dto.getUserFriendNo();
+        Long userFriendNo = dto.getFriendUserNo();
         User friendUser = userRepository.findByUserNo(userFriendNo).orElseThrow(
                 () -> new RuntimeException()
         );
@@ -54,7 +54,7 @@ public class FriendService {
         FriendDetailResponseDto returnDto = new FriendDetailResponseDto();
 
         if(friend.getIsUser()){
-            User user = userRepository.findByUserNo(friend.getUserFriendNo()).orElseThrow(
+            User user = userRepository.findByUserNo(friend.getFriendUserNo()).orElseThrow(
                     () -> new RuntimeException()
             );
 
@@ -130,7 +130,7 @@ public class FriendService {
         FriendDetailResponseDto returnDto = new FriendDetailResponseDto();
 
         if(friend.getIsUser()){
-            User user = userRepository.findByUserNo(friend.getUserFriendNo()).orElseThrow(
+            User user = userRepository.findByUserNo(friend.getFriendUserNo()).orElseThrow(
                     () -> new RuntimeException()
             );
 

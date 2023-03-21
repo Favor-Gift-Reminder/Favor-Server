@@ -88,30 +88,84 @@ public class UserController {
         User user = userService.createProfile(profileDto, userNo);
         UserDetailResponseDto dto = userService.returnUserDetailDto(user);
 
-        return ResponseEntity.status(200)
+        return ResponseEntity.status(201)
                 .body(DefaultResponseDto.builder()
-                        .responseCode("PROFILE_UPDATED")
-                        .responseMessage("프로필 업데이트")
+                        .responseCode("PROFILE_CREATED")
+                        .responseMessage("프로필 생성")
                         .data(dto)
                         .build());
     }
 
+
     @ApiOperation("단일 회원 조회")
+    @ApiResponses(value={
+            @ApiResponse(code = 201,
+                    message = "USER_FOUND",
+                    response = UserResponseDto.class),
+            @ApiResponse(code = 401,
+                    message = "UNAUTHORIZED_USER"),
+            @ApiResponse(code = 404,
+                    message = "USER_NOT_FOUND"),
+            @ApiResponse(code = 500,
+                    message = "SERVER_ERROR")
+    })
+    @ResponseStatus(HttpStatus.OK)
+    @Transactional
     @GetMapping("/{userNo}")
-    public UserDetailResponseDto readUser(@PathVariable Long userNo){
-        UserDetailResponseDto foundUser = userService.readUser(userNo);
-        return foundUser;
+    public ResponseEntity<DefaultResponseDto<Object>> readUser(
+            @PathVariable Long userNo){
+
+        userService.isExistingUserNo(userNo);
+
+        User user = userService.readUser(userNo);
+        UserDetailResponseDto dto = userService.returnUserDetailDto(user);
+
+        return ResponseEntity.status(200)
+                .body(DefaultResponseDto.builder()
+                        .responseCode("USER_FOUND")
+                        .responseMessage("단일 회원 조회 완료")
+                        .data(dto)
+                        .build());
     }
 
     @ApiOperation("회원 수정")
+    @ApiResponses(value={
+            @ApiResponse(code = 201,
+                    message = "USER_FOUND",
+                    response = UserResponseDto.class),
+            @ApiResponse(code = 401,
+                    message = "UNAUTHORIZED_USER"),
+            @ApiResponse(code = 404,
+                    message = "USER_NOT_FOUND"),
+            @ApiResponse(code = 500,
+                    message = "SERVER_ERROR")
+    })
+    @Transactional
     @PatchMapping("/{userNo}")
-    public UserDetailResponseDto updateUser(@PathVariable Long userNo, @RequestBody UserUpdateRequestDto userUpdateRequestDto){
-        return userService.updateUser(userNo, userUpdateRequestDto);
+    public ResponseEntity<DefaultResponseDto<Object>> updateUser(
+            @PathVariable Long userNo, 
+            @RequestBody UserUpdateRequestDto userUpdateRequestDto){
+        
+        userService.isExistingUserNo(userNo);
+
+        User user = userService.readUser(userNo);
+        userService.updateUser(user, userUpdateRequestDto);
+
+        UserDetailResponseDto dto = userService.returnUserDetailDto(user);
+
+        return ResponseEntity.status(200)
+                .body(DefaultResponseDto.builder()
+                        .responseCode("USER_UPDATED")
+                        .responseMessage("회원 수정 완료")
+                        .data(dto)
+                        .build());
+
     }
 
     @ApiOperation("회원 탈퇴")
     @DeleteMapping("/{userNo}")
     public UserDetailResponseDto deleteUser(@PathVariable Long userNo){
+
         return userService.deleteUser(userNo);
     }
 

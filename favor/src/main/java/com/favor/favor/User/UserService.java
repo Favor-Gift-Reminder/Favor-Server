@@ -85,22 +85,30 @@ public class UserService {
     }
 
     @Transactional
-    public UserDetailResponseDto readUser(Long userNo){
-        User user = findUserByUserNo(userNo);
+    public User readUser(Long userNo){
+        return findUserByUserNo(userNo);
+    }
 
-        return returnUserDetailDto(user);
+    public void isExistingUserNo (Long userNo){
+        Boolean isExistingUser = null;
+        try{
+            isExistingUser = userRepository.existsByUserNo(userNo);
+        } catch(RuntimeException e){
+            throw new CustomException(e, SERVER_ERROR);
+        }
+        if(!isExistingUser){
+            throw new CustomException(null, USER_NOT_FOUND);
+        }
     }
 
     @Transactional
-    public UserDetailResponseDto updateUser(Long userNo, UserUpdateRequestDto userUpdateRequestDto){
-        User user = findUserByUserNo(userNo);
-
+    public User updateUser(User user, UserUpdateRequestDto userUpdateRequestDto){
         user.setName(userUpdateRequestDto.getName());
         user.setUserId(userUpdateRequestDto.getUserId());
         user.setFavorList(userUpdateRequestDto.getFavorList());
         userRepository.save(user);
 
-        return returnUserDetailDto(user);
+        return user;
     }
 
     @Transactional
