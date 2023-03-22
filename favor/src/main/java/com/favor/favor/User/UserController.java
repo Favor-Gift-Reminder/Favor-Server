@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.transaction.Transactional;
 import javax.validation.Valid;
+import java.util.ArrayList;
 import java.util.List;
 
 @Api(tags = "User")
@@ -63,8 +64,8 @@ public class UserController {
 
     @ApiOperation("프로필생성")
     @ApiResponses(value={
-            @ApiResponse(code = 201,
-                    message = "PROFILE_CREATED",
+            @ApiResponse(code = 200,
+                    message = "PROFILE_UPDATED",
                     response = UserResponseDto.class),
             @ApiResponse(code = 400,
                     message = "FILED_REQUIRED / *_CHARACTER_INVALID / *_LENGTH_INVALID"),
@@ -88,9 +89,9 @@ public class UserController {
         User user = userService.createProfile(profileDto, userNo);
         UserDetailResponseDto dto = userService.returnUserDetailDto(user);
 
-        return ResponseEntity.status(201)
+        return ResponseEntity.status(200)
                 .body(DefaultResponseDto.builder()
-                        .responseCode("PROFILE_CREATED")
+                        .responseCode("PROFILE_UPDATED")
                         .responseMessage("프로필 생성")
                         .data(dto)
                         .build());
@@ -99,7 +100,7 @@ public class UserController {
 
     @ApiOperation("단일 회원 조회")
     @ApiResponses(value={
-            @ApiResponse(code = 201,
+            @ApiResponse(code = 200,
                     message = "USER_FOUND",
                     response = UserResponseDto.class),
             @ApiResponse(code = 401,
@@ -130,8 +131,8 @@ public class UserController {
 
     @ApiOperation("회원 수정")
     @ApiResponses(value={
-            @ApiResponse(code = 201,
-                    message = "USER_FOUND",
+            @ApiResponse(code = 200,
+                    message = "USER_UPDATED",
                     response = UserResponseDto.class),
             @ApiResponse(code = 401,
                     message = "UNAUTHORIZED_USER"),
@@ -140,6 +141,7 @@ public class UserController {
             @ApiResponse(code = 500,
                     message = "SERVER_ERROR")
     })
+    @ResponseStatus(HttpStatus.OK)
     @Transactional
     @PatchMapping("/{userNo}")
     public ResponseEntity<DefaultResponseDto<Object>> updateUser(
@@ -162,7 +164,7 @@ public class UserController {
 
     }
 
-    @ApiOperation("회원 탈퇴")
+    @ApiOperation("회원 탈퇴 (임시)")
     @ApiResponses(value={
             @ApiResponse(code = 200,
                     message = "USER_DELETED",
@@ -174,6 +176,7 @@ public class UserController {
             @ApiResponse(code = 500,
                     message = "SERVER_ERROR")
     })
+    @ResponseStatus(HttpStatus.OK)
     @Transactional
     @DeleteMapping("/{userNo}")
     public ResponseEntity<DefaultResponseDto<Object>> deleteUser(
@@ -194,11 +197,64 @@ public class UserController {
                         .build());
     }
 
+    @ApiOperation("비밀번호 변경")
+    @ApiResponses(value={
+            @ApiResponse(code = 200,
+                    message = "PASSWORD_UPDATED",
+                    response = UserResponseDto.class),
+            @ApiResponse(code = 401,
+                    message = "UNAUTHORIZED_USER"),
+            @ApiResponse(code = 404,
+                    message = "USER_NOT_FOUND / EMAIL_NOT_FOUND"),
+            @ApiResponse(code = 500,
+                    message = "SERVER_ERROR")
+    })
+    @ResponseStatus(HttpStatus.OK)
+    @Transactional
+    @PatchMapping("/password")
+    public ResponseEntity<DefaultResponseDto<Object>> updatePassword(
+            @RequestBody @Valid UserUpdatePasswordRequestDto passwordDto){
+
+        userService.validateExistingEmail(passwordDto.getEmail());
+
+        User user = userService.updatePassword(passwordDto.getEmail(), passwordDto.getPassword1());
+        UserDetailResponseDto dto = userService.returnUserDetailDto(user);
+
+        return ResponseEntity.status(200)
+                .body(DefaultResponseDto.builder()
+                        .responseCode("PASSWORD_UPDATED")
+                        .responseMessage("비밀번호 변경 완료")
+                        .data(dto)
+                        .build());
+    }
+
 
     @ApiOperation("회원의 리마인더 전체 조회")
+    @ApiResponses(value={
+            @ApiResponse(code = 200,
+                    message = "REMINDERS_FOUND",
+                    response = UserResponseDto.class),
+            @ApiResponse(code = 401,
+                    message = "UNAUTHORIZED_USER"),
+            @ApiResponse(code = 404,
+                    message = "USER_NOT_FOUND"),
+            @ApiResponse(code = 500,
+                    message = "SERVER_ERROR")
+    })
+    @ResponseStatus(HttpStatus.OK)
     @GetMapping("/reminder-list/{userNo}")
-    public List<ReminderResponseDto> readReminderList(@PathVariable Long userNo){
-        return userService.readReminderList(userNo);
+    public ResponseEntity<DefaultResponseDto<Object>> readReminderList(@PathVariable Long userNo){
+
+        userService.isExistingUserNo(userNo);
+
+        List<ReminderResponseDto> reminders = userService.readReminderList(userNo);
+
+        return ResponseEntity.status(200)
+                .body(DefaultResponseDto.builder()
+                        .responseCode("REMINDERS_FOUND")
+                        .responseMessage("회원 리마인더 전체 조회 완료")
+                        .data(reminders)
+                        .build());
     }
 
     @ApiOperation("회원의 선물 전체 조회")
@@ -215,6 +271,17 @@ public class UserController {
 
 
     @ApiOperation("전체 회원 조회")
+    @ApiResponses(value={
+            @ApiResponse(code = 200,
+                    message = "USERS_FOUND",
+                    response = UserResponseDto.class),
+            @ApiResponse(code = 401,
+                    message = "UNAUTHORIZED_USER"),
+            @ApiResponse(code = 404,
+                    message = "USER_NOT_FOUND"),
+            @ApiResponse(code = 500,
+                    message = "SERVER_ERROR")
+    })
     @GetMapping
     public List<UserResponseDto> readAll(){
         return userService.readAll();

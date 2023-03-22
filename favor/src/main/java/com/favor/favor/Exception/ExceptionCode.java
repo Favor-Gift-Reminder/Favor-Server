@@ -11,7 +11,8 @@ import static org.springframework.http.HttpStatus.*;
 public enum ExceptionCode {
 
     //400 BAD_REQUEST : 잘못된 요청
-    FIELD_REQUIRED(BAD_REQUEST, "입력은 필수입니다"),
+    FIELD_REQUIRED(BAD_REQUEST, "입력은 필수입니다."),
+    PASSWORD_INVALID(BAD_REQUEST, "두 비밀번호가 일치하지 않습니다."),
 
     // 형식
     EMAIL_CHARACTER_INVALID(BAD_REQUEST, "올바른 형식의 이메일이 아닙니다."),

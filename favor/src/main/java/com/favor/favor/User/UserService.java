@@ -85,7 +85,15 @@ public class UserService {
         userRepository.deleteByUserNo(userNo);
 
         return user;
+    }
 
+
+    public User updatePassword(String email, String password){
+        User user = findUserByEmail(email);
+        user.setPassword(password);
+        save(user);
+
+        return user;
     }
 
 
@@ -180,6 +188,22 @@ public class UserService {
         return g_List;
     }
 
+
+
+    public void validateExistingEmail (String email){
+        Boolean isExistingEmail = null;
+        try{
+            isExistingEmail = userRepository.existsByEmail(email);
+        } catch(RuntimeException e){
+            throw new CustomException(e, SERVER_ERROR);
+        }
+        if(!isExistingEmail){
+            throw new CustomException(null, EMAIL_NOT_FOUND);
+        }
+    }
+
+
+
     public User findUserByUserNo(Long userNo){
         User user = userRepository.findByUserNo(userNo).orElseThrow(
                 () -> new RuntimeException()
@@ -193,6 +217,12 @@ public class UserService {
         );
         UserResponseDto dto = new UserResponseDto(user);
         return dto;
+    }
+    public User findUserByEmail(String email){
+        User user = userRepository.findUserByEmail(email).orElseThrow(
+                () -> new RuntimeException()
+        );
+        return user;
     }
 
 
@@ -227,6 +257,8 @@ public class UserService {
         UserDetailResponseDto dto = new UserDetailResponseDto(user, r_list, g_list, f_list, favor_List);
         return dto;
     }
+
+
 
     public void isExistingUserId (String id){
         Boolean isExistingId = null;

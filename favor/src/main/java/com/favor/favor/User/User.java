@@ -30,6 +30,9 @@ public class User extends TimeStamped {
 
     private String password;
 
+
+    public void setPassword(String password){ this.password = password; }
+
     private String userId;
     public void setUserId(String userId){
         this.userId = userId;
