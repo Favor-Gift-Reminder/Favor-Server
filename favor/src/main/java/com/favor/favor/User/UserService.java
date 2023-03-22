@@ -49,17 +49,7 @@ public class UserService {
         return user;
     }
 
-    public void isExistingEmail (String email){
-        Boolean isExistingEmail = null;
-        try{
-            isExistingEmail = userRepository.existsByEmail(email);
-        } catch(RuntimeException e){
-            throw new CustomException(e, SERVER_ERROR);
-        }
-        if(isExistingEmail){
-            throw new CustomException(null, DUPLICATE_EMAIL);
-        }
-    }
+
 
     @Transactional
     public User createProfile(ProfileDto profileDto, Long userNo) {
@@ -67,38 +57,16 @@ public class UserService {
 
         user.setName(profileDto.getName());
         user.setUserId(profileDto.getUserId());
-        userRepository.save(user);
+        save(user);
 
         return user;
     }
 
-    public void isExistingUserId (String id){
-        Boolean isExistingId = null;
-        try{
-            isExistingId = userRepository.existsByUserId(id);
-        } catch(RuntimeException e){
-            throw new CustomException(e, SERVER_ERROR);
-        }
-        if(isExistingId){
-            throw new CustomException(null, DUPLICATE_ID);
-        }
-    }
+
 
     @Transactional
     public User readUser(Long userNo){
         return findUserByUserNo(userNo);
-    }
-
-    public void isExistingUserNo (Long userNo){
-        Boolean isExistingUser = null;
-        try{
-            isExistingUser = userRepository.existsByUserNo(userNo);
-        } catch(RuntimeException e){
-            throw new CustomException(e, SERVER_ERROR);
-        }
-        if(!isExistingUser){
-            throw new CustomException(null, USER_NOT_FOUND);
-        }
     }
 
     @Transactional
@@ -106,17 +74,17 @@ public class UserService {
         user.setName(userUpdateRequestDto.getName());
         user.setUserId(userUpdateRequestDto.getUserId());
         user.setFavorList(userUpdateRequestDto.getFavorList());
-        userRepository.save(user);
+        save(user);
 
         return user;
     }
 
     @Transactional
-    public UserDetailResponseDto deleteUser(Long userNo){
+    public User deleteUser(Long userNo){
         User user = findUserByUserNo(userNo);
-        userRepository.deleteById(userNo);
+        userRepository.deleteByUserNo(userNo);
 
-        return returnUserDetailDto(user);
+        return user;
 
     }
 
@@ -227,6 +195,8 @@ public class UserService {
         return dto;
     }
 
+
+
     @Transactional
     public UserDetailResponseDto returnUserDetailDto(User user){
         List<ReminderResponseDto> r_list = new ArrayList<>();
@@ -257,4 +227,41 @@ public class UserService {
         UserDetailResponseDto dto = new UserDetailResponseDto(user, r_list, g_list, f_list, favor_List);
         return dto;
     }
+
+    public void isExistingUserId (String id){
+        Boolean isExistingId = null;
+        try{
+            isExistingId = userRepository.existsByUserId(id);
+        } catch(RuntimeException e){
+            throw new CustomException(e, SERVER_ERROR);
+        }
+        if(isExistingId){
+            throw new CustomException(null, DUPLICATE_ID);
+        }
+    }
+
+    public void isExistingEmail (String email){
+        Boolean isExistingEmail = null;
+        try{
+            isExistingEmail = userRepository.existsByEmail(email);
+        } catch(RuntimeException e){
+            throw new CustomException(e, SERVER_ERROR);
+        }
+        if(isExistingEmail){
+            throw new CustomException(null, DUPLICATE_EMAIL);
+        }
+    }
+
+    public void isExistingUserNo (Long userNo){
+        Boolean isExistingUser = null;
+        try{
+            isExistingUser = userRepository.existsByUserNo(userNo);
+        } catch(RuntimeException e){
+            throw new CustomException(e, SERVER_ERROR);
+        }
+        if(!isExistingUser){
+            throw new CustomException(null, USER_NOT_FOUND);
+        }
+    }
+
 }

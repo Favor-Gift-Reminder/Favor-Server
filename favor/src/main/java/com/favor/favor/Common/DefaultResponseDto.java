@@ -8,7 +8,7 @@ import lombok.*;
 @Builder
 @AllArgsConstructor
 @ApiModel(value = "기본 응답")
-public class DefaultResponseDto<T> {
+public class DefaultResponseDto <T> {
 
     @ApiModelProperty(position = 1, value = "응답 코드", example = "RESPONSE_CODE")
     private String responseCode;
@@ -17,11 +17,11 @@ public class DefaultResponseDto<T> {
     @ApiModelProperty(position = 3, value = "응답 데이터", example = "응답 데이터")
     private T data;
 
-    public DefaultResponseDto(final String responseCode, final String responseMessage){
-        this.responseCode = responseCode;
-        this.responseMessage = responseMessage;
-        this.data = null;
-    }
+//    public DefaultResponseDto(final String responseCode, final String responseMessage){
+//        this.responseCode = responseCode;
+//        this.responseMessage = responseMessage;
+//        this.data = null;
+//    }
 
     public static <T> DefaultResponseDto<T> response(final String responseCode, final String responseMessage){
         return response(responseCode, responseMessage, null);

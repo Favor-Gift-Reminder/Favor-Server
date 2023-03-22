@@ -163,10 +163,35 @@ public class UserController {
     }
 
     @ApiOperation("회원 탈퇴")
+    @ApiResponses(value={
+            @ApiResponse(code = 200,
+                    message = "USER_DELETED",
+                    response = UserResponseDto.class),
+            @ApiResponse(code = 401,
+                    message = "UNAUTHORIZED_USER"),
+            @ApiResponse(code = 404,
+                    message = "USER_NOT_FOUND"),
+            @ApiResponse(code = 500,
+                    message = "SERVER_ERROR")
+    })
+    @Transactional
     @DeleteMapping("/{userNo}")
-    public UserDetailResponseDto deleteUser(@PathVariable Long userNo){
+    public ResponseEntity<DefaultResponseDto<Object>> deleteUser(
+            @PathVariable Long userNo){
 
-        return userService.deleteUser(userNo);
+        userService.isExistingUserNo(userNo);
+
+        User user = userService.findUserByUserNo(userNo);
+        UserDetailResponseDto dto = userService.returnUserDetailDto(user);
+
+        userService.deleteUser(userNo);
+
+        return ResponseEntity.status(200)
+                .body(DefaultResponseDto.builder()
+                        .responseCode("USER_DELETED")
+                        .responseMessage("회원 탈퇴 완료 (임시)")
+                        .data(dto)
+                        .build());
     }
 
 
