@@ -205,23 +205,37 @@ public class UserService {
 
 
     public User findUserByUserNo(Long userNo){
-        User user = userRepository.findByUserNo(userNo).orElseThrow(
-                () -> new RuntimeException()
-        );
+            User user = null;
+        try{
+            user = userRepository.findByUserNo(userNo).orElseThrow(
+                    () -> new RuntimeException()
+            );
+        } catch (RuntimeException e){
+            throw new CustomException(e, USER_NOT_FOUND);
+        }
         return user;
     }
 
-    public UserResponseDto findUserByUserId(String userId){
-        User user = userRepository.findUserByUserId(userId).orElseThrow(
-                () -> new RuntimeException()
-        );
-        UserResponseDto dto = new UserResponseDto(user);
-        return dto;
+    public User findUserByUserId(String userId){
+        User user = null;
+        try{
+            user = userRepository.findByUserId(userId).orElseThrow(
+                    () -> new RuntimeException()
+            );
+        } catch (RuntimeException e){
+            throw new CustomException(e, USER_NOT_FOUND);
+        }
+        return user;
     }
     public User findUserByEmail(String email){
-        User user = userRepository.findUserByEmail(email).orElseThrow(
-                () -> new RuntimeException()
-        );
+        User user = null;
+        try{
+            user = userRepository.findByEmail(email).orElseThrow(
+                    () -> new RuntimeException()
+            );
+        } catch (RuntimeException e){
+            throw new CustomException(e, USER_NOT_FOUND);
+        }
         return user;
     }
 

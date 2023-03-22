@@ -5,6 +5,7 @@ import com.favor.favor.Common.DefaultResponseDto;
 import com.favor.favor.Enum.Category;
 import com.favor.favor.Enum.Emotion;
 import com.favor.favor.Friend.FriendResponseDto;
+import com.favor.favor.Gift.Gift;
 import com.favor.favor.Gift.GiftDetailResponseDto;
 import com.favor.favor.Gift.GiftResponseDto;
 import com.favor.favor.Reminder.ReminderResponseDto;
@@ -146,7 +147,7 @@ public class UserController {
     @PatchMapping("/{userNo}")
     public ResponseEntity<DefaultResponseDto<Object>> updateUser(
             @PathVariable Long userNo, 
-            @RequestBody UserUpdateRequestDto userUpdateRequestDto){
+            @RequestBody @Valid UserUpdateRequestDto userUpdateRequestDto){
         
         userService.isExistingUserNo(userNo);
 
@@ -197,7 +198,7 @@ public class UserController {
                         .build());
     }
 
-    @ApiOperation("비밀번호 변경")
+    @ApiOperation("비밀번호 변경 (임시)")
     @ApiResponses(value={
             @ApiResponse(code = 200,
                     message = "PASSWORD_UPDATED",
@@ -243,7 +244,8 @@ public class UserController {
     })
     @ResponseStatus(HttpStatus.OK)
     @GetMapping("/reminder-list/{userNo}")
-    public ResponseEntity<DefaultResponseDto<Object>> readReminderList(@PathVariable Long userNo){
+    public ResponseEntity<DefaultResponseDto<Object>> readReminderList(
+            @PathVariable Long userNo){
 
         userService.isExistingUserNo(userNo);
 
@@ -252,21 +254,65 @@ public class UserController {
         return ResponseEntity.status(200)
                 .body(DefaultResponseDto.builder()
                         .responseCode("REMINDERS_FOUND")
-                        .responseMessage("회원 리마인더 전체 조회 완료")
+                        .responseMessage("회원의 리마인더 전체 조회 완료")
                         .data(reminders)
                         .build());
     }
 
     @ApiOperation("회원의 선물 전체 조회")
+    @ApiResponses(value={
+            @ApiResponse(code = 200,
+                    message = "GIFTS_FOUND",
+                    response = UserResponseDto.class),
+            @ApiResponse(code = 401,
+                    message = "UNAUTHORIZED_USER"),
+            @ApiResponse(code = 404,
+                    message = "USER_NOT_FOUND"),
+            @ApiResponse(code = 500,
+                    message = "SERVER_ERROR")
+    })
+    @ResponseStatus(HttpStatus.OK)
     @GetMapping("/gift-list/{userNo}")
-    public List<GiftResponseDto> readGiftList(@PathVariable Long userNo){
-        return userService.readGiftList(userNo);
+    public ResponseEntity<DefaultResponseDto<Object>> readGiftList(
+            @PathVariable Long userNo){
+
+        userService.isExistingUserNo(userNo);
+
+        List<GiftResponseDto> gifts = userService.readGiftList(userNo);
+
+        return ResponseEntity.status(200)
+                .body(DefaultResponseDto.builder()
+                        .responseCode("GIFTS_FOUND")
+                        .responseMessage("회원의 선물 전체 조회 완료")
+                        .data(gifts)
+                        .build());
     }
 
     @ApiOperation("회원의 친구 전체 조회")
+    @ApiResponses(value={
+            @ApiResponse(code = 200,
+                    message = "FRIENDSS_FOUND",
+                    response = UserResponseDto.class),
+            @ApiResponse(code = 401,
+                    message = "UNAUTHORIZED_USER"),
+            @ApiResponse(code = 404,
+                    message = "USER_NOT_FOUND"),
+            @ApiResponse(code = 500,
+                    message = "SERVER_ERROR")
+    })
     @GetMapping("/friend-list/{userNo}")
-    public List<FriendResponseDto> readFriendList(@PathVariable Long userNo){
-        return userService.readFriendList(userNo);
+    public ResponseEntity<DefaultResponseDto<Object>> readFriendList(@PathVariable Long userNo){
+
+        userService.isExistingUserNo(userNo);
+
+        List<FriendResponseDto> friends = userService.readFriendList(userNo);
+
+        return ResponseEntity.status(200)
+                .body(DefaultResponseDto.builder()
+                        .responseCode("FRIENDSS_FOUND")
+                        .responseMessage("회원의 친구 전체 조회 완료")
+                        .data(friends)
+                        .build());
     }
 
 
@@ -282,34 +328,138 @@ public class UserController {
             @ApiResponse(code = 500,
                     message = "SERVER_ERROR")
     })
+    @ResponseStatus(HttpStatus.OK)
     @GetMapping
-    public List<UserResponseDto> readAll(){
-        return userService.readAll();
+    public ResponseEntity<DefaultResponseDto<Object>> readAll(){
+
+        List<UserResponseDto> dto = userService.readAll();
+
+        return ResponseEntity.status(200)
+                .body(DefaultResponseDto.builder()
+                        .responseCode("FRIENDS_FOUND")
+                        .responseMessage("전체 회원 조회 완료")
+                        .data(dto)
+                        .build());
     }
 
 
     @ApiOperation("이름으로 회원 선물 조회")
+    @ApiResponses(value={
+            @ApiResponse(code = 200,
+                    message = "GIFTS_BY_NAME_FOUND",
+                    response = UserResponseDto.class),
+            @ApiResponse(code = 401,
+                    message = "UNAUTHORIZED_USER"),
+            @ApiResponse(code = 404,
+                    message = "USER_NOT_FOUND"),
+            @ApiResponse(code = 500,
+                    message = "SERVER_ERROR")
+    })
+    @ResponseStatus(HttpStatus.OK)
     @GetMapping("/gift-by-name/{userNo}/{giftName}")
-    public List<GiftDetailResponseDto> readGiftListByname (@PathVariable("userNo") Long userNo, @PathVariable("giftName") String giftName){
-        return userService.readGiftListByName(userNo, giftName);
+    public ResponseEntity<DefaultResponseDto<Object>> readGiftListByName (
+            @PathVariable("userNo") Long userNo,
+            @PathVariable("giftName") String giftName){
+
+        userService.isExistingUserNo(userNo);
+
+        List<GiftDetailResponseDto> dto =  userService.readGiftListByName(userNo, giftName);
+
+        return ResponseEntity.status(200)
+                .body(DefaultResponseDto.builder()
+                        .responseCode("GIFTS_BY_NAME_FOUND")
+                        .responseMessage("이름으로 회원 선물 조회 완료")
+                        .data(dto)
+                        .build());
     }
 
     @ApiOperation("카테고리로 회원 선물 조회")
+    @ApiResponses(value={
+            @ApiResponse(code = 200,
+                    message = "GIFTS_BY_CATEGORY_FOUND",
+                    response = UserResponseDto.class),
+            @ApiResponse(code = 401,
+                    message = "UNAUTHORIZED_USER"),
+            @ApiResponse(code = 404,
+                    message = "USER_NOT_FOUND"),
+            @ApiResponse(code = 500,
+                    message = "SERVER_ERROR")
+    })
+    @ResponseStatus(HttpStatus.OK)
     @GetMapping("/gift-by-category/{userNo}/{category}")
-    public List<GiftDetailResponseDto> readGiftListByCategory(@PathVariable("userNo") Long userNo, @PathVariable("category") Category category){
-        return userService.readGiftListByCategory(userNo, category);
+    public ResponseEntity<DefaultResponseDto<Object>> readGiftListByCategory(
+            @PathVariable("userNo") Long userNo,
+            @PathVariable("category") Category category){
+
+        userService.isExistingUserNo(userNo);
+
+        List<GiftDetailResponseDto> dto =  userService.readGiftListByCategory(userNo, category);
+
+        return ResponseEntity.status(200)
+                .body(DefaultResponseDto.builder()
+                        .responseCode("GIFTS_BY_CATEGORY_FOUND")
+                        .responseMessage("카테고리로 회원 선물 조회 완료")
+                        .data(dto)
+                        .build());
     }
 
     @ApiOperation("감정으로 회원 선물 검색")
+    @ApiResponses(value={
+            @ApiResponse(code = 200,
+                    message = "GIFTS_BY_EMOTION_FOUND",
+                    response = UserResponseDto.class),
+            @ApiResponse(code = 401,
+                    message = "UNAUTHORIZED_USER"),
+            @ApiResponse(code = 404,
+                    message = "USER_NOT_FOUND"),
+            @ApiResponse(code = 500,
+                    message = "SERVER_ERROR")
+    })
+    @ResponseStatus(HttpStatus.OK)
     @GetMapping("/gift-by-emotion/{userNo}/{emotion}")
-    public List<GiftDetailResponseDto> readGiftListByEmotion(@PathVariable("userNo") Long userNo, @PathVariable("emotion") Emotion emotion){
-        return userService.readGiftListByEmotion(userNo, emotion);
+    public ResponseEntity<DefaultResponseDto<Object>> readGiftListByEmotion(
+            @PathVariable("userNo") Long userNo,
+            @PathVariable("emotion") Emotion emotion){
+
+        userService.isExistingUserNo(userNo);
+
+        List<GiftDetailResponseDto> dto =  userService.readGiftListByEmotion(userNo, emotion);
+
+        return ResponseEntity.status(200)
+                .body(DefaultResponseDto.builder()
+                        .responseCode("GIFTS_BY_CATEGORY_FOUND")
+                        .responseMessage("감정으로 회원 선물 조회 완료")
+                        .data(dto)
+                        .build());
     }
 
     @ApiOperation("아이디로 회원 조회")
+    @ApiResponses(value={
+            @ApiResponse(code = 200,
+                    message = "USER_BY_ID_FOUND",
+                    response = UserResponseDto.class),
+            @ApiResponse(code = 401,
+                    message = "UNAUTHORIZED_USER"),
+            @ApiResponse(code = 404,
+                    message = "USER_NOT_FOUND"),
+            @ApiResponse(code = 500,
+                    message = "SERVER_ERROR")
+    })
+    @ResponseStatus(HttpStatus.OK)
+    @Transactional
     @GetMapping("id/{userId}")
-    public UserResponseDto readUserByUserId(@PathVariable("userId") String userId){
-        return userService.findUserByUserId(userId);
+    public ResponseEntity<DefaultResponseDto<Object>> readUserByUserId(
+            @PathVariable("userId") String userId){
+
+        User user = userService.findUserByUserId(userId);
+        UserDetailResponseDto dto = userService.returnUserDetailDto(user);
+
+        return ResponseEntity.status(200)
+                .body(DefaultResponseDto.builder()
+                        .responseCode("USER_BY_ID_FOUND")
+                        .responseMessage("아이디로 회원 조회 완료")
+                        .data(dto)
+                        .build());
     }
 
 }

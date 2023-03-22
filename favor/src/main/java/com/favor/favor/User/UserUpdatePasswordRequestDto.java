@@ -18,7 +18,7 @@ import javax.validation.constraints.Pattern;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor
 @GroupSequence({
-        SignUpDto.class,
+        UserUpdatePasswordRequestDto.class,
         ValidationSequence.NotBlank.class,
         ValidationSequence.Email.class,
         ValidationSequence.Size.class,

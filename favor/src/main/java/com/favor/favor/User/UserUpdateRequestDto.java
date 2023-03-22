@@ -26,7 +26,7 @@ public class UserUpdateRequestDto {
     @ApiModelProperty(position = 1, required = false, value = "이름", example = "페이버")
     private String name;
 
-    @ApiModelProperty(position = 2, required = false, value = "아이디", example = "Favor")
+    @ApiModelProperty(position = 2, required = false, value = "아이디", example = "favor")
     @Length(min = 3, max = 20, message = "아이디는 3~20자로 입력해주세요", groups = ValidationSequence.Size.class)
     @Pattern(regexp = "^[a-z0-9._]{3,20}$", message = "아이디는 3글자 이상이고 소문자 영문과 숫자와 . _ 만 사용 가능합니다.", groups = ValidationSequence.Pattern.class)
     private String userId;
