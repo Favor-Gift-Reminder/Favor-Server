@@ -1,4 +1,4 @@
-# Favor-Server
+# Favor-Server (수정 예정)
 - Favor(페이버) 서버 리포지토리
 
 </br>
