@@ -6,6 +6,7 @@ import com.favor.favor.Enum.Favor;
 import com.favor.favor.Enum.Role;
 import com.favor.favor.Exception.CustomException;
 import com.favor.favor.Friend.Friend;
+import com.favor.favor.Friend.FriendRepository;
 import com.favor.favor.Friend.FriendResponseDto;
 import com.favor.favor.Gift.Gift;
 import com.favor.favor.Gift.GiftDetailResponseDto;
@@ -27,6 +28,7 @@ import static com.favor.favor.Exception.ExceptionCode.*;
 public class UserService {
     private final UserRepository userRepository;
     private final GiftRepository giftRepository;
+    private final FriendRepository friendRepository;
 
     @Transactional
     public User save(User user){
@@ -83,6 +85,7 @@ public class UserService {
     public User deleteUser(Long userNo){
         User user = findUserByUserNo(userNo);
         userRepository.deleteByUserNo(userNo);
+        friendRepository.deleteFriendsByFriendUserNo(userNo);
 
         return user;
     }
@@ -309,5 +312,6 @@ public class UserService {
             throw new CustomException(null, USER_NOT_FOUND);
         }
     }
+
 
 }

@@ -6,4 +6,5 @@ import java.util.Optional;
 
 public interface ReminderRepository extends JpaRepository<Reminder, Long> {
     Optional<Reminder> findByReminderNo(Long reminderNo);
+//    void deleteRemindersBy
 }

@@ -81,9 +81,9 @@ public class UserController {
     })
     @ResponseStatus(HttpStatus.CREATED)
     @Transactional
-    @PatchMapping("/profile")
+    @PatchMapping("/profile/{userNo}")
     public ResponseEntity<DefaultResponseDto<Object>> createProfile(
-            @RequestBody @Valid ProfileDto profileDto, Long userNo) {
+            @RequestBody @Valid ProfileDto profileDto, @PathVariable Long userNo) {
 
         userService.isExistingUserId(profileDto.getUserId());
 
@@ -99,7 +99,7 @@ public class UserController {
     }
 
 
-    @ApiOperation("단일 회원 조회")
+    @ApiOperation("회원 조회")
     @ApiResponses(value={
             @ApiResponse(code = 200,
                     message = "USER_FOUND",
@@ -125,7 +125,7 @@ public class UserController {
         return ResponseEntity.status(200)
                 .body(DefaultResponseDto.builder()
                         .responseCode("USER_FOUND")
-                        .responseMessage("단일 회원 조회 완료")
+                        .responseMessage("회원 조회 완료")
                         .data(dto)
                         .build());
     }

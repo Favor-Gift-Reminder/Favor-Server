@@ -6,4 +6,5 @@ import java.util.Optional;
 
 public interface FriendRepository extends JpaRepository<Friend, Long> {
     Optional<Friend> findByFriendNo(Long friendNo);
+    void deleteFriendsByFriendUserNo(Long userNo);
 }
