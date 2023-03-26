@@ -13,4 +13,5 @@ public interface GiftRepository extends JpaRepository<Gift, Long> {
     List<Gift> findGiftsByUserAndCategory(User user, Integer categoryNo);
     List<Gift> findGiftsByUserAndEmotion(User user, Integer emotionNo);
     List<Gift> findGiftsByFriend(Friend friend);
+    List<Gift> findGiftsByUser(User user);
 }

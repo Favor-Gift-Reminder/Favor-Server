@@ -32,7 +32,7 @@ public class UserController {
     @ApiResponses(value={
             @ApiResponse(code = 201,
                     message = "USER_REGISTERED",
-                    response = UserResponseDto.class),
+                    response = UserDetailResponseDto.class),
             @ApiResponse(code = 400,
                     message = "FILED_REQUIRED / *_CHARACTER_INVALID / *_LENGTH_INVALID"),
             @ApiResponse(code = 401,
@@ -67,7 +67,7 @@ public class UserController {
     @ApiResponses(value={
             @ApiResponse(code = 200,
                     message = "PROFILE_UPDATED",
-                    response = UserResponseDto.class),
+                    response = UserDetailResponseDto.class),
             @ApiResponse(code = 400,
                     message = "FILED_REQUIRED / *_CHARACTER_INVALID / *_LENGTH_INVALID"),
             @ApiResponse(code = 401,
@@ -103,7 +103,7 @@ public class UserController {
     @ApiResponses(value={
             @ApiResponse(code = 200,
                     message = "USER_FOUND",
-                    response = UserResponseDto.class),
+                    response = UserDetailResponseDto.class),
             @ApiResponse(code = 401,
                     message = "UNAUTHORIZED_USER"),
             @ApiResponse(code = 404,
@@ -134,7 +134,7 @@ public class UserController {
     @ApiResponses(value={
             @ApiResponse(code = 200,
                     message = "USER_UPDATED",
-                    response = UserResponseDto.class),
+                    response = UserDetailResponseDto.class),
             @ApiResponse(code = 401,
                     message = "UNAUTHORIZED_USER"),
             @ApiResponse(code = 404,
@@ -169,7 +169,7 @@ public class UserController {
     @ApiResponses(value={
             @ApiResponse(code = 200,
                     message = "USER_DELETED",
-                    response = UserResponseDto.class),
+                    response = UserDetailResponseDto.class),
             @ApiResponse(code = 401,
                     message = "UNAUTHORIZED_USER"),
             @ApiResponse(code = 404,
@@ -202,7 +202,7 @@ public class UserController {
     @ApiResponses(value={
             @ApiResponse(code = 200,
                     message = "PASSWORD_UPDATED",
-                    response = UserResponseDto.class),
+                    response = UserDetailResponseDto.class),
             @ApiResponse(code = 401,
                     message = "UNAUTHORIZED_USER"),
             @ApiResponse(code = 404,
@@ -234,7 +234,7 @@ public class UserController {
     @ApiResponses(value={
             @ApiResponse(code = 200,
                     message = "REMINDERS_FOUND",
-                    response = UserResponseDto.class),
+                    response = UserDetailResponseDto.class),
             @ApiResponse(code = 401,
                     message = "UNAUTHORIZED_USER"),
             @ApiResponse(code = 404,
@@ -263,7 +263,7 @@ public class UserController {
     @ApiResponses(value={
             @ApiResponse(code = 200,
                     message = "GIFTS_FOUND",
-                    response = UserResponseDto.class),
+                    response = UserDetailResponseDto.class),
             @ApiResponse(code = 401,
                     message = "UNAUTHORIZED_USER"),
             @ApiResponse(code = 404,
@@ -292,7 +292,7 @@ public class UserController {
     @ApiResponses(value={
             @ApiResponse(code = 200,
                     message = "FRIENDSS_FOUND",
-                    response = UserResponseDto.class),
+                    response = UserDetailResponseDto.class),
             @ApiResponse(code = 401,
                     message = "UNAUTHORIZED_USER"),
             @ApiResponse(code = 404,
@@ -320,7 +320,7 @@ public class UserController {
     @ApiResponses(value={
             @ApiResponse(code = 200,
                     message = "USERS_FOUND",
-                    response = UserResponseDto.class),
+                    response = UserDetailResponseDto.class),
             @ApiResponse(code = 401,
                     message = "UNAUTHORIZED_USER"),
             @ApiResponse(code = 404,
@@ -332,7 +332,7 @@ public class UserController {
     @GetMapping
     public ResponseEntity<DefaultResponseDto<Object>> readAll(){
 
-        List<UserResponseDto> dto = userService.readAll();
+        List<UserDetailResponseDto> dto = userService.readAll();
 
         return ResponseEntity.status(200)
                 .body(DefaultResponseDto.builder()
@@ -347,7 +347,7 @@ public class UserController {
     @ApiResponses(value={
             @ApiResponse(code = 200,
                     message = "GIFTS_BY_NAME_FOUND",
-                    response = UserResponseDto.class),
+                    response = UserDetailResponseDto.class),
             @ApiResponse(code = 401,
                     message = "UNAUTHORIZED_USER"),
             @ApiResponse(code = 404,
@@ -377,7 +377,7 @@ public class UserController {
     @ApiResponses(value={
             @ApiResponse(code = 200,
                     message = "GIFTS_BY_CATEGORY_FOUND",
-                    response = UserResponseDto.class),
+                    response = UserDetailResponseDto.class),
             @ApiResponse(code = 401,
                     message = "UNAUTHORIZED_USER"),
             @ApiResponse(code = 404,
@@ -407,7 +407,7 @@ public class UserController {
     @ApiResponses(value={
             @ApiResponse(code = 200,
                     message = "GIFTS_BY_EMOTION_FOUND",
-                    response = UserResponseDto.class),
+                    response = UserDetailResponseDto.class),
             @ApiResponse(code = 401,
                     message = "UNAUTHORIZED_USER"),
             @ApiResponse(code = 404,
@@ -437,7 +437,7 @@ public class UserController {
     @ApiResponses(value={
             @ApiResponse(code = 200,
                     message = "USER_BY_ID_FOUND",
-                    response = UserResponseDto.class),
+                    response = UserDetailResponseDto.class),
             @ApiResponse(code = 401,
                     message = "UNAUTHORIZED_USER"),
             @ApiResponse(code = 404,

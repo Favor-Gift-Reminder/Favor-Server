@@ -84,9 +84,12 @@ public class UserService {
     @Transactional
     public User deleteUser(Long userNo){
         User user = findUserByUserNo(userNo);
-        userRepository.deleteByUserNo(userNo);
         friendRepository.deleteFriendsByFriendUserNo(userNo);
-
+        List<Gift> giftList = giftRepository.findGiftsByUser(user);
+        for(Gift gift : giftList){
+            gift.setUser(null);
+        }
+        userRepository.deleteByUserNo(userNo);
         return user;
     }
 
@@ -137,12 +140,12 @@ public class UserService {
     }
 
 
-    public List<UserResponseDto> readAll(){
-        List<UserResponseDto> u_List = new ArrayList<>();
+    public List<UserDetailResponseDto> readAll(){
+        List<UserDetailResponseDto> u_List = new ArrayList<>();
         List<User> userList = userRepository.findAll();
         for(User user : userList){
-            UserResponseDto userResponseDto = new UserResponseDto(user);
-            u_List.add(userResponseDto);
+            UserDetailResponseDto userDetailResponseDto = returnUserDetailDto(user);
+            u_List.add(userDetailResponseDto);
         }
         return u_List;
     }
