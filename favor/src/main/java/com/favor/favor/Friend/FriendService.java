@@ -5,6 +5,7 @@ import com.favor.favor.Friend.Account.UserFriendRequestDto;
 import com.favor.favor.Friend.NoAccount.FriendRequestDto;
 import com.favor.favor.Friend.NoAccount.FriendUpdateRequestDto;
 import com.favor.favor.Gift.Gift;
+import com.favor.favor.Gift.GiftRepository;
 import com.favor.favor.Gift.GiftResponseDto;
 import com.favor.favor.Reminder.Reminder;
 import com.favor.favor.Reminder.ReminderResponseDto;
@@ -22,6 +23,7 @@ import java.util.List;
 public class FriendService {
     private final FriendRepository friendRepository;
     private final UserRepository userRepository;
+    private final GiftRepository giftRepository;
 
     public FriendDetailResponseDto createFriend(FriendRequestDto dto, Long userNo){
         User user = userRepository.findByUserNo(userNo).orElseThrow(
@@ -168,6 +170,11 @@ public class FriendService {
                 r_List.add(dto);
             }
             returnDto = new FriendDetailResponseDto(friend, r_List);
+        }
+
+        List<Gift> giftList = giftRepository.findGiftsByFriend(friend);
+        for(Gift gift : giftList){
+            gift.setFriend(null);
         }
 
         friendRepository.deleteById(friendNo);
