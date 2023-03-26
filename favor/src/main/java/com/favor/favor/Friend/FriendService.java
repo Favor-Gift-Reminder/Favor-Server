@@ -171,11 +171,11 @@ public class FriendService {
             }
             returnDto = new FriendDetailResponseDto(friend, r_List);
         }
-
-        List<Gift> giftList = giftRepository.findGiftsByFriend(friend);
-        for(Gift gift : giftList){
-            gift.setFriend(null);
-        }
+//
+//        List<Gift> giftList = giftRepository.findGiftsByFriend(friend);
+//        for(Gift gift : giftList){
+//            gift.setFriend(null);
+//        }
 
         friendRepository.deleteById(friendNo);
 

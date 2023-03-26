@@ -65,7 +65,7 @@ public class Gift extends TimeStamped {
     private User user;
     public void setUser(User user) { this.user = user; }
 
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.REFRESH)
     @JoinColumn(name = "friend_friend_no")
     @Nullable
     private Friend friend;
