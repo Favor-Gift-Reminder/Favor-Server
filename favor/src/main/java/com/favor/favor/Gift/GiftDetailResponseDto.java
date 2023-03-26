@@ -6,6 +6,7 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 
+import javax.annotation.Nullable;
 import java.time.LocalDate;
 
 @Getter
@@ -24,6 +25,7 @@ public class GiftDetailResponseDto {
     private Boolean isGiven;
 
     private Long userNo;
+    @Nullable
     private Long friendNo;
 
     @Builder

@@ -243,6 +243,7 @@ public class UserController {
                     message = "SERVER_ERROR")
     })
     @ResponseStatus(HttpStatus.OK)
+    @Transactional
     @GetMapping("/reminder-list/{userNo}")
     public ResponseEntity<DefaultResponseDto<Object>> readReminderList(
             @PathVariable Long userNo){
@@ -272,6 +273,7 @@ public class UserController {
                     message = "SERVER_ERROR")
     })
     @ResponseStatus(HttpStatus.OK)
+    @Transactional
     @GetMapping("/gift-list/{userNo}")
     public ResponseEntity<DefaultResponseDto<Object>> readGiftList(
             @PathVariable Long userNo){
@@ -300,6 +302,8 @@ public class UserController {
             @ApiResponse(code = 500,
                     message = "SERVER_ERROR")
     })
+    @ResponseStatus(HttpStatus.OK)
+    @Transactional
     @GetMapping("/friend-list/{userNo}")
     public ResponseEntity<DefaultResponseDto<Object>> readFriendList(@PathVariable Long userNo){
 
@@ -329,6 +333,7 @@ public class UserController {
                     message = "SERVER_ERROR")
     })
     @ResponseStatus(HttpStatus.OK)
+    @Transactional
     @GetMapping
     public ResponseEntity<DefaultResponseDto<Object>> readAll(){
 
@@ -356,6 +361,7 @@ public class UserController {
                     message = "SERVER_ERROR")
     })
     @ResponseStatus(HttpStatus.OK)
+    @Transactional
     @GetMapping("/gift-by-name/{userNo}/{giftName}")
     public ResponseEntity<DefaultResponseDto<Object>> readGiftListByName (
             @PathVariable("userNo") Long userNo,
@@ -386,6 +392,7 @@ public class UserController {
                     message = "SERVER_ERROR")
     })
     @ResponseStatus(HttpStatus.OK)
+    @Transactional
     @GetMapping("/gift-by-category/{userNo}/{category}")
     public ResponseEntity<DefaultResponseDto<Object>> readGiftListByCategory(
             @PathVariable("userNo") Long userNo,
@@ -416,6 +423,7 @@ public class UserController {
                     message = "SERVER_ERROR")
     })
     @ResponseStatus(HttpStatus.OK)
+    @Transactional
     @GetMapping("/gift-by-emotion/{userNo}/{emotion}")
     public ResponseEntity<DefaultResponseDto<Object>> readGiftListByEmotion(
             @PathVariable("userNo") Long userNo,

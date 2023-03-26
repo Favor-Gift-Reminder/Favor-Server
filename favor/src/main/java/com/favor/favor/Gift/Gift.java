@@ -7,6 +7,7 @@ import com.favor.favor.Friend.Friend;
 import com.favor.favor.User.User;
 import lombok.*;
 
+import javax.annotation.Nullable;
 import javax.persistence.*;
 import javax.transaction.Transactional;
 import java.time.LocalDate;
@@ -64,8 +65,9 @@ public class Gift extends TimeStamped {
     private User user;
     public void setUser(User user) { this.user = user; }
 
-    @ManyToOne(cascade = CascadeType.REFRESH)
+    @ManyToOne
     @JoinColumn(name = "friend_friend_no")
+    @Nullable
     private Friend friend;
     public void setFriend(Friend friend){ this.friend = friend; }
 }

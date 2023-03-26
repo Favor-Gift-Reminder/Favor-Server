@@ -85,10 +85,6 @@ public class UserService {
     public User deleteUser(Long userNo){
         User user = findUserByUserNo(userNo);
         friendRepository.deleteFriendsByFriendUserNo(userNo);
-        List<Gift> giftList = giftRepository.findGiftsByUser(user);
-        for(Gift gift : giftList){
-            gift.setUser(null);
-        }
         userRepository.deleteByUserNo(userNo);
         return user;
     }
