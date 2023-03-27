@@ -26,15 +26,6 @@ public class UserDetailResponseDto {
     private List<Favor> favorList;
 
     @Builder
-    public UserDetailResponseDto(User user){
-        this.userNo = user.getUserNo();
-        this.email = user.getEmail();
-        this.name = user.getName();
-        this.userid = user.getUserId();
-        this.role = user.getRole();
-    }
-
-    @Builder
     public UserDetailResponseDto(User user, List<ReminderResponseDto> reminderList, List<GiftResponseDto> giftlist, List<FriendResponseDto> friendList, List<Favor> favor_List){
         this.userNo = user.getUserNo();
         this.email = user.getEmail();
