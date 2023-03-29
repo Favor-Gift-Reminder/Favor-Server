@@ -54,5 +54,7 @@ public class Friend extends TimeStamped {
 
     @ElementCollection
     private List<Long> giftNoList = new ArrayList<>();
-
+    public void setGiftNoList(List<Long> giftNoList){
+        this.giftNoList = giftNoList;
+    }
 }

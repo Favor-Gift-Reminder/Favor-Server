@@ -7,8 +7,10 @@ import com.favor.favor.User.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import javax.transaction.Transactional;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -17,12 +19,22 @@ public class GiftService {
     private final UserRepository userRepository;
     private final FriendRepository friendRepository;
 
+    @Transactional
     public GiftDetailResponseDto createGift(GiftRequestDto giftRequestDto, Long userNo, Long friendNo){
         User user =  userRepository.findByUserNo(userNo).orElseThrow(
                 () -> new RuntimeException()
         );
         Gift gift = giftRepository.save(giftRequestDto.toEntity(user, friendNo));
+        addGiftNo(gift.getGiftNo(), friendNo);
         return new GiftDetailResponseDto(gift);
+    }
+    public void addGiftNo(Long giftNo, Long friendNo){
+        Friend friend = friendRepository.findByFriendNo(friendNo).orElseThrow(
+                () -> new RuntimeException()
+        );
+        List<Long> giftNoList = friend.getGiftNoList();
+        giftNoList.add(giftNo);
+        friend.setGiftNoList(giftNoList);
     }
 
     public GiftDetailResponseDto readGift(Long giftNo){
