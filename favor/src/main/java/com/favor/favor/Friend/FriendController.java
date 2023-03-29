@@ -1,6 +1,6 @@
 package com.favor.favor.Friend;
 
-import com.favor.favor.Friend.Account.UserFriendRequestDto;
+import com.favor.favor.Friend.Account.FriendUserRequestDto;
 import com.favor.favor.Friend.NoAccount.FriendRequestDto;
 import com.favor.favor.Friend.NoAccount.FriendUpdateRequestDto;
 import io.swagger.annotations.Api;
@@ -24,7 +24,7 @@ public class FriendController {
     }
     @ApiOperation("회원친구 추가")
     @PostMapping("/add/{userNo}")
-    public FriendDetailResponseDto addFriend(@RequestBody UserFriendRequestDto dto, @PathVariable Long userNo){
+    public FriendDetailResponseDto addFriend(@RequestBody FriendUserRequestDto dto, @PathVariable Long userNo){
         return friendService.addFriend(dto, userNo);
     }
 
@@ -48,7 +48,7 @@ public class FriendController {
 
     @ApiOperation("전체 친구 조회")
     @GetMapping
-    public List<FriendResponseDto> readAll(){
+    public List<FriendDetailResponseDto> readAll(){
         return friendService.readAll();
     }
 }

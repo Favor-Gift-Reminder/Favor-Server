@@ -38,7 +38,7 @@ public class GiftRequestDto {
     private Boolean isGiven;
 
     @Transactional
-    public Gift toEntity(User user, Friend friend){
+    public Gift toEntity(User user, Long friendNo){
         return Gift.builder()
                 .giftName(giftName)
                 .giftDate(giftDate)
@@ -48,7 +48,7 @@ public class GiftRequestDto {
                 .isPinned(false)
                 .isGiven(isGiven)
                 .user(user)
-                .friend(friend)
+                .friendNo(friendNo)
                 .build();
     }
 }

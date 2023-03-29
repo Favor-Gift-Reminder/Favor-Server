@@ -21,10 +21,7 @@ public class GiftService {
         User user =  userRepository.findByUserNo(userNo).orElseThrow(
                 () -> new RuntimeException()
         );
-        Friend friend = friendRepository.findByFriendNo(friendNo).orElseThrow(
-                () -> new RuntimeException()
-        );
-        Gift gift = giftRepository.save(giftRequestDto.toEntity(user, friend));
+        Gift gift = giftRepository.save(giftRequestDto.toEntity(user, friendNo));
         return new GiftDetailResponseDto(gift);
     }
 
@@ -50,7 +47,7 @@ public class GiftService {
         gift.setEmotion(dto.getEmotion());
         gift.setIsPinned(dto.getIsPinned());
         gift.setIsGiven(dto.getIsGiven());
-        gift.setFriend(friend);
+        gift.setFriendNo(friendNo);
 
         giftRepository.save(gift);
         return new GiftDetailResponseDto(gift);

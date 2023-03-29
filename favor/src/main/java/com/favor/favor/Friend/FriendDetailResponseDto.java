@@ -41,19 +41,6 @@ public class FriendDetailResponseDto {
         this.userNo = friend.getUser().getUserNo();
     }
 
-//    @Builder
-//    public FriendDetailResponseDto(Friend friend, List<ReminderResponseDto> reminderList, List<GiftDetailResponseDto> giftList){
-//        this.isUser = friend.getIsUser();
-//        this.friendNo = friend.getFriendNo();
-//        this.friendName = friend.getFriendName();
-//        this.friendMemo = friend.getFriendMemo();
-//        this.reminderList = reminderList;
-//        this.giftList = giftList;
-//        this.favorList = favorList;
-//        this.friendUserNo = friend.getFriendUserNo();
-//        this.userNo = friend.getUser().getUserNo();
-//    }
-
     @Builder
     public FriendDetailResponseDto(Friend friend, List<ReminderResponseDto> reminderList, List<GiftDetailResponseDto> giftList, List<Favor> favorList){
         this.isUser = friend.getIsUser();

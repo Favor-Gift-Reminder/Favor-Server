@@ -42,22 +42,17 @@ public class Friend extends TimeStamped {
 
     @Builder.Default
     @OneToMany(mappedBy = "friend", orphanRemoval = true)
-    private List<Gift> giftList = new ArrayList<>();
-
-    @Builder.Default
-    @OneToMany(mappedBy = "friend", orphanRemoval = true)
     private List<Reminder> reminderList = new ArrayList<>();
 
 
     @Builder.Default
     @ElementCollection
     private List<Integer> favorList = new ArrayList<>();
-
     private Boolean isUser;
 
     private Long friendUserNo;
 
-
-
+    @ElementCollection
+    private List<Long> giftNoList = new ArrayList<>();
 
 }

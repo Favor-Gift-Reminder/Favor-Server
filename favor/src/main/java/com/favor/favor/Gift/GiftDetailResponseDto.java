@@ -39,6 +39,6 @@ public class GiftDetailResponseDto {
         this.isPinned = gift.getIsPinned();
         this.isGiven = gift.getIsGiven();
         this.userNo = gift.getUser().getUserNo();
-        this.friendNo = gift.getFriend().getFriendNo();
+        this.friendNo = gift.getFriendNo();
     }
 }

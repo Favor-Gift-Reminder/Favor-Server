@@ -13,7 +13,7 @@ import javax.transaction.Transactional;
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor
-public class UserFriendRequestDto {
+public class FriendUserRequestDto {
     @ApiModelProperty(position = 1, required = true, dataType = "Long", value = "회원친구번호", example = "1")
     private Long friendUserNo;
 
