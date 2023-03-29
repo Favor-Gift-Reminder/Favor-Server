@@ -5,8 +5,8 @@ import com.favor.favor.Friend.Account.UserFriendRequestDto;
 import com.favor.favor.Friend.NoAccount.FriendRequestDto;
 import com.favor.favor.Friend.NoAccount.FriendUpdateRequestDto;
 import com.favor.favor.Gift.Gift;
+import com.favor.favor.Gift.GiftDetailResponseDto;
 import com.favor.favor.Gift.GiftRepository;
-import com.favor.favor.Gift.GiftResponseDto;
 import com.favor.favor.Reminder.Reminder;
 import com.favor.favor.Reminder.ReminderResponseDto;
 import com.favor.favor.User.User;
@@ -66,11 +66,20 @@ public class FriendService {
             for(Reminder r : user.getReminderList()){
                 reminderList.add(r);
             }
-
             List<ReminderResponseDto> r_List = new ArrayList<>();
             for(Reminder r : reminderList){
                 ReminderResponseDto dto = new ReminderResponseDto(r);
                 r_List.add(dto);
+            }
+
+            List<Gift> giftList = friend.getGiftList();
+            for(Gift g : user.getGiftList()){
+                giftList.add(g);
+            }
+            List<GiftDetailResponseDto> g_List = new ArrayList<>();
+            for(Gift g : giftList){
+                GiftDetailResponseDto dto = new GiftDetailResponseDto(g);
+                g_List.add(dto);
             }
 
             List<Favor> favor_List = new ArrayList<>();
@@ -80,7 +89,7 @@ public class FriendService {
 
             friendRepository.save(friend);
 
-            returnDto = new FriendDetailResponseDto(friend, r_List, favor_List);
+            returnDto = new FriendDetailResponseDto(friend, r_List, g_List, favor_List);
         }
         else{
             List<ReminderResponseDto> r_List = new ArrayList<>();
@@ -89,9 +98,19 @@ public class FriendService {
                 ReminderResponseDto dto = new ReminderResponseDto(r);
                 r_List.add(dto);
             }
+            List<GiftDetailResponseDto> g_List = new ArrayList<>();
+            List<Gift> giftList = friend.getGiftList();
+            for(Gift g : giftList){
+                GiftDetailResponseDto dto = new GiftDetailResponseDto(g);
+                g_List.add(dto);
+            }
+            List<Favor> favor_List = new ArrayList<>();
+            for(Integer favorType : friend.getFavorList()){
+                favor_List.add(Favor.valueOf(favorType));
+            }
             friendRepository.save(friend);
 
-            returnDto = new FriendDetailResponseDto(friend, r_List);
+            returnDto = new FriendDetailResponseDto(friend, r_List, g_List, favor_List);
         }
 
         return returnDto;
@@ -118,7 +137,17 @@ public class FriendService {
             ReminderResponseDto dto = new ReminderResponseDto(r);
             r_List.add(dto);
         }
-        returnDto = new FriendDetailResponseDto(friend, r_List);
+        List<GiftDetailResponseDto> g_List = new ArrayList<>();
+        List<Gift> giftList = friend.getGiftList();
+        for(Gift g : giftList){
+            GiftDetailResponseDto dto = new GiftDetailResponseDto(g);
+            g_List.add(dto);
+        }
+        List<Favor> favor_List = new ArrayList<>();
+        for(Integer favorType : friend.getFavorList()){
+            favor_List.add(Favor.valueOf(favorType));
+        }
+        returnDto = new FriendDetailResponseDto(friend, r_List, g_List, favor_List);
 
         return returnDto;
     }
@@ -148,34 +177,42 @@ public class FriendService {
                 ReminderResponseDto dto = new ReminderResponseDto(r);
                 r_List.add(dto);
             }
+            List<Gift> giftList = friend.getGiftList();
+            for(Gift g : user.getGiftList()){
+                giftList.add(g);
+            }
+            List<GiftDetailResponseDto> g_List = new ArrayList<>();
+            for(Gift g : giftList){
+                GiftDetailResponseDto dto = new GiftDetailResponseDto(g);
+                g_List.add(dto);
+            }
             List<Favor> favor_List = new ArrayList<>();
             for(Integer favorType : user.getFavorList()){
                 favor_List.add(Favor.valueOf(favorType));
             }
 
-            returnDto = new FriendDetailResponseDto(friend, r_List, favor_List);
+            returnDto = new FriendDetailResponseDto(friend, r_List, g_List, favor_List);
         }
         else{
-            List<GiftResponseDto> g_List = new ArrayList<>();
-            List<Gift> giftList = friend.getGiftList();
-            for(Gift g : giftList){
-                GiftResponseDto dto = new GiftResponseDto(g);
-                g_List.add(dto);
-            }
-
             List<ReminderResponseDto> r_List = new ArrayList<>();
             List<Reminder> reminderList = friend.getReminderList();
             for(Reminder r : reminderList){
                 ReminderResponseDto dto = new ReminderResponseDto(r);
                 r_List.add(dto);
             }
-            returnDto = new FriendDetailResponseDto(friend, r_List);
+            List<GiftDetailResponseDto> g_List = new ArrayList<>();
+            List<Gift> giftList = friend.getGiftList();
+            for(Gift g : giftList){
+                GiftDetailResponseDto dto = new GiftDetailResponseDto(g);
+                g_List.add(dto);
+            }
+            List<Favor> favor_List = new ArrayList<>();
+            for(Integer favorType : friend.getFavorList()){
+                favor_List.add(Favor.valueOf(favorType));
+            }
+
+            returnDto = new FriendDetailResponseDto(friend, r_List, g_List, favor_List);
         }
-//
-//        List<Gift> giftList = giftRepository.findGiftsByFriend(friend);
-//        for(Gift gift : giftList){
-//            gift.setFriend(null);
-//        }
 
         friendRepository.deleteById(friendNo);
 
