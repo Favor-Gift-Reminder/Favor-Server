@@ -7,7 +7,7 @@ import com.favor.favor.Friend.NoAccount.FriendUpdateRequestDto;
 import com.favor.favor.Gift.Gift;
 import com.favor.favor.Gift.GiftRepository;
 import com.favor.favor.Reminder.Reminder;
-import com.favor.favor.Reminder.ReminderDetailResponseDto;
+import com.favor.favor.Reminder.ReminderResponseDto;
 import com.favor.favor.User.User;
 import com.favor.favor.User.UserRepository;
 import lombok.RequiredArgsConstructor;
@@ -24,17 +24,17 @@ public class FriendService {
     private final UserRepository userRepository;
     private final GiftRepository giftRepository;
 
-    public FriendDetailResponseDto createFriend(FriendRequestDto dto, Long userNo){
+    public FriendResponseDto createFriend(FriendRequestDto dto, Long userNo){
         User user = userRepository.findByUserNo(userNo).orElseThrow(
                 () -> new RuntimeException()
         );
 
         Friend friend = friendRepository.save(dto.toEntity(user));
-        return new FriendDetailResponseDto(friend);
+        return new FriendResponseDto(friend);
     }
 
     @Transactional
-    public FriendDetailResponseDto addFriend(FriendUserRequestDto dto, Long userNo){
+    public FriendResponseDto addFriend(FriendUserRequestDto dto, Long userNo){
         User user = userRepository.findByUserNo(userNo).orElseThrow(
                 () -> new RuntimeException()
         );
@@ -48,11 +48,11 @@ public class FriendService {
     }
 
     @Transactional
-    public FriendDetailResponseDto readFriend(Long friendNo){
+    public FriendResponseDto readFriend(Long friendNo){
         Friend friend = friendRepository.findByFriendNo(friendNo).orElseThrow(
                 () -> new RuntimeException()
         );
-        FriendDetailResponseDto returnDto;
+        FriendResponseDto returnDto;
 
         if(friend.getIsUser()){ returnDto = returnDtoForFriendUser(friend); }
         else{ returnDto = returnDtoForFriend(friend); }
@@ -61,7 +61,7 @@ public class FriendService {
     }
 
     @Transactional
-    public FriendDetailResponseDto updateFriend(Long friendNo, FriendUpdateRequestDto friendUpdateRequestDto){
+    public FriendResponseDto updateFriend(Long friendNo, FriendUpdateRequestDto friendUpdateRequestDto){
         Friend friend = friendRepository.findByFriendNo(friendNo).orElseThrow(
                 () -> new RuntimeException()
         );
@@ -77,12 +77,12 @@ public class FriendService {
     }
 
     @Transactional
-    public FriendDetailResponseDto deleteFriend(Long friendNo){
+    public FriendResponseDto deleteFriend(Long friendNo){
         Friend friend = friendRepository.findByFriendNo(friendNo).orElseThrow(
                 () -> new RuntimeException()
         );
 
-        FriendDetailResponseDto returnDto = new FriendDetailResponseDto();
+        FriendResponseDto returnDto = new FriendResponseDto();
 
         if(friend.getIsUser()){ returnDto = returnDtoForFriendUser(friend); }
         else{ returnDto = returnDtoForFriend(friend); }
@@ -93,11 +93,11 @@ public class FriendService {
     }
 
     @Transactional
-    public List<FriendDetailResponseDto> readAll(){
-        List<FriendDetailResponseDto> f_List = new ArrayList<>();
+    public List<FriendResponseDto> readAll(){
+        List<FriendResponseDto> f_List = new ArrayList<>();
         List<Friend> friendList = friendRepository.findAll();
         for(Friend f : friendList){
-            FriendDetailResponseDto dto;
+            FriendResponseDto dto;
             if(f.getIsUser()){ dto = returnDtoForFriendUser(f); }
             else{ dto = returnDtoForFriend(f); }
             f_List.add(dto);
@@ -105,15 +105,15 @@ public class FriendService {
         return f_List;
     }
 
-    public FriendDetailResponseDto returnDtoForFriendUser(Friend friend){
+    public FriendResponseDto returnDtoForFriendUser(Friend friend){
         User user = userRepository.findByUserNo(friend.getFriendUserNo()).orElseThrow(
                 () -> new RuntimeException()
         );
 
         List<Reminder> reminderList = user.getReminderList();
-        List<ReminderDetailResponseDto> reminderDtoList = new ArrayList<>();
+        List<ReminderResponseDto> reminderDtoList = new ArrayList<>();
         for(Reminder r : reminderList){
-            reminderDtoList.add(new ReminderDetailResponseDto(r));
+            reminderDtoList.add(new ReminderResponseDto(r));
         }
 //        List<GiftDetailResponseDto> giftDtoList = new ArrayList<>();
 //        for(Gift g : user.getGiftList()){
@@ -130,13 +130,13 @@ public class FriendService {
 
         friendRepository.save(friend);
 
-        return new FriendDetailResponseDto(friend, reminderDtoList, giftNoList, favorList);
+        return new FriendResponseDto(friend, reminderDtoList, giftNoList, favorList);
     }
-    public FriendDetailResponseDto returnDtoForFriend(Friend friend){
-        List<ReminderDetailResponseDto> reminderDtoList = new ArrayList<>();
+    public FriendResponseDto returnDtoForFriend(Friend friend){
+        List<ReminderResponseDto> reminderDtoList = new ArrayList<>();
         List<Reminder> reminderList = friend.getReminderList();
         for(Reminder r : reminderList){
-            ReminderDetailResponseDto dto = new ReminderDetailResponseDto(r);
+            ReminderResponseDto dto = new ReminderResponseDto(r);
             reminderDtoList.add(dto);
         }
 //        List<GiftDetailResponseDto> giftList = new ArrayList<>();
@@ -157,6 +157,6 @@ public class FriendService {
         }
         friendRepository.save(friend);
 
-        return new FriendDetailResponseDto(friend, reminderDtoList, giftNoList, favorList);
+        return new FriendResponseDto(friend, reminderDtoList, giftNoList, favorList);
     }
 }

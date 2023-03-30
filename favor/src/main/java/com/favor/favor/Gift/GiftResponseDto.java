@@ -12,7 +12,7 @@ import java.time.LocalDate;
 @Getter
 @AllArgsConstructor
 @Builder
-public class GiftDetailResponseDto {
+public class GiftResponseDto {
 
     private Long giftNo;
     private String giftName;
@@ -29,7 +29,7 @@ public class GiftDetailResponseDto {
     private Long friendNo;
 
     @Builder
-    public GiftDetailResponseDto(Gift gift){
+    public GiftResponseDto(Gift gift){
         this.giftNo = gift.getGiftNo();
         this.giftName = gift.getGiftName();
         this.giftDate = gift.getGiftDate();

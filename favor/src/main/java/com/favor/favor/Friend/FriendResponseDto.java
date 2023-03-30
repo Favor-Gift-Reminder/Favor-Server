@@ -1,7 +1,7 @@
 package com.favor.favor.Friend;
 
 import com.favor.favor.Enum.Favor;
-import com.favor.favor.Reminder.ReminderDetailResponseDto;
+import com.favor.favor.Reminder.ReminderResponseDto;
 import lombok.*;
 
 import java.util.List;
@@ -9,7 +9,7 @@ import java.util.List;
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor
-public class FriendDetailResponseDto {
+public class FriendResponseDto {
     //Service 단에서 isUser 로 분기점
     //UserFriend 의 경우 : friendName, friendMemo, giftList, reminderList, [favorList], [userNo]
     //Friend 의 경우 : friendName, friendMemo, giftList, reminderList
@@ -21,7 +21,7 @@ public class FriendDetailResponseDto {
     private String friendMemo;
 
 
-    private List<ReminderDetailResponseDto> reminderList;
+    private List<ReminderResponseDto> reminderList;
 //    private List<GiftDetailResponseDto> giftList;
     private List<Long> giftNoList;
     private List<Favor> favorList;
@@ -32,7 +32,7 @@ public class FriendDetailResponseDto {
     private Long userNo;
 
     @Builder
-    public FriendDetailResponseDto(Friend friend){
+    public FriendResponseDto(Friend friend){
         this.isUser = friend.getIsUser();
         this.friendNo = friend.getFriendNo();
         this.friendName = friend.getFriendName();
@@ -42,7 +42,7 @@ public class FriendDetailResponseDto {
     }
 
     @Builder
-    public FriendDetailResponseDto(Friend friend, List<ReminderDetailResponseDto> reminderList, List<Long> giftNoList, List<Favor> favorList){
+    public FriendResponseDto(Friend friend, List<ReminderResponseDto> reminderList, List<Long> giftNoList, List<Favor> favorList){
         this.isUser = friend.getIsUser();
         this.friendNo = friend.getFriendNo();
         this.friendName = friend.getFriendName();

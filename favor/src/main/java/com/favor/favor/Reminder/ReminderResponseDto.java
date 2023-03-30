@@ -10,7 +10,7 @@ import java.time.LocalDateTime;
 @Getter
 @AllArgsConstructor
 @Builder
-public class ReminderDetailResponseDto {
+public class ReminderResponseDto {
     private final Long reminderNo;
     private String title;
     private LocalDate reminderDate;
@@ -22,7 +22,7 @@ public class ReminderDetailResponseDto {
     private Long friendNo;
 
     @Builder
-    public ReminderDetailResponseDto(Reminder reminder){
+    public ReminderResponseDto(Reminder reminder){
         this.reminderNo = reminder.getReminderNo();
         this.title = reminder.getTitle();
         this.reminderDate = reminder.getReminderDate();

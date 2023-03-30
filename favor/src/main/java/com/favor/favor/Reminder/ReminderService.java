@@ -17,7 +17,7 @@ public class ReminderService {
     private final UserRepository userRepository;
     private final FriendRepository friendRepository;
 
-    public ReminderDetailResponseDto createReminder(ReminderRequestDto reminderRequestDto, Long userNo, Long friendNo){
+    public ReminderResponseDto createReminder(ReminderRequestDto reminderRequestDto, Long userNo, Long friendNo){
         User user = userRepository.findByUserNo(userNo).orElseThrow(
                 () -> new RuntimeException()
         );
@@ -25,18 +25,18 @@ public class ReminderService {
                 () -> new RuntimeException()
         );
         Reminder reminder = reminderRepository.save(reminderRequestDto.toEntity(user, friend));
-        return new ReminderDetailResponseDto(reminder);
+        return new ReminderResponseDto(reminder);
     }
 
-    public ReminderDetailResponseDto readReminder(Long reminderNo){
+    public ReminderResponseDto readReminder(Long reminderNo){
         Reminder reminder = reminderRepository.findByReminderNo(reminderNo).orElseThrow(
                 () -> new RuntimeException()
         );
-        ReminderDetailResponseDto dto = new ReminderDetailResponseDto(reminder);
+        ReminderResponseDto dto = new ReminderResponseDto(reminder);
         return dto;
     }
 
-    public ReminderDetailResponseDto updateReminder(Long reminderNo, ReminderUpdateRequestDto dto, Long friendNo){
+    public ReminderResponseDto updateReminder(Long reminderNo, ReminderUpdateRequestDto dto, Long friendNo){
         Reminder reminder = reminderRepository.findByReminderNo(reminderNo).orElseThrow(
                 () -> new RuntimeException()
         );
@@ -53,22 +53,22 @@ public class ReminderService {
         reminderRepository.save(reminder);
 
 
-        return new ReminderDetailResponseDto(reminder);
+        return new ReminderResponseDto(reminder);
     }
 
-    public ReminderDetailResponseDto deleteReminder(Long reminderNo){
+    public ReminderResponseDto deleteReminder(Long reminderNo){
         Reminder reminder = reminderRepository.findByReminderNo(reminderNo).orElseThrow(
                 () -> new RuntimeException()
         );
-        ReminderDetailResponseDto returnDto = new ReminderDetailResponseDto(reminder);
+        ReminderResponseDto returnDto = new ReminderResponseDto(reminder);
         reminderRepository.deleteById(reminderNo);
         return returnDto;
     }
 
-    public List<ReminderDetailResponseDto> readAll(){
-        List<ReminderDetailResponseDto> r_List = new ArrayList<>();
+    public List<ReminderResponseDto> readAll(){
+        List<ReminderResponseDto> r_List = new ArrayList<>();
         for(Reminder r : reminderRepository.findAll()){
-            ReminderDetailResponseDto dto = new ReminderDetailResponseDto(r);
+            ReminderResponseDto dto = new ReminderResponseDto(r);
             r_List.add(dto);
         }
         return r_List;

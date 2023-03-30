@@ -4,9 +4,9 @@ package com.favor.favor.User;
 import com.favor.favor.Common.DefaultResponseDto;
 import com.favor.favor.Enum.Category;
 import com.favor.favor.Enum.Emotion;
-import com.favor.favor.Friend.FriendDetailResponseDto;
-import com.favor.favor.Gift.GiftDetailResponseDto;
-import com.favor.favor.Reminder.ReminderDetailResponseDto;
+import com.favor.favor.Friend.FriendResponseDto;
+import com.favor.favor.Gift.GiftResponseDto;
+import com.favor.favor.Reminder.ReminderResponseDto;
 import io.swagger.annotations.*;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -28,7 +28,7 @@ public class UserController {
     @ApiResponses(value={
             @ApiResponse(code = 201,
                     message = "USER_REGISTERED",
-                    response = UserDetailResponseDto.class),
+                    response = UserResponseDto.class),
             @ApiResponse(code = 400,
                     message = "FILED_REQUIRED / *_CHARACTER_INVALID / *_LENGTH_INVALID"),
             @ApiResponse(code = 401,
@@ -49,7 +49,7 @@ public class UserController {
         userService.isExistingEmail(signUpDto.getEmail());
 
         User user = userService.signUp(signUpDto);
-        UserDetailResponseDto dto = userService.returnUserDetailDto(user);
+        UserResponseDto dto = userService.returnUserDetailDto(user);
 
         return ResponseEntity.status(201)
                 .body(DefaultResponseDto.builder()
@@ -63,7 +63,7 @@ public class UserController {
     @ApiResponses(value={
             @ApiResponse(code = 200,
                     message = "PROFILE_UPDATED",
-                    response = UserDetailResponseDto.class),
+                    response = UserResponseDto.class),
             @ApiResponse(code = 400,
                     message = "FILED_REQUIRED / *_CHARACTER_INVALID / *_LENGTH_INVALID"),
             @ApiResponse(code = 401,
@@ -84,7 +84,7 @@ public class UserController {
         userService.isExistingUserId(profileDto.getUserId());
 
         User user = userService.createProfile(profileDto, userNo);
-        UserDetailResponseDto dto = userService.returnUserDetailDto(user);
+        UserResponseDto dto = userService.returnUserDetailDto(user);
 
         return ResponseEntity.status(200)
                 .body(DefaultResponseDto.builder()
@@ -99,7 +99,7 @@ public class UserController {
     @ApiResponses(value={
             @ApiResponse(code = 200,
                     message = "USER_FOUND",
-                    response = UserDetailResponseDto.class),
+                    response = UserResponseDto.class),
             @ApiResponse(code = 401,
                     message = "UNAUTHORIZED_USER"),
             @ApiResponse(code = 404,
@@ -116,7 +116,7 @@ public class UserController {
         userService.isExistingUserNo(userNo);
 
         User user = userService.readUser(userNo);
-        UserDetailResponseDto dto = userService.returnUserDetailDto(user);
+        UserResponseDto dto = userService.returnUserDetailDto(user);
 
         return ResponseEntity.status(200)
                 .body(DefaultResponseDto.builder()
@@ -130,7 +130,7 @@ public class UserController {
     @ApiResponses(value={
             @ApiResponse(code = 200,
                     message = "USER_UPDATED",
-                    response = UserDetailResponseDto.class),
+                    response = UserResponseDto.class),
             @ApiResponse(code = 401,
                     message = "UNAUTHORIZED_USER"),
             @ApiResponse(code = 404,
@@ -150,7 +150,7 @@ public class UserController {
         User user = userService.readUser(userNo);
         userService.updateUser(user, userUpdateRequestDto);
 
-        UserDetailResponseDto dto = userService.returnUserDetailDto(user);
+        UserResponseDto dto = userService.returnUserDetailDto(user);
 
         return ResponseEntity.status(200)
                 .body(DefaultResponseDto.builder()
@@ -165,7 +165,7 @@ public class UserController {
     @ApiResponses(value={
             @ApiResponse(code = 200,
                     message = "USER_DELETED",
-                    response = UserDetailResponseDto.class),
+                    response = UserResponseDto.class),
             @ApiResponse(code = 401,
                     message = "UNAUTHORIZED_USER"),
             @ApiResponse(code = 404,
@@ -182,7 +182,7 @@ public class UserController {
         userService.isExistingUserNo(userNo);
 
         User user = userService.findUserByUserNo(userNo);
-        UserDetailResponseDto dto = userService.returnUserDetailDto(user);
+        UserResponseDto dto = userService.returnUserDetailDto(user);
 
         userService.deleteUser(userNo);
 
@@ -198,7 +198,7 @@ public class UserController {
     @ApiResponses(value={
             @ApiResponse(code = 200,
                     message = "PASSWORD_UPDATED",
-                    response = UserDetailResponseDto.class),
+                    response = UserResponseDto.class),
             @ApiResponse(code = 401,
                     message = "UNAUTHORIZED_USER"),
             @ApiResponse(code = 404,
@@ -215,7 +215,7 @@ public class UserController {
         userService.validateExistingEmail(passwordDto.getEmail());
 
         User user = userService.updatePassword(passwordDto.getEmail(), passwordDto.getPassword1());
-        UserDetailResponseDto dto = userService.returnUserDetailDto(user);
+        UserResponseDto dto = userService.returnUserDetailDto(user);
 
         return ResponseEntity.status(200)
                 .body(DefaultResponseDto.builder()
@@ -230,7 +230,7 @@ public class UserController {
     @ApiResponses(value={
             @ApiResponse(code = 200,
                     message = "REMINDERS_FOUND",
-                    response = UserDetailResponseDto.class),
+                    response = UserResponseDto.class),
             @ApiResponse(code = 401,
                     message = "UNAUTHORIZED_USER"),
             @ApiResponse(code = 404,
@@ -246,7 +246,7 @@ public class UserController {
 
         userService.isExistingUserNo(userNo);
 
-        List<ReminderDetailResponseDto> reminders = userService.readReminderList(userNo);
+        List<ReminderResponseDto> reminders = userService.readReminderList(userNo);
 
         return ResponseEntity.status(200)
                 .body(DefaultResponseDto.builder()
@@ -260,7 +260,7 @@ public class UserController {
     @ApiResponses(value={
             @ApiResponse(code = 200,
                     message = "GIFTS_FOUND",
-                    response = UserDetailResponseDto.class),
+                    response = UserResponseDto.class),
             @ApiResponse(code = 401,
                     message = "UNAUTHORIZED_USER"),
             @ApiResponse(code = 404,
@@ -276,7 +276,7 @@ public class UserController {
 
         userService.isExistingUserNo(userNo);
 
-        List<GiftDetailResponseDto> gifts = userService.readGiftList(userNo);
+        List<GiftResponseDto> gifts = userService.readGiftList(userNo);
 
         return ResponseEntity.status(200)
                 .body(DefaultResponseDto.builder()
@@ -290,7 +290,7 @@ public class UserController {
     @ApiResponses(value={
             @ApiResponse(code = 200,
                     message = "FRIENDSS_FOUND",
-                    response = UserDetailResponseDto.class),
+                    response = UserResponseDto.class),
             @ApiResponse(code = 401,
                     message = "UNAUTHORIZED_USER"),
             @ApiResponse(code = 404,
@@ -305,7 +305,7 @@ public class UserController {
 
         userService.isExistingUserNo(userNo);
 
-        List<FriendDetailResponseDto> friends = userService.readFriendList(userNo);
+        List<FriendResponseDto> friends = userService.readFriendList(userNo);
 
         return ResponseEntity.status(200)
                 .body(DefaultResponseDto.builder()
@@ -320,7 +320,7 @@ public class UserController {
     @ApiResponses(value={
             @ApiResponse(code = 200,
                     message = "USERS_FOUND",
-                    response = UserDetailResponseDto.class),
+                    response = UserResponseDto.class),
             @ApiResponse(code = 401,
                     message = "UNAUTHORIZED_USER"),
             @ApiResponse(code = 404,
@@ -333,7 +333,7 @@ public class UserController {
     @GetMapping
     public ResponseEntity<DefaultResponseDto<Object>> readAll(){
 
-        List<UserDetailResponseDto> dto = userService.readAll();
+        List<UserResponseDto> dto = userService.readAll();
 
         return ResponseEntity.status(200)
                 .body(DefaultResponseDto.builder()
@@ -348,7 +348,7 @@ public class UserController {
     @ApiResponses(value={
             @ApiResponse(code = 200,
                     message = "GIFTS_BY_NAME_FOUND",
-                    response = UserDetailResponseDto.class),
+                    response = UserResponseDto.class),
             @ApiResponse(code = 401,
                     message = "UNAUTHORIZED_USER"),
             @ApiResponse(code = 404,
@@ -365,7 +365,7 @@ public class UserController {
 
         userService.isExistingUserNo(userNo);
 
-        List<GiftDetailResponseDto> dto =  userService.readGiftListByName(userNo, giftName);
+        List<GiftResponseDto> dto =  userService.readGiftListByName(userNo, giftName);
 
         return ResponseEntity.status(200)
                 .body(DefaultResponseDto.builder()
@@ -379,7 +379,7 @@ public class UserController {
     @ApiResponses(value={
             @ApiResponse(code = 200,
                     message = "GIFTS_BY_CATEGORY_FOUND",
-                    response = UserDetailResponseDto.class),
+                    response = UserResponseDto.class),
             @ApiResponse(code = 401,
                     message = "UNAUTHORIZED_USER"),
             @ApiResponse(code = 404,
@@ -396,7 +396,7 @@ public class UserController {
 
         userService.isExistingUserNo(userNo);
 
-        List<GiftDetailResponseDto> dto =  userService.readGiftListByCategory(userNo, category);
+        List<GiftResponseDto> dto =  userService.readGiftListByCategory(userNo, category);
 
         return ResponseEntity.status(200)
                 .body(DefaultResponseDto.builder()
@@ -410,7 +410,7 @@ public class UserController {
     @ApiResponses(value={
             @ApiResponse(code = 200,
                     message = "GIFTS_BY_EMOTION_FOUND",
-                    response = UserDetailResponseDto.class),
+                    response = UserResponseDto.class),
             @ApiResponse(code = 401,
                     message = "UNAUTHORIZED_USER"),
             @ApiResponse(code = 404,
@@ -427,7 +427,7 @@ public class UserController {
 
         userService.isExistingUserNo(userNo);
 
-        List<GiftDetailResponseDto> dto =  userService.readGiftListByEmotion(userNo, emotion);
+        List<GiftResponseDto> dto =  userService.readGiftListByEmotion(userNo, emotion);
 
         return ResponseEntity.status(200)
                 .body(DefaultResponseDto.builder()
@@ -441,7 +441,7 @@ public class UserController {
     @ApiResponses(value={
             @ApiResponse(code = 200,
                     message = "USER_BY_ID_FOUND",
-                    response = UserDetailResponseDto.class),
+                    response = UserResponseDto.class),
             @ApiResponse(code = 401,
                     message = "UNAUTHORIZED_USER"),
             @ApiResponse(code = 404,
@@ -456,7 +456,7 @@ public class UserController {
             @PathVariable("userId") String userId){
 
         User user = userService.findUserByUserId(userId);
-        UserDetailResponseDto dto = userService.returnUserDetailDto(user);
+        UserResponseDto dto = userService.returnUserDetailDto(user);
 
         return ResponseEntity.status(200)
                 .body(DefaultResponseDto.builder()

@@ -2,9 +2,9 @@ package com.favor.favor.User;
 
 import com.favor.favor.Enum.Favor;
 import com.favor.favor.Enum.Role;
-import com.favor.favor.Friend.FriendDetailResponseDto;
-import com.favor.favor.Gift.GiftDetailResponseDto;
-import com.favor.favor.Reminder.ReminderDetailResponseDto;
+import com.favor.favor.Friend.FriendResponseDto;
+import com.favor.favor.Gift.GiftResponseDto;
+import com.favor.favor.Reminder.ReminderResponseDto;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -14,19 +14,19 @@ import java.util.List;
 @Getter
 @AllArgsConstructor
 @Builder
-public class UserDetailResponseDto {
+public class UserResponseDto {
     private final Long userNo;
     private String email;
     private String name;
     private String userid;
     private Role role;
-    private List<ReminderDetailResponseDto> reminderList;
-    private List<GiftDetailResponseDto> giftlist;
-    private List<FriendDetailResponseDto> friendList;
+    private List<ReminderResponseDto> reminderList;
+    private List<GiftResponseDto> giftlist;
+    private List<FriendResponseDto> friendList;
     private List<Favor> favorList;
 
     @Builder
-    public UserDetailResponseDto(User user, List<ReminderDetailResponseDto> reminderList, List<GiftDetailResponseDto> giftlist, List<FriendDetailResponseDto> friendList, List<Favor> favor_List){
+    public UserResponseDto(User user, List<ReminderResponseDto> reminderList, List<GiftResponseDto> giftlist, List<FriendResponseDto> friendList, List<Favor> favor_List){
         this.userNo = user.getUserNo();
         this.email = user.getEmail();
         this.name = user.getName();
