@@ -28,15 +28,6 @@ public class UserService {
     private final GiftRepository giftRepository;
     private final FriendRepository friendRepository;
 
-    @Transactional
-    public User save(User user){
-        try{
-            return userRepository.save(user);
-        } catch(RuntimeException e){
-            //500
-            throw new CustomException(e, SERVER_ERROR);
-        }
-    }
 
     @Transactional
     public User signUp(SignUpDto signUpDto) {
@@ -80,11 +71,10 @@ public class UserService {
     }
 
     @Transactional
-    public User deleteUser(Long userNo){
+    public void deleteUser(Long userNo) {
         User user = findUserByUserNo(userNo);
         friendRepository.deleteFriendsByFriendUserNo(userNo);
         userRepository.deleteByUserNo(userNo);
-        return user;
     }
 
 
@@ -138,7 +128,7 @@ public class UserService {
         List<UserResponseDto> u_List = new ArrayList<>();
         List<User> userList = userRepository.findAll();
         for(User user : userList){
-            UserResponseDto userResponseDto = returnUserDetailDto(user);
+            UserResponseDto userResponseDto = returnUserDto(user);
             u_List.add(userResponseDto);
         }
         return u_List;
@@ -190,6 +180,18 @@ public class UserService {
 
 
 
+
+    @Transactional
+    public User save(User user){
+        try{
+            return userRepository.save(user);
+        } catch(RuntimeException e){
+            //500
+            throw new CustomException(e, SERVER_ERROR);
+        }
+    }
+
+    //VALIDATE
     public void validateExistingEmail (String email){
         Boolean isExistingEmail = null;
         try{
@@ -204,8 +206,9 @@ public class UserService {
 
 
 
+    //FIND
     public User findUserByUserNo(Long userNo){
-            User user = null;
+        User user = null;
         try{
             user = userRepository.findByUserNo(userNo).orElseThrow(
                     () -> new RuntimeException()
@@ -241,8 +244,9 @@ public class UserService {
 
 
 
+    //RETURN
     @Transactional
-    public UserResponseDto returnUserDetailDto(User user){
+    public UserResponseDto returnUserDto(User user){
         List<ReminderResponseDto> r_list = new ArrayList<>();
         List<Reminder> reminderList = user.getReminderList();
         for(Reminder r : reminderList){
@@ -274,6 +278,7 @@ public class UserService {
 
 
 
+    //IS_EXISTING
     public void isExistingUserId (String id){
         Boolean isExistingId = null;
         try{
@@ -309,6 +314,5 @@ public class UserService {
             throw new CustomException(null, USER_NOT_FOUND);
         }
     }
-
 
 }

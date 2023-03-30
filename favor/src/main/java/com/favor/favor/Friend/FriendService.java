@@ -1,6 +1,7 @@
 package com.favor.favor.Friend;
 
 import com.favor.favor.Enum.Favor;
+import com.favor.favor.Exception.CustomException;
 import com.favor.favor.Friend.Account.FriendUserRequestDto;
 import com.favor.favor.Friend.NoAccount.FriendRequestDto;
 import com.favor.favor.Friend.NoAccount.FriendUpdateRequestDto;
@@ -17,6 +18,8 @@ import javax.transaction.Transactional;
 import java.util.ArrayList;
 import java.util.List;
 
+import static com.favor.favor.Exception.ExceptionCode.*;
+
 @Service
 @RequiredArgsConstructor
 public class FriendService {
@@ -24,72 +27,58 @@ public class FriendService {
     private final UserRepository userRepository;
     private final GiftRepository giftRepository;
 
-    public FriendResponseDto createFriend(FriendRequestDto dto, Long userNo){
-        User user = userRepository.findByUserNo(userNo).orElseThrow(
-                () -> new RuntimeException()
-        );
 
-        Friend friend = friendRepository.save(dto.toEntity(user));
-        return new FriendResponseDto(friend);
+
+    public Friend createFriend(FriendRequestDto dto, Long userNo){
+        User user = findUserByUserNo(userNo);
+
+        return save(dto.toEntity(user));
     }
 
     @Transactional
-    public FriendResponseDto addFriend(FriendUserRequestDto dto, Long userNo){
-        User user = userRepository.findByUserNo(userNo).orElseThrow(
-                () -> new RuntimeException()
-        );
+    public Friend addFriend(FriendUserRequestDto dto, Long userNo){
+        User user = findUserByUserNo(userNo);
         Long friendUserNo = dto.getFriendUserNo();
-        User friendUser = userRepository.findByUserNo(friendUserNo).orElseThrow(
-                () -> new RuntimeException()
-        );
-        Friend userFriend = friendRepository.save(dto.toEntity(user, friendUser));
+        User friendUser = findUserByUserNo(friendUserNo);
 
-        return returnDtoForFriendUser(userFriend);
+        if(isDuplicateFriendUser(user, friendUser))  throw new CustomException(null, DUPLICATE_FRIEND);
+
+        return save(dto.toEntity(user, friendUser));
+    }
+
+    public Boolean isDuplicateFriendUser(User user, User friendUser){
+        Boolean isDuplicate = false;
+        List<Friend> friendList = user.getFriendList();
+        for(Friend f : friendList){
+            if(f.getIsUser()) {
+                if(f.getFriendUserNo() == friendUser.getUserNo()) isDuplicate = true;
+            }
+        }
+
+        return isDuplicate;
     }
 
     @Transactional
-    public FriendResponseDto readFriend(Long friendNo){
-        Friend friend = friendRepository.findByFriendNo(friendNo).orElseThrow(
-                () -> new RuntimeException()
-        );
-        FriendResponseDto returnDto;
-
-        if(friend.getIsUser()){ returnDto = returnDtoForFriendUser(friend); }
-        else{ returnDto = returnDtoForFriend(friend); }
-
-        return returnDto;
+    public Friend readFriend(Long friendNo){
+        return findFriendByFriendNo(friendNo);
     }
 
     @Transactional
-    public FriendResponseDto updateFriend(Long friendNo, FriendUpdateRequestDto friendUpdateRequestDto){
-        Friend friend = friendRepository.findByFriendNo(friendNo).orElseThrow(
-                () -> new RuntimeException()
-        );
-
-        if(friend.getIsUser()) throw new RuntimeException(); //회원은 변경 안돼유
+    public Friend updateFriend(Friend friend, FriendUpdateRequestDto friendUpdateRequestDto){
+        //회원은 변경 안돼유
+        if(friend.getIsUser()) throw new CustomException(null, ILLEGAL_ARGUMENT_FRIEND);
 
         friend.setFriendName(friendUpdateRequestDto.getFriendName());
         friend.setFriendMemo(friendUpdateRequestDto.getFriendMemo());
+        save(friend);
 
-        friendRepository.save(friend);
-
-        return returnDtoForFriend(friend);
+        return save(friend);
     }
 
     @Transactional
-    public FriendResponseDto deleteFriend(Long friendNo){
-        Friend friend = friendRepository.findByFriendNo(friendNo).orElseThrow(
-                () -> new RuntimeException()
-        );
-
-        FriendResponseDto returnDto = new FriendResponseDto();
-
-        if(friend.getIsUser()){ returnDto = returnDtoForFriendUser(friend); }
-        else{ returnDto = returnDtoForFriend(friend); }
-
+    public void deleteFriend(Long friendNo){
+        Friend friend = findFriendByFriendNo(friendNo);
         friendRepository.deleteById(friendNo);
-
-        return returnDto;
     }
 
     @Transactional
@@ -105,6 +94,48 @@ public class FriendService {
         return f_List;
     }
 
+
+    @Transactional
+    public Friend save(Friend friend){
+        try{
+            return friendRepository.save(friend);
+        }catch(RuntimeException e){
+            throw new CustomException(e, SERVER_ERROR);
+        }
+    }
+
+
+    //FIND
+    public User findUserByUserNo(Long userNo){
+        User user = null;
+        try{
+            user = userRepository.findByUserNo(userNo).orElseThrow(
+                    () -> new RuntimeException()
+            );
+        } catch (RuntimeException e){
+            throw new CustomException(e, USER_NOT_FOUND);
+        }
+        return user;
+    }
+    public Friend findFriendByFriendNo(Long friendNo){
+        Friend friend = null;
+        try{
+            friend = friendRepository.findByFriendNo(friendNo).orElseThrow(
+                    () -> new RuntimeException()
+            );
+        } catch (RuntimeException e){
+            throw new CustomException(e, FRIEND_NOT_FOUND);
+        }
+        return friend;
+    }
+
+
+
+    //RETURN
+    public FriendResponseDto returnDto(Friend friend){
+        if(friend.getIsUser()) return returnDtoForFriendUser(friend);
+        else return returnDtoForFriend(friend);
+    }
     public FriendResponseDto returnDtoForFriendUser(Friend friend){
         User user = userRepository.findByUserNo(friend.getFriendUserNo()).orElseThrow(
                 () -> new RuntimeException()
@@ -115,10 +146,6 @@ public class FriendService {
         for(Reminder r : reminderList){
             reminderDtoList.add(new ReminderResponseDto(r));
         }
-//        List<GiftDetailResponseDto> giftDtoList = new ArrayList<>();
-//        for(Gift g : user.getGiftList()){
-//            giftDtoList.add(new GiftDetailResponseDto(g));
-//        }
         List<Long> giftNoList = new ArrayList<>();
         for(Gift g : user.getGiftList()){
             giftNoList.add(g.getGiftNo());
@@ -139,14 +166,6 @@ public class FriendService {
             ReminderResponseDto dto = new ReminderResponseDto(r);
             reminderDtoList.add(dto);
         }
-//        List<GiftDetailResponseDto> giftList = new ArrayList<>();
-//        for(Long g : friend.getGiftNoList()){
-//            Gift gift = giftRepository.findByGiftNo(g).orElseThrow(
-//                    () -> new RuntimeException()
-//            );
-//            GiftDetailResponseDto dto = new GiftDetailResponseDto(gift);
-//            giftList.add(dto);
-//        }
         List<Long> giftNoList = new ArrayList<>();
         for(Long g : friend.getGiftNoList()){
             giftNoList.add(g);
@@ -158,5 +177,44 @@ public class FriendService {
         friendRepository.save(friend);
 
         return new FriendResponseDto(friend, reminderDtoList, giftNoList, favorList);
+    }
+
+
+
+    //IS_EXISTING
+    public void isExistingUserNo (Long userNo){
+        Boolean isExistingNo = null;
+        try{
+            isExistingNo = userRepository.existsByUserNo(userNo);
+        } catch(RuntimeException e){
+            throw new CustomException(e, SERVER_ERROR);
+        }
+        if(!isExistingNo){
+            throw new CustomException(null, USER_NOT_FOUND);
+        }
+    }
+
+    public void isExistingFriendUserNo (Long userNo){
+        Boolean isExistingNo = null;
+        try{
+            isExistingNo = userRepository.existsByUserNo(userNo);
+        } catch(RuntimeException e){
+            throw new CustomException(e, SERVER_ERROR);
+        }
+        if(!isExistingNo){
+            throw new CustomException(null, FRIEND_USER_NOT_FOUND);
+        }
+    }
+
+    public void isExistingFriendNo (Long friendNo){
+        Boolean isExistingNo = null;
+        try{
+            isExistingNo = friendRepository.existsByFriendNo(friendNo);
+        } catch(RuntimeException e){
+            throw new CustomException(e, SERVER_ERROR);
+        }
+        if(!isExistingNo){
+            throw new CustomException(null, FRIEND_NOT_FOUND);
+        }
     }
 }

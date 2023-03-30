@@ -25,6 +25,7 @@ public enum ExceptionCode {
 
     ILLEGAL_ARGUMENT_ADMIN(BAD_REQUEST, "관리자는 해당 요청의 설정 대상이 될 수 없습니다."),
     ILLEGAL_ARGUMENT_SELF(BAD_REQUEST, "본인은 해당 요청의 설정 대상이 될 수 없습니다."),
+    ILLEGAL_ARGUMENT_FRIEND(BAD_REQUEST, "친구는 해당 요청의 설정 대상이 될 수 없습니다."),
 
     /**
      * 401 UNAUTHORIZED : 인증되지 않은 사용자
@@ -47,6 +48,8 @@ public enum ExceptionCode {
      */
     EMAIL_NOT_FOUND(NOT_FOUND, "등록된 이메일이 없습니다."),
     USER_NOT_FOUND(NOT_FOUND, "등록된 회원이 없습니다."),
+    FRIEND_NOT_FOUND(NOT_FOUND, "등록된 친구가 없습니다."),
+    FRIEND_USER_NOT_FOUND(NOT_FOUND, "친구로 등록하려는 회원이 없습니다."),
 
     /**
      * 405 METHOD_NOT_ALLOWED : 대상 리소스가 해당 메서드를 지원하지 않음
@@ -59,6 +62,7 @@ public enum ExceptionCode {
     DUPLICATE_EMAIL(CONFLICT, "이미 등록된 이메일입니다."),
     DUPLICATE_USER(CONFLICT, "이미 등록된 회원입니다."),
     DUPLICATE_ID(CONFLICT, "이미 등록된 아이디입니다."),
+    DUPLICATE_FRIEND(CONFLICT, "이미 등록된 친구입니다."),
 
     /**
      * 413 PAYLOAD_TOO_LARGE

@@ -29,7 +29,7 @@ public class SwaggerConfiguration {
         return new ApiInfoBuilder()
                 .title("Favor-Server")
                 .description("Favor Application API Test")
-                .version("1.0.0")
+                .version("1.0.1")
                 .build();
     }
 }

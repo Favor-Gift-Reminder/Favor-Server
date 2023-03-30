@@ -52,6 +52,7 @@ public class Friend extends TimeStamped {
 
     private Long friendUserNo;
 
+    @Builder.Default
     @ElementCollection
     private List<Long> giftNoList = new ArrayList<>();
     public void setGiftNoList(List<Long> giftNoList){

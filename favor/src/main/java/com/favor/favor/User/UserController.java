@@ -49,7 +49,7 @@ public class UserController {
         userService.isExistingEmail(signUpDto.getEmail());
 
         User user = userService.signUp(signUpDto);
-        UserResponseDto dto = userService.returnUserDetailDto(user);
+        UserResponseDto dto = userService.returnUserDto(user);
 
         return ResponseEntity.status(201)
                 .body(DefaultResponseDto.builder()
@@ -59,7 +59,7 @@ public class UserController {
                         .build());
     }
 
-    @ApiOperation("프로필생성")
+    @ApiOperation("프로필 생성")
     @ApiResponses(value={
             @ApiResponse(code = 200,
                     message = "PROFILE_UPDATED",
@@ -79,17 +79,18 @@ public class UserController {
     @Transactional
     @PatchMapping("/profile/{userNo}")
     public ResponseEntity<DefaultResponseDto<Object>> createProfile(
-            @RequestBody @Valid ProfileDto profileDto, @PathVariable Long userNo) {
+            @RequestBody @Valid ProfileDto profileDto,
+            @PathVariable Long userNo) {
 
         userService.isExistingUserId(profileDto.getUserId());
 
         User user = userService.createProfile(profileDto, userNo);
-        UserResponseDto dto = userService.returnUserDetailDto(user);
+        UserResponseDto dto = userService.returnUserDto(user);
 
         return ResponseEntity.status(200)
                 .body(DefaultResponseDto.builder()
                         .responseCode("PROFILE_UPDATED")
-                        .responseMessage("프로필 생성")
+                        .responseMessage("프로필 생성 완료")
                         .data(dto)
                         .build());
     }
@@ -116,7 +117,7 @@ public class UserController {
         userService.isExistingUserNo(userNo);
 
         User user = userService.readUser(userNo);
-        UserResponseDto dto = userService.returnUserDetailDto(user);
+        UserResponseDto dto = userService.returnUserDto(user);
 
         return ResponseEntity.status(200)
                 .body(DefaultResponseDto.builder()
@@ -147,10 +148,10 @@ public class UserController {
         
         userService.isExistingUserNo(userNo);
 
-        User user = userService.readUser(userNo);
+        User user = userService.findUserByUserNo(userNo);
         userService.updateUser(user, userUpdateRequestDto);
 
-        UserResponseDto dto = userService.returnUserDetailDto(user);
+        UserResponseDto dto = userService.returnUserDto(user);
 
         return ResponseEntity.status(200)
                 .body(DefaultResponseDto.builder()
@@ -182,7 +183,7 @@ public class UserController {
         userService.isExistingUserNo(userNo);
 
         User user = userService.findUserByUserNo(userNo);
-        UserResponseDto dto = userService.returnUserDetailDto(user);
+        UserResponseDto dto = userService.returnUserDto(user);
 
         userService.deleteUser(userNo);
 
@@ -215,7 +216,7 @@ public class UserController {
         userService.validateExistingEmail(passwordDto.getEmail());
 
         User user = userService.updatePassword(passwordDto.getEmail(), passwordDto.getPassword1());
-        UserResponseDto dto = userService.returnUserDetailDto(user);
+        UserResponseDto dto = userService.returnUserDto(user);
 
         return ResponseEntity.status(200)
                 .body(DefaultResponseDto.builder()
@@ -323,8 +324,6 @@ public class UserController {
                     response = UserResponseDto.class),
             @ApiResponse(code = 401,
                     message = "UNAUTHORIZED_USER"),
-            @ApiResponse(code = 404,
-                    message = "USER_NOT_FOUND"),
             @ApiResponse(code = 500,
                     message = "SERVER_ERROR")
     })
@@ -456,7 +455,7 @@ public class UserController {
             @PathVariable("userId") String userId){
 
         User user = userService.findUserByUserId(userId);
-        UserResponseDto dto = userService.returnUserDetailDto(user);
+        UserResponseDto dto = userService.returnUserDto(user);
 
         return ResponseEntity.status(200)
                 .body(DefaultResponseDto.builder()
