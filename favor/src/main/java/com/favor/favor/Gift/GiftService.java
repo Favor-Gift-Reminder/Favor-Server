@@ -10,7 +10,6 @@ import org.springframework.stereotype.Service;
 import javax.transaction.Transactional;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -20,13 +19,13 @@ public class GiftService {
     private final FriendRepository friendRepository;
 
     @Transactional
-    public GiftDetailResponseDto createGift(GiftRequestDto giftRequestDto, Long userNo, Long friendNo){
+    public GiftResponseDto createGift(GiftRequestDto giftRequestDto, Long userNo, Long friendNo){
         User user =  userRepository.findByUserNo(userNo).orElseThrow(
                 () -> new RuntimeException()
         );
         Gift gift = giftRepository.save(giftRequestDto.toEntity(user, friendNo));
         addGiftNo(gift.getGiftNo(), friendNo);
-        return new GiftDetailResponseDto(gift);
+        return new GiftResponseDto(gift);
     }
     public void addGiftNo(Long giftNo, Long friendNo){
         Friend friend = friendRepository.findByFriendNo(friendNo).orElseThrow(
@@ -37,15 +36,15 @@ public class GiftService {
         friend.setGiftNoList(giftNoList);
     }
 
-    public GiftDetailResponseDto readGift(Long giftNo){
+    public GiftResponseDto readGift(Long giftNo){
         Gift gift = giftRepository.findByGiftNo(giftNo).orElseThrow(
                 () -> new RuntimeException()
         );
-        GiftDetailResponseDto dto = new GiftDetailResponseDto(gift);
+        GiftResponseDto dto = new GiftResponseDto(gift);
         return dto;
     }
 
-    public GiftDetailResponseDto updateGift(GiftUpdateRequestDto dto, Long giftNo, Long friendNo){
+    public GiftResponseDto updateGift(GiftUpdateRequestDto dto, Long giftNo, Long friendNo){
         Gift gift = giftRepository.findByGiftNo(giftNo).orElseThrow(
                 () -> new RuntimeException()
         );
@@ -62,23 +61,23 @@ public class GiftService {
         gift.setFriendNo(friendNo);
 
         giftRepository.save(gift);
-        return new GiftDetailResponseDto(gift);
+        return new GiftResponseDto(gift);
     }
 
-    public GiftDetailResponseDto deleteGift(Long giftNo){
+    public GiftResponseDto deleteGift(Long giftNo){
         Gift gift = giftRepository.findByGiftNo(giftNo).orElseThrow(
                 () -> new RuntimeException()
         );
-        GiftDetailResponseDto returnDto = new GiftDetailResponseDto(gift);
+        GiftResponseDto returnDto = new GiftResponseDto(gift);
         giftRepository.deleteById(giftNo);
         return returnDto;
     }
 
 
-    public List<GiftDetailResponseDto> readAll(){
-        List<GiftDetailResponseDto> g_List = new ArrayList<>();
+    public List<GiftResponseDto> readAll(){
+        List<GiftResponseDto> g_List = new ArrayList<>();
         for(Gift g : giftRepository.findAll()){
-            GiftDetailResponseDto dto = new GiftDetailResponseDto(g);
+            GiftResponseDto dto = new GiftResponseDto(g);
             g_List.add(dto);
         }
         return g_List;
