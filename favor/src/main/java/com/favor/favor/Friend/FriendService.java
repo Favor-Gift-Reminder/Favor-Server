@@ -7,6 +7,7 @@ import com.favor.favor.Friend.NoAccount.FriendUpdateRequestDto;
 import com.favor.favor.Gift.Gift;
 import com.favor.favor.Gift.GiftRepository;
 import com.favor.favor.Reminder.Reminder;
+import com.favor.favor.Reminder.ReminderDetailResponseDto;
 import com.favor.favor.User.User;
 import com.favor.favor.User.UserRepository;
 import lombok.RequiredArgsConstructor;
@@ -110,9 +111,9 @@ public class FriendService {
         );
 
         List<Reminder> reminderList = user.getReminderList();
-        List<ReminderResponseDto> reminderDtoList = new ArrayList<>();
+        List<ReminderDetailResponseDto> reminderDtoList = new ArrayList<>();
         for(Reminder r : reminderList){
-            reminderDtoList.add(new ReminderResponseDto(r));
+            reminderDtoList.add(new ReminderDetailResponseDto(r));
         }
 //        List<GiftDetailResponseDto> giftDtoList = new ArrayList<>();
 //        for(Gift g : user.getGiftList()){
@@ -132,10 +133,10 @@ public class FriendService {
         return new FriendDetailResponseDto(friend, reminderDtoList, giftNoList, favorList);
     }
     public FriendDetailResponseDto returnDtoForFriend(Friend friend){
-        List<ReminderResponseDto> reminderDtoList = new ArrayList<>();
+        List<ReminderDetailResponseDto> reminderDtoList = new ArrayList<>();
         List<Reminder> reminderList = friend.getReminderList();
         for(Reminder r : reminderList){
-            ReminderResponseDto dto = new ReminderResponseDto(r);
+            ReminderDetailResponseDto dto = new ReminderDetailResponseDto(r);
             reminderDtoList.add(dto);
         }
 //        List<GiftDetailResponseDto> giftList = new ArrayList<>();

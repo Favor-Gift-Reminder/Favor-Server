@@ -11,6 +11,7 @@ import com.favor.favor.Friend.FriendRepository;
 import com.favor.favor.Gift.*;
 import com.favor.favor.Gift.GiftDetailResponseDto;
 import com.favor.favor.Reminder.Reminder;
+import com.favor.favor.Reminder.ReminderDetailResponseDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -97,12 +98,12 @@ public class UserService {
 
 
     @Transactional
-    public List<ReminderResponseDto> readReminderList(Long userNo){
+    public List<ReminderDetailResponseDto> readReminderList(Long userNo){
         User user = findUserByUserNo(userNo);
 
-        List<ReminderResponseDto> r_List = new ArrayList<>();
+        List<ReminderDetailResponseDto> r_List = new ArrayList<>();
         for(Reminder r : user.getReminderList()){
-            ReminderResponseDto dto = new ReminderResponseDto(r);
+            ReminderDetailResponseDto dto = new ReminderDetailResponseDto(r);
             r_List.add(dto);
         }
         return r_List;
@@ -242,10 +243,10 @@ public class UserService {
 
     @Transactional
     public UserDetailResponseDto returnUserDetailDto(User user){
-        List<ReminderResponseDto> r_list = new ArrayList<>();
+        List<ReminderDetailResponseDto> r_list = new ArrayList<>();
         List<Reminder> reminderList = user.getReminderList();
         for(Reminder r : reminderList){
-            ReminderResponseDto dto = new ReminderResponseDto(r);
+            ReminderDetailResponseDto dto = new ReminderDetailResponseDto(r);
             r_list.add(dto);
         }
         List<GiftDetailResponseDto> g_list = new ArrayList<>();

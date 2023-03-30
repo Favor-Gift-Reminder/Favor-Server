@@ -1,6 +1,7 @@
 package com.favor.favor.Friend;
 
 import com.favor.favor.Enum.Favor;
+import com.favor.favor.Reminder.ReminderDetailResponseDto;
 import lombok.*;
 
 import java.util.List;
@@ -20,7 +21,7 @@ public class FriendDetailResponseDto {
     private String friendMemo;
 
 
-    private List<ReminderResponseDto> reminderList;
+    private List<ReminderDetailResponseDto> reminderList;
 //    private List<GiftDetailResponseDto> giftList;
     private List<Long> giftNoList;
     private List<Favor> favorList;
@@ -41,7 +42,7 @@ public class FriendDetailResponseDto {
     }
 
     @Builder
-    public FriendDetailResponseDto(Friend friend, List<ReminderResponseDto> reminderList, List<Long> giftNoList, List<Favor> favorList){
+    public FriendDetailResponseDto(Friend friend, List<ReminderDetailResponseDto> reminderList, List<Long> giftNoList, List<Favor> favorList){
         this.isUser = friend.getIsUser();
         this.friendNo = friend.getFriendNo();
         this.friendName = friend.getFriendName();
