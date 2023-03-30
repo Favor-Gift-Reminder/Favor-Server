@@ -341,7 +341,7 @@ public class UserController {
 
         return ResponseEntity.status(200)
                 .body(DefaultResponseDto.builder()
-                        .responseCode("FRIENDS_FOUND")
+                        .responseCode("USERS_FOUND")
                         .responseMessage("전체 회원 조회 완료")
                         .data(dto)
                         .build());
