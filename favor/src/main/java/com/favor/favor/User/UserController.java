@@ -6,8 +6,6 @@ import com.favor.favor.Enum.Category;
 import com.favor.favor.Enum.Emotion;
 import com.favor.favor.Friend.FriendDetailResponseDto;
 import com.favor.favor.Gift.GiftDetailResponseDto;
-import com.favor.favor.Gift.GiftResponseDto;
-import com.favor.favor.Reminder.ReminderResponseDto;
 import io.swagger.annotations.*;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -277,7 +275,7 @@ public class UserController {
 
         userService.isExistingUserNo(userNo);
 
-        List<GiftResponseDto> gifts = userService.readGiftList(userNo);
+        List<GiftDetailResponseDto> gifts = userService.readGiftList(userNo);
 
         return ResponseEntity.status(200)
                 .body(DefaultResponseDto.builder()

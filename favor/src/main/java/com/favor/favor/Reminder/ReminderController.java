@@ -43,7 +43,7 @@ public class ReminderController {
 
     @ApiOperation("전체 리마인더 조회")
     @GetMapping
-    public List<ReminderResponseDto> readAll(){
+    public List<ReminderDetailResponseDto> readAll(){
         return reminderService.readAll();
     }
 }

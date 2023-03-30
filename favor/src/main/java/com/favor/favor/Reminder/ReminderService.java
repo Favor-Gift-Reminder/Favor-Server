@@ -65,10 +65,10 @@ public class ReminderService {
         return returnDto;
     }
 
-    public List<ReminderResponseDto> readAll(){
-        List<ReminderResponseDto> r_List = new ArrayList<>();
+    public List<ReminderDetailResponseDto> readAll(){
+        List<ReminderDetailResponseDto> r_List = new ArrayList<>();
         for(Reminder r : reminderRepository.findAll()){
-            ReminderResponseDto dto = new ReminderResponseDto(r);
+            ReminderDetailResponseDto dto = new ReminderDetailResponseDto(r);
             r_List.add(dto);
         }
         return r_List;

@@ -8,12 +8,9 @@ import com.favor.favor.Exception.CustomException;
 import com.favor.favor.Friend.Friend;
 import com.favor.favor.Friend.FriendDetailResponseDto;
 import com.favor.favor.Friend.FriendRepository;
-import com.favor.favor.Gift.Gift;
+import com.favor.favor.Gift.*;
 import com.favor.favor.Gift.GiftDetailResponseDto;
-import com.favor.favor.Gift.GiftRepository;
-import com.favor.favor.Gift.GiftResponseDto;
 import com.favor.favor.Reminder.Reminder;
-import com.favor.favor.Reminder.ReminderResponseDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -112,12 +109,12 @@ public class UserService {
     }
 
     @Transactional
-    public List<GiftResponseDto> readGiftList(Long userNo){
+    public List<GiftDetailResponseDto> readGiftList(Long userNo){
         User user = findUserByUserNo(userNo);
 
-        List<GiftResponseDto> g_List = new ArrayList<>();
+        List<GiftDetailResponseDto> g_List = new ArrayList<>();
         for(Gift g : user.getGiftList()){
-            GiftResponseDto dto = new GiftResponseDto(g);
+            GiftDetailResponseDto dto = new GiftDetailResponseDto(g);
             g_List.add(dto);
         }
         return g_List;
@@ -251,10 +248,10 @@ public class UserService {
             ReminderResponseDto dto = new ReminderResponseDto(r);
             r_list.add(dto);
         }
-        List<GiftResponseDto> g_list = new ArrayList<>();
+        List<GiftDetailResponseDto> g_list = new ArrayList<>();
         List<Gift> giftList = user.getGiftList();
         for(Gift g : giftList){
-            GiftResponseDto dto = new GiftResponseDto(g);
+            GiftDetailResponseDto dto = new GiftDetailResponseDto(g);
             g_list.add(dto);
         }
 
