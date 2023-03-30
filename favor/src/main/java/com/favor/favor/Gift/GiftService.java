@@ -75,10 +75,10 @@ public class GiftService {
     }
 
 
-    public List<GiftResponseDto> readAll(){
-        List<GiftResponseDto> g_List = new ArrayList<>();
+    public List<GiftDetailResponseDto> readAll(){
+        List<GiftDetailResponseDto> g_List = new ArrayList<>();
         for(Gift g : giftRepository.findAll()){
-            GiftResponseDto dto = new GiftResponseDto(g);
+            GiftDetailResponseDto dto = new GiftDetailResponseDto(g);
             g_List.add(dto);
         }
         return g_List;

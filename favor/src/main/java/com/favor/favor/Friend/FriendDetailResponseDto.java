@@ -1,8 +1,6 @@
 package com.favor.favor.Friend;
 
 import com.favor.favor.Enum.Favor;
-import com.favor.favor.Gift.GiftDetailResponseDto;
-import com.favor.favor.Reminder.ReminderResponseDto;
 import lombok.*;
 
 import java.util.List;

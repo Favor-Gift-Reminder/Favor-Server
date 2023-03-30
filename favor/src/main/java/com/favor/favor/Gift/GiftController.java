@@ -42,7 +42,7 @@ public class GiftController {
 
     @ApiOperation("전체 선물 조회")
     @GetMapping
-    public List<GiftResponseDto> readAll(){
+    public List<GiftDetailResponseDto> readAll(){
         return giftService.readAll();
     }
 }
