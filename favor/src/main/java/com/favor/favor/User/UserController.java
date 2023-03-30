@@ -4,13 +4,11 @@ package com.favor.favor.User;
 import com.favor.favor.Common.DefaultResponseDto;
 import com.favor.favor.Enum.Category;
 import com.favor.favor.Enum.Emotion;
-import com.favor.favor.Friend.FriendResponseDto;
-import com.favor.favor.Gift.Gift;
+import com.favor.favor.Friend.FriendDetailResponseDto;
 import com.favor.favor.Gift.GiftDetailResponseDto;
 import com.favor.favor.Gift.GiftResponseDto;
 import com.favor.favor.Reminder.ReminderResponseDto;
 import io.swagger.annotations.*;
-import jdk.jfr.ContentType;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -18,7 +16,6 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.transaction.Transactional;
 import javax.validation.Valid;
-import java.util.ArrayList;
 import java.util.List;
 
 @Api(tags = "User")
@@ -309,7 +306,7 @@ public class UserController {
 
         userService.isExistingUserNo(userNo);
 
-        List<FriendResponseDto> friends = userService.readFriendList(userNo);
+        List<FriendDetailResponseDto> friends = userService.readFriendList(userNo);
 
         return ResponseEntity.status(200)
                 .body(DefaultResponseDto.builder()

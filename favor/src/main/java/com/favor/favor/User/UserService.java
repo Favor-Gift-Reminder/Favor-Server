@@ -6,8 +6,8 @@ import com.favor.favor.Enum.Favor;
 import com.favor.favor.Enum.Role;
 import com.favor.favor.Exception.CustomException;
 import com.favor.favor.Friend.Friend;
+import com.favor.favor.Friend.FriendDetailResponseDto;
 import com.favor.favor.Friend.FriendRepository;
-import com.favor.favor.Friend.FriendResponseDto;
 import com.favor.favor.Gift.Gift;
 import com.favor.favor.Gift.GiftDetailResponseDto;
 import com.favor.favor.Gift.GiftRepository;
@@ -124,12 +124,12 @@ public class UserService {
     }
 
     @Transactional
-    public List<FriendResponseDto> readFriendList(Long userNo){
+    public List<FriendDetailResponseDto> readFriendList(Long userNo){
         User user = findUserByUserNo(userNo);
 
-        List<FriendResponseDto> f_List = new ArrayList<>();
+        List<FriendDetailResponseDto> f_List = new ArrayList<>();
         for(Friend f : user.getFriendList()){
-            FriendResponseDto dto = new FriendResponseDto(f);
+            FriendDetailResponseDto dto = new FriendDetailResponseDto(f);
             f_List.add(dto);
         }
         return f_List;
@@ -258,10 +258,10 @@ public class UserService {
             g_list.add(dto);
         }
 
-        List<FriendResponseDto> f_list = new ArrayList<>();
+        List<FriendDetailResponseDto> f_list = new ArrayList<>();
         List<Friend> friendList = user.getFriendList();
         for(Friend f : friendList){
-            FriendResponseDto dto = new FriendResponseDto(f);
+            FriendDetailResponseDto dto = new FriendDetailResponseDto(f);
             f_list.add(dto);
         }
 
