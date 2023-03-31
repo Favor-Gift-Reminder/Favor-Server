@@ -8,6 +8,7 @@ import javax.persistence.*;
 import javax.transaction.Transactional;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.Date;
 
 @Entity
 @Getter
@@ -23,13 +24,13 @@ public class Reminder {
 
     private String title;
 
-    private LocalDate reminderDate;
+    private Date reminderDate;
 
     private String reminderMemo;
 
     private Boolean isAlarmSet;
 
-    private LocalDateTime alarmTime;
+    private Date alarmTime;
 
 
     @ManyToOne(cascade = CascadeType.REFRESH)
@@ -45,13 +46,13 @@ public class Reminder {
     public void setTitle(String title){
         this.title = title;
     }
-    public void setReminderDate(LocalDate reminderDate){
+    public void setReminderDate(Date reminderDate){
         this.reminderDate = reminderDate;
     }
     public void setIsAlarmSet(Boolean isAlarmSet){
         this.isAlarmSet = isAlarmSet;
     }
-    public void setAlarmTime(LocalDateTime alarmTime){
+    public void setAlarmTime(Date alarmTime){
         this.alarmTime = alarmTime;
     }
     public void setReminderMemo(String memo){

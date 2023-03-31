@@ -8,6 +8,7 @@ import lombok.NoArgsConstructor;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.Date;
 
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
@@ -18,13 +19,13 @@ public class ReminderUpdateRequestDto {
     private String title;
 
     @ApiModelProperty(position = 2, required = true, dataType = "LocalDate", value = "날짜", example = "1996-02-29")
-    private LocalDate reminderDate;
+    private Date reminderDate;
 
     @ApiModelProperty(position = 3, required = true, dataType = "Boolean", value = "알람설정여부", example = "페이버")
     private Boolean isAlarmSet;
 
     @ApiModelProperty(position = 4, required = false, dataType = "LocalDateTime", value = "알람세팅시간")
-    private LocalDateTime alarmTime;
+    private Date alarmTime;
 
     @ApiModelProperty(position = 5, required = false, dataType = "String", value = "메모", example = "페이버")
     private String reminderMemo;

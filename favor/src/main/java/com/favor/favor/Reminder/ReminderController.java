@@ -19,25 +19,32 @@ public class ReminderController {
 
     @ApiOperation("리마인더 생성")
     @PostMapping("/{userNo}/{friendNo}")
-    public ReminderResponseDto createReminder(@RequestBody ReminderRequestDto reminderRequestDto, @PathVariable Long userNo, @PathVariable Long friendNo){
+    public ReminderResponseDto createReminder(
+            @RequestBody ReminderRequestDto reminderRequestDto,
+            @PathVariable Long userNo,
+            @PathVariable Long friendNo){
         return reminderService.createReminder(reminderRequestDto, userNo, friendNo);
     }
 
     @ApiOperation("단일리마인더 조회")
     @GetMapping("/{reminderNo}")
-    public ReminderResponseDto readReminder(@PathVariable Long reminderNo){
+    public ReminderResponseDto readReminder(
+            @PathVariable Long reminderNo){
         return reminderService.readReminder(reminderNo);
     }
 
     @ApiOperation("리마인더 수정")
     @PatchMapping("/{reminderNo}")
-    public ReminderResponseDto updateReminder(@RequestBody ReminderUpdateRequestDto dto, @PathVariable Long reminderNo, Long friendNo){
+    public ReminderResponseDto updateReminder(
+            @RequestBody ReminderUpdateRequestDto dto,
+            @PathVariable Long reminderNo, Long friendNo){
         return reminderService.updateReminder(reminderNo, dto, friendNo);
     }
 
     @ApiOperation("리마인더 삭제")
     @DeleteMapping("/{reminderNo}")
-    public ReminderResponseDto deleteReminder(@PathVariable Long reminderNo){
+    public ReminderResponseDto deleteReminder(
+            @PathVariable Long reminderNo){
         return reminderService.deleteReminder(reminderNo);
     }
 

@@ -6,6 +6,7 @@ import lombok.Getter;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.Date;
 
 @Getter
 @AllArgsConstructor
@@ -13,10 +14,10 @@ import java.time.LocalDateTime;
 public class ReminderResponseDto {
     private final Long reminderNo;
     private String title;
-    private LocalDate reminderDate;
+    private Date reminderDate;
     private String memo;
     private Boolean isAlarmSet;
-    private LocalDateTime alarmTime;
+    private Date alarmTime;
 
     private Long userNo;
     private Long friendNo;
