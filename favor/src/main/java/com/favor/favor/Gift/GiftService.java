@@ -1,7 +1,9 @@
 package com.favor.favor.Gift;
 
+import com.favor.favor.Exception.CustomException;
 import com.favor.favor.Friend.Friend;
 import com.favor.favor.Friend.FriendRepository;
+import com.favor.favor.Friend.FriendResponseDto;
 import com.favor.favor.User.User;
 import com.favor.favor.User.UserRepository;
 import lombok.RequiredArgsConstructor;
@@ -11,6 +13,8 @@ import javax.transaction.Transactional;
 import java.util.ArrayList;
 import java.util.List;
 
+import static com.favor.favor.Exception.ExceptionCode.*;
+
 @Service
 @RequiredArgsConstructor
 public class GiftService {
@@ -19,38 +23,20 @@ public class GiftService {
     private final FriendRepository friendRepository;
 
     @Transactional
-    public GiftResponseDto createGift(GiftRequestDto giftRequestDto, Long userNo, Long friendNo){
-        User user =  userRepository.findByUserNo(userNo).orElseThrow(
-                () -> new RuntimeException()
-        );
+    public Gift createGift(GiftRequestDto giftRequestDto, Long userNo, Long friendNo){
+        User user =  findUserByUserNo(userNo);
         Gift gift = giftRepository.save(giftRequestDto.toEntity(user, friendNo));
         addGiftNo(gift.getGiftNo(), friendNo);
-        return new GiftResponseDto(gift);
+        return gift;
     }
     public void addGiftNo(Long giftNo, Long friendNo){
-        Friend friend = friendRepository.findByFriendNo(friendNo).orElseThrow(
-                () -> new RuntimeException()
-        );
+        Friend friend = findFriendByFriendNo(friendNo);
         List<Long> giftNoList = friend.getGiftNoList();
         giftNoList.add(giftNo);
         friend.setGiftNoList(giftNoList);
     }
 
-    public GiftResponseDto readGift(Long giftNo){
-        Gift gift = giftRepository.findByGiftNo(giftNo).orElseThrow(
-                () -> new RuntimeException()
-        );
-        GiftResponseDto dto = new GiftResponseDto(gift);
-        return dto;
-    }
-
-    public GiftResponseDto updateGift(GiftUpdateRequestDto dto, Long giftNo, Long friendNo){
-        Gift gift = giftRepository.findByGiftNo(giftNo).orElseThrow(
-                () -> new RuntimeException()
-        );
-        Friend friend = friendRepository.findByFriendNo(friendNo).orElseThrow(
-                () -> new RuntimeException()
-        );
+    public void updateGift(GiftUpdateRequestDto dto, Gift gift, Long friendNo){
         gift.setGiftName(dto.getGiftName());
         gift.setGiftDate(dto.getGiftDate());
         gift.setGiftMemo(dto.getGiftMemo());
@@ -59,18 +45,10 @@ public class GiftService {
         gift.setIsPinned(dto.getIsPinned());
         gift.setIsGiven(dto.getIsGiven());
         gift.setFriendNo(friendNo);
-
-        giftRepository.save(gift);
-        return new GiftResponseDto(gift);
     }
 
-    public GiftResponseDto deleteGift(Long giftNo){
-        Gift gift = giftRepository.findByGiftNo(giftNo).orElseThrow(
-                () -> new RuntimeException()
-        );
-        GiftResponseDto returnDto = new GiftResponseDto(gift);
+    public void deleteGift(Long giftNo){
         giftRepository.deleteById(giftNo);
-        return returnDto;
     }
 
 
@@ -81,5 +59,97 @@ public class GiftService {
             g_List.add(dto);
         }
         return g_List;
+    }
+
+
+
+    public User findUserByUserNo(Long userNo){
+        User user = null;
+        try{
+            user = userRepository.findByUserNo(userNo).orElseThrow(
+                    () -> new RuntimeException()
+            );
+        } catch (RuntimeException e){
+            throw new CustomException(e, USER_NOT_FOUND);
+        }
+        return user;
+    }
+
+    public Friend findFriendByFriendNo(Long friendNo){
+        Friend friend = null;
+        try{
+            friend = friendRepository.findByFriendNo(friendNo).orElseThrow(
+                    () -> new RuntimeException()
+            );
+        } catch (RuntimeException e){
+            throw new CustomException(e, FRIEND_NOT_FOUND);
+        }
+        return friend;
+    }
+
+    public Gift findGiftByGiftNo(Long giftNo){
+        Gift gift = null;
+        try{
+            gift = giftRepository.findByGiftNo(giftNo).orElseThrow(
+                    () -> new RuntimeException()
+            );
+        } catch(RuntimeException e){
+            throw new CustomException(e, GIFT_NOT_FOUND);
+        }
+        return gift;
+    }
+
+
+    public GiftResponseDto returnDto(Gift gift){
+        return new GiftResponseDto(gift);
+    }
+
+    public FriendResponseDto returnFriendDto(Gift gift){
+        Friend friend = null;
+        try{
+            friend = friendRepository.findByFriendNo(gift.getFriendNo()).orElseThrow(
+                    () -> new RuntimeException()
+            );
+        }catch (RuntimeException e){
+            throw new CustomException(e, FRIEND_NOT_FOUND);
+        }
+        return new FriendResponseDto(friend);
+    }
+
+
+    public void isExistingUserNo (Long userNo){
+        Boolean isExistingNo = null;
+        try{
+            isExistingNo = userRepository.existsByUserNo(userNo);
+        } catch(RuntimeException e){
+            throw new CustomException(e, SERVER_ERROR);
+        }
+        if(!isExistingNo){
+            throw new CustomException(null, USER_NOT_FOUND);
+        }
+    }
+
+    public void isExistingFriendNo (Long friendNo){
+        Boolean isExistingNo = null;
+        try{
+            isExistingNo = friendRepository.existsByFriendNo(friendNo);
+        } catch(RuntimeException e){
+            throw new CustomException(e, SERVER_ERROR);
+        }
+        if(!isExistingNo){
+            throw new CustomException(null, FRIEND_NOT_FOUND);
+        }
+    }
+
+    public void isExistingGiftNo(Long giftNo){
+        Boolean isExistingNo = null;
+        try{
+            isExistingNo = giftRepository.existsByGiftNo(giftNo);
+        } catch(RuntimeException e){
+            throw new CustomException(e, SERVER_ERROR);
+        }
+        if(!isExistingNo){
+            throw new CustomException(null, GIFT_NOT_FOUND);
+        }
     }
 }

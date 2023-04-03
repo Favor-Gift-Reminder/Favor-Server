@@ -59,25 +59,17 @@ public class FriendService {
     }
 
     @Transactional
-    public Friend readFriend(Long friendNo){
-        return findFriendByFriendNo(friendNo);
-    }
-
-    @Transactional
-    public Friend updateFriend(Friend friend, FriendUpdateRequestDto friendUpdateRequestDto){
+    public void updateFriend(Friend friend, FriendUpdateRequestDto friendUpdateRequestDto){
         //회원은 변경 안돼유
         if(friend.getIsUser()) throw new CustomException(null, ILLEGAL_ARGUMENT_FRIEND);
 
         friend.setFriendName(friendUpdateRequestDto.getFriendName());
         friend.setFriendMemo(friendUpdateRequestDto.getFriendMemo());
         save(friend);
-
-        return save(friend);
     }
 
     @Transactional
     public void deleteFriend(Long friendNo){
-        Friend friend = findFriendByFriendNo(friendNo);
         friendRepository.deleteById(friendNo);
     }
 
@@ -155,8 +147,6 @@ public class FriendService {
             favorList.add(Favor.valueOf(favorType));
         }
 
-        friendRepository.save(friend);
-
         return new FriendResponseDto(friend, reminderDtoList, giftNoList, favorList);
     }
     public FriendResponseDto returnDtoForFriend(Friend friend){
@@ -174,7 +164,6 @@ public class FriendService {
         for(Integer favorType : friend.getFavorList()){
             favorList.add(Favor.valueOf(favorType));
         }
-        friendRepository.save(friend);
 
         return new FriendResponseDto(friend, reminderDtoList, giftNoList, favorList);
     }

@@ -106,7 +106,7 @@ public class FriendController {
 
         friendService.isExistingFriendNo(friendNo);
 
-        Friend friend = friendService.readFriend(friendNo);
+        Friend friend = friendService.findFriendByFriendNo(friendNo);
         FriendResponseDto dto = friendService.returnDto(friend);
 
         return ResponseEntity.status(200)

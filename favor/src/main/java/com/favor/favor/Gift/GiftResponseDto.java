@@ -2,6 +2,7 @@ package com.favor.favor.Gift;
 
 import com.favor.favor.Enum.Category;
 import com.favor.favor.Enum.Emotion;
+import com.favor.favor.Friend.FriendResponseDto;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
