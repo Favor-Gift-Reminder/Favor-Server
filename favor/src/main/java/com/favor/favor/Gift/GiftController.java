@@ -33,7 +33,7 @@ public class GiftController {
             @ApiResponse(code = 400,
                     message = "FILED_REQUIRED / *_CHARACTER_INVALID / *_LENGTH_INVALID"),
             @ApiResponse(code = 404,
-                    message = "USER_NOT_FOUND"),
+                    message = "USER_NOT_FOUND / FREIND_NOT_FOUND"),
             @ApiResponse(code = 500,
                     message = "SERVER_ERROR")
     })
@@ -112,7 +112,6 @@ public class GiftController {
 
         Gift gift = giftService.findGiftByGiftNo(giftNo);
         giftService.updateGift(giftUpdateRequestDto, gift, friendNo);
-
         GiftResponseDto dto = giftService.returnDto(gift);
 
         return ResponseEntity.status(200)

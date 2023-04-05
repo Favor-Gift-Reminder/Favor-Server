@@ -51,6 +51,7 @@ public enum ExceptionCode {
     FRIEND_NOT_FOUND(NOT_FOUND, "등록된 친구가 없습니다."),
     FRIEND_USER_NOT_FOUND(NOT_FOUND, "친구로 등록하려는 회원이 없습니다."),
     GIFT_NOT_FOUND(NOT_FOUND, "등록한 선물이 없습니다."),
+    REMINDER_NOT_FOUND(NOT_FOUND, "등록한 리마인더가 없습니다."),
 
     /**
      * 405 METHOD_NOT_ALLOWED : 대상 리소스가 해당 메서드를 지원하지 않음
