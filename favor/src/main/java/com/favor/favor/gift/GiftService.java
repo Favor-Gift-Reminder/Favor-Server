@@ -138,19 +138,6 @@ public class GiftService {
             throw new CustomException(null, FRIEND_NOT_FOUND);
         }
     }
-//    public void isExistingFriendsNo (Long friendNo){
-//        Boolean isExistingNo = null;
-//        for(Long x : friendNo){
-//            try{
-//                isExistingNo = friendRepository.existsByFriendNo(x);
-//            } catch(RuntimeException e){
-//                throw new CustomException(e, SERVER_ERROR);
-//            }
-//            if(!isExistingNo){
-//                throw new CustomException(null, FRIEND_NOT_FOUND);
-//            }
-//        }
-//    }
 
     public void isExistingGiftNo(Long giftNo){
         Boolean isExistingNo = null;

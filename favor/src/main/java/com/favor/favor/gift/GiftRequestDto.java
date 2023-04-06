@@ -32,10 +32,13 @@ public class GiftRequestDto {
     @ApiModelProperty(position = 5, required = false, value = "감정", example = "기뻐요")
     private Emotion emotion;
 
+
     @ApiModelProperty(position = 6, required = false, value = "핀 여부", example = "false")
     private Boolean isPinned;
+
     @ApiModelProperty(position = 7, required = false, value = "받은선물 여부", example = "false")
     private Boolean isGiven;
+
     @ApiModelProperty(position = 8, required = false, value = "연관친구 리스트", example = "[1]")
     private Long friendNo;
 
