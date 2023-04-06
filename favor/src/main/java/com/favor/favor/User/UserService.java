@@ -1,17 +1,17 @@
-package com.favor.favor.User;
+package com.favor.favor.user;
 
-import com.favor.favor.Enum.Category;
-import com.favor.favor.Enum.Emotion;
-import com.favor.favor.Enum.Favor;
-import com.favor.favor.Enum.Role;
-import com.favor.favor.Exception.CustomException;
-import com.favor.favor.Friend.Friend;
-import com.favor.favor.Friend.FriendResponseDto;
-import com.favor.favor.Friend.FriendRepository;
-import com.favor.favor.Gift.*;
-import com.favor.favor.Gift.GiftResponseDto;
-import com.favor.favor.Reminder.Reminder;
-import com.favor.favor.Reminder.ReminderResponseDto;
+import com.favor.favor.common.enums.Category;
+import com.favor.favor.common.enums.Emotion;
+import com.favor.favor.common.enums.Favor;
+import com.favor.favor.common.enums.Role;
+import com.favor.favor.exception.CustomException;
+import com.favor.favor.friend.Friend;
+import com.favor.favor.friend.FriendResponseDto;
+import com.favor.favor.friend.FriendRepository;
+import com.favor.favor.gift.*;
+import com.favor.favor.gift.GiftResponseDto;
+import com.favor.favor.reminder.Reminder;
+import com.favor.favor.reminder.ReminderResponseDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -19,7 +19,7 @@ import javax.transaction.Transactional;
 import java.util.ArrayList;
 import java.util.List;
 
-import static com.favor.favor.Exception.ExceptionCode.*;
+import static com.favor.favor.exception.ExceptionCode.*;
 
 @Service
 @RequiredArgsConstructor

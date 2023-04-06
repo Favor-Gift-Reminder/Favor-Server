@@ -1,6 +1,6 @@
-package com.favor.favor.User;
+package com.favor.favor.user;
 
-import com.favor.favor.Common.ValidationSequence;
+import com.favor.favor.common.ValidationSequence;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.AccessLevel;

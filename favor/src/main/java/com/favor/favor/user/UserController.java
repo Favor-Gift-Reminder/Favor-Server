@@ -1,12 +1,12 @@
-package com.favor.favor.user;
+package com.favor.favor.User;
 
 
-import com.favor.favor.common.DefaultResponseDto;
-import com.favor.favor.common.enums.Category;
-import com.favor.favor.common.enums.Emotion;
-import com.favor.favor.friend.FriendResponseDto;
-import com.favor.favor.gift.GiftResponseDto;
-import com.favor.favor.reminder.ReminderResponseDto;
+import com.favor.favor.Common.DefaultResponseDto;
+import com.favor.favor.Enum.Category;
+import com.favor.favor.Enum.Emotion;
+import com.favor.favor.Friend.FriendResponseDto;
+import com.favor.favor.Gift.GiftResponseDto;
+import com.favor.favor.Reminder.ReminderResponseDto;
 import io.swagger.annotations.*;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;

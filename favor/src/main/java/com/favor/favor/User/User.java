@@ -1,12 +1,12 @@
-package com.favor.favor.User;
+package com.favor.favor.user;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.favor.favor.Enum.Favor;
-import com.favor.favor.Enum.Role;
-import com.favor.favor.Common.TimeStamped;
-import com.favor.favor.Friend.Friend;
-import com.favor.favor.Gift.Gift;
-import com.favor.favor.Reminder.Reminder;
+import com.favor.favor.common.enums.Favor;
+import com.favor.favor.common.enums.Role;
+import com.favor.favor.common.TimeStamped;
+import com.favor.favor.friend.Friend;
+import com.favor.favor.gift.Gift;
+import com.favor.favor.reminder.Reminder;
 import lombok.*;
 
 import javax.persistence.*;
@@ -25,12 +25,9 @@ public class User extends TimeStamped {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long userNo;
-
     private String email;
 
     private String password;
-
-
     public void setPassword(String password){ this.password = password; }
 
     private String userId;
