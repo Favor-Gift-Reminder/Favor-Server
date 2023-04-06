@@ -11,6 +11,7 @@ import lombok.NoArgsConstructor;
 
 import javax.transaction.Transactional;
 import java.time.LocalDate;
+import java.util.List;
 
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
@@ -33,11 +34,13 @@ public class GiftRequestDto {
 
     @ApiModelProperty(position = 6, required = false, value = "핀 여부", example = "false")
     private Boolean isPinned;
-    @ApiModelProperty(position = 7, required = true, value = "받은선물 여부", example = "false")
+    @ApiModelProperty(position = 7, required = false, value = "받은선물 여부", example = "false")
     private Boolean isGiven;
+    @ApiModelProperty(position = 8, required = false, value = "연관친구 리스트", example = "[1]")
+    private Long friendNo;
 
     @Transactional
-    public Gift toEntity(User user, Long friendNo){
+    public Gift toEntity(User user){
         return Gift.builder()
                 .giftName(giftName)
                 .giftDate(giftDate)

@@ -1,9 +1,6 @@
 package com.favor.favor.anniversary;
 
 import com.favor.favor.common.DefaultResponseDto;
-import com.favor.favor.friend.FriendResponseDto;
-import com.favor.favor.reminder.ReminderResponseDto;
-import com.favor.favor.user.UserResponseDto;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiResponse;

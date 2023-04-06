@@ -1,5 +1,6 @@
 package com.favor.favor.user;
 
+import com.favor.favor.anniversary.AnniversaryResponseDto;
 import com.favor.favor.common.enums.Favor;
 import com.favor.favor.common.enums.Role;
 import com.favor.favor.friend.FriendResponseDto;
@@ -21,20 +22,27 @@ public class UserResponseDto {
     private String userid;
     private Role role;
     private List<ReminderResponseDto> reminderList;
-    private List<GiftResponseDto> giftlist;
+    private List<GiftResponseDto> giftList;
     private List<FriendResponseDto> friendList;
+    private List<AnniversaryResponseDto> anniversaryList;
     private List<Favor> favorList;
 
     @Builder
-    public UserResponseDto(User user, List<ReminderResponseDto> reminderList, List<GiftResponseDto> giftlist, List<FriendResponseDto> friendList, List<Favor> favor_List){
+    public UserResponseDto(User user,
+                           List<ReminderResponseDto> reminderList,
+                           List<GiftResponseDto> giftList,
+                           List<FriendResponseDto> friendList,
+                           List<Favor> favorList,
+                           List<AnniversaryResponseDto> anniversaryList){
         this.userNo = user.getUserNo();
         this.email = user.getEmail();
         this.name = user.getName();
         this.userid = user.getUserId();
         this.role = user.getRole();
         this.reminderList = reminderList;
-        this.giftlist = giftlist;
+        this.giftList = giftList;
         this.friendList = friendList;
-        this.favorList = favor_List;
+        this.favorList = favorList;
+        this.anniversaryList = anniversaryList;
     }
 }

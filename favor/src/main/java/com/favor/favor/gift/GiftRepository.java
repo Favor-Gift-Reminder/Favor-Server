@@ -8,7 +8,7 @@ import java.util.Optional;
 
 public interface GiftRepository extends JpaRepository<Gift, Long> {
     Optional<Gift> findByGiftNo(Long giftNo);
-    List<Gift> findGiftsByUserAndGiftName(User user, String giftName);
+    List<Gift> findGiftsByUserAndGiftNameContains(User user, String giftName);
     List<Gift> findGiftsByUserAndCategory(User user, Integer categoryNo);
     List<Gift> findGiftsByUserAndEmotion(User user, Integer emotionNo);
     Boolean existsByGiftNo(Long giftNo);

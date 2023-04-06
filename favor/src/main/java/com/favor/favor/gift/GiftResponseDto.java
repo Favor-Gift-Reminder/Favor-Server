@@ -5,10 +5,13 @@ import com.favor.favor.common.enums.Emotion;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
+import lombok.extern.log4j.Log4j2;
 
 import javax.annotation.Nullable;
 import java.time.LocalDate;
+import java.util.List;
 
+@Log4j2
 @Getter
 @AllArgsConstructor
 @Builder
@@ -20,16 +23,14 @@ public class GiftResponseDto {
     private String giftMemo;
     private Category category;
     private Emotion emotion;
-
     private Boolean isPinned;
     private Boolean isGiven;
-
     private Long userNo;
-    @Nullable
     private Long friendNo;
 
     @Builder
     public GiftResponseDto(Gift gift){
+        log.info("[GiftResponseDto] 실행");
         this.giftNo = gift.getGiftNo();
         this.giftName = gift.getGiftName();
         this.giftDate = gift.getGiftDate();
@@ -40,5 +41,6 @@ public class GiftResponseDto {
         this.isGiven = gift.getIsGiven();
         this.userNo = gift.getUser().getUserNo();
         this.friendNo = gift.getFriendNo();
+        log.info("[GiftResponseDto] 실행 완료");
     }
 }

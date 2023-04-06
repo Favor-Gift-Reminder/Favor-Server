@@ -1,5 +1,7 @@
 package com.favor.favor.user;
 
+import com.favor.favor.anniversary.Anniversary;
+import com.favor.favor.anniversary.AnniversaryResponseDto;
 import com.favor.favor.common.enums.Category;
 import com.favor.favor.common.enums.Emotion;
 import com.favor.favor.common.enums.Favor;
@@ -140,7 +142,7 @@ public class UserService {
     public List<GiftResponseDto> readGiftListByName(Long userNo, String giftName){
         User user = findUserByUserNo(userNo);
 
-        List<Gift> giftList = giftRepository.findGiftsByUserAndGiftName(user, giftName);
+        List<Gift> giftList = giftRepository.findGiftsByUserAndGiftNameContains(user, giftName);
         List<GiftResponseDto> g_List = new ArrayList<>();
         for(Gift g : giftList){
             GiftResponseDto dto = new GiftResponseDto(g);
@@ -247,6 +249,7 @@ public class UserService {
     //RETURN
     @Transactional
     public UserResponseDto returnUserDto(User user){
+
         List<ReminderResponseDto> r_list = new ArrayList<>();
         List<Reminder> reminderList = user.getReminderList();
         for(Reminder r : reminderList){
@@ -267,12 +270,19 @@ public class UserService {
             f_list.add(dto);
         }
 
+        List<AnniversaryResponseDto> a_List = new ArrayList<>();
+        List<Anniversary> anniversaryList = user.getAnniversaryList();
+        for(Anniversary a : anniversaryList){
+            AnniversaryResponseDto dto = new AnniversaryResponseDto(a);
+            a_List.add(dto);
+        }
+
         List<Favor> favor_List = new ArrayList<>();
         for(Integer favorType : user.getFavorList()){
             favor_List.add(Favor.valueOf(favorType));
         }
 
-        UserResponseDto dto = new UserResponseDto(user, r_list, g_list, f_list, favor_List);
+        UserResponseDto dto = new UserResponseDto(user, r_list, g_list, f_list, favor_List, a_List);
         return dto;
     }
 

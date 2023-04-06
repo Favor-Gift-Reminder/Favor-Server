@@ -37,16 +37,15 @@ public class GiftController {
                     message = "SERVER_ERROR")
     })
     @ResponseStatus(HttpStatus.CREATED)
-    @PostMapping("/{userNo}/{friendNo}")
+    @PostMapping("/{userNo}")
     public ResponseEntity<DefaultResponseDto<Object>> createGift(
             @RequestBody GiftRequestDto giftRequestDto,
-            @PathVariable("userNo") Long userNo,
-            @PathVariable("friendNo") Long friendNo){
+            @PathVariable Long userNo){
 
         giftService.isExistingUserNo(userNo);
-        giftService.isExistingFriendNo(friendNo);
+        giftService.isExistingFriendNo(giftRequestDto.getFriendNo());
 
-        Gift gift = giftService.createGift(giftRequestDto, userNo, friendNo);
+        Gift gift = giftService.createGift(giftRequestDto, userNo);
         GiftResponseDto dto = giftService.returnDto(gift);
 
         return ResponseEntity.status(201)
@@ -77,7 +76,9 @@ public class GiftController {
 
         giftService.isExistingGiftNo(giftNo);
         Gift gift = giftService.findGiftByGiftNo(giftNo);
+        log.info("[Controller] [readGift] 선물 찾음");
         GiftResponseDto dto = giftService.returnDto(gift);
+        log.info("[Controller] [readGift] DTO 반환");
 
         return ResponseEntity.status(200)
                 .body(DefaultResponseDto.builder()
@@ -104,13 +105,13 @@ public class GiftController {
     @PatchMapping("/{giftNo}")
     public ResponseEntity<DefaultResponseDto<Object>> updateGift(
             @RequestBody GiftUpdateRequestDto giftUpdateRequestDto,
-            @PathVariable Long giftNo, Long friendNo){
+            @PathVariable Long giftNo){
 
         giftService.isExistingGiftNo(giftNo);
-        giftService.isExistingFriendNo(friendNo);
+
 
         Gift gift = giftService.findGiftByGiftNo(giftNo);
-        giftService.updateGift(giftUpdateRequestDto, gift, friendNo);
+        giftService.updateGift(giftUpdateRequestDto, gift);
         GiftResponseDto dto = giftService.returnDto(gift);
 
         return ResponseEntity.status(200)
