@@ -1,4 +1,4 @@
-package com.favor.favor.User;
+package com.favor.favor.user;
 
 public class SignInDto {
 }
