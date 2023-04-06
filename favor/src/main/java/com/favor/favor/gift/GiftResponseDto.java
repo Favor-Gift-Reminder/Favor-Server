@@ -26,10 +26,26 @@ public class GiftResponseDto {
     private Boolean isPinned;
     private Boolean isGiven;
     private Long userNo;
-    private Long friendNo;
+    private List<Long> friendNoList;
+
+//    @Builder
+//    public GiftResponseDto(Gift gift){
+//        log.info("[GiftResponseDto] 실행");
+//        this.giftNo = gift.getGiftNo();
+//        this.giftName = gift.getGiftName();
+//        this.giftDate = gift.getGiftDate();
+//        this.giftMemo = gift.getGiftMemo();
+//        this.category = Category.valueOf(gift.getCategory());
+//        this.emotion = Emotion.valueOf(gift.getEmotion());
+//        this.isPinned = gift.getIsPinned();
+//        this.isGiven = gift.getIsGiven();
+//        this.userNo = gift.getUser().getUserNo();
+//        this.friendNo = gift.getFriendNo();
+//        log.info("[GiftResponseDto] 실행 완료");
+//    }
 
     @Builder
-    public GiftResponseDto(Gift gift){
+    public GiftResponseDto(Gift gift, List<Long> friendNoList){
         log.info("[GiftResponseDto] 실행");
         this.giftNo = gift.getGiftNo();
         this.giftName = gift.getGiftName();
@@ -40,7 +56,7 @@ public class GiftResponseDto {
         this.isPinned = gift.getIsPinned();
         this.isGiven = gift.getIsGiven();
         this.userNo = gift.getUser().getUserNo();
-        this.friendNo = gift.getFriendNo();
+        this.friendNoList = friendNoList;
         log.info("[GiftResponseDto] 실행 완료");
     }
 }

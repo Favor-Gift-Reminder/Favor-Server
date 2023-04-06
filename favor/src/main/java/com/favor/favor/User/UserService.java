@@ -107,7 +107,11 @@ public class UserService {
 
         List<GiftResponseDto> g_List = new ArrayList<>();
         for(Gift g : user.getGiftList()){
-            GiftResponseDto dto = new GiftResponseDto(g);
+            List<Long> friendNoList = new ArrayList<>();
+            for(Long f : g.getFriendNoList()){
+                friendNoList.add(f);
+            }
+            GiftResponseDto dto = new GiftResponseDto(g, friendNoList);
             g_List.add(dto);
         }
         return g_List;
@@ -145,7 +149,11 @@ public class UserService {
         List<Gift> giftList = giftRepository.findGiftsByUserAndGiftNameContains(user, giftName);
         List<GiftResponseDto> g_List = new ArrayList<>();
         for(Gift g : giftList){
-            GiftResponseDto dto = new GiftResponseDto(g);
+            List<Long> friendNoList = new ArrayList<>();
+            for(Long f : g.getFriendNoList()){
+                friendNoList.add(f);
+            }
+            GiftResponseDto dto = new GiftResponseDto(g, friendNoList);
             g_List.add(dto);
         }
 
@@ -159,7 +167,11 @@ public class UserService {
         List<Gift> giftList = giftRepository.findGiftsByUserAndCategory(user, categoryNo);
         List<GiftResponseDto> g_List = new ArrayList<>();
         for(Gift g : giftList){
-            GiftResponseDto dto = new GiftResponseDto(g);
+            List<Long> friendNoList = new ArrayList<>();
+            for(Long f : g.getFriendNoList()){
+                friendNoList.add(f);
+            }
+            GiftResponseDto dto = new GiftResponseDto(g, friendNoList);
             g_List.add(dto);
         }
 
@@ -173,7 +185,11 @@ public class UserService {
         List<Gift> giftList = giftRepository.findGiftsByUserAndEmotion(user, emotionNo);
         List<GiftResponseDto> g_List = new ArrayList<>();
         for(Gift g : giftList){
-            GiftResponseDto dto = new GiftResponseDto(g);
+            List<Long> friendNoList = new ArrayList<>();
+            for(Long f : g.getFriendNoList()){
+                friendNoList.add(f);
+            }
+            GiftResponseDto dto = new GiftResponseDto(g, friendNoList);
             g_List.add(dto);
         }
 
@@ -259,7 +275,11 @@ public class UserService {
         List<GiftResponseDto> g_list = new ArrayList<>();
         List<Gift> giftList = user.getGiftList();
         for(Gift g : giftList){
-            GiftResponseDto dto = new GiftResponseDto(g);
+            List<Long> friendNoList = new ArrayList<>();
+            for(Long f : g.getFriendNoList()){
+                friendNoList.add(f);
+            }
+            GiftResponseDto dto = new GiftResponseDto(g, friendNoList);
             g_list.add(dto);
         }
 

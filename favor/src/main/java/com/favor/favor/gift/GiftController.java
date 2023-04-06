@@ -43,7 +43,9 @@ public class GiftController {
             @PathVariable Long userNo){
 
         giftService.isExistingUserNo(userNo);
-        giftService.isExistingFriendNo(giftRequestDto.getFriendNo());
+        for(Long friendNo : giftRequestDto.getFriendNoList()){
+            giftService.isExistingFriendNo(friendNo);
+        }
 
         Gift gift = giftService.createGift(giftRequestDto, userNo);
         GiftResponseDto dto = giftService.returnDto(gift);

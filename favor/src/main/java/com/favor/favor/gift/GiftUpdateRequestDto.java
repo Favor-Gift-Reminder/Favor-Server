@@ -15,7 +15,6 @@ import java.util.List;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor
 public class GiftUpdateRequestDto {
-    //giftName, giftDate, giftMemo, category, emotion, isPinned, isGiven 수정 가능
     @ApiModelProperty(position = 1, required = false, value = "선물이름", example = "선물이름")
     private String giftName;
 
@@ -38,6 +37,6 @@ public class GiftUpdateRequestDto {
     private Boolean isGiven;
 
     @ApiModelProperty(position = 8, required = false, value = "연관친구 리스트", example = "[1]")
-    private Long friendNo;
+    private List<Long> friendNoList;
 
 }

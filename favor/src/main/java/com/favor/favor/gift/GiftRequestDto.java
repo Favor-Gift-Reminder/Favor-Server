@@ -40,7 +40,7 @@ public class GiftRequestDto {
     private Boolean isGiven;
 
     @ApiModelProperty(position = 8, required = false, value = "연관친구 리스트", example = "[1]")
-    private Long friendNo;
+    private List<Long> friendNoList;
 
     @Transactional
     public Gift toEntity(User user){
@@ -53,7 +53,7 @@ public class GiftRequestDto {
                 .isPinned(false)
                 .isGiven(isGiven)
                 .user(user)
-                .friendNo(friendNo)
+                .friendNoList(friendNoList)
                 .build();
     }
 }

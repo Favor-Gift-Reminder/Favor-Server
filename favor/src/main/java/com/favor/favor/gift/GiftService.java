@@ -29,15 +29,18 @@ public class GiftService {
         log.info("[Service] [createGift] 실행");
         User user =  findUserByUserNo(userNo);
         Gift gift = giftRepository.save(giftRequestDto.toEntity(user));
-        addGiftNo(gift.getGiftNo(), gift.getFriendNo());
+        addGiftNo(gift.getGiftNo(), gift.getFriendNoList());
         return giftRepository.save(gift);
     }
-    public void addGiftNo(Long giftNo, Long friendNo){
+    @Transactional
+    public void addGiftNo(Long giftNo, List<Long> friendNoList){
         log.info("[Service] [addGiftNo] 실행");
-        Friend friend = findFriendByFriendNo(friendNo);
-        List<Long> giftNoList = friend.getGiftNoList();
-        giftNoList.add(giftNo);
-        friend.setGiftNoList(giftNoList);
+        for(Long friendNo : friendNoList) {
+            Friend friend = findFriendByFriendNo(friendNo);
+            List<Long> giftNoList = friend.getGiftNoList();
+            giftNoList.add(giftNo);
+            friend.setGiftNoList(giftNoList);
+        }
     }
 
     public void updateGift(GiftUpdateRequestDto dto, Gift gift){
@@ -48,7 +51,7 @@ public class GiftService {
         gift.setEmotion(dto.getEmotion());
         gift.setIsPinned(dto.getIsPinned());
         gift.setIsGiven(dto.getIsGiven());
-        gift.setFriendNo(dto.getFriendNo());
+        gift.setFriendNo(dto.getFriendNoList());
 
         giftRepository.save(gift);
     }
@@ -61,7 +64,11 @@ public class GiftService {
     public List<GiftResponseDto> readAll(){
         List<GiftResponseDto> g_List = new ArrayList<>();
         for(Gift g : giftRepository.findAll()){
-            GiftResponseDto dto = new GiftResponseDto(g);
+            List<Long> friendNoList = new ArrayList<>();
+            for(Long f : g.getFriendNoList()){
+                friendNoList.add(f);
+            }
+            GiftResponseDto dto = new GiftResponseDto(g, friendNoList);
             g_List.add(dto);
         }
         return g_List;
@@ -111,7 +118,11 @@ public class GiftService {
 
     public GiftResponseDto returnDto(Gift gift){
         log.info("[Service] [returnDto] 실행");
-        return new GiftResponseDto(gift);
+        List<Long> friendNoList = new ArrayList<>();
+        for(Long f : gift.getFriendNoList()){
+            friendNoList.add(f);
+        }
+        return new GiftResponseDto(gift, friendNoList);
     }
 
 
