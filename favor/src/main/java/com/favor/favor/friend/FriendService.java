@@ -7,6 +7,7 @@ import com.favor.favor.friend.noAccount.FriendRequestDto;
 import com.favor.favor.friend.noAccount.FriendUpdateRequestDto;
 import com.favor.favor.gift.Gift;
 import com.favor.favor.gift.GiftRepository;
+import com.favor.favor.gift.GiftResponseDto;
 import com.favor.favor.reminder.Reminder;
 import com.favor.favor.reminder.ReminderResponseDto;
 import com.favor.favor.user.User;
@@ -120,6 +121,17 @@ public class FriendService {
         }
         return friend;
     }
+    public Gift findGiftByGiftNo(Long giftNo){
+        Gift gift = null;
+        try{
+            gift = giftRepository.findByGiftNo(giftNo).orElseThrow(
+                    () -> new RuntimeException()
+            );
+        } catch (RuntimeException e){
+            throw new CustomException(e, GIFT_NOT_FOUND);
+        }
+        return gift;
+    }
 
 
 
@@ -138,34 +150,34 @@ public class FriendService {
         for(Reminder r : reminderList){
             reminderDtoList.add(new ReminderResponseDto(r));
         }
-        List<Long> giftNoList = new ArrayList<>();
+        List<GiftResponseDto> giftDtoList = new ArrayList<>();
         for(Gift g : user.getGiftList()){
-            giftNoList.add(g.getGiftNo());
+            giftDtoList.add(new GiftResponseDto(g, null));
         }
         List<Favor> favorList = new ArrayList<>();
         for(Integer favorType : user.getFavorList()){
             favorList.add(Favor.valueOf(favorType));
         }
 
-        return new FriendResponseDto(friend, reminderDtoList, giftNoList, favorList);
+        return new FriendResponseDto(friend, reminderDtoList, giftDtoList, favorList);
     }
     public FriendResponseDto returnDtoForFriend(Friend friend){
         List<ReminderResponseDto> reminderDtoList = new ArrayList<>();
-        List<Reminder> reminderList = friend.getReminderList();
-        for(Reminder r : reminderList){
+        for(Reminder r : friend.getReminderList()){
             ReminderResponseDto dto = new ReminderResponseDto(r);
             reminderDtoList.add(dto);
         }
-        List<Long> giftNoList = new ArrayList<>();
+        List<GiftResponseDto> giftDtoList = new ArrayList<>();
         for(Long g : friend.getGiftNoList()){
-            giftNoList.add(g);
+            Gift gift = findGiftByGiftNo(g);
+            giftDtoList.add(new GiftResponseDto(gift, null));
         }
         List<Favor> favorList = new ArrayList<>();
         for(Integer favorType : friend.getFavorList()){
             favorList.add(Favor.valueOf(favorType));
         }
 
-        return new FriendResponseDto(friend, reminderDtoList, giftNoList, favorList);
+        return new FriendResponseDto(friend, reminderDtoList, giftDtoList, favorList);
     }
 
 

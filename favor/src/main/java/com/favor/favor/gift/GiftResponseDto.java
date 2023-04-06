@@ -2,6 +2,7 @@ package com.favor.favor.gift;
 
 import com.favor.favor.common.enums.Category;
 import com.favor.favor.common.enums.Emotion;
+import com.favor.favor.friend.FriendResponseDto;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -27,22 +28,6 @@ public class GiftResponseDto {
     private Boolean isGiven;
     private Long userNo;
     private List<Long> friendNoList;
-
-//    @Builder
-//    public GiftResponseDto(Gift gift){
-//        log.info("[GiftResponseDto] 실행");
-//        this.giftNo = gift.getGiftNo();
-//        this.giftName = gift.getGiftName();
-//        this.giftDate = gift.getGiftDate();
-//        this.giftMemo = gift.getGiftMemo();
-//        this.category = Category.valueOf(gift.getCategory());
-//        this.emotion = Emotion.valueOf(gift.getEmotion());
-//        this.isPinned = gift.getIsPinned();
-//        this.isGiven = gift.getIsGiven();
-//        this.userNo = gift.getUser().getUserNo();
-//        this.friendNo = gift.getFriendNo();
-//        log.info("[GiftResponseDto] 실행 완료");
-//    }
 
     @Builder
     public GiftResponseDto(Gift gift, List<Long> friendNoList){
