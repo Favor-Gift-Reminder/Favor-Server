@@ -16,7 +16,7 @@ import java.util.Date;
 @AllArgsConstructor
 public class ReminderRequestDto {
     @ApiModelProperty(position = 1, required = true, value = "제목", example = "제목")
-    private String title;
+    private String reminderTitle;
 
     @ApiModelProperty(position = 2, required = true, value = "날짜", example = "1996-02-29")
     private Date reminderDate;
@@ -33,7 +33,7 @@ public class ReminderRequestDto {
     @Transactional
     public Reminder toEntity(User user, Friend friend){
         return Reminder.builder()
-                .title(title)
+                .reminderTitle(reminderTitle)
                 .reminderDate(reminderDate)
                 .isAlarmSet(isAlarmSet)
                 .alarmTime(alarmTime)

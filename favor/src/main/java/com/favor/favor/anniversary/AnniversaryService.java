@@ -1,0 +1,102 @@
+package com.favor.favor.anniversary;
+
+import com.favor.favor.exception.CustomException;
+import com.favor.favor.user.User;
+import com.favor.favor.user.UserRepository;
+import lombok.RequiredArgsConstructor;
+import org.springframework.stereotype.Service;
+
+import java.util.ArrayList;
+import java.util.List;
+
+import static com.favor.favor.exception.ExceptionCode.*;
+
+@Service
+@RequiredArgsConstructor
+public class AnniversaryService {
+
+    private final AnniversaryRepository anniversaryRepository;
+    private final UserRepository userRepository;
+
+    public Anniversary createAnniversary(AnniversaryRequestDto anniversaryRequestDto, Long userNo){
+        User user = findUserByUserNo(userNo);
+        return anniversaryRepository.save(anniversaryRequestDto.toEntity(user));
+    }
+
+    public void updateAnniversary(AnniversaryUpdateRequestDto dto, Long anniversaryNo){
+        Anniversary anniversary = findAnniversaryByanniversaryNo(anniversaryNo);
+
+        anniversary.setAnniversaryTitle(dto.getAnniversaryTitle());
+        anniversary.setAnniversaryDate(dto.getAnniversaryDate());
+        anniversary.setIsPinned(dto.getIsPinned());
+
+        anniversaryRepository.save(anniversary);
+    }
+
+    public void deleteAnniversary(Long anniversaryNo){
+        anniversaryRepository.deleteByAnniversaryNo(anniversaryNo);
+    }
+
+    public List<AnniversaryResponseDto> readAll(){
+        List<AnniversaryResponseDto> a_List = new ArrayList<>();
+        for(Anniversary a : anniversaryRepository.findAll()){
+            AnniversaryResponseDto dto = new AnniversaryResponseDto(a);
+            a_List.add(dto);
+        }
+        return a_List;
+    }
+
+
+    public User findUserByUserNo(Long userNo){
+        User user = null;
+        try{
+            user = userRepository.findByUserNo(userNo).orElseThrow(
+                    () -> new RuntimeException()
+            );
+        } catch (RuntimeException e){
+            throw new CustomException(e, USER_NOT_FOUND);
+        }
+        return user;
+    }
+    public Anniversary findAnniversaryByanniversaryNo(Long userNo){
+        Anniversary anniversary = null;
+        try{
+            anniversary = anniversaryRepository.findAnniversaryByAnniversaryNo(userNo).orElseThrow(
+                    () -> new RuntimeException()
+            );
+        } catch (RuntimeException e){
+            throw new CustomException(e, ANNIVERSARY_NOT_FOUND);
+        }
+        return anniversary;
+    }
+
+
+    public AnniversaryResponseDto returnDto(Anniversary anniversary){
+        return new AnniversaryResponseDto(anniversary);
+    }
+
+
+    public void isExistingAnniversaryNo(Long anniversaryNo){
+        Boolean isExistingNo = null;
+        try{
+            isExistingNo = anniversaryRepository.existsByAnniversaryNo(anniversaryNo);
+        }catch(RuntimeException e){
+            throw new CustomException(e, SERVER_ERROR);
+        }
+        if(!isExistingNo){
+            throw new CustomException(null, ANNIVERSARY_NOT_FOUND);
+        }
+    }
+
+    public void isExistingUserNo (Long userNo){
+        Boolean isExistingNo = null;
+        try{
+            isExistingNo = userRepository.existsByUserNo(userNo);
+        } catch(RuntimeException e){
+            throw new CustomException(e, SERVER_ERROR);
+        }
+        if(!isExistingNo){
+            throw new CustomException(null, USER_NOT_FOUND);
+        }
+    }
+}

@@ -23,6 +23,7 @@ import java.util.List;
 @RequiredArgsConstructor
 @Log4j2
 public class ReminderController {
+
     private final ReminderService reminderService;
 
     @ApiOperation("리마인더 생성")
@@ -58,11 +59,11 @@ public class ReminderController {
                         .build());
     }
 
-    @ApiOperation("단일리마인더 조회")
+    @ApiOperation("리마인더 조회")
     @ApiResponses(value={
             @ApiResponse(code = 200,
                     message = "REMINDER_FOUND",
-                    response = FriendResponseDto.class),
+                    response = ReminderResponseDto.class),
             @ApiResponse(code = 401,
                     message = "UNAUTHORIZED_USER"),
             @ApiResponse(code = 404,
@@ -92,7 +93,7 @@ public class ReminderController {
     @ApiResponses(value={
             @ApiResponse(code = 200,
                     message = "REMINDER_UPDATED",
-                    response = FriendResponseDto.class),
+                    response = ReminderResponseDto.class),
             @ApiResponse(code = 401,
                     message = "UNAUTHORIZED_USER"),
             @ApiResponse(code = 404,
@@ -126,7 +127,7 @@ public class ReminderController {
     @ApiResponses(value={
             @ApiResponse(code = 200,
                     message = "REMINDER_DELETED",
-                    response = UserResponseDto.class),
+                    response = ReminderResponseDto.class),
             @ApiResponse(code = 401,
                     message = "UNAUTHORIZED_USER"),
             @ApiResponse(code = 404,
@@ -159,7 +160,7 @@ public class ReminderController {
     @ApiResponses(value={
             @ApiResponse(code = 200,
                     message = "REMIDNERS_FOUND",
-                    response = UserResponseDto.class),
+                    response = List.class),
             @ApiResponse(code = 401,
                     message = "UNAUTHORIZED_USER"),
             @ApiResponse(code = 500,

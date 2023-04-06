@@ -1,6 +1,7 @@
 package com.favor.favor.user;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.favor.favor.anniversary.Anniversary;
 import com.favor.favor.common.enums.Favor;
 import com.favor.favor.common.enums.Role;
 import com.favor.favor.common.TimeStamped;
@@ -40,6 +41,7 @@ public class User extends TimeStamped {
         this.name = name;
     }
 
+
     @Builder.Default
     @ElementCollection
     private List<Integer> favorList = new ArrayList<>();
@@ -50,8 +52,12 @@ public class User extends TimeStamped {
             favorTypeList.add(favor.getType());
         }
         this.favorList = favorTypeList;
-
     }
+
+    @Builder.Default
+    @JsonIgnore
+    @OneToMany(mappedBy = "user", orphanRemoval = true)
+    private List<Anniversary> anniversaryList = new ArrayList<>();
 
     @Builder.Default
     @JsonIgnore

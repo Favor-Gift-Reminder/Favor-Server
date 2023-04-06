@@ -11,7 +11,7 @@ import java.util.Date;
 @Builder
 public class ReminderResponseDto {
     private final Long reminderNo;
-    private String title;
+    private String reminderTitle;
     private Date reminderDate;
     private String memo;
     private Boolean isAlarmSet;
@@ -23,7 +23,7 @@ public class ReminderResponseDto {
     @Builder
     public ReminderResponseDto(Reminder reminder){
         this.reminderNo = reminder.getReminderNo();
-        this.title = reminder.getTitle();
+        this.reminderTitle = reminder.getReminderTitle();
         this.reminderDate = reminder.getReminderDate();
         this.memo = reminder.getReminderMemo();
         this.isAlarmSet = reminder.getIsAlarmSet();

@@ -20,15 +20,30 @@ public class Reminder {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long reminderNo;
 
-    private String title;
+    private String reminderTitle;
+    public void setTitle(String reminderTitle){
+        this.reminderTitle = reminderTitle;
+    }
 
     private Date reminderDate;
+    public void setReminderDate(Date reminderDate){
+        this.reminderDate = reminderDate;
+    }
 
     private String reminderMemo;
+    public void setReminderMemo(String memo){
+        this.reminderMemo = memo;
+    }
 
     private Boolean isAlarmSet;
+    public void setIsAlarmSet(Boolean isAlarmSet){
+        this.isAlarmSet = isAlarmSet;
+    }
 
     private Date alarmTime;
+    public void setAlarmTime(Date alarmTime){
+        this.alarmTime = alarmTime;
+    }
 
 
     @ManyToOne(cascade = CascadeType.REFRESH)
@@ -38,24 +53,6 @@ public class Reminder {
     @ManyToOne(cascade = CascadeType.REFRESH)
     @JoinColumn(name = "friend_friend_no")
     private Friend friend;
-
-
-
-    public void setTitle(String title){
-        this.title = title;
-    }
-    public void setReminderDate(Date reminderDate){
-        this.reminderDate = reminderDate;
-    }
-    public void setIsAlarmSet(Boolean isAlarmSet){
-        this.isAlarmSet = isAlarmSet;
-    }
-    public void setAlarmTime(Date alarmTime){
-        this.alarmTime = alarmTime;
-    }
-    public void setReminderMemo(String memo){
-        this.reminderMemo = memo;
-    }
     public void setFriend(Friend friend){
         this.friend = friend;
     }
