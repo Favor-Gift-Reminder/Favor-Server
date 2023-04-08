@@ -106,13 +106,14 @@ public class UserService {
         User user = findUserByUserNo(userNo);
 
         List<GiftResponseDto> g_List = new ArrayList<>();
-        for(Gift g : user.getGiftList()){
-            List<Long> friendNoList = new ArrayList<>();
-            for(Long f : g.getFriendNoList()){
-                friendNoList.add(f);
+        for(Gift gift : user.getGiftList()){
+            List<FriendResponseDto> friendList = new ArrayList<>();
+            for(Long f : gift.getFriendNoList()){
+                Friend friend = findFriendByFriendNo(f);
+                FriendResponseDto dto = new FriendResponseDto(friend);
+                friendList.add(dto);
             }
-            GiftResponseDto dto = new GiftResponseDto(g, friendNoList);
-            g_List.add(dto);
+            g_List.add(new GiftResponseDto(gift, friendList));
         }
         return g_List;
     }
@@ -148,13 +149,14 @@ public class UserService {
 
         List<Gift> giftList = giftRepository.findGiftsByUserAndGiftNameContains(user, giftName);
         List<GiftResponseDto> g_List = new ArrayList<>();
-        for(Gift g : giftList){
-            List<Long> friendNoList = new ArrayList<>();
-            for(Long f : g.getFriendNoList()){
-                friendNoList.add(f);
+        for(Gift gift : giftList){
+            List<FriendResponseDto> friendList = new ArrayList<>();
+            for(Long f : gift.getFriendNoList()){
+                Friend friend = findFriendByFriendNo(f);
+                FriendResponseDto dto = new FriendResponseDto(friend);
+                friendList.add(dto);
             }
-            GiftResponseDto dto = new GiftResponseDto(g, friendNoList);
-            g_List.add(dto);
+            g_List.add(new GiftResponseDto(gift, friendList));
         }
 
         return g_List;
@@ -166,13 +168,14 @@ public class UserService {
         Integer categoryNo = category.getType();
         List<Gift> giftList = giftRepository.findGiftsByUserAndCategory(user, categoryNo);
         List<GiftResponseDto> g_List = new ArrayList<>();
-        for(Gift g : giftList){
-            List<Long> friendNoList = new ArrayList<>();
-            for(Long f : g.getFriendNoList()){
-                friendNoList.add(f);
+        for(Gift gift : giftList){
+            List<FriendResponseDto> friendList = new ArrayList<>();
+            for(Long f : gift.getFriendNoList()){
+                Friend friend = findFriendByFriendNo(f);
+                FriendResponseDto dto = new FriendResponseDto(friend);
+                friendList.add(dto);
             }
-            GiftResponseDto dto = new GiftResponseDto(g, friendNoList);
-            g_List.add(dto);
+            g_List.add(new GiftResponseDto(gift, friendList));
         }
 
         return g_List;
@@ -184,13 +187,14 @@ public class UserService {
         Integer emotionNo = emotion.getType();
         List<Gift> giftList = giftRepository.findGiftsByUserAndEmotion(user, emotionNo);
         List<GiftResponseDto> g_List = new ArrayList<>();
-        for(Gift g : giftList){
-            List<Long> friendNoList = new ArrayList<>();
-            for(Long f : g.getFriendNoList()){
-                friendNoList.add(f);
+        for(Gift gift : giftList){
+            List<FriendResponseDto> friendList = new ArrayList<>();
+            for(Long f : gift.getFriendNoList()){
+                Friend friend = findFriendByFriendNo(f);
+                FriendResponseDto dto = new FriendResponseDto(friend);
+                friendList.add(dto);
             }
-            GiftResponseDto dto = new GiftResponseDto(g, friendNoList);
-            g_List.add(dto);
+            g_List.add(new GiftResponseDto(gift, friendList));
         }
 
         return g_List;
@@ -259,6 +263,17 @@ public class UserService {
         }
         return user;
     }
+    public Friend findFriendByFriendNo(Long friendNo){
+        Friend friend = null;
+        try{
+            friend = friendRepository.findByFriendNo(friendNo).orElseThrow(
+                    () -> new RuntimeException()
+            );
+        } catch (RuntimeException e){
+            throw new CustomException(e, FRIEND_NOT_FOUND);
+        }
+        return friend;
+    }
 
 
 
@@ -266,28 +281,29 @@ public class UserService {
     @Transactional
     public UserResponseDto returnUserDto(User user){
 
-        List<ReminderResponseDto> r_list = new ArrayList<>();
+        List<ReminderResponseDto> r_List = new ArrayList<>();
         List<Reminder> reminderList = user.getReminderList();
         for(Reminder r : reminderList){
             ReminderResponseDto dto = new ReminderResponseDto(r);
-            r_list.add(dto);
+            r_List.add(dto);
         }
-        List<GiftResponseDto> g_list = new ArrayList<>();
+        List<GiftResponseDto> g_List = new ArrayList<>();
         List<Gift> giftList = user.getGiftList();
-        for(Gift g : giftList){
-            List<Long> friendNoList = new ArrayList<>();
-            for(Long f : g.getFriendNoList()){
-                friendNoList.add(f);
+        for(Gift gift : giftList){
+            List<FriendResponseDto> friendList = new ArrayList<>();
+            for(Long f : gift.getFriendNoList()){
+                Friend friend = findFriendByFriendNo(f);
+                FriendResponseDto dto = new FriendResponseDto(friend);
+                friendList.add(dto);
             }
-            GiftResponseDto dto = new GiftResponseDto(g, friendNoList);
-            g_list.add(dto);
+            g_List.add(new GiftResponseDto(gift, friendList));
         }
 
-        List<FriendResponseDto> f_list = new ArrayList<>();
+        List<FriendResponseDto> f_List = new ArrayList<>();
         List<Friend> friendList = user.getFriendList();
         for(Friend f : friendList){
             FriendResponseDto dto = new FriendResponseDto(f);
-            f_list.add(dto);
+            f_List.add(dto);
         }
 
         List<AnniversaryResponseDto> a_List = new ArrayList<>();
@@ -302,7 +318,7 @@ public class UserService {
             favor_List.add(Favor.valueOf(favorType));
         }
 
-        UserResponseDto dto = new UserResponseDto(user, r_list, g_list, f_list, favor_List, a_List);
+        UserResponseDto dto = new UserResponseDto(user, r_List, g_List, f_List, favor_List, a_List);
         return dto;
     }
 

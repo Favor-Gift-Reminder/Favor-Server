@@ -170,7 +170,7 @@ public class FriendService {
         List<GiftResponseDto> giftDtoList = new ArrayList<>();
         for(Long g : friend.getGiftNoList()){
             Gift gift = findGiftByGiftNo(g);
-            giftDtoList.add(new GiftResponseDto(gift, null));
+            giftDtoList.add(new GiftResponseDto(gift));
         }
         List<Favor> favorList = new ArrayList<>();
         for(Integer favorType : friend.getFavorList()){

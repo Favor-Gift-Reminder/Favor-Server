@@ -63,12 +63,14 @@ public class GiftService {
 
     public List<GiftResponseDto> readAll(){
         List<GiftResponseDto> g_List = new ArrayList<>();
-        for(Gift g : giftRepository.findAll()){
-            List<Long> friendNoList = new ArrayList<>();
-            for(Long f : g.getFriendNoList()){
-                friendNoList.add(f);
+        for(Gift gift : giftRepository.findAll()){
+            List<FriendResponseDto> friendList = new ArrayList<>();
+            for(Long f : gift.getFriendNoList()){
+                Friend friend = findFriendByFriendNo(f);
+                FriendResponseDto dto = new FriendResponseDto(friend);
+                friendList.add(dto);
             }
-            GiftResponseDto dto = new GiftResponseDto(g, friendNoList);
+            GiftResponseDto dto = new GiftResponseDto(gift, friendList);
             g_List.add(dto);
         }
         return g_List;
@@ -118,11 +120,13 @@ public class GiftService {
 
     public GiftResponseDto returnDto(Gift gift){
         log.info("[Service] [returnDto] 실행");
-        List<Long> friendNoList = new ArrayList<>();
+        List<FriendResponseDto> friendList = new ArrayList<>();
         for(Long f : gift.getFriendNoList()){
-            friendNoList.add(f);
+            Friend friend = findFriendByFriendNo(f);
+            FriendResponseDto dto = new FriendResponseDto(friend);
+            friendList.add(dto);
         }
-        return new GiftResponseDto(gift, friendNoList);
+        return new GiftResponseDto(gift, friendList);
     }
 
 
