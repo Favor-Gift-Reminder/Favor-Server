@@ -6,7 +6,8 @@ import lombok.*;
 
 import javax.persistence.*;
 import javax.transaction.Transactional;
-import java.util.Date;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 @Entity
 @Getter
@@ -25,8 +26,8 @@ public class Reminder {
         this.reminderTitle = reminderTitle;
     }
 
-    private Date reminderDate;
-    public void setReminderDate(Date reminderDate){
+    private LocalDate reminderDate;
+    public void setReminderDate(LocalDate reminderDate){
         this.reminderDate = reminderDate;
     }
 
@@ -40,8 +41,8 @@ public class Reminder {
         this.isAlarmSet = isAlarmSet;
     }
 
-    private Date alarmTime;
-    public void setAlarmTime(Date alarmTime){
+    private LocalDateTime alarmTime;
+    public void setAlarmTime(LocalDateTime alarmTime){
         this.alarmTime = alarmTime;
     }
 

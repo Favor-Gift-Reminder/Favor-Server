@@ -11,8 +11,16 @@ import lombok.extern.log4j.Log4j2;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+import java.time.format.DateTimeParseException;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 
 import static com.favor.favor.exception.ExceptionCode.*;
 
@@ -28,7 +36,8 @@ public class GiftService {
     public Gift createGift(GiftRequestDto giftRequestDto, Long userNo){
         log.info("[Service] [createGift] 실행");
         User user =  findUserByUserNo(userNo);
-        Gift gift = giftRepository.save(giftRequestDto.toEntity(user));
+        LocalDate localDate = returnLocalDate(giftRequestDto.getGiftDate());
+        Gift gift = giftRepository.save(giftRequestDto.toEntity(user, localDate));
         addGiftNo(gift.getGiftNo(), gift.getFriendNoList());
         return giftRepository.save(gift);
     }
@@ -45,13 +54,13 @@ public class GiftService {
 
     public void updateGift(GiftUpdateRequestDto dto, Gift gift){
         gift.setGiftName(dto.getGiftName());
-        gift.setGiftDate(dto.getGiftDate());
         gift.setGiftMemo(dto.getGiftMemo());
         gift.setCategory(dto.getCategory());
         gift.setEmotion(dto.getEmotion());
         gift.setIsPinned(dto.getIsPinned());
         gift.setIsGiven(dto.getIsGiven());
         gift.setFriendNo(dto.getFriendNoList());
+        gift.setGiftDate(returnLocalDate(dto.getGiftDate()));
 
         giftRepository.save(gift);
     }
@@ -127,6 +136,28 @@ public class GiftService {
             friendList.add(dto);
         }
         return new GiftResponseDto(gift, friendList);
+    }
+
+    public LocalDate returnLocalDate(String dateString){
+        String patternDate = "yyyy-MM-dd";
+        try{
+            DateTimeFormatter formatter = DateTimeFormatter.ofPattern(patternDate);
+            LocalDate date = LocalDate.parse(dateString, formatter);
+            return date;
+
+        } catch(DateTimeParseException e){
+            throw new CustomException(e, DATE_INVALID);
+        }
+    }
+    public LocalDateTime returnLocalDateTime(String dateTimeString){
+        String pattern = "yyyy-MM-dd HH:mm:ss";
+        try{
+            DateTimeFormatter formatter = DateTimeFormatter.ofPattern(pattern);
+            LocalDateTime dateTime = LocalDateTime.parse(dateTimeString, formatter);
+            return dateTime;
+        } catch(DateTimeParseException e){
+            throw new CustomException(e, DATE_INVALID);
+        }
     }
 
 

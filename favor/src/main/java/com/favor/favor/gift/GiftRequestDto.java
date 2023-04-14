@@ -11,6 +11,7 @@ import lombok.NoArgsConstructor;
 
 import javax.transaction.Transactional;
 import java.time.LocalDate;
+import java.util.Date;
 import java.util.List;
 
 @Getter
@@ -21,7 +22,7 @@ public class GiftRequestDto {
     private String giftName;
 
     @ApiModelProperty(position = 2, required = false, value = "선물날짜", example = "1996-02-29")
-    private LocalDate giftDate;
+    private String giftDate;
 
     @ApiModelProperty(position = 3, required = false, value = "선물메모", example = "선물메모")
     private String giftMemo;
@@ -43,7 +44,7 @@ public class GiftRequestDto {
     private List<Long> friendNoList;
 
     @Transactional
-    public Gift toEntity(User user){
+    public Gift toEntity(User user, LocalDate giftDate){
         return Gift.builder()
                 .giftName(giftName)
                 .giftDate(giftDate)

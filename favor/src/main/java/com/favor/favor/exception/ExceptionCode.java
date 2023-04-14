@@ -18,6 +18,8 @@ public enum ExceptionCode {
     EMAIL_CHARACTER_INVALID(BAD_REQUEST, "올바른 형식의 이메일이 아닙니다."),
     PASSWORD_CHARACTER_INVALID(BAD_REQUEST, "올바른 형식의 비밀번호가 아닙니다."),
     ID_CHARACTER_INVALID(BAD_REQUEST, "올바른 형식의 아이디가 아닙니다."),
+    DATE_INVALID(BAD_REQUEST, "올바른 형식의 날짜가 아닙니다."),
+    DATE_TIME_INVALID(BAD_REQUEST, "올바른 형식의 날짜와 시간이 아닙니다."),
 
     // 사이즈
     ID_LENGTH_INVALID(BAD_REQUEST, "아이디는 2~8자만 가능합니다."),

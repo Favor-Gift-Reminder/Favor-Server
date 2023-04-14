@@ -9,6 +9,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import java.time.LocalDate;
+import java.util.Date;
 import java.util.List;
 
 @Getter
@@ -19,7 +20,7 @@ public class GiftUpdateRequestDto {
     private String giftName;
 
     @ApiModelProperty(position = 2, required = false, value = "선물날짜", example = "1996-02-29")
-    private LocalDate giftDate;
+    private String giftDate;
 
     @ApiModelProperty(position = 3, required = false, value = "선물메모", example = "선물메모")
     private String giftMemo;
