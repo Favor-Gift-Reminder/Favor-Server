@@ -1,6 +1,8 @@
 package com.favor.favor.friend;
 
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.favor.favor.anniversary.Anniversary;
 import lombok.*;
 
 import com.favor.favor.common.TimeStamped;
@@ -33,6 +35,7 @@ public class Friend extends TimeStamped {
     public void setFriendMemo(String friendMemo) {
         this.friendMemo = friendMemo;
     }
+
 
     @ManyToOne(cascade = CascadeType.REFRESH)
     @JoinColumn(name = "user_user_no")

@@ -34,4 +34,6 @@ public class Anniversary extends TimeStamped {
     @JoinColumn(name = "user_user_no")
     private User user;
 
+
+
 }

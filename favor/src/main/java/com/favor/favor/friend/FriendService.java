@@ -1,5 +1,7 @@
 package com.favor.favor.friend;
 
+import com.favor.favor.anniversary.Anniversary;
+import com.favor.favor.anniversary.AnniversaryResponseDto;
 import com.favor.favor.common.enums.Favor;
 import com.favor.favor.exception.CustomException;
 import com.favor.favor.friend.account.FriendUserRequestDto;
@@ -158,8 +160,12 @@ public class FriendService {
         for(Integer favorType : user.getFavorList()){
             favorList.add(Favor.valueOf(favorType));
         }
+        List<AnniversaryResponseDto> anniversaryDtoList = new ArrayList<>();
+        for(Anniversary a : user.getAnniversaryList()){
+            anniversaryDtoList.add(new AnniversaryResponseDto(a));
+        }
 
-        return new FriendResponseDto(friend, reminderDtoList, giftDtoList, favorList);
+        return new FriendResponseDto(friend, reminderDtoList, giftDtoList, favorList, anniversaryDtoList);
     }
     public FriendResponseDto returnDtoForFriend(Friend friend){
         List<ReminderResponseDto> reminderDtoList = new ArrayList<>();
@@ -176,8 +182,9 @@ public class FriendService {
         for(Integer favorType : friend.getFavorList()){
             favorList.add(Favor.valueOf(favorType));
         }
+        List<AnniversaryResponseDto> anniversaryList = new ArrayList<>();
 
-        return new FriendResponseDto(friend, reminderDtoList, giftDtoList, favorList);
+        return new FriendResponseDto(friend, reminderDtoList, giftDtoList, favorList, anniversaryList);
     }
 
 
