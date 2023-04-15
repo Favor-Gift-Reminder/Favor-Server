@@ -259,12 +259,12 @@ public class UserController {
     @ApiOperation("회원의 리마인더 필터 조회")
     @ApiResponses(value={
             @ApiResponse(code = 200,
-                    message = "REMINDER_FOUND",
+                    message = "REMINDER_FOUND_BY_FILTER",
                     response = ReminderResponseDto.class),
             @ApiResponse(code = 401,
                     message = "UNAUTHORIZED_USER"),
             @ApiResponse(code = 404,
-                    message = "REMINDER_NOT_FOUND"),
+                    message = "USER_NOT_FOUND"),
             @ApiResponse(code = 500,
                     message = "SERVER_ERROR")
     })
@@ -282,7 +282,7 @@ public class UserController {
 
         return ResponseEntity.status(200)
                 .body(DefaultResponseDto.builder()
-                        .responseCode("REMINDER_FOUND")
+                        .responseCode("REMINDER_FOUND_BY_FILTER")
                         .responseMessage("리마인더 필터 조회 완료")
                         .data(dto)
                         .build());
