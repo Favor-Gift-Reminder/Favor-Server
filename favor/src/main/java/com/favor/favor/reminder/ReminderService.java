@@ -115,7 +115,7 @@ public class ReminderService {
         }
     }
     public LocalDateTime returnLocalDateTime(String dateTimeString){
-        String pattern = "yyyy-MM-dd HH:mm:ss";
+        String pattern = "yyyy-MM-dd HH:mm";
         try{
             DateTimeFormatter formatter = DateTimeFormatter.ofPattern(pattern);
             LocalDateTime dateTime = LocalDateTime.parse(dateTimeString, formatter);

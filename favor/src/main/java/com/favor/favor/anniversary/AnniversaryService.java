@@ -6,6 +6,10 @@ import com.favor.favor.user.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+import java.time.format.DateTimeParseException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -20,14 +24,16 @@ public class AnniversaryService {
 
     public Anniversary createAnniversary(AnniversaryRequestDto anniversaryRequestDto, Long userNo){
         User user = findUserByUserNo(userNo);
-        return anniversaryRepository.save(anniversaryRequestDto.toEntity(user));
+        LocalDate localDate = returnLocalDate(anniversaryRequestDto.getAnniversaryDate());
+        return anniversaryRepository.save(anniversaryRequestDto.toEntity(user, localDate));
     }
 
     public void updateAnniversary(AnniversaryUpdateRequestDto dto, Long anniversaryNo){
         Anniversary anniversary = findAnniversaryByanniversaryNo(anniversaryNo);
 
         anniversary.setAnniversaryTitle(dto.getAnniversaryTitle());
-        anniversary.setAnniversaryDate(dto.getAnniversaryDate());
+        LocalDate localDate = returnLocalDate(dto.getAnniversaryDate());
+        anniversary.setAnniversaryDate(localDate);
         anniversary.setIsPinned(dto.getIsPinned());
 
         anniversaryRepository.save(anniversary);
@@ -74,7 +80,17 @@ public class AnniversaryService {
     public AnniversaryResponseDto returnDto(Anniversary anniversary){
         return new AnniversaryResponseDto(anniversary);
     }
+    public LocalDate returnLocalDate(String dateString){
+        String patternDate = "yyyy-MM-dd";
+        try{
+            DateTimeFormatter formatter = DateTimeFormatter.ofPattern(patternDate);
+            LocalDate date = LocalDate.parse(dateString, formatter);
+            return date;
 
+        } catch(DateTimeParseException e){
+            throw new CustomException(e, DATE_INVALID);
+        }
+    }
 
     public void isExistingAnniversaryNo(Long anniversaryNo){
         Boolean isExistingNo = null;

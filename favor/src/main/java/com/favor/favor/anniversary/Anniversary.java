@@ -6,6 +6,7 @@ import lombok.*;
 
 import javax.persistence.*;
 import javax.transaction.Transactional;
+import java.time.LocalDate;
 import java.util.Date;
 
 @Entity
@@ -23,8 +24,8 @@ public class Anniversary extends TimeStamped {
     private String anniversaryTitle;
     public void setAnniversaryTitle(String anniversaryTitle){ this.anniversaryTitle = anniversaryTitle; }
 
-    private Date anniversaryDate;
-    public void setAnniversaryDate(Date anniversaryDate){ this.anniversaryDate = anniversaryDate; }
+    private LocalDate anniversaryDate;
+    public void setAnniversaryDate(LocalDate anniversaryDate){ this.anniversaryDate = anniversaryDate; }
 
     private Boolean isPinned;
     public void setIsPinned(Boolean isPinned){ this.isPinned = isPinned; }

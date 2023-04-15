@@ -8,6 +8,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import javax.transaction.Transactional;
+import java.time.LocalDate;
 import java.util.Date;
 
 @Getter
@@ -17,14 +18,14 @@ public class AnniversaryRequestDto {
     @ApiModelProperty(position = 1, required = true, value = "제목", example = "제목")
     private String anniversaryTitle;
 
-    @ApiModelProperty(position = 2, required = true, value = "날짜", example = "")
-    private Date anniversaryDate;
+    @ApiModelProperty(position = 2, required = true, value = "날짜", example = "1996-02-29")
+    private String anniversaryDate;
 
     @Transactional
-    public Anniversary toEntity(User user){
+    public Anniversary toEntity(User user, LocalDate localDate){
         return Anniversary.builder()
                 .anniversaryTitle(anniversaryTitle)
-                .anniversaryDate(anniversaryDate)
+                .anniversaryDate(localDate)
                 .user(user)
                 .build();
     }
