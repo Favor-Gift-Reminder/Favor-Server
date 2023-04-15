@@ -13,11 +13,13 @@ import com.favor.favor.friend.FriendRepository;
 import com.favor.favor.gift.*;
 import com.favor.favor.gift.GiftResponseDto;
 import com.favor.favor.reminder.Reminder;
+import com.favor.favor.reminder.ReminderRepository;
 import com.favor.favor.reminder.ReminderResponseDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -29,6 +31,7 @@ public class UserService {
     private final UserRepository userRepository;
     private final GiftRepository giftRepository;
     private final FriendRepository friendRepository;
+    private final ReminderRepository reminderRepository;
 
 
     @Transactional
@@ -273,6 +276,23 @@ public class UserService {
             throw new CustomException(e, FRIEND_NOT_FOUND);
         }
         return friend;
+    }
+    public List<ReminderResponseDto> readReminderListByFMonthAndYear(Long userNo, int year, int month){
+        List<ReminderResponseDto> reminderDtoList = new ArrayList<>();
+        List<Reminder> reminderList = findReminderListByMonthAndYear(year, month);
+
+        for(Reminder r : reminderList){
+            ReminderResponseDto dto = new ReminderResponseDto(r);
+            if(dto.getUserNo()==userNo) reminderDtoList.add(dto);
+        }
+
+        return reminderDtoList;
+    }
+    public List<Reminder> findReminderListByMonthAndYear(int year, int month){
+        LocalDate start = LocalDate.of(year, month, 1);
+        LocalDate end = start.plusMonths(1).minusDays(1);
+
+        return reminderRepository.findAllByReminderDateBetween(start, end);
     }
 
 

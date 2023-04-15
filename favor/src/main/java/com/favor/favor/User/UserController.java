@@ -256,6 +256,37 @@ public class UserController {
                         .data(reminders)
                         .build());
     }
+    @ApiOperation("회원의 리마인더 필터 조회")
+    @ApiResponses(value={
+            @ApiResponse(code = 200,
+                    message = "REMINDER_FOUND",
+                    response = ReminderResponseDto.class),
+            @ApiResponse(code = 401,
+                    message = "UNAUTHORIZED_USER"),
+            @ApiResponse(code = 404,
+                    message = "REMINDER_NOT_FOUND"),
+            @ApiResponse(code = 500,
+                    message = "SERVER_ERROR")
+    })
+    @ResponseStatus(HttpStatus.OK)
+    @Transactional
+    @GetMapping("/reminder-list/{userNo}/{year}/{month}")
+    public ResponseEntity<DefaultResponseDto<Object>> readReminderListByFMonthAndYear(
+            @PathVariable Long userNo,
+            @PathVariable int year,
+            @PathVariable int month){
+
+        userService.isExistingUserNo(userNo);
+
+        List<ReminderResponseDto> dto = userService.readReminderListByFMonthAndYear(userNo, year, month);
+
+        return ResponseEntity.status(200)
+                .body(DefaultResponseDto.builder()
+                        .responseCode("REMINDER_FOUND")
+                        .responseMessage("리마인더 필터 조회 완료")
+                        .data(dto)
+                        .build());
+    }
 
     @ApiOperation("회원의 선물 전체 조회")
     @ApiResponses(value={
