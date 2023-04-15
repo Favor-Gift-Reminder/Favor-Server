@@ -5,6 +5,7 @@ import com.favor.favor.gift.GiftResponseDto;
 import com.favor.favor.reminder.ReminderResponseDto;
 import lombok.*;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Getter
@@ -34,20 +35,11 @@ public class FriendResponseDto {
         this.friendNo = friend.getFriendNo();
         this.friendName = friend.getFriendName();
         this.friendMemo = friend.getFriendMemo();
+        this.reminderList = new ArrayList<>();
+        this.giftList = new ArrayList<>();
+        this.favorList = new ArrayList<>();
         this.friendUserNo = friend.getFriendUserNo();
         this.userNo = friend.getUser().getUserNo();
-    }
-
-    @Builder
-    public FriendResponseDto(Friend friend, List<ReminderResponseDto> reminderList, List<Favor> favorList){
-        this.isUser = friend.getIsUser();
-        this.friendNo = friend.getFriendNo();
-        this.friendName = friend.getFriendName();
-        this.friendMemo = friend.getFriendMemo();
-        this.reminderList = reminderList;
-        this.giftList = giftList;
-        this.favorList = favorList;
-        this.friendUserNo = friend.getFriendUserNo();
     }
 
     @Builder

@@ -10,6 +10,7 @@ import lombok.extern.log4j.Log4j2;
 
 import javax.annotation.Nullable;
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -43,6 +44,7 @@ public class GiftResponseDto {
         this.isPinned = gift.getIsPinned();
         this.isGiven = gift.getIsGiven();
         this.userNo = gift.getUser().getUserNo();
+        this.friendList = new ArrayList<>();
         log.info("[GiftResponseDto] 실행 완료");
     }
     @Builder
