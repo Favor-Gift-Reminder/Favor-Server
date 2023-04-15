@@ -8,6 +8,10 @@ import com.favor.favor.user.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+import java.time.format.DateTimeParseException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -23,7 +27,9 @@ public class ReminderService {
     public Reminder createReminder(ReminderRequestDto reminderRequestDto, Long userNo, Long friendNo){
         User user = findUserByUserNo(userNo);
         Friend friend = findFriendByFriendNo(friendNo);
-        return reminderRepository.save(reminderRequestDto.toEntity(user, friend));
+        LocalDate localDate = returnLocalDate(reminderRequestDto.getReminderDate());
+        LocalDateTime localDateTime = returnLocalDateTime(reminderRequestDto.getAlarmTime());
+        return reminderRepository.save(reminderRequestDto.toEntity(user, friend, localDate, localDateTime));
     }
 
     public void updateReminder(ReminderUpdateRequestDto dto, Long reminderNo, Long friendNo){
@@ -96,6 +102,27 @@ public class ReminderService {
 
     public ReminderResponseDto returnDto(Reminder reminder){
         return new ReminderResponseDto(reminder);
+    }
+    public LocalDate returnLocalDate(String dateString){
+        String patternDate = "yyyy-MM-dd";
+        try{
+            DateTimeFormatter formatter = DateTimeFormatter.ofPattern(patternDate);
+            LocalDate date = LocalDate.parse(dateString, formatter);
+            return date;
+
+        } catch(DateTimeParseException e){
+            throw new CustomException(e, DATE_INVALID);
+        }
+    }
+    public LocalDateTime returnLocalDateTime(String dateTimeString){
+        String pattern = "yyyy-MM-dd HH:mm:ss";
+        try{
+            DateTimeFormatter formatter = DateTimeFormatter.ofPattern(pattern);
+            LocalDateTime dateTime = LocalDateTime.parse(dateTimeString, formatter);
+            return dateTime;
+        } catch(DateTimeParseException e){
+            throw new CustomException(e, DATE_INVALID);
+        }
     }
 
 
