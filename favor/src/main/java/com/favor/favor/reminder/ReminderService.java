@@ -1,5 +1,7 @@
 package com.favor.favor.reminder;
 
+import com.favor.favor.anniversary.Anniversary;
+import com.favor.favor.anniversary.AnniversaryRepository;
 import com.favor.favor.exception.CustomException;
 import com.favor.favor.friend.Friend;
 import com.favor.favor.friend.FriendRepository;
@@ -23,6 +25,7 @@ public class ReminderService {
     private final ReminderRepository reminderRepository;
     private final UserRepository userRepository;
     private final FriendRepository friendRepository;
+    private final AnniversaryRepository anniversaryRepository;
 
     public Reminder createReminder(ReminderRequestDto reminderRequestDto, Long userNo, Long friendNo){
         User user = findUserByUserNo(userNo);
@@ -30,6 +33,22 @@ public class ReminderService {
         LocalDate localDate = returnLocalDate(reminderRequestDto.getReminderDate());
         LocalDateTime localDateTime = returnLocalDateTime(reminderRequestDto.getAlarmTime());
         return reminderRepository.save(reminderRequestDto.toEntity(user, friend, localDate, localDateTime));
+    }
+
+    public Reminder addReminder(Long userNo, Long anniversaryNo){
+        Anniversary anniversary = findAnniversaryByAnniversaryNo(anniversaryNo);
+        User user = findUserByUserNo(userNo);
+        Friend friend = findFriendByFriendUserNo(anniversary.getUser().getUserNo());
+        Reminder reminder = Reminder.builder()
+                .reminderTitle(anniversary.getAnniversaryTitle())
+                .reminderDate(anniversary.getAnniversaryDate())
+                .reminderMemo("")
+                .isAlarmSet(false)
+                .alarmTime(null)
+                .user(user)
+                .friend(friend)
+                .build();
+        return reminderRepository.save(reminder);
     }
 
     public void updateReminder(ReminderUpdateRequestDto dto, Long reminderNo, Long friendNo){
@@ -86,6 +105,18 @@ public class ReminderService {
         return friend;
     }
 
+    public Friend findFriendByFriendUserNo(Long friendUserNo){
+        Friend friend = null;
+        try{
+            friend = friendRepository.findByFriendUserNo(friendUserNo).orElseThrow(
+                    () -> new RuntimeException()
+            );
+        } catch (RuntimeException e){
+            throw new CustomException(e, FRIEND_NOT_FOUND);
+        }
+        return friend;
+    }
+
     public Reminder findReminderByReminderNo(Long reminderNo){
         Reminder reminder = null;
         try{
@@ -96,6 +127,18 @@ public class ReminderService {
             throw new CustomException(e, REMINDER_NOT_FOUND);
         }
         return reminder;
+    }
+
+    public Anniversary findAnniversaryByAnniversaryNo(Long anniversaryNo){
+        Anniversary anniversary = null;
+        try{
+            anniversary = anniversaryRepository.findAnniversaryByAnniversaryNo(anniversaryNo).orElseThrow(
+                    () -> new RuntimeException()
+            );
+        } catch(RuntimeException e){
+            throw new CustomException(e, ANNIVERSARY_NOT_FOUND);
+        }
+        return anniversary;
     }
 
 
@@ -160,6 +203,18 @@ public class ReminderService {
         }
         if(!isExistingNo){
             throw new CustomException(null, GIFT_NOT_FOUND);
+        }
+    }
+
+    public void isExistingAnniversaryNo(Long giftNo){
+        Boolean isExistingNo = null;
+        try{
+            isExistingNo = anniversaryRepository.existsByAnniversaryNo(giftNo);
+        } catch(RuntimeException e){
+            throw new CustomException(e, SERVER_ERROR);
+        }
+        if(!isExistingNo){
+            throw new CustomException(null, ANNIVERSARY_NOT_FOUND);
         }
     }
 }

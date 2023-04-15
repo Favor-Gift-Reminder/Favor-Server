@@ -37,7 +37,7 @@ public class ReminderController {
                     message = "SERVER_ERROR")
     })
     @ResponseStatus(HttpStatus.CREATED)
-    @PostMapping("/{userNo}/{friendNo}")
+    @PostMapping("/create/{userNo}/{friendNo}")
     public ResponseEntity<DefaultResponseDto<Object>> createReminder(
             @RequestBody ReminderRequestDto reminderRequestDto,
             @PathVariable Long userNo,
@@ -53,6 +53,38 @@ public class ReminderController {
                 .body(DefaultResponseDto.builder()
                         .responseCode("REMINDER_CREATED")
                         .responseMessage("리마인더 생성 완료")
+                        .data(dto)
+                        .build());
+    }
+
+    @ApiOperation("리마인더 추가")
+    @ApiResponses(value={
+            @ApiResponse(code = 201,
+                    message = "REMINDER_ADDED",
+                    response = ReminderResponseDto.class),
+            @ApiResponse(code = 400,
+                    message = "FILED_REQUIRED / *_CHARACTER_INVALID / *_LENGTH_INVALID"),
+            @ApiResponse(code = 404,
+                    message = "USER_NOT_FOUND / FREIND_NOT_FOUND"),
+            @ApiResponse(code = 500,
+                    message = "SERVER_ERROR")
+    })
+    @ResponseStatus(HttpStatus.CREATED)
+    @PostMapping("/add/{userNo}/{anniversaryNo}")
+    public ResponseEntity<DefaultResponseDto<Object>> addReminder(
+            @PathVariable Long userNo,
+            @PathVariable Long anniversaryNo){
+
+        reminderService.isExistingUserNo(userNo);
+        reminderService.isExistingAnniversaryNo(anniversaryNo);
+
+        Reminder reminder = reminderService.addReminder(userNo, anniversaryNo);
+        ReminderResponseDto dto = reminderService.returnDto(reminder);
+
+        return ResponseEntity.status(201)
+                .body(DefaultResponseDto.builder()
+                        .responseCode("REMINDER_ADDED")
+                        .responseMessage("리마인더 추가 완료")
                         .data(dto)
                         .build());
     }
@@ -178,4 +210,6 @@ public class ReminderController {
                         .data(dto)
                         .build());
     }
+
+
 }
