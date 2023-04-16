@@ -2,17 +2,15 @@ package com.favor.favor.anniversary;
 
 import com.favor.favor.user.User;
 import io.swagger.annotations.ApiModelProperty;
-import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import javax.transaction.Transactional;
 import java.time.LocalDate;
-import java.util.Date;
 
 @Getter
-@NoArgsConstructor(access = AccessLevel.PROTECTED)
+@NoArgsConstructor
 @AllArgsConstructor
 public class AnniversaryRequestDto {
     @ApiModelProperty(position = 1, required = true, value = "제목", example = "제목")

@@ -2,7 +2,6 @@ package com.favor.favor.friend.noAccount;
 
 import com.favor.favor.friend.Friend;
 import io.swagger.annotations.ApiModelProperty;
-import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -10,7 +9,7 @@ import lombok.NoArgsConstructor;
 import javax.transaction.Transactional;
 
 @Getter
-@NoArgsConstructor(access = AccessLevel.PROTECTED)
+@NoArgsConstructor
 @AllArgsConstructor
 public class FriendUpdateRequestDto {
     @ApiModelProperty(position = 1, required = false, dataType = "String", value = "친구이름", example = "이름")

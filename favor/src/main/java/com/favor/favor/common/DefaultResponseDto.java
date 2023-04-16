@@ -6,6 +6,7 @@ import lombok.*;
 
 @Getter
 @Builder
+@NoArgsConstructor
 @AllArgsConstructor
 @ApiModel(value = "기본 응답")
 public class DefaultResponseDto <T> {

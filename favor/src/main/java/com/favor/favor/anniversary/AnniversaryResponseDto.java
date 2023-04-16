@@ -5,13 +5,12 @@ import lombok.Builder;
 import lombok.Getter;
 
 import java.time.LocalDate;
-import java.util.Date;
 
 @Getter
 @AllArgsConstructor
 @Builder
 public class AnniversaryResponseDto {
-    private final Long anniversaryNo;
+    private Long anniversaryNo;
     private String anniversaryTitle;
     private LocalDate anniversaryDate;
     private Boolean isPinned;
