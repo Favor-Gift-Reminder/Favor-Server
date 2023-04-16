@@ -1,7 +1,6 @@
 package com.favor.favor.reminder;
 
 import io.swagger.annotations.ApiModelProperty;
-import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -10,10 +9,9 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 @Getter
-@NoArgsConstructor(access = AccessLevel.PROTECTED)
+@NoArgsConstructor
 @AllArgsConstructor
 public class ReminderUpdateRequestDto {
-    //title, eventDate, isAlarmSet, alarmTime, memo 수정 가능
     @ApiModelProperty(position = 1, required = true, dataType = "String", value = "제목", example = "제목")
     private String title;
 
