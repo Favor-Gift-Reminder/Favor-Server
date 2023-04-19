@@ -41,6 +41,8 @@ dependencies {
 
     implementation 'com.google.code.findbugs:jsr305:3.0.2'
 
+
+
     //Sentry
     implementation("io.sentry:sentry-spring-boot-starter:4.3.0")
 }
