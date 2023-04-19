@@ -24,6 +24,7 @@ public class AnniversaryRequestDto {
         return Anniversary.builder()
                 .anniversaryTitle(anniversaryTitle)
                 .anniversaryDate(localDate)
+                .isPinned(false)
                 .user(user)
                 .build();
     }
