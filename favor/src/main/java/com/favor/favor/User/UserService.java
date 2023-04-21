@@ -278,6 +278,13 @@ public class UserService {
         return friend;
     }
     public List<ReminderResponseDto> readReminderListByFMonthAndYear(Long userNo, int year, int month){
+
+        try{
+            LocalDate.of(year, month, 1);
+        } catch(Exception e){
+            throw new CustomException(e, DATE_INVALID);
+        }
+
         List<ReminderResponseDto> reminderDtoList = new ArrayList<>();
         List<Reminder> reminderList = findReminderListByMonthAndYear(year, month);
 
