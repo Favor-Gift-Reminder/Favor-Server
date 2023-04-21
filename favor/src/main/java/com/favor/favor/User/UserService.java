@@ -22,6 +22,7 @@ import javax.transaction.Transactional;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 
 import static com.favor.favor.exception.ExceptionCode.*;
 
@@ -34,9 +35,30 @@ public class UserService {
     private final ReminderRepository reminderRepository;
 
 
+
     @Transactional
     public User signUp(SignUpDto signUpDto) {
+
+        final String CHARACTERS = "_abcdefghijklmnopqrstuvwxyz0123456789";
+        Random random = new Random();
+        StringBuilder tempUserId = new StringBuilder(20);
+
+        boolean flag = true;
+        while(flag){
+            for (int i = 0; i < 20; i++) {
+                tempUserId.append(CHARACTERS.charAt(random.nextInt(CHARACTERS.length())));
+            }
+            if(userRepository.existsByUserId(tempUserId.toString())){
+                tempUserId.delete(0, tempUserId.length());
+            }
+            else {
+                flag =false;
+            }
+        }
+
         User user = User.builder()
+                .name("Favor00")
+                .userId(tempUserId.toString())
                 .email(signUpDto.getEmail())
                 .password(signUpDto.getPassword())
                 .role(Role.USER)
@@ -278,6 +300,13 @@ public class UserService {
         return friend;
     }
     public List<ReminderResponseDto> readReminderListByFMonthAndYear(Long userNo, int year, int month){
+
+        try{
+            LocalDate.of(year, month, 1);
+        } catch(Exception e){
+            throw new CustomException(e, DATE_INVALID);
+        }
+
         List<ReminderResponseDto> reminderDtoList = new ArrayList<>();
         List<Reminder> reminderList = findReminderListByMonthAndYear(year, month);
 
