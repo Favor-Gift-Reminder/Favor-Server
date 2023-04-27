@@ -12,8 +12,8 @@ import com.favor.favor.gift.GiftRepository;
 import com.favor.favor.gift.GiftResponseDto;
 import com.favor.favor.reminder.Reminder;
 import com.favor.favor.reminder.ReminderResponseDto;
-import com.favor.favor.user.User;
-import com.favor.favor.user.UserRepository;
+import com.favor.favor.member.User;
+import com.favor.favor.member.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 

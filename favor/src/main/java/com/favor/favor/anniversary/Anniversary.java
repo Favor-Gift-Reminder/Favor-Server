@@ -1,13 +1,12 @@
 package com.favor.favor.anniversary;
 
 import com.favor.favor.common.TimeStamped;
-import com.favor.favor.user.User;
+import com.favor.favor.member.User;
 import lombok.*;
 
 import javax.persistence.*;
 import javax.transaction.Transactional;
 import java.time.LocalDate;
-import java.util.Date;
 
 @Entity
 @Getter

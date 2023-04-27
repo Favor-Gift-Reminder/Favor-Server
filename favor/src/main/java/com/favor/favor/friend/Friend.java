@@ -1,13 +1,11 @@
 package com.favor.favor.friend;
 
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.favor.favor.anniversary.Anniversary;
 import lombok.*;
 
 import com.favor.favor.common.TimeStamped;
 import com.favor.favor.reminder.Reminder;
-import com.favor.favor.user.User;
+import com.favor.favor.member.User;
 
 import javax.persistence.*;
 import javax.transaction.Transactional;
