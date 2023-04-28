@@ -5,8 +5,9 @@
 
 ## ERD
 - ERD Cloud
-- https://www.notion.so/Favor-App-b1016ef31bbd486fb469063e3f9650c6
-![20230116152805](https://user-images.githubusercontent.com/114793764/212612357-b2a88b1c-af2a-4cd3-8798-c2465b67b692.png)
+- https://www.erdcloud.com/d/fTpq4mpS53n96ga7E
+![20230428164330](https://user-images.githubusercontent.com/114793764/235086375-d543ce11-7fa3-4206-a570-6eda62f20baf.png)
+
 
 
 
