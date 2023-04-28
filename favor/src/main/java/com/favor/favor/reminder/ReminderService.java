@@ -5,8 +5,8 @@ import com.favor.favor.anniversary.AnniversaryRepository;
 import com.favor.favor.exception.CustomException;
 import com.favor.favor.friend.Friend;
 import com.favor.favor.friend.FriendRepository;
-import com.favor.favor.user.User;
-import com.favor.favor.user.UserRepository;
+import com.favor.favor.member.User;
+import com.favor.favor.member.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 

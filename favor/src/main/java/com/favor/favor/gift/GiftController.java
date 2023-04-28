@@ -2,7 +2,7 @@ package com.favor.favor.gift;
 
 import com.favor.favor.common.DefaultResponseDto;
 import com.favor.favor.friend.FriendResponseDto;
-import com.favor.favor.user.UserResponseDto;
+import com.favor.favor.member.UserResponseDto;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiResponse;

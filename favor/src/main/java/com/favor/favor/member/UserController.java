@@ -1,4 +1,4 @@
-package com.favor.favor.user;
+package com.favor.favor.member;
 
 
 import com.favor.favor.common.DefaultResponseDto;
@@ -388,7 +388,7 @@ public class UserController {
     })
     @ResponseStatus(HttpStatus.OK)
     @Transactional
-    @GetMapping("/gift-by-name/{userNo}/{giftName}")
+    @GetMapping("/gifts-by-name/{userNo}/{giftName}")
     public ResponseEntity<DefaultResponseDto<Object>> readGiftListByName (
             @PathVariable("userNo") Long userNo,
             @PathVariable("giftName") String giftName){
@@ -419,7 +419,7 @@ public class UserController {
     })
     @ResponseStatus(HttpStatus.OK)
     @Transactional
-    @GetMapping("/gift-by-category/{userNo}/{category}")
+    @GetMapping("/gifts-by-category/{userNo}/{category}")
     public ResponseEntity<DefaultResponseDto<Object>> readGiftListByCategory(
             @PathVariable("userNo") Long userNo,
             @PathVariable("category") Category category){
@@ -450,7 +450,7 @@ public class UserController {
     })
     @ResponseStatus(HttpStatus.OK)
     @Transactional
-    @GetMapping("/gift-by-emotion/{userNo}/{emotion}")
+    @GetMapping("/gifts-by-emotion/{userNo}/{emotion}")
     public ResponseEntity<DefaultResponseDto<Object>> readGiftListByEmotion(
             @PathVariable("userNo") Long userNo,
             @PathVariable("emotion") Emotion emotion){
