@@ -1,4 +1,4 @@
-package com.favor.favor.user;
+package com.favor.favor.member;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 

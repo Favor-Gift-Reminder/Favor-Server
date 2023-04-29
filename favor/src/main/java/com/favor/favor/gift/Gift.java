@@ -3,7 +3,7 @@ package com.favor.favor.gift;
 import com.favor.favor.common.enums.Category;
 import com.favor.favor.common.enums.Emotion;
 import com.favor.favor.common.TimeStamped;
-import com.favor.favor.user.User;
+import com.favor.favor.member.User;
 import lombok.*;
 
 import javax.persistence.*;

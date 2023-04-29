@@ -1,4 +1,4 @@
-package com.favor.favor.user;
+package com.favor.favor.member;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.favor.favor.anniversary.Anniversary;

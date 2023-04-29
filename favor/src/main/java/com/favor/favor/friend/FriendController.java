@@ -4,7 +4,7 @@ import com.favor.favor.common.DefaultResponseDto;
 import com.favor.favor.friend.account.FriendUserRequestDto;
 import com.favor.favor.friend.noAccount.FriendRequestDto;
 import com.favor.favor.friend.noAccount.FriendUpdateRequestDto;
-import com.favor.favor.user.UserResponseDto;
+import com.favor.favor.member.UserResponseDto;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiResponse;
@@ -37,7 +37,7 @@ public class FriendController {
                     message = "SERVER_ERROR")
     })
     @ResponseStatus(HttpStatus.CREATED)
-    @PostMapping("/{userNo}")
+    @PostMapping("/create/{userNo}")
     public ResponseEntity<DefaultResponseDto<Object>> createFriend(
             @RequestBody FriendRequestDto friendRequestDto,
             @PathVariable Long userNo){
