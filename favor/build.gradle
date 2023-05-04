@@ -50,6 +50,8 @@ dependencies {
 
     //Sentry
     implementation("io.sentry:sentry-spring-boot-starter:4.3.0")
+
+    implementation 'org.springframework:spring-context:5.3.12'
 }
 
 tasks.named('test') {
