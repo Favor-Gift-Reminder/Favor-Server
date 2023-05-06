@@ -38,7 +38,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter  {
     protected void configure(HttpSecurity http) throws Exception {
         http.httpBasic().disable()
 
-                .csrf().disable()
+                .csrf().disable() //CSRF 방지
                 .cors()
 
                 .and()
@@ -49,7 +49,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter  {
                 .authorizeRequests()
                 .antMatchers("/email/**", "/verifyCode/**").permitAll()
                 .antMatchers("/admin/**").hasRole("ADMIN")
-                .antMatchers("/member/**").hasRole("USER")
+                .antMatchers("/user/**").hasRole("USER")
                 .antMatchers("/calendar/**").hasRole("USER")
 
                 .and()

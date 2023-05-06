@@ -43,12 +43,12 @@ public class UserController {
     @ResponseStatus(HttpStatus.CREATED)
     @PostMapping("/sign-up")
     public ResponseEntity<DefaultResponseDto<Object>> signUp(
-            @RequestBody @Valid SignUpDto signUpDto
+            @RequestBody @Valid SignDto signDto
     ) {
 
-        userService.isExistingEmail(signUpDto.getEmail());
+        userService.isExistingEmail(signDto.getEmail());
 
-        User user = userService.signUp(signUpDto);
+        User user = userService.signUp(signDto);
         UserResponseDto dto = userService.returnUserDto(user);
 
         return ResponseEntity.status(201)
@@ -91,6 +91,38 @@ public class UserController {
                 .body(DefaultResponseDto.builder()
                         .responseCode("PROFILE_UPDATED")
                         .responseMessage("프로필 생성 완료")
+                        .data(dto)
+                        .build());
+    }
+
+    @ApiOperation(value = "로그인")
+    @ApiResponses(value={
+            @ApiResponse(code = 201,
+                    message = "USER_SIGNED_IN",
+                    response = UserResponseDto.class),
+            @ApiResponse(code = 400,
+                    message = "FILED_REQUIRED / *_CHARACTER_INVALID / *_LENGTH_INVALID"),
+            @ApiResponse(code = 401,
+                    message = "UNAUTHORIZED_EMAIL"),
+            @ApiResponse(code = 404,
+                    message = "EMAIL_NOT_FOUND"),
+            @ApiResponse(code = 409,
+                    message = "DUPLICATE_EMAIL"),
+            @ApiResponse(code = 500,
+                    message = "SERVER_ERROR")
+    })
+    @ResponseStatus(HttpStatus.CREATED)
+    @PostMapping("/sign-in")
+    public ResponseEntity<DefaultResponseDto<Object>> signIn(
+            @RequestBody @Valid SignDto signDto
+    ) {
+
+        SignInResponseDto dto = userService.signIn(signDto);
+
+        return ResponseEntity.status(201)
+                .body(DefaultResponseDto.builder()
+                        .responseCode("LOG_IN_SUCCESS")
+                        .responseMessage("로그인 완료")
                         .data(dto)
                         .build());
     }

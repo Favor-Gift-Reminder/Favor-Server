@@ -50,6 +50,7 @@ public enum ExceptionCode {
      */
     EMAIL_NOT_FOUND(NOT_FOUND, "등록된 이메일이 없습니다."),
     USER_NOT_FOUND(NOT_FOUND, "등록된 회원이 없습니다."),
+    PASSWORD_NOT_FOUND(NOT_FOUND, "비밀번호를 잘못 입력하였습니다."),
     FRIEND_NOT_FOUND(NOT_FOUND, "등록된 친구가 없습니다."),
     FRIEND_USER_NOT_FOUND(NOT_FOUND, "친구로 등록하려는 회원이 없습니다."),
     GIFT_NOT_FOUND(NOT_FOUND, "등록한 선물이 없습니다."),

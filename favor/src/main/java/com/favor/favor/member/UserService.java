@@ -2,6 +2,7 @@ package com.favor.favor.member;
 
 import com.favor.favor.anniversary.Anniversary;
 import com.favor.favor.anniversary.AnniversaryResponseDto;
+import com.favor.favor.auth.JwtTokenProvider;
 import com.favor.favor.common.enums.Category;
 import com.favor.favor.common.enums.Emotion;
 import com.favor.favor.common.enums.Favor;
@@ -16,6 +17,8 @@ import com.favor.favor.reminder.Reminder;
 import com.favor.favor.reminder.ReminderRepository;
 import com.favor.favor.reminder.ReminderResponseDto;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
@@ -28,16 +31,19 @@ import static com.favor.favor.exception.ExceptionCode.*;
 
 @Service
 @RequiredArgsConstructor
+@Slf4j
 public class UserService {
     private final UserRepository userRepository;
     private final GiftRepository giftRepository;
     private final FriendRepository friendRepository;
     private final ReminderRepository reminderRepository;
+    private final PasswordEncoder passwordEncoder;
+    private final JwtTokenProvider jwtTokenProvider;
 
 
 
     @Transactional
-    public User signUp(SignUpDto signUpDto) {
+    public User signUp(SignDto signDto) {
 
         final String CHARACTERS = "_abcdefghijklmnopqrstuvwxyz0123456789";
         Random random = new Random();
@@ -59,8 +65,8 @@ public class UserService {
         User user = User.builder()
                 .name("Favor00")
                 .userId(tempUserId.toString())
-                .email(signUpDto.getEmail())
-                .password(signUpDto.getPassword())
+                .email(signDto.getEmail())
+                .password(passwordEncoder.encode(signDto.getPassword()))
                 .role(Role.USER)
                 .build();
         save(user);
@@ -78,6 +84,36 @@ public class UserService {
         save(user);
 
         return user;
+    }
+
+    public SignInResponseDto signIn(SignDto dto){
+        String email = dto.getEmail();
+        String password = dto.getPassword();
+
+        isExistingUserByEmail(email);
+        User user = findUserByEmail(email);
+
+        isRightPassword(password, user);
+
+        String token = jwtTokenProvider.createToken(user.getUserId(), user.getRole());
+
+        return new SignInResponseDto(token);
+    }
+
+
+    public void isRightPassword(String password, User user){
+        try{
+            log.info("password = " + password);
+            log.info(("user.getPassword() = " + user.getPassword()));
+            log.info("isright = " + passwordEncoder.matches(password, user.getPassword())
+            );
+            if(!passwordEncoder.matches(password, user.getPassword())){
+                throw new CustomException(null, PASSWORD_NOT_FOUND);
+            }
+
+        }catch (RuntimeException e){
+            throw new CustomException(e, SERVER_ERROR);
+        }
     }
 
 
@@ -189,7 +225,6 @@ public class UserService {
 
     public List<GiftResponseDto> readGiftListByCategory(Long userNo, Category category){
         User user = findUserByUserNo(userNo);
-
         Integer categoryNo = category.getType();
         List<Gift> giftList = giftRepository.findGiftsByUserAndCategory(user, categoryNo);
         List<GiftResponseDto> g_List = new ArrayList<>();
@@ -371,6 +406,10 @@ public class UserService {
         return dto;
     }
 
+    public Boolean checkPassword (String inputPassword, String userPassword){
+        return passwordEncoder.matches(inputPassword, userPassword);
+    }
+
 
 
     //IS_EXISTING
@@ -395,6 +434,18 @@ public class UserService {
         }
         if(isExistingEmail){
             throw new CustomException(null, DUPLICATE_EMAIL);
+        }
+    }
+
+    public void isExistingUserByEmail (String email){
+        Boolean isExistingEmail = null;
+        try{
+            isExistingEmail = userRepository.existsByEmail(email);
+        } catch(RuntimeException e){
+            throw new CustomException(e, SERVER_ERROR);
+        }
+        if(!isExistingEmail){
+            throw new CustomException(null, EMAIL_NOT_FOUND);
         }
     }
 

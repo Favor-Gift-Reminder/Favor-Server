@@ -1,11 +1,13 @@
 package com.favor.favor.auth;
 
+import com.favor.favor.common.enums.Role;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jws;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import lombok.RequiredArgsConstructor;
-import lombok.Value;
+
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -36,9 +38,9 @@ public class JwtTokenProvider {
     }
 
     // JWT 토큰 생성
-    public String createToken(String userId, List<String> roles) {
+    public String createToken(String userId, Role role) {
         Claims claims = Jwts.claims().setSubject(userId); // JWT payload 에 저장되는 정보단위
-        claims.put("roles", roles); // 정보는 key / value 쌍으로 저장된다.
+        claims.put("roles", role); // 정보는 key / value 쌍으로 저장된다.
         Date now = new Date();
 
         String token = Jwts.builder()
