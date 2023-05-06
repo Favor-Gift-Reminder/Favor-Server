@@ -17,7 +17,7 @@ import javax.validation.constraints.Pattern;
 @NoArgsConstructor
 @AllArgsConstructor
 @GroupSequence({
-        SignUpDto.class,
+        SignDto.class,
         ValidationSequence.NotBlank.class,
         ValidationSequence.Email.class,
         ValidationSequence.Size.class,
@@ -25,7 +25,7 @@ import javax.validation.constraints.Pattern;
 })
 
 @ApiModel(value = "회원가입")
-public class SignUpDto {
+public class SignDto {
     @ApiModelProperty(position = 1, required = true, value = "이메일", example = "favor@gmail.com")
     @NotBlank(message = "이메일을 입력해주세요", groups = ValidationSequence.NotBlank.class)
     @Email(message = "이메일 형식이 잘못되었습니다", groups = ValidationSequence.Email.class)

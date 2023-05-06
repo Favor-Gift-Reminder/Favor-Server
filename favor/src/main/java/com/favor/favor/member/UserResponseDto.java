@@ -15,7 +15,7 @@ import java.util.List;
 @Getter
 @AllArgsConstructor
 @Builder
-public class UserResponseDto {
+public class  UserResponseDto {
     private final Long userNo;
     private String email;
     private String name;

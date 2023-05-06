@@ -18,12 +18,6 @@ public class DefaultResponseDto <T> {
     @ApiModelProperty(position = 3, value = "응답 데이터", example = "응답 데이터")
     private T data;
 
-//    public DefaultResponseDto(final String responseCode, final String responseMessage){
-//        this.responseCode = responseCode;
-//        this.responseMessage = responseMessage;
-//        this.data = null;
-//    }
-
     public static <T> DefaultResponseDto<T> response(final String responseCode, final String responseMessage){
         return response(responseCode, responseMessage, null);
     }

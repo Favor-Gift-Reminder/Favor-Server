@@ -9,6 +9,7 @@ import com.favor.favor.friend.Friend;
 import com.favor.favor.gift.Gift;
 import com.favor.favor.reminder.Reminder;
 import lombok.*;
+import org.hibernate.validator.constraints.Length;
 
 import javax.persistence.*;
 import javax.transaction.Transactional;
@@ -24,6 +25,7 @@ import java.util.List;
 public class User extends TimeStamped {
 
     @Id
+
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long userNo;
     private String email;
