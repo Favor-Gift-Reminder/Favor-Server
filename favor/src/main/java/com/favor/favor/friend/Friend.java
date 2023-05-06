@@ -5,7 +5,7 @@ import lombok.*;
 
 import com.favor.favor.common.TimeStamped;
 import com.favor.favor.reminder.Reminder;
-import com.favor.favor.member.User;
+import com.favor.favor.user.User;
 
 import javax.persistence.*;
 import javax.transaction.Transactional;

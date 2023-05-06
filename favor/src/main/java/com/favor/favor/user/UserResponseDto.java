@@ -1,4 +1,4 @@
-package com.favor.favor.member;
+package com.favor.favor.user;
 
 import com.favor.favor.anniversary.AnniversaryResponseDto;
 import com.favor.favor.common.enums.Favor;

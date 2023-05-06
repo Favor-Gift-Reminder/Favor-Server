@@ -1,8 +1,8 @@
 package com.favor.favor.anniversary;
 
 import com.favor.favor.exception.CustomException;
-import com.favor.favor.member.User;
-import com.favor.favor.member.UserRepository;
+import com.favor.favor.user.User;
+import com.favor.favor.user.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 

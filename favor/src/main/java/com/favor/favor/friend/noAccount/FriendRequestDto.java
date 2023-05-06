@@ -1,7 +1,7 @@
 package com.favor.favor.friend.noAccount;
 
 import com.favor.favor.friend.Friend;
-import com.favor.favor.member.User;
+import com.favor.favor.user.User;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.AllArgsConstructor;
 import lombok.Getter;

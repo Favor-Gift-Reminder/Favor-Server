@@ -15,7 +15,8 @@ public class ReminderResponseDto {
     private final Long reminderNo;
     private String reminderTitle;
     private LocalDate reminderDate;
-    private String memo;
+
+    private String reminderMemo;
     private Boolean isAlarmSet;
     private LocalDateTime alarmTime;
 
@@ -27,7 +28,7 @@ public class ReminderResponseDto {
         this.reminderNo = reminder.getReminderNo();
         this.reminderTitle = reminder.getReminderTitle();
         this.reminderDate = reminder.getReminderDate();
-        this.memo = reminder.getReminderMemo();
+        this.reminderMemo = reminder.getReminderMemo();
         this.isAlarmSet = reminder.getIsAlarmSet();
         this.alarmTime = reminder.getAlarmTime();
         this.userNo = reminder.getUser().getUserNo();

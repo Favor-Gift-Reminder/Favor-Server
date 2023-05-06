@@ -1,4 +1,4 @@
-package com.favor.favor.member;
+package com.favor.favor.user;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
