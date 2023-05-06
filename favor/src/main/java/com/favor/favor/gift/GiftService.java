@@ -4,23 +4,19 @@ import com.favor.favor.exception.CustomException;
 import com.favor.favor.friend.Friend;
 import com.favor.favor.friend.FriendRepository;
 import com.favor.favor.friend.FriendResponseDto;
-import com.favor.favor.member.User;
-import com.favor.favor.member.UserRepository;
+import com.favor.favor.user.User;
+import com.favor.favor.user.UserRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
-import java.util.Locale;
 
 import static com.favor.favor.exception.ExceptionCode.*;
 

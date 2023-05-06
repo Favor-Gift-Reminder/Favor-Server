@@ -1,4 +1,4 @@
-package com.favor.favor.member;
+package com.favor.favor.user;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.favor.favor.anniversary.Anniversary;
@@ -9,7 +9,6 @@ import com.favor.favor.friend.Friend;
 import com.favor.favor.gift.Gift;
 import com.favor.favor.reminder.Reminder;
 import lombok.*;
-import org.hibernate.validator.constraints.Length;
 
 import javax.persistence.*;
 import javax.transaction.Transactional;

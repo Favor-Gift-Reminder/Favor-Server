@@ -3,14 +3,13 @@ package com.favor.favor.gift;
 import com.favor.favor.common.enums.Category;
 import com.favor.favor.common.enums.Emotion;
 import com.favor.favor.common.TimeStamped;
-import com.favor.favor.member.User;
+import com.favor.favor.user.User;
 import lombok.*;
 
 import javax.persistence.*;
 import javax.transaction.Transactional;
 import java.time.LocalDate;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 @Entity

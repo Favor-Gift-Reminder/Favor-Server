@@ -1,7 +1,7 @@
 package com.favor.favor.auth;
 
-import com.favor.favor.member.User;
-import com.favor.favor.member.UserRepository;
+import com.favor.favor.user.User;
+import com.favor.favor.user.UserRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.userdetails.UserDetails;

@@ -1,6 +1,6 @@
 package com.favor.favor.gift;
 
-import com.favor.favor.member.User;
+import com.favor.favor.user.User;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.List;

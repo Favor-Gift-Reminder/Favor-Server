@@ -1,6 +1,6 @@
 package com.favor.favor.anniversary;
 
-import com.favor.favor.member.User;
+import com.favor.favor.user.User;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
