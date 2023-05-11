@@ -9,10 +9,13 @@ import com.favor.favor.friend.Friend;
 import com.favor.favor.gift.Gift;
 import com.favor.favor.reminder.Reminder;
 import lombok.*;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
 
 import javax.persistence.*;
 import javax.transaction.Transactional;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 
 @Entity
@@ -21,7 +24,7 @@ import java.util.List;
 @AllArgsConstructor
 @Builder
 @Transactional
-public class User extends TimeStamped {
+public class User extends TimeStamped implements UserDetails {
 
     @Id
 
@@ -75,6 +78,18 @@ public class User extends TimeStamped {
     @OneToMany(mappedBy = "user", orphanRemoval = true)
     private List<Friend> friendList = new ArrayList<>();
 
-
     private Role role;
+
+    @Override
+    public Collection<? extends GrantedAuthority> getAuthorities() {return null;}
+    @Override
+    public String getUsername() {return name;}
+    @Override
+    public boolean isAccountNonExpired() {return false;}
+    @Override
+    public boolean isAccountNonLocked() {return false;}
+    @Override
+    public boolean isCredentialsNonExpired() {return false;}
+    @Override
+    public boolean isEnabled() {return false;}
 }

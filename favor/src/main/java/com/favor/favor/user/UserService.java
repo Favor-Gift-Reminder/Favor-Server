@@ -45,26 +45,26 @@ public class UserService {
     @Transactional
     public User signUp(SignDto signDto) {
 
-        final String CHARACTERS = "_abcdefghijklmnopqrstuvwxyz0123456789";
-        Random random = new Random();
-        StringBuilder tempUserId = new StringBuilder(20);
+//        final String CHARACTERS = "_abcdefghijklmnopqrstuvwxyz0123456789";
+//        Random random = new Random();
+//        StringBuilder tempUserId = new StringBuilder(20);
 
-        boolean flag = true;
-        while(flag){
-            for (int i = 0; i < 20; i++) {
-                tempUserId.append(CHARACTERS.charAt(random.nextInt(CHARACTERS.length())));
-            }
-            if(userRepository.existsByUserId(tempUserId.toString())){
-                tempUserId.delete(0, tempUserId.length());
-            }
-            else {
-                flag =false;
-            }
-        }
+//        boolean flag = true;
+//        while(flag){
+//            for (int i = 0; i < 20; i++) {
+//                tempUserId.append(CHARACTERS.charAt(random.nextInt(CHARACTERS.length())));
+//            }
+//            if(userRepository.existsByUserId(tempUserId.toString())){
+//                tempUserId.delete(0, tempUserId.length());
+//            }
+//            else {
+//                flag =false;
+//            }
+//        }
 
         User user = User.builder()
                 .name("Favor00")
-                .userId(tempUserId.toString())
+                .userId("Favor00")
                 .email(signDto.getEmail())
                 .password(passwordEncoder.encode(signDto.getPassword()))
                 .role(Role.USER)
@@ -95,7 +95,7 @@ public class UserService {
 
         isRightPassword(password, user);
 
-        String token = jwtTokenProvider.createToken(user.getUserId(), user.getRole());
+        String token = jwtTokenProvider.createToken(user.getEmail(), user.getRole());
 
         return new SignInResponseDto(token);
     }
