@@ -38,8 +38,8 @@ public class JwtTokenProvider {
     }
 
     // JWT 토큰 생성
-    public String createToken(String userId, Role role) {
-        Claims claims = Jwts.claims().setSubject(userId); // JWT payload 에 저장되는 정보단위
+    public String createToken(String email, Role role) {
+        Claims claims = Jwts.claims().setSubject(email); // JWT payload 에 저장되는 정보단위
         claims.put("roles", role); // 정보는 key / value 쌍으로 저장된다.
         Date now = new Date();
 
@@ -55,13 +55,13 @@ public class JwtTokenProvider {
 
     // JWT 토큰에서 인증 정보 조회
     public Authentication getAuthentication(String token) {
-        UserDetails userDetails = userDetailsService.loadUserByUsername(this.getUsername(token));
+        UserDetails userDetails = userDetailsService.loadUserByUsername(this.getUserEmail(token));
 
         return new UsernamePasswordAuthenticationToken(userDetails, "", userDetails.getAuthorities());
     }
 
     // 토큰에서 회원 정보 추출
-    public String getUsername(String token) {
+    public String getUserEmail(String token) {
         String info = Jwts.parser().setSigningKey(secretKey).parseClaimsJws(token).getBody().getSubject();
         return info;
     }

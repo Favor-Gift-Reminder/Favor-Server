@@ -47,10 +47,15 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter  {
 
                 .and()
                 .authorizeRequests()
-                .antMatchers("/email/**", "/verifyCode/**").permitAll()
-                .antMatchers("/admin/**").hasRole("ADMIN")
-                .antMatchers("/user/**").hasRole("USER")
-                .antMatchers("/calendar/**").hasRole("USER")
+                .antMatchers("/api/v1/auth/**","/",
+                        "/v2/api-docs", "/swagger-resources/**", "/swagger-ui/index.html", "/swagger-ui.html","/webjars/**", "/swagger/**",   // swagger
+                        "/h2-console/**",
+                        "/favicon.ico",
+                        "/users/sign-in",
+                        "/users/sign-up",
+                        "/users/profile/**").permitAll()
+                .anyRequest().authenticated()
+
 
                 .and()
                 .exceptionHandling().accessDeniedHandler(new CustomAccessDeniedHandler())
