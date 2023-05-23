@@ -163,6 +163,18 @@ public class UserService {
     }
 
     @Transactional
+    public List<AnniversaryResponseDto> readAnniversaryList(Long userNo){
+        User user = findUserByUserNo(userNo);
+
+        List<AnniversaryResponseDto> r_List = new ArrayList<>();
+        for(Anniversary r : user.getAnniversaryList()){
+            AnniversaryResponseDto dto = new AnniversaryResponseDto(r);
+            r_List.add(dto);
+        }
+        return r_List;
+    }
+
+    @Transactional
     public List<GiftResponseDto> readGiftList(Long userNo){
         User user = findUserByUserNo(userNo);
 
