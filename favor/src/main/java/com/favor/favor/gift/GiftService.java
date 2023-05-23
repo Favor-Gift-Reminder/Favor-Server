@@ -7,7 +7,7 @@ import com.favor.favor.friend.FriendResponseDto;
 import com.favor.favor.user.User;
 import com.favor.favor.user.UserRepository;
 import lombok.RequiredArgsConstructor;
-import lombok.extern.log4j.Log4j2;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
@@ -20,7 +20,7 @@ import java.util.List;
 
 import static com.favor.favor.exception.ExceptionCode.*;
 
-@Log4j2
+@Slf4j
 @Service
 @RequiredArgsConstructor
 public class GiftService {
