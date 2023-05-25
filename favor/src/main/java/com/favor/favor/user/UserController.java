@@ -100,7 +100,7 @@ public class UserController {
     @ApiResponses(value={
             @ApiResponse(code = 201,
                     message = "USER_SIGNED_IN",
-                    response = UserResponseDto.class),
+                    response = SignInResponseDto.class),
             @ApiResponse(code = 400,
                     message = "FILED_REQUIRED / *_CHARACTER_INVALID / *_LENGTH_INVALID"),
             @ApiResponse(code = 401,
@@ -264,7 +264,7 @@ public class UserController {
     @ApiResponses(value={
             @ApiResponse(code = 200,
                     message = "REMINDERS_FOUND",
-                    response = UserResponseDto.class),
+                    response = ReminderResponseDto.class),
             @ApiResponse(code = 401,
                     message = "UNAUTHORIZED_USER"),
             @ApiResponse(code = 404,
@@ -325,7 +325,7 @@ public class UserController {
     @ApiResponses(value={
             @ApiResponse(code = 200,
                     message = "GIFTS_FOUND",
-                    response = UserResponseDto.class),
+                    response = GiftResponseDto.class),
             @ApiResponse(code = 401,
                     message = "UNAUTHORIZED_USER"),
             @ApiResponse(code = 404,
@@ -355,7 +355,7 @@ public class UserController {
     @ApiResponses(value={
             @ApiResponse(code = 200,
                     message = "FRIENDS_FOUND",
-                    response = UserResponseDto.class),
+                    response = FriendResponseDto.class),
             @ApiResponse(code = 401,
                     message = "UNAUTHORIZED_USER"),
             @ApiResponse(code = 404,
@@ -384,7 +384,7 @@ public class UserController {
     @ApiResponses(value={
             @ApiResponse(code = 200,
                     message = "ANNIVERSARY_FOUND",
-                    response = UserResponseDto.class),
+                    response = AnniversaryResponseDto.class),
             @ApiResponse(code = 401,
                     message = "UNAUTHORIZED_USER"),
             @ApiResponse(code = 404,
@@ -440,7 +440,7 @@ public class UserController {
     @ApiResponses(value={
             @ApiResponse(code = 200,
                     message = "GIFTS_BY_NAME_FOUND",
-                    response = UserResponseDto.class),
+                    response = GiftResponseDto.class),
             @ApiResponse(code = 401,
                     message = "UNAUTHORIZED_USER"),
             @ApiResponse(code = 404,
@@ -471,7 +471,7 @@ public class UserController {
     @ApiResponses(value={
             @ApiResponse(code = 200,
                     message = "GIFTS_BY_CATEGORY_FOUND",
-                    response = UserResponseDto.class),
+                    response = GiftResponseDto.class),
             @ApiResponse(code = 401,
                     message = "UNAUTHORIZED_USER"),
             @ApiResponse(code = 404,
@@ -502,7 +502,7 @@ public class UserController {
     @ApiResponses(value={
             @ApiResponse(code = 200,
                     message = "GIFTS_BY_EMOTION_FOUND",
-                    response = UserResponseDto.class),
+                    response = GiftResponseDto.class),
             @ApiResponse(code = 401,
                     message = "UNAUTHORIZED_USER"),
             @ApiResponse(code = 404,

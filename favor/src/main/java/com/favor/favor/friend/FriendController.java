@@ -155,7 +155,7 @@ public class FriendController {
     @ApiResponses(value={
             @ApiResponse(code = 200,
                     message = "FRIEND_DELETED",
-                    response = UserResponseDto.class),
+                    response = FriendResponseDto.class),
             @ApiResponse(code = 401,
                     message = "UNAUTHORIZED_USER"),
             @ApiResponse(code = 404,
@@ -187,7 +187,7 @@ public class FriendController {
     @ApiResponses(value={
             @ApiResponse(code = 200,
                     message = "FRIENDS_FOUND",
-                    response = UserResponseDto.class),
+                    response = FriendResponseDto.class),
             @ApiResponse(code = 401,
                     message = "UNAUTHORIZED_USER"),
             @ApiResponse(code = 500,
