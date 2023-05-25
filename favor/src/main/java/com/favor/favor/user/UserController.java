@@ -1,6 +1,7 @@
 package com.favor.favor.user;
 
 
+import com.favor.favor.anniversary.AnniversaryResponseDto;
 import com.favor.favor.common.DefaultResponseDto;
 import com.favor.favor.common.enums.Category;
 import com.favor.favor.common.enums.Emotion;
@@ -353,7 +354,7 @@ public class UserController {
     @ApiOperation("회원의 친구 전체 조회")
     @ApiResponses(value={
             @ApiResponse(code = 200,
-                    message = "FRIENDSS_FOUND",
+                    message = "FRIENDS_FOUND",
                     response = UserResponseDto.class),
             @ApiResponse(code = 401,
                     message = "UNAUTHORIZED_USER"),
@@ -373,8 +374,37 @@ public class UserController {
 
         return ResponseEntity.status(200)
                 .body(DefaultResponseDto.builder()
-                        .responseCode("FRIENDSS_FOUND")
+                        .responseCode("FRIENDS_FOUND")
                         .responseMessage("회원의 친구 전체 조회 완료")
+                        .data(friends)
+                        .build());
+    }
+
+    @ApiOperation("회원의 기념일 전체 조회")
+    @ApiResponses(value={
+            @ApiResponse(code = 200,
+                    message = "ANNIVERSARY_FOUND",
+                    response = UserResponseDto.class),
+            @ApiResponse(code = 401,
+                    message = "UNAUTHORIZED_USER"),
+            @ApiResponse(code = 404,
+                    message = "USER_NOT_FOUND"),
+            @ApiResponse(code = 500,
+                    message = "SERVER_ERROR")
+    })
+    @ResponseStatus(HttpStatus.OK)
+    @Transactional
+    @GetMapping("/anniversary-list/{userNo}")
+    public ResponseEntity<DefaultResponseDto<Object>> readAnniversaryList(@PathVariable Long userNo){
+
+        userService.isExistingUserNo(userNo);
+
+        List<AnniversaryResponseDto> friends = userService.readAnniversaryList(userNo);
+
+        return ResponseEntity.status(200)
+                .body(DefaultResponseDto.builder()
+                        .responseCode("ANNIVERSARY_FOUND")
+                        .responseMessage("회원의 기념일 전체 조회 완료")
                         .data(friends)
                         .build());
     }
