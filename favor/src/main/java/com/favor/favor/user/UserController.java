@@ -264,7 +264,7 @@ public class UserController {
     @ApiResponses(value={
             @ApiResponse(code = 200,
                     message = "REMINDERS_FOUND",
-                    response = ReminderResponseDto.class),
+                    response = UserResponseDto.class),
             @ApiResponse(code = 401,
                     message = "UNAUTHORIZED_USER"),
             @ApiResponse(code = 404,
@@ -380,6 +380,33 @@ public class UserController {
                         .build());
     }
 
+
+    @ApiOperation("전체 회원 조회")
+    @ApiResponses(value={
+            @ApiResponse(code = 200,
+                    message = "USERS_FOUND",
+                    response = UserResponseDto.class),
+            @ApiResponse(code = 401,
+                    message = "UNAUTHORIZED_USER"),
+            @ApiResponse(code = 500,
+                    message = "SERVER_ERROR")
+    })
+    @ResponseStatus(HttpStatus.OK)
+    @Transactional
+    @GetMapping
+    public ResponseEntity<DefaultResponseDto<Object>> readAll(){
+
+        List<UserResponseDto> dto = userService.readAll();
+
+        return ResponseEntity.status(200)
+                .body(DefaultResponseDto.builder()
+                        .responseCode("USERS_FOUND")
+                        .responseMessage("전체 회원 조회 완료")
+                        .data(dto)
+                        .build());
+    }
+
+
     @ApiOperation("회원의 기념일 전체 조회")
     @ApiResponses(value={
             @ApiResponse(code = 200,
@@ -406,32 +433,6 @@ public class UserController {
                         .responseCode("ANNIVERSARY_FOUND")
                         .responseMessage("회원의 기념일 전체 조회 완료")
                         .data(friends)
-                        .build());
-    }
-
-
-    @ApiOperation("전체 회원 조회")
-    @ApiResponses(value={
-            @ApiResponse(code = 200,
-                    message = "USERS_FOUND",
-                    response = UserResponseDto.class),
-            @ApiResponse(code = 401,
-                    message = "UNAUTHORIZED_USER"),
-            @ApiResponse(code = 500,
-                    message = "SERVER_ERROR")
-    })
-    @ResponseStatus(HttpStatus.OK)
-    @Transactional
-    @GetMapping
-    public ResponseEntity<DefaultResponseDto<Object>> readAll(){
-
-        List<UserResponseDto> dto = userService.readAll();
-
-        return ResponseEntity.status(200)
-                .body(DefaultResponseDto.builder()
-                        .responseCode("USERS_FOUND")
-                        .responseMessage("전체 회원 조회 완료")
-                        .data(dto)
                         .build());
     }
 

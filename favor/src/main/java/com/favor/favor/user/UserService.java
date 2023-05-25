@@ -95,7 +95,7 @@ public class UserService {
 
         isRightPassword(password, user);
 
-        String token = jwtTokenProvider.createToken(user.getEmail(), user.getRole());
+        String token = jwtTokenProvider.createToken(user.getEmail(), user.getRole(), user.getUserNo());
 
         return new SignInResponseDto(token);
     }
