@@ -62,7 +62,7 @@ public class GiftController {
     @ApiResponses(value={
             @ApiResponse(code = 200,
                     message = "GIFT_FOUND",
-                    response = FriendResponseDto.class),
+                    response = GiftResponseDto.class),
             @ApiResponse(code = 401,
                     message = "UNAUTHORIZED_USER"),
             @ApiResponse(code = 404,
@@ -94,7 +94,7 @@ public class GiftController {
     @ApiResponses(value={
             @ApiResponse(code = 200,
                     message = "GIFT_UPDATED",
-                    response = FriendResponseDto.class),
+                    response = GiftResponseDto.class),
             @ApiResponse(code = 401,
                     message = "UNAUTHORIZED_USER"),
             @ApiResponse(code = 404,
@@ -128,7 +128,7 @@ public class GiftController {
     @ApiResponses(value={
             @ApiResponse(code = 200,
                     message = "GIFT_DELETED",
-                    response = UserResponseDto.class),
+                    response = GiftResponseDto.class),
             @ApiResponse(code = 401,
                     message = "UNAUTHORIZED_USER"),
             @ApiResponse(code = 404,
@@ -161,7 +161,7 @@ public class GiftController {
     @ApiResponses(value={
             @ApiResponse(code = 200,
                     message = "GIFTS_FOUND",
-                    response = UserResponseDto.class),
+                    response = GiftResponseDto.class),
             @ApiResponse(code = 401,
                     message = "UNAUTHORIZED_USER"),
             @ApiResponse(code = 500,

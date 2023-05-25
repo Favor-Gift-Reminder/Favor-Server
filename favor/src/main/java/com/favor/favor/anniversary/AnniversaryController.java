@@ -154,7 +154,7 @@ public class AnniversaryController {
     @ApiResponses(value={
             @ApiResponse(code = 200,
                     message = "ANNIVERSARIES_FOUND",
-                    response = List.class),
+                    response = AnniversaryResponseDto.class),
             @ApiResponse(code = 401,
                     message = "UNAUTHORIZED_USER"),
             @ApiResponse(code = 500,

@@ -190,7 +190,7 @@ public class ReminderController {
     @ApiResponses(value={
             @ApiResponse(code = 200,
                     message = "REMIDNERS_FOUND",
-                    response = List.class),
+                    response = ReminderResponseDto.class),
             @ApiResponse(code = 401,
                     message = "UNAUTHORIZED_USER"),
             @ApiResponse(code = 500,
