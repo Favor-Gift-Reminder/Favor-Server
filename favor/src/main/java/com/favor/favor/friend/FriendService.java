@@ -68,6 +68,8 @@ public class FriendService {
 
         friend.setFriendName(friendUpdateRequestDto.getFriendName());
         friend.setFriendMemo(friendUpdateRequestDto.getFriendMemo());
+        friend.setFavorList(friendUpdateRequestDto.getFavorList());
+        friend.setAnniversaryNoList(friendUpdateRequestDto.getAnniversaryNoList());
         save(friend);
     }
 

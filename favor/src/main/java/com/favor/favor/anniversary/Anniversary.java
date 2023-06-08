@@ -7,6 +7,7 @@ import lombok.*;
 import javax.persistence.*;
 import javax.transaction.Transactional;
 import java.time.LocalDate;
+import java.util.List;
 
 @Entity
 @Getter
@@ -33,6 +34,11 @@ public class Anniversary extends TimeStamped {
     @JoinColumn(name = "user_user_no")
     private User user;
 
+    @ElementCollection
+    private List<Long> friendNoList;
+    public void setFriendNoList(List<Long> friendNoList){
+        this.friendNoList = friendNoList;
+    }
 
 
 }

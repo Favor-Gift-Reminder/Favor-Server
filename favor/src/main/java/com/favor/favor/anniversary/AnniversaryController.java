@@ -98,15 +98,15 @@ public class AnniversaryController {
     })
     @ResponseStatus(HttpStatus.OK)
     @Transactional
-    @PatchMapping("/{anniversaryrNo}")
+    @PatchMapping("/{anniversaryNo}")
     public ResponseEntity<DefaultResponseDto<Object>> updateAnniversary(
             @RequestBody AnniversaryUpdateRequestDto anniversaryUpdateRequestDto,
-            @PathVariable Long anniversaryrNo){
+            @PathVariable Long anniversaryNo){
 
-        anniversaryService.isExistingAnniversaryNo(anniversaryrNo);
+        anniversaryService.isExistingAnniversaryNo(anniversaryNo);
 
-        Anniversary anniversary = anniversaryService.findAnniversaryByanniversaryNo(anniversaryrNo);
-        anniversaryService.updateAnniversary(anniversaryUpdateRequestDto, anniversaryrNo);
+        Anniversary anniversary = anniversaryService.findAnniversaryByanniversaryNo(anniversaryNo);
+        anniversaryService.updateAnniversary(anniversaryUpdateRequestDto, anniversary);
         AnniversaryResponseDto dto = anniversaryService.returnDto(anniversary);
 
         return ResponseEntity.status(200)

@@ -1,6 +1,7 @@
 package com.favor.favor.friend;
 
 
+import com.favor.favor.common.enums.Favor;
 import lombok.*;
 
 import com.favor.favor.common.TimeStamped;
@@ -48,6 +49,14 @@ public class Friend extends TimeStamped {
     @Builder.Default
     @ElementCollection
     private List<Integer> favorList = new ArrayList<>();
+    public void setFavorList(List<Favor> favorList){
+        ArrayList<Integer> favorTypeList = new ArrayList<>();
+        for(Favor favor : favorList){
+            favorTypeList.add(favor.getType());
+        }
+        this.favorList = favorTypeList;
+    }
+
     private Boolean isUser;
 
     private Long friendUserNo;
@@ -57,5 +66,12 @@ public class Friend extends TimeStamped {
     private List<Long> giftNoList = new ArrayList<>();
     public void setGiftNoList(List<Long> giftNoList){
         this.giftNoList = giftNoList;
+    }
+
+    @Builder.Default
+    @ElementCollection
+    private List<Long> anniversaryNoList = new ArrayList<>();
+    public void setAnniversaryNoList(List<Long> anniversaryNoList){
+        this.anniversaryNoList = anniversaryNoList;
     }
 }

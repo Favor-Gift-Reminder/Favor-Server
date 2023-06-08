@@ -1,11 +1,14 @@
 package com.favor.favor.anniversary;
 
 import com.favor.favor.exception.CustomException;
+import com.favor.favor.friend.Friend;
+import com.favor.favor.friend.FriendRepository;
 import com.favor.favor.user.User;
 import com.favor.favor.user.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import javax.transaction.Transactional;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
@@ -20,20 +23,66 @@ public class AnniversaryService {
 
     private final AnniversaryRepository anniversaryRepository;
     private final UserRepository userRepository;
+    private final FriendRepository friendRepository;
 
     public Anniversary createAnniversary(AnniversaryRequestDto anniversaryRequestDto, Long userNo){
         User user = findUserByUserNo(userNo);
         LocalDate localDate = returnLocalDate(anniversaryRequestDto.getAnniversaryDate());
-        return anniversaryRepository.save(anniversaryRequestDto.toEntity(user, localDate));
+        Anniversary anniversary = anniversaryRepository.save(anniversaryRequestDto.toEntity(user, localDate));
+        addAnniversaryNo(anniversary.getAnniversaryNo(), anniversary.getFriendNoList());
+        return anniversaryRepository.save(anniversary);
     }
 
-    public void updateAnniversary(AnniversaryUpdateRequestDto dto, Long anniversaryNo){
-        Anniversary anniversary = findAnniversaryByanniversaryNo(anniversaryNo);
+    @Transactional
+    public void addAnniversaryNo(Long anniversaryNo, List<Long> friendNoList){
+        for(Long friendNo : friendNoList){
+            Friend friend = findFriendByFriendNo(friendNo);
+            List<Long> anniversaryNoList = friend.getAnniversaryNoList();
 
+            boolean flag = true;
+            for(Long no : friend.getAnniversaryNoList()){
+                if (no == anniversaryNo) {
+                    flag = false;
+                    break;
+                }
+            }
+            if(flag) anniversaryNoList.add(anniversaryNo);
+
+            friend.setAnniversaryNoList(anniversaryNoList);
+        }
+    }
+
+    public Friend findFriendByFriendNo(Long friendNo){
+        Friend friend = null;
+        try{
+            friend = friendRepository.findByFriendNo(friendNo).orElseThrow(
+                    () -> new RuntimeException()
+            );
+        } catch (RuntimeException e){
+            throw new CustomException(e, FRIEND_NOT_FOUND);
+        }
+        return friend;
+    }
+
+    public void updateAnniversary(AnniversaryUpdateRequestDto dto, Anniversary anniversary){
         anniversary.setAnniversaryTitle(dto.getAnniversaryTitle());
         LocalDate localDate = returnLocalDate(dto.getAnniversaryDate());
         anniversary.setAnniversaryDate(localDate);
         anniversary.setIsPinned(dto.getIsPinned());
+
+        List<Long> existingFriendNoList = anniversary.getFriendNoList();
+        List<Long> updatedFriendNoList = dto.getFriendNoList();
+
+        for (Long friendNo : existingFriendNoList) {
+            if (!updatedFriendNoList.contains(friendNo)) {
+                Friend friend = findFriendByFriendNo(friendNo);
+                friend.getAnniversaryNoList().remove(anniversary.getAnniversaryNo());
+                friendRepository.save(friend);
+            }
+        }
+
+        anniversary.setFriendNoList(updatedFriendNoList);
+        addAnniversaryNo(anniversary.getAnniversaryNo(), updatedFriendNoList);
 
         anniversaryRepository.save(anniversary);
     }
@@ -63,10 +112,10 @@ public class AnniversaryService {
         }
         return user;
     }
-    public Anniversary findAnniversaryByanniversaryNo(Long userNo){
+    public Anniversary findAnniversaryByanniversaryNo(Long anniversaryNo){
         Anniversary anniversary = null;
         try{
-            anniversary = anniversaryRepository.findAnniversaryByAnniversaryNo(userNo).orElseThrow(
+            anniversary = anniversaryRepository.findAnniversaryByAnniversaryNo(anniversaryNo).orElseThrow(
                     () -> new RuntimeException()
             );
         } catch (RuntimeException e){

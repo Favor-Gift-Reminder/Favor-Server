@@ -39,11 +39,21 @@ public class GiftService {
     }
     @Transactional
     public void addGiftNo(Long giftNo, List<Long> friendNoList){
-        log.info("[Service] [addGiftNo] 실행");
         for(Long friendNo : friendNoList) {
             Friend friend = findFriendByFriendNo(friendNo);
             List<Long> giftNoList = friend.getGiftNoList();
-            giftNoList.add(giftNo);
+
+            boolean flag = true;
+            for(Long no : friend.getGiftNoList()){
+                if (no == giftNo) {
+                    flag = false;
+                    break;
+                }
+            }
+            if(flag) giftNoList.add(giftNo);
+
+
+
             friend.setGiftNoList(giftNoList);
         }
     }
@@ -55,8 +65,21 @@ public class GiftService {
         gift.setEmotion(dto.getEmotion());
         gift.setIsPinned(dto.getIsPinned());
         gift.setIsGiven(dto.getIsGiven());
-        gift.setFriendNo(dto.getFriendNoList());
         gift.setGiftDate(returnLocalDate(dto.getGiftDate()));
+
+        List<Long> existingFriendNoList = gift.getFriendNoList();
+        List<Long> updatedFriendNoList = dto.getFriendNoList();
+
+        for (Long friendNo : existingFriendNoList) {
+            if (!updatedFriendNoList.contains(friendNo)) {
+                Friend friend = findFriendByFriendNo(friendNo);
+                friend.getGiftNoList().remove(gift.getGiftNo());
+                friendRepository.save(friend);
+            }
+        }
+
+        gift.setFriendNoList(dto.getFriendNoList());
+        addGiftNo(gift.getGiftNo(), dto.getFriendNoList());
 
         giftRepository.save(gift);
     }

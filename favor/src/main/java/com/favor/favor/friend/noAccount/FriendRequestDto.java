@@ -16,15 +16,12 @@ public class FriendRequestDto {
     @ApiModelProperty(position = 1, required = true, value = "친구이름", example = "이름")
     private String friendName;
 
-    @ApiModelProperty(position = 2, required = false, value = "친구메모", example = "메모")
-    private String friendMemo;
-
     @Transactional
     public Friend toEntity(User user){
         return Friend.builder()
                 .isUser(false)
                 .friendName(friendName)
-                .friendMemo(friendMemo)
+                .friendMemo("")
                 .user(user)
                 .build();
     }
