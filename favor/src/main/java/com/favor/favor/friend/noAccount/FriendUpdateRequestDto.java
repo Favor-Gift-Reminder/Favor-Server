@@ -1,6 +1,5 @@
 package com.favor.favor.friend.noAccount;
 
-import com.favor.favor.anniversary.Anniversary;
 import com.favor.favor.common.enums.Favor;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.AllArgsConstructor;
