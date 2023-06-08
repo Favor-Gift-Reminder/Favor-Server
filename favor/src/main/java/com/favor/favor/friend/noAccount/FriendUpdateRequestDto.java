@@ -21,9 +21,4 @@ public class FriendUpdateRequestDto {
 
     @ApiModelProperty(position = 3, required = false, value = "취향목록", example = "[\n\"심플한\"\n]")
     private List<Favor> favorList;
-
-    @ApiModelProperty(position = 4, required = false, value = "기념일목록", example = "[\n" +
-                                                                                    "    1, 2\n" +
-                                                                                    "  ]")
-    private List<Long> anniversaryNoList;
 }
