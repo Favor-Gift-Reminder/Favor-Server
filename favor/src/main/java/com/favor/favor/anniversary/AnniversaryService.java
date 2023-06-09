@@ -25,6 +25,7 @@ public class AnniversaryService {
     private final UserRepository userRepository;
     private final FriendRepository friendRepository;
 
+    @Transactional
     public Anniversary createAnniversary(AnniversaryRequestDto anniversaryRequestDto, Long userNo){
         User user = findUserByUserNo(userNo);
         LocalDate localDate = returnLocalDate(anniversaryRequestDto.getAnniversaryDate());
