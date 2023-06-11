@@ -27,7 +27,7 @@ public class FriendResponseDto {
     private Long friendUserNo;
 
 
-    private List<AnniversaryResponseDto> anniversaryList;
+    private List<Long> anniversaryNoList;
     private Long userNo;
 
     @Builder
@@ -39,7 +39,7 @@ public class FriendResponseDto {
         this.reminderList = new ArrayList<>();
         this.giftList = new ArrayList<>();
         this.favorList = new ArrayList<>();
-        this.anniversaryList = new ArrayList<>();
+        this.anniversaryNoList = new ArrayList<>();
         this.friendUserNo = friend.getFriendUserNo();
         this.userNo = friend.getUser().getUserNo();
     }
@@ -49,7 +49,7 @@ public class FriendResponseDto {
                              List<ReminderResponseDto> reminderList,
                              List<GiftResponseDto> giftList,
                              List<Favor> favorList,
-                             List<AnniversaryResponseDto> anniversaryList
+                             List<Long> anniversaryNoList
     ){
         this.isUser = friend.getIsUser();
         this.friendNo = friend.getFriendNo();
@@ -58,7 +58,7 @@ public class FriendResponseDto {
         this.reminderList = reminderList;
         this.giftList = giftList;
         this.favorList = favorList;
-        this.anniversaryList = anniversaryList;
+        this.anniversaryNoList = anniversaryNoList;
         this.friendUserNo = friend.getFriendUserNo();
         this.userNo = friend.getUser().getUserNo();
     }

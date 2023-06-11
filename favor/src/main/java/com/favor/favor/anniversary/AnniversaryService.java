@@ -41,11 +41,9 @@ public class AnniversaryService {
             List<Long> anniversaryNoList = friend.getAnniversaryNoList();
 
             boolean flag = true;
-            for(Long no : friend.getAnniversaryNoList()){
-                if (no == anniversaryNo) {
-                    flag = false;
-                    break;
-                }
+            if (anniversaryNoList.contains(anniversaryNo)) {
+                flag = false;
+                break;
             }
             if(flag) anniversaryNoList.add(anniversaryNo);
 
@@ -71,13 +69,22 @@ public class AnniversaryService {
         anniversary.setAnniversaryDate(localDate);
         anniversary.setIsPinned(dto.getIsPinned());
 
+
+        Long anniversaryNo = anniversary.getAnniversaryNo();
         List<Long> existingFriendNoList = anniversary.getFriendNoList();
         List<Long> updatedFriendNoList = dto.getFriendNoList();
 
         for (Long friendNo : existingFriendNoList) {
             if (!updatedFriendNoList.contains(friendNo)) {
                 Friend friend = findFriendByFriendNo(friendNo);
-                friend.getAnniversaryNoList().remove(anniversary.getAnniversaryNo());
+                friend.getAnniversaryNoList().remove(anniversaryNo);
+                friendRepository.save(friend);
+            }
+        }
+        for(Long friendNo : updatedFriendNoList){
+            Friend friend = findFriendByFriendNo(friendNo);
+            if(!friend.getAnniversaryNoList().contains(anniversaryNo)){
+                friend.getAnniversaryNoList().add(anniversaryNo);
                 friendRepository.save(friend);
             }
         }
@@ -89,6 +96,14 @@ public class AnniversaryService {
     }
 
     public void deleteAnniversary(Long anniversaryNo){
+        List<Friend> friendList = findAnniversaryByAnniversaryNo(anniversaryNo).getUser().getFriendList();
+        for(Friend friend : friendList){
+            if(friend.getAnniversaryNoList().contains(anniversaryNo)){
+                friend.getAnniversaryNoList().remove(anniversaryNo);
+                friendRepository.save(friend);
+            }
+        }
+
         anniversaryRepository.deleteByAnniversaryNo(anniversaryNo);
     }
 
@@ -113,7 +128,7 @@ public class AnniversaryService {
         }
         return user;
     }
-    public Anniversary findAnniversaryByanniversaryNo(Long anniversaryNo){
+    public Anniversary findAnniversaryByAnniversaryNo(Long anniversaryNo){
         Anniversary anniversary = null;
         try{
             anniversary = anniversaryRepository.findAnniversaryByAnniversaryNo(anniversaryNo).orElseThrow(

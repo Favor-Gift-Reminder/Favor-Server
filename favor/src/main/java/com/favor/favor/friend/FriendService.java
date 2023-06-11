@@ -161,12 +161,12 @@ public class FriendService {
         for(Integer favorType : user.getFavorList()){
             favorList.add(Favor.valueOf(favorType));
         }
-        List<AnniversaryResponseDto> anniversaryDtoList = new ArrayList<>();
+        List<Long> anniversaryNoList = new ArrayList<>();
         for(Anniversary a : user.getAnniversaryList()){
-            anniversaryDtoList.add(new AnniversaryResponseDto(a));
+            anniversaryNoList.add(a.getAnniversaryNo());
         }
 
-        return new FriendResponseDto(friend, reminderDtoList, giftDtoList, favorList, anniversaryDtoList);
+        return new FriendResponseDto(friend, reminderDtoList, giftDtoList, favorList, anniversaryNoList);
     }
     public FriendResponseDto returnDtoForFriend(Friend friend){
         List<ReminderResponseDto> reminderDtoList = new ArrayList<>();
@@ -183,9 +183,12 @@ public class FriendService {
         for(Integer favorType : friend.getFavorList()){
             favorList.add(Favor.valueOf(favorType));
         }
-        List<AnniversaryResponseDto> anniversaryList = new ArrayList<>();
+        List<Long> anniversaryNoList = new ArrayList<>();
+        for(Long a : friend.getAnniversaryNoList()){
+            anniversaryNoList.add(a);
+        }
 
-        return new FriendResponseDto(friend, reminderDtoList, giftDtoList, favorList, anniversaryList);
+        return new FriendResponseDto(friend, reminderDtoList, giftDtoList, favorList, anniversaryNoList);
     }
 
 
