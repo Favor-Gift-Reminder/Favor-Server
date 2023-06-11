@@ -73,7 +73,7 @@ public class AnniversaryController {
             @PathVariable Long anniversaryNo){
 
         anniversaryService.isExistingAnniversaryNo(anniversaryNo);
-        Anniversary anniversary = anniversaryService.findAnniversaryByanniversaryNo(anniversaryNo);
+        Anniversary anniversary = anniversaryService.findAnniversaryByAnniversaryNo(anniversaryNo);
         AnniversaryResponseDto dto = anniversaryService.returnDto(anniversary);
 
         return ResponseEntity.status(200)
@@ -98,15 +98,15 @@ public class AnniversaryController {
     })
     @ResponseStatus(HttpStatus.OK)
     @Transactional
-    @PatchMapping("/{anniversaryrNo}")
+    @PatchMapping("/{anniversaryNo}")
     public ResponseEntity<DefaultResponseDto<Object>> updateAnniversary(
             @RequestBody AnniversaryUpdateRequestDto anniversaryUpdateRequestDto,
-            @PathVariable Long anniversaryrNo){
+            @PathVariable Long anniversaryNo){
 
-        anniversaryService.isExistingAnniversaryNo(anniversaryrNo);
+        anniversaryService.isExistingAnniversaryNo(anniversaryNo);
 
-        Anniversary anniversary = anniversaryService.findAnniversaryByanniversaryNo(anniversaryrNo);
-        anniversaryService.updateAnniversary(anniversaryUpdateRequestDto, anniversaryrNo);
+        Anniversary anniversary = anniversaryService.findAnniversaryByAnniversaryNo(anniversaryNo);
+        anniversaryService.updateAnniversary(anniversaryUpdateRequestDto, anniversary);
         AnniversaryResponseDto dto = anniversaryService.returnDto(anniversary);
 
         return ResponseEntity.status(200)
@@ -137,7 +137,7 @@ public class AnniversaryController {
 
         anniversaryService.isExistingAnniversaryNo(anniversaryNo);
 
-        Anniversary anniversary = anniversaryService.findAnniversaryByanniversaryNo(anniversaryNo);
+        Anniversary anniversary = anniversaryService.findAnniversaryByAnniversaryNo(anniversaryNo);
         AnniversaryResponseDto dto = anniversaryService.returnDto(anniversary);
 
         anniversaryService.deleteAnniversary(anniversaryNo);
