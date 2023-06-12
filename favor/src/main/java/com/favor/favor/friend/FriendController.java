@@ -4,6 +4,7 @@ import com.favor.favor.common.DefaultResponseDto;
 import com.favor.favor.friend.account.FriendUserRequestDto;
 import com.favor.favor.friend.noAccount.FriendRequestDto;
 import com.favor.favor.friend.noAccount.FriendUpdateRequestDto;
+import com.favor.favor.gift.Gift;
 import com.favor.favor.user.UserResponseDto;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;

@@ -19,6 +19,8 @@ import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.LinkedList;
 import java.util.List;
 
 import static com.favor.favor.exception.ExceptionCode.*;
@@ -135,6 +137,37 @@ public class FriendService {
         }
         return gift;
     }
+    public List<GiftResponseDto> findGiftListByFriendNo(Long friendNo){
+        List<Gift> giftList = giftRepository.findGiftsByFriendNoListContains(friendNo);
+        List<GiftResponseDto> giftResponseDtoList = new ArrayList<>();
+        for(Gift gift : giftList){
+            GiftResponseDto dto = new GiftResponseDto(gift);
+            giftResponseDtoList.add(dto);
+        }
+        return giftResponseDtoList;
+    }
+    public List<GiftResponseDto> findGivenGiftList(Long friendNo){
+        List<Gift> giftList = giftRepository.findGiftsByFriendNoListContains(friendNo);
+        List<GiftResponseDto> giftResponseDtoList = new ArrayList<>();
+        for(Gift gift : giftList){
+            if(gift.getIsGiven()){
+                GiftResponseDto dto = new GiftResponseDto(gift);
+                giftResponseDtoList.add(dto);
+            }
+        }
+        return giftResponseDtoList;
+    }
+    public List<GiftResponseDto> findReceivedGiftList(Long friendNo){
+        List<Gift> giftList = giftRepository.findGiftsByFriendNoListContains(friendNo);
+        List<GiftResponseDto> giftResponseDtoList = new ArrayList<>();
+        for(Gift gift : giftList){
+            if(!gift.getIsGiven()){
+                GiftResponseDto dto = new GiftResponseDto(gift);
+                giftResponseDtoList.add(dto);
+            }
+        }
+        return giftResponseDtoList;
+    }
 
 
 
@@ -153,10 +186,6 @@ public class FriendService {
         for(Reminder r : reminderList){
             reminderDtoList.add(new ReminderResponseDto(r));
         }
-        List<GiftResponseDto> giftDtoList = new ArrayList<>();
-        for(Gift g : user.getGiftList()){
-            giftDtoList.add(new GiftResponseDto(g, null));
-        }
         List<Favor> favorList = new ArrayList<>();
         for(Integer favorType : user.getFavorList()){
             favorList.add(Favor.valueOf(favorType));
@@ -165,19 +194,15 @@ public class FriendService {
         for(Anniversary a : user.getAnniversaryList()){
             anniversaryNoList.add(a.getAnniversaryNo());
         }
+        HashMap<String, Integer> giftInfo = returnGiftInfo(friend.getFriendNo());
 
-        return new FriendResponseDto(friend, reminderDtoList, giftDtoList, favorList, anniversaryNoList);
+        return new FriendResponseDto(friend, reminderDtoList, favorList, anniversaryNoList, giftInfo);
     }
     public FriendResponseDto returnDtoForFriend(Friend friend){
         List<ReminderResponseDto> reminderDtoList = new ArrayList<>();
         for(Reminder r : friend.getReminderList()){
             ReminderResponseDto dto = new ReminderResponseDto(r);
             reminderDtoList.add(dto);
-        }
-        List<GiftResponseDto> giftDtoList = new ArrayList<>();
-        for(Long g : friend.getGiftNoList()){
-            Gift gift = findGiftByGiftNo(g);
-            giftDtoList.add(new GiftResponseDto(gift));
         }
         List<Favor> favorList = new ArrayList<>();
         for(Integer favorType : friend.getFavorList()){
@@ -187,8 +212,25 @@ public class FriendService {
         for(Long a : friend.getAnniversaryNoList()){
             anniversaryNoList.add(a);
         }
+        HashMap<String, Integer> giftInfo = returnGiftInfo(friend.getFriendNo());
 
-        return new FriendResponseDto(friend, reminderDtoList, giftDtoList, favorList, anniversaryNoList);
+        return new FriendResponseDto(friend, reminderDtoList, favorList, anniversaryNoList, giftInfo);
+    }
+    public HashMap<String, Integer> returnGiftInfo(Long friendNo){
+        HashMap<String, Integer> hashMap = new HashMap<>();
+        List<Gift> giftList = giftRepository.findGiftsByFriendNoListContains(friendNo);
+        hashMap.put("total", giftList.size());
+
+        int given = 0;
+        int received = 0;
+        for(Gift gift : giftList){
+                if(gift.getIsGiven()) given++;
+                else received++;
+        }
+        hashMap.put("given", given);
+        hashMap.put("received", received);
+
+        return hashMap;
     }
 
 
