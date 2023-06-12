@@ -40,6 +40,9 @@ public class FriendResponseDto {
         this.reminderList = new ArrayList<>();
         this.favorList = new ArrayList<>();
         this.anniversaryNoList = new ArrayList<>();
+        this.givenGift = 0;
+        this.receivedGift = 0;
+        this.totalGift = 0;
         this.friendUserNo = friend.getFriendUserNo();
         this.userNo = friend.getUser().getUserNo();
     }

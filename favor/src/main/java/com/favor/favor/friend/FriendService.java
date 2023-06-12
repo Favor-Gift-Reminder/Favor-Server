@@ -178,7 +178,7 @@ public class FriendService {
     }
     public FriendResponseDto returnDtoForFriendUser(Friend friend){
         User user = userRepository.findByUserNo(friend.getFriendUserNo()).orElseThrow(
-                () -> new RuntimeException()
+            () -> new RuntimeException()
         );
 
         List<Reminder> reminderList = user.getReminderList();
