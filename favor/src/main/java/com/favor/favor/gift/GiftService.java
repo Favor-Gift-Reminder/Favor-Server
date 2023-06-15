@@ -10,6 +10,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
+import javax.swing.text.html.Option;
 import javax.transaction.Transactional;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -17,6 +18,7 @@ import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 import static com.favor.favor.exception.ExceptionCode.*;
 
@@ -43,16 +45,7 @@ public class GiftService {
             Friend friend = findFriendByFriendNo(friendNo);
             List<Long> giftNoList = friend.getGiftNoList();
 
-            boolean flag = true;
-            for(Long no : friend.getGiftNoList()){
-                if (no == giftNo) {
-                    flag = false;
-                    break;
-                }
-            }
-            if(flag) giftNoList.add(giftNo);
-
-
+            if(!giftNoList.contains(giftNo)) giftNoList.add(giftNo);
 
             friend.setGiftNoList(giftNoList);
         }
@@ -92,13 +85,7 @@ public class GiftService {
     public List<GiftResponseDto> readAll(){
         List<GiftResponseDto> g_List = new ArrayList<>();
         for(Gift gift : giftRepository.findAll()){
-            List<FriendResponseDto> friendList = new ArrayList<>();
-            for(Long f : gift.getFriendNoList()){
-                Friend friend = findFriendByFriendNo(f);
-                FriendResponseDto dto = new FriendResponseDto(friend);
-                friendList.add(dto);
-            }
-            GiftResponseDto dto = new GiftResponseDto(gift, friendList);
+            GiftResponseDto dto = returnDto(gift);
             g_List.add(dto);
         }
         return g_List;
@@ -147,14 +134,29 @@ public class GiftService {
 
 
     public GiftResponseDto returnDto(Gift gift){
-        log.info("[Service] [returnDto] 실행");
-        List<FriendResponseDto> friendList = new ArrayList<>();
-        for(Long f : gift.getFriendNoList()){
-            Friend friend = findFriendByFriendNo(f);
+        List<FriendResponseDto> friendResponseDtoList = new ArrayList<>();
+
+        List<Long> friendNoList = gift.getFriendNoList();
+        List<Long> deletedNoList = new ArrayList<>();
+
+        for(Long f : friendNoList){
+            Friend friend = null;
+            try{
+                friend = findFriendByFriendNo(f);
+            }catch(Exception e){
+                deletedNoList.add(f);
+                continue;
+            }
             FriendResponseDto dto = new FriendResponseDto(friend);
-            friendList.add(dto);
+            friendResponseDtoList.add(dto);
         }
-        return new GiftResponseDto(gift, friendList);
+        for(Long f : deletedNoList){
+            friendNoList.remove(f);
+        }
+        gift.setFriendNoList(friendNoList);
+        giftRepository.save(gift);
+
+        return new GiftResponseDto(gift, friendResponseDtoList);
     }
 
     public LocalDate returnLocalDate(String dateString){

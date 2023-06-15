@@ -30,7 +30,6 @@ public class AnniversaryService {
         User user = findUserByUserNo(userNo);
         LocalDate localDate = returnLocalDate(anniversaryRequestDto.getAnniversaryDate());
         Anniversary anniversary = anniversaryRepository.save(anniversaryRequestDto.toEntity(user, localDate));
-        addAnniversaryNo(anniversary.getAnniversaryNo(), anniversary.getFriendNoList());
         return anniversaryRepository.save(anniversary);
     }
 
@@ -67,30 +66,8 @@ public class AnniversaryService {
         anniversary.setAnniversaryTitle(dto.getAnniversaryTitle());
         LocalDate localDate = returnLocalDate(dto.getAnniversaryDate());
         anniversary.setAnniversaryDate(localDate);
+        anniversary.setCategory(dto.getCategory());
         anniversary.setIsPinned(dto.getIsPinned());
-
-
-        Long anniversaryNo = anniversary.getAnniversaryNo();
-        List<Long> existingFriendNoList = anniversary.getFriendNoList();
-        List<Long> updatedFriendNoList = dto.getFriendNoList();
-
-        for (Long friendNo : existingFriendNoList) {
-            if (!updatedFriendNoList.contains(friendNo)) {
-                Friend friend = findFriendByFriendNo(friendNo);
-                friend.getAnniversaryNoList().remove(anniversaryNo);
-                friendRepository.save(friend);
-            }
-        }
-        for(Long friendNo : updatedFriendNoList){
-            Friend friend = findFriendByFriendNo(friendNo);
-            if(!friend.getAnniversaryNoList().contains(anniversaryNo)){
-                friend.getAnniversaryNoList().add(anniversaryNo);
-                friendRepository.save(friend);
-            }
-        }
-
-        anniversary.setFriendNoList(updatedFriendNoList);
-        addAnniversaryNo(anniversary.getAnniversaryNo(), updatedFriendNoList);
 
         anniversaryRepository.save(anniversary);
     }
