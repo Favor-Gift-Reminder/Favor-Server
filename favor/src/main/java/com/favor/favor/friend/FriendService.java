@@ -204,10 +204,12 @@ public class FriendService {
             ReminderResponseDto dto = new ReminderResponseDto(r);
             reminderDtoList.add(dto);
         }
+
         List<Favor> favorList = new ArrayList<>();
         for(Integer favorType : friend.getFavorList()){
             favorList.add(Favor.valueOf(favorType));
         }
+
         List<Long> anniversaryNoList = new ArrayList<>();
         for(Long a : friend.getAnniversaryNoList()){
             anniversaryNoList.add(a);
