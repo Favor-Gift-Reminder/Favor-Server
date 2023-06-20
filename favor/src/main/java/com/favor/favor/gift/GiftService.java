@@ -63,7 +63,6 @@ public class GiftService {
         gift.setGiftMemo(dto.getGiftMemo());
         gift.setCategory(dto.getCategory());
         gift.setEmotion(dto.getEmotion());
-        gift.setIsPinned(dto.getIsPinned());
         gift.setIsGiven(dto.getIsGiven());
         gift.setGiftDate(returnLocalDate(dto.getGiftDate()));
 
@@ -81,6 +80,10 @@ public class GiftService {
         gift.setFriendNoList(dto.getFriendNoList());
         addGiftNo(gift.getGiftNo(), dto.getFriendNoList());
 
+        giftRepository.save(gift);
+    }
+    public void updateIsPinned(Gift gift){
+        gift.setIsPinned(gift.getIsPinned() == true ? false : true);
         giftRepository.save(gift);
     }
 

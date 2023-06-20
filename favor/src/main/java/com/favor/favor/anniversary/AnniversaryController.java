@@ -117,6 +117,38 @@ public class AnniversaryController {
                         .build());
     }
 
+    @ApiOperation("기념일 핀 여부 수정")
+    @ApiResponses(value={
+            @ApiResponse(code = 200,
+                    message = "ANNIVERSARY_PIN_UPDATED",
+                    response = AnniversaryResponseDto.class),
+            @ApiResponse(code = 401,
+                    message = "UNAUTHORIZED_USER"),
+            @ApiResponse(code = 404,
+                    message = "ANNIVERSARY_NOT_FOUND"),
+            @ApiResponse(code = 500,
+                    message = "SERVER_ERROR")
+    })
+    @ResponseStatus(HttpStatus.OK)
+    @Transactional
+    @PatchMapping("/pin/{anniversaryNo}")
+    public ResponseEntity<DefaultResponseDto<Object>> updateIsPinned(
+            @PathVariable Long anniversaryNo){
+
+        anniversaryService.isExistingAnniversaryNo(anniversaryNo);
+
+        Anniversary anniversary = anniversaryService.findAnniversaryByAnniversaryNo(anniversaryNo);
+        anniversaryService.updateIsPinned(anniversary);
+        AnniversaryResponseDto dto = anniversaryService.returnDto(anniversary);
+
+        return ResponseEntity.status(200)
+                .body(DefaultResponseDto.builder()
+                        .responseMessage("ANNIVERSARY_PIN_UPDATED")
+                        .responseCode("기념일 핀 여부 수정 완료")
+                        .data(dto)
+                        .build());
+    }
+
     @ApiOperation("기념일 삭제")
     @ApiResponses(value={
             @ApiResponse(code = 200,

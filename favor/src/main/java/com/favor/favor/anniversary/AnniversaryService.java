@@ -67,7 +67,6 @@ public class AnniversaryService {
         anniversary.setAnniversaryTitle(dto.getAnniversaryTitle());
         LocalDate localDate = returnLocalDate(dto.getAnniversaryDate());
         anniversary.setAnniversaryDate(localDate);
-        anniversary.setIsPinned(dto.getIsPinned());
 
 
         Long anniversaryNo = anniversary.getAnniversaryNo();
@@ -92,6 +91,11 @@ public class AnniversaryService {
         anniversary.setFriendNoList(updatedFriendNoList);
         addAnniversaryNo(anniversary.getAnniversaryNo(), updatedFriendNoList);
 
+        anniversaryRepository.save(anniversary);
+    }
+
+    public void updateIsPinned(Anniversary anniversary){
+        anniversary.setIsPinned(anniversary.getIsPinned() == true ? false : true);
         anniversaryRepository.save(anniversary);
     }
 
