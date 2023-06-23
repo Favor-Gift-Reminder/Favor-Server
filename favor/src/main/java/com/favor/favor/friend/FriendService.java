@@ -1,14 +1,9 @@
 package com.favor.favor.friend;
 
 import com.favor.favor.anniversary.Anniversary;
-import com.favor.favor.anniversary.AnniversaryResponseDto;
 import com.favor.favor.common.enums.Favor;
 import com.favor.favor.exception.CustomException;
-import com.favor.favor.friend.account.FriendUserRequestDto;
-import com.favor.favor.friend.noAccount.FriendRequestDto;
-import com.favor.favor.friend.noAccount.FriendUpdateRequestDto;
 import com.favor.favor.gift.Gift;
-import com.favor.favor.gift.GiftRepository;
 import com.favor.favor.gift.GiftResponseDto;
 import com.favor.favor.reminder.Reminder;
 import com.favor.favor.reminder.ReminderResponseDto;
@@ -28,18 +23,12 @@ import static com.favor.favor.exception.ExceptionCode.*;
 public class FriendService {
     private final FriendRepository friendRepository;
     private final UserRepository userRepository;
-    private final GiftRepository giftRepository;
 
 
 
-    public Friend createFriend(FriendRequestDto dto, Long userNo){
-        User user = findUserByUserNo(userNo);
-
-        return save(dto.toEntity(user));
-    }
 
     @Transactional
-    public Friend addFriend(FriendUserRequestDto dto, Long userNo){
+    public Friend addFriend(FriendRequestDto dto, Long userNo){
         User user = findUserByUserNo(userNo);
         Long friendUserNo = dto.getFriendUserNo();
         User friendUser = findUserByUserNo(friendUserNo);
@@ -53,23 +42,12 @@ public class FriendService {
         Boolean isDuplicate = false;
         List<Friend> friendList = user.getFriendList();
         for(Friend f : friendList){
-            if(f.getIsUser()) {
-                if(f.getFriendUserNo() == friendUser.getUserNo()) isDuplicate = true;
+            if(f.getFriendUserNo() == friendUser.getUserNo()) {
+                isDuplicate = true;
+                break;
             }
         }
-
         return isDuplicate;
-    }
-
-    @Transactional
-    public void updateFriend(Friend friend, FriendUpdateRequestDto friendUpdateRequestDto){
-        //회원은 변경 안돼유
-        if(friend.getIsUser()) throw new CustomException(null, ILLEGAL_ARGUMENT_FRIEND);
-
-        friend.setFriendName(friendUpdateRequestDto.getFriendName());
-        friend.setFriendMemo(friendUpdateRequestDto.getFriendMemo());
-        friend.setFavorList(friendUpdateRequestDto.getFavorList());
-        save(friend);
     }
 
     @Transactional
@@ -81,12 +59,7 @@ public class FriendService {
     public List<FriendResponseDto> readAll(){
         List<FriendResponseDto> f_List = new ArrayList<>();
         List<Friend> friendList = friendRepository.findAll();
-        for(Friend f : friendList){
-            FriendResponseDto dto;
-            if(f.getIsUser()){ dto = returnDtoForFriendUser(f); }
-            else{ dto = returnDtoForFriend(f); }
-            f_List.add(dto);
-        }
+        for(Friend f : friendList) f_List.add(returnDto(f));
         return f_List;
     }
 
@@ -124,26 +97,12 @@ public class FriendService {
         }
         return friend;
     }
-    public Gift findGiftByGiftNo(Long giftNo){
-        Gift gift = null;
-        try{
-            gift = giftRepository.findByGiftNo(giftNo).orElseThrow(
-                    () -> new RuntimeException()
-            );
-        } catch (RuntimeException e){
-            throw new CustomException(e, GIFT_NOT_FOUND);
-        }
-        return gift;
-    }
 
 
 
     //RETURN
+    @Transactional
     public FriendResponseDto returnDto(Friend friend){
-        if(friend.getIsUser()) return returnDtoForFriendUser(friend);
-        else return returnDtoForFriend(friend);
-    }
-    public FriendResponseDto returnDtoForFriendUser(Friend friend){
         User user = userRepository.findByUserNo(friend.getFriendUserNo()).orElseThrow(
                 () -> new RuntimeException()
         );
@@ -164,28 +123,6 @@ public class FriendService {
         List<Long> anniversaryNoList = new ArrayList<>();
         for(Anniversary a : user.getAnniversaryList()){
             anniversaryNoList.add(a.getAnniversaryNo());
-        }
-
-        return new FriendResponseDto(friend, reminderDtoList, giftDtoList, favorList, anniversaryNoList);
-    }
-    public FriendResponseDto returnDtoForFriend(Friend friend){
-        List<ReminderResponseDto> reminderDtoList = new ArrayList<>();
-        for(Reminder r : friend.getReminderList()){
-            ReminderResponseDto dto = new ReminderResponseDto(r);
-            reminderDtoList.add(dto);
-        }
-        List<GiftResponseDto> giftDtoList = new ArrayList<>();
-        for(Long g : friend.getGiftNoList()){
-            Gift gift = findGiftByGiftNo(g);
-            giftDtoList.add(new GiftResponseDto(gift));
-        }
-        List<Favor> favorList = new ArrayList<>();
-        for(Integer favorType : friend.getFavorList()){
-            favorList.add(Favor.valueOf(favorType));
-        }
-        List<Long> anniversaryNoList = new ArrayList<>();
-        for(Long a : friend.getAnniversaryNoList()){
-            anniversaryNoList.add(a);
         }
 
         return new FriendResponseDto(friend, reminderDtoList, giftDtoList, favorList, anniversaryNoList);

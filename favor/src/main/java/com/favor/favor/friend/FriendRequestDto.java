@@ -1,4 +1,4 @@
-package com.favor.favor.friend.noAccount;
+package com.favor.favor.friend;
 
 import com.favor.favor.friend.Friend;
 import com.favor.favor.user.User;
@@ -13,14 +13,13 @@ import javax.transaction.Transactional;
 @NoArgsConstructor
 @AllArgsConstructor
 public class FriendRequestDto {
-    @ApiModelProperty(position = 1, required = true, value = "친구이름", example = "이름")
-    private String friendName;
-
+    @ApiModelProperty(position = 1, required = true, dataType = "Long", value = "회원친구번호", example = "1")
+    private Long friendUserNo;
     @Transactional
-    public Friend toEntity(User user){
+    public Friend toEntity(User user, User userFriend){
         return Friend.builder()
-                .isUser(false)
-                .friendName(friendName)
+                .friendUserNo(friendUserNo)
+                .friendName(userFriend.getName())
                 .friendMemo("")
                 .user(user)
                 .build();
