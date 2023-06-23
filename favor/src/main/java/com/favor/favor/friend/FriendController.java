@@ -83,39 +83,40 @@ public class FriendController {
                         .build());
     }
 
-//    @ApiOperation("친구 수정")
-//    @ApiResponses(value={
-//            @ApiResponse(code = 200,
-//                    message = "FRIEND_UPDATED",
-//                    response = FriendResponseDto.class),
-//            @ApiResponse(code = 401,
-//                    message = "UNAUTHORIZED_USER"),
-//            @ApiResponse(code = 404,
-//                    message = "FRIEND_NOT_FOUND"),
-//            @ApiResponse(code = 500,
-//                    message = "SERVER_ERROR")
-//    })
-//    @ResponseStatus(HttpStatus.OK)
-//    @Transactional
-//    @PatchMapping("/{friendNo}")
-//    public ResponseEntity<DefaultResponseDto<Object>> updateFriend(
-//            @PathVariable Long friendNo,
-//            @RequestBody FriendUpdateRequestDto friendUpdateRequestDto){
-//
-//        friendService.isExistingFriendNo(friendNo);
-//
-//        Friend friend = friendService.findFriendByFriendNo(friendNo);
-//        friendService.updateFriend(friend, friendUpdateRequestDto);
-//
-//        FriendResponseDto dto = friendService.returnDto(friend);
-//
-//        return ResponseEntity.status(200)
-//                .body(DefaultResponseDto.builder()
-//                        .responseCode("FRIEND_UPDATED")
-//                        .responseMessage("친구 수정 완료")
-//                        .data(dto)
-//                        .build());
-//    }
+    @ApiOperation("친구 메모 수정")
+    @ApiResponses(value={
+            @ApiResponse(code = 200,
+                    message = "FRIEND_MEMO_UPDATED",
+                    response = FriendResponseDto.class),
+            @ApiResponse(code = 401,
+                    message = "UNAUTHORIZED_USER"),
+            @ApiResponse(code = 404,
+                    message = "FRIEND_NOT_FOUND"),
+            @ApiResponse(code = 500,
+                    message = "SERVER_ERROR")
+    })
+    @ResponseStatus(HttpStatus.OK)
+    @Transactional
+    @PatchMapping("/{friendNo}")
+    public ResponseEntity<DefaultResponseDto<Object>> updateFriend(
+            @PathVariable Long friendNo,
+            @RequestBody MemoUpdateRequestDto memoUpdateRequestDto){
+
+        friendService.isExistingFriendNo(friendNo);
+
+        Friend friend = friendService.findFriendByFriendNo(friendNo);
+
+        friendService.updateMemo(friend, memoUpdateRequestDto);
+
+        FriendResponseDto dto = friendService.returnDto(friend);
+
+        return ResponseEntity.status(200)
+                .body(DefaultResponseDto.builder()
+                        .responseCode("FRIEND_MEMO_UPDATED")
+                        .responseMessage("친구 메모 수정 완료")
+                        .data(dto)
+                        .build());
+    }
 
     @ApiOperation("친구 삭제")
     @ApiResponses(value={

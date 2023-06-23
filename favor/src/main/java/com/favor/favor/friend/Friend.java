@@ -26,9 +26,6 @@ public class Friend extends TimeStamped {
     private Long friendNo;
 
     private String friendName;
-    public void setFriendName(String friendName) {
-        this.friendName = friendName;
-    }
 
     private String friendMemo;
     public void setFriendMemo(String friendMemo) {

@@ -25,8 +25,6 @@ public class FriendService {
     private final UserRepository userRepository;
 
 
-
-
     @Transactional
     public Friend addFriend(FriendRequestDto dto, Long userNo){
         User user = findUserByUserNo(userNo);
@@ -48,6 +46,12 @@ public class FriendService {
             }
         }
         return isDuplicate;
+    }
+
+    public void updateMemo(Friend friend, MemoUpdateRequestDto memoUpdateRequestDto){
+        friend.setFriendMemo(memoUpdateRequestDto.getMemo());
+        friendRepository.save(friend);
+
     }
 
     @Transactional
