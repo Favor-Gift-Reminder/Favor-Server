@@ -4,6 +4,7 @@ import com.favor.favor.anniversary.Anniversary;
 import com.favor.favor.common.enums.Favor;
 import com.favor.favor.exception.CustomException;
 import com.favor.favor.gift.Gift;
+import com.favor.favor.gift.GiftRepository;
 import com.favor.favor.gift.GiftResponseDto;
 import com.favor.favor.reminder.Reminder;
 import com.favor.favor.reminder.ReminderResponseDto;
@@ -15,7 +16,6 @@ import org.springframework.stereotype.Service;
 import javax.transaction.Transactional;
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.LinkedList;
 import java.util.List;
 
 import static com.favor.favor.exception.ExceptionCode.*;
@@ -25,6 +25,7 @@ import static com.favor.favor.exception.ExceptionCode.*;
 public class FriendService {
     private final FriendRepository friendRepository;
     private final UserRepository userRepository;
+    private final GiftRepository giftRepository;
 
 
     @Transactional
@@ -92,6 +93,19 @@ public class FriendService {
 
 
     //FIND
+    public Gift findGiftByGiftNo(Long giftNo){
+        Gift gift = null;
+        try{
+            gift = giftRepository.findByGiftNo(giftNo).orElseThrow(
+                    () -> new RuntimeException()
+            );
+        }catch(RuntimeException e){
+            throw new CustomException(e, GIFT_NOT_FOUND);
+        }
+
+        return gift;
+    }
+
     public User findUserByUserNo(Long userNo){
         User user = null;
         try{
@@ -114,13 +128,52 @@ public class FriendService {
         }
         return friend;
     }
+    public List<GiftResponseDto> findGiftListByFriendNo(Long friendNo){
+        List<Gift> giftList = giftRepository.findGiftsByFriendNoListContains(friendNo);
+        List<GiftResponseDto> giftResponseDtoList = new ArrayList<>();
+        for(Gift gift : giftList){
+            GiftResponseDto dto = new GiftResponseDto(gift);
+            giftResponseDtoList.add(dto);
+        }
+        return giftResponseDtoList;
+    }
+    public List<GiftResponseDto> findGivenGiftList(Long friendNo){
+        List<Gift> giftList = giftRepository.findGiftsByFriendNoListContains(friendNo);
+        List<GiftResponseDto> giftResponseDtoList = new ArrayList<>();
+        for(Gift gift : giftList){
+            if(gift.getIsGiven()){
+                GiftResponseDto dto = new GiftResponseDto(gift);
+                giftResponseDtoList.add(dto);
+            }
+        }
+        return giftResponseDtoList;
+    }
+    public List<GiftResponseDto> findReceivedGiftList(Long friendNo){
+        List<Gift> giftList = giftRepository.findGiftsByFriendNoListContains(friendNo);
+        List<GiftResponseDto> giftResponseDtoList = new ArrayList<>();
+        for(Gift gift : giftList){
+            if(!gift.getIsGiven()){
+                GiftResponseDto dto = new GiftResponseDto(gift);
+                giftResponseDtoList.add(dto);
+            }
+        }
+        return giftResponseDtoList;
+    }
+
 
     //RETURN
     @Transactional
     public FriendResponseDto returnDto(Friend friend){
-        User user = userRepository.findByUserNo(friend.getFriendUserNo()).orElseThrow(
-            () -> new RuntimeException()
-        );
+        User user = null;
+
+        try{
+            user = userRepository.findByUserNo(friend.getFriendUserNo()).orElseThrow(
+                    () -> new RuntimeException()
+            );
+        }catch(RuntimeException e){
+            throw new CustomException(e, USER_NOT_FOUND);
+        }
+
 
         List<Reminder> reminderList = user.getReminderList();
         List<ReminderResponseDto> reminderDtoList = new ArrayList<>();
@@ -139,6 +192,24 @@ public class FriendService {
 
         return new FriendResponseDto(friend, reminderDtoList, favorList, anniversaryNoList, giftInfo);
     }
+
+    public HashMap<String, Integer> returnGiftInfo(Long friendNo) {
+        HashMap<String, Integer> hashMap = new HashMap<>();
+        List<Gift> giftList = giftRepository.findGiftsByFriendNoListContains(friendNo);
+        hashMap.put("total", giftList.size());
+
+        int given = 0;
+        int received = 0;
+        for (Gift gift : giftList) {
+            if (gift.getIsGiven()) given++;
+            else received++;
+        }
+        hashMap.put("given", given);
+        hashMap.put("received", received);
+
+        return hashMap;
+    }
+
 
     //IS_EXISTING
     public void isExistingUserNo (Long userNo){

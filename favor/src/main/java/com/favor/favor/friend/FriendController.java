@@ -2,6 +2,7 @@ package com.favor.favor.friend;
 
 import com.favor.favor.common.DefaultResponseDto;
 
+import com.favor.favor.gift.GiftResponseDto;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiResponse;
@@ -188,7 +189,7 @@ public class FriendController {
     })
     @ResponseStatus(HttpStatus.OK)
     @Transactional
-    @GetMapping("/total-gifts{friendNo}")
+    @GetMapping("/total-gifts/{friendNo}")
     public ResponseEntity<DefaultResponseDto<Object>> readTotalGiftList(
             @PathVariable Long friendNo){
         friendService.isExistingFriendNo(friendNo);
