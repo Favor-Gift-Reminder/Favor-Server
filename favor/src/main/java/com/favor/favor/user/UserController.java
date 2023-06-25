@@ -558,4 +558,56 @@ public class UserController {
                         .build());
     }
 
+    @ApiOperation("유저가 준 선물 전체 조회")
+    @ApiResponses(value={
+            @ApiResponse(code = 200,
+                    message = "GIFTS_FOUND",
+                    response = GiftResponseDto.class),
+            @ApiResponse(code = 401,
+                    message = "UNAUTHORIZED_USER"),
+            @ApiResponse(code = 500,
+                    message = "SERVER_ERROR")
+    })
+    @ResponseStatus(HttpStatus.OK)
+    @Transactional
+    @GetMapping("/given-gifts/{userNo}")
+    public ResponseEntity<DefaultResponseDto<Object>> readGivenGiftList(
+            @PathVariable Long userNo){
+        userService.isExistingUserNo(userNo);
+        List<GiftResponseDto> dto = userService.findGivenGiftList(userNo);
+
+        return ResponseEntity.status(200)
+                .body(DefaultResponseDto.builder()
+                        .responseCode("GIFTS_FOUND")
+                        .responseMessage("유저가 준 선물 전체 조회 완료")
+                        .data(dto)
+                        .build());
+    }
+
+    @ApiOperation("유저가 받은 선물 전체 조회")
+    @ApiResponses(value={
+            @ApiResponse(code = 200,
+                    message = "GIFTS_FOUND",
+                    response = GiftResponseDto.class),
+            @ApiResponse(code = 401,
+                    message = "UNAUTHORIZED_USER"),
+            @ApiResponse(code = 500,
+                    message = "SERVER_ERROR")
+    })
+    @ResponseStatus(HttpStatus.OK)
+    @Transactional
+    @GetMapping("/received-gifts/{userNo}")
+    public ResponseEntity<DefaultResponseDto<Object>> readReceivedGiftList(
+            @PathVariable Long userNo){
+        userService.isExistingUserNo(userNo);
+        List<GiftResponseDto> dto = userService.findReceivedGiftList(userNo);
+
+        return ResponseEntity.status(200)
+                .body(DefaultResponseDto.builder()
+                        .responseCode("GIFTS_FOUND")
+                        .responseMessage("유저가 받은 선물 전체 조회 완료")
+                        .data(dto)
+                        .build());
+    }
+
 }

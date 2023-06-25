@@ -4,6 +4,8 @@ import com.favor.favor.common.DefaultResponseDto;
 import com.favor.favor.friend.account.FriendUserRequestDto;
 import com.favor.favor.friend.noAccount.FriendRequestDto;
 import com.favor.favor.friend.noAccount.FriendUpdateRequestDto;
+import com.favor.favor.gift.Gift;
+import com.favor.favor.gift.GiftResponseDto;
 import com.favor.favor.user.UserResponseDto;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -204,6 +206,84 @@ public class FriendController {
                 .body(DefaultResponseDto.builder()
                         .responseCode("FRIENDS_FOUND")
                         .responseMessage("전체 친구 조회 완료")
+                        .data(dto)
+                        .build());
+    }
+
+    @ApiOperation("친구의 선물 전체 조회")
+    @ApiResponses(value={
+            @ApiResponse(code = 200,
+                    message = "GIFTS_FOUND",
+                    response = GiftResponseDto.class),
+            @ApiResponse(code = 401,
+                    message = "UNAUTHORIZED_USER"),
+            @ApiResponse(code = 500,
+                    message = "SERVER_ERROR")
+    })
+    @ResponseStatus(HttpStatus.OK)
+    @Transactional
+    @GetMapping("/total-gifts{friendNo}")
+    public ResponseEntity<DefaultResponseDto<Object>> readTotalGiftList(
+            @PathVariable Long friendNo){
+        friendService.isExistingFriendNo(friendNo);
+        List<GiftResponseDto> dto = friendService.findGiftListByFriendNo(friendNo);
+
+        return ResponseEntity.status(200)
+                .body(DefaultResponseDto.builder()
+                        .responseCode("GIFTS_FOUND")
+                        .responseMessage("친구의 선물 전체 조회 완료")
+                        .data(dto)
+                        .build());
+    }
+
+    @ApiOperation("친구가 준 선물 전체 조회")
+    @ApiResponses(value={
+            @ApiResponse(code = 200,
+                    message = "GIFTS_FOUND",
+                    response = GiftResponseDto.class),
+            @ApiResponse(code = 401,
+                    message = "UNAUTHORIZED_USER"),
+            @ApiResponse(code = 500,
+                    message = "SERVER_ERROR")
+    })
+    @ResponseStatus(HttpStatus.OK)
+    @Transactional
+    @GetMapping("/given-gifts/{friendNo}")
+    public ResponseEntity<DefaultResponseDto<Object>> readGivenGiftList(
+            @PathVariable Long friendNo){ // 유저 입장에서 받은 선물이므로 관련 친구가 준 선물임
+        friendService.isExistingFriendNo(friendNo);
+        List<GiftResponseDto> dto = friendService.findReceivedGiftList(friendNo);
+
+        return ResponseEntity.status(200)
+                .body(DefaultResponseDto.builder()
+                        .responseCode("GIFTS_FOUND")
+                        .responseMessage("친구가 준 선물 전체 조회 완료")
+                        .data(dto)
+                        .build());
+    }
+
+    @ApiOperation("친구가 받은 선물 전체 조회")
+    @ApiResponses(value={
+            @ApiResponse(code = 200,
+                    message = "FRIENDS_FOUND",
+                    response = GiftResponseDto.class),
+            @ApiResponse(code = 401,
+                    message = "UNAUTHORIZED_USER"),
+            @ApiResponse(code = 500,
+                    message = "SERVER_ERROR")
+    })
+    @ResponseStatus(HttpStatus.OK)
+    @Transactional
+    @GetMapping("/received-gifts/{friendNo}")
+    public ResponseEntity<DefaultResponseDto<Object>> readReceivedGiftList(
+            @PathVariable Long friendNo){// 유저 입장에서 준 선물이므로 관련 친구가 받은 선물임
+        friendService.isExistingFriendNo(friendNo);
+        List<GiftResponseDto> dto = friendService.findGivenGiftList(friendNo);
+
+        return ResponseEntity.status(200)
+                .body(DefaultResponseDto.builder()
+                        .responseCode("GIFTS_FOUND")
+                        .responseMessage("친구가 받은 선물 전체 조회 완료")
                         .data(dto)
                         .build());
     }

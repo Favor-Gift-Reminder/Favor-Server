@@ -1,6 +1,7 @@
 package com.favor.favor.anniversary;
 
 import com.favor.favor.common.TimeStamped;
+import com.favor.favor.common.enums.Category;
 import com.favor.favor.user.User;
 import lombok.*;
 
@@ -28,18 +29,16 @@ public class Anniversary extends TimeStamped {
     private LocalDate anniversaryDate;
     public void setAnniversaryDate(LocalDate anniversaryDate){ this.anniversaryDate = anniversaryDate; }
 
+    private Integer category;
+    public void setCategory(Category category){
+        this.category = category.getType();
+    }
+
     private Boolean isPinned;
     public void setIsPinned(Boolean isPinned){ this.isPinned = isPinned; }
 
     @ManyToOne(cascade = CascadeType.REFRESH)
     @JoinColumn(name = "user_user_no")
     private User user;
-
-    @ElementCollection
-    private List<Long> friendNoList;
-    public void setFriendNoList(List<Long> friendNoList){
-        this.friendNoList = friendNoList;
-    }
-
 
 }
