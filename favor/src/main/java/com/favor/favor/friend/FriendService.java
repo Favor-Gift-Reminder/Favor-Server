@@ -76,6 +76,17 @@ public class FriendService {
 
     @Transactional
     public void deleteFriend(Long friendNo){
+        Friend friend = findFriendByFriendNo(friendNo);
+
+        List<Long> giftNoList = friend.getGiftNoList();
+        for(Long g : giftNoList){
+            Gift gift = findGiftByGiftNo(g);
+            List<Long> friendNoList = gift.getFriendNoList();
+            friendNoList.remove(friendNo);
+            gift.setFriendNoList(friendNoList);
+            giftRepository.save(gift);
+        }
+
         friendRepository.deleteById(friendNo);
     }
 
