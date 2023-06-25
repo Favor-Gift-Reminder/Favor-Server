@@ -383,6 +383,7 @@ public class UserService {
             ReminderResponseDto dto = new ReminderResponseDto(r);
             r_List.add(dto);
         }
+
         List<GiftResponseDto> g_List = new ArrayList<>();
         List<Gift> giftList = user.getGiftList();
         for(Gift gift : giftList){
