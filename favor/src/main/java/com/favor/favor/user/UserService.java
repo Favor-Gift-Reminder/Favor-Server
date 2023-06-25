@@ -24,6 +24,7 @@ import org.springframework.stereotype.Service;
 import javax.transaction.Transactional;
 import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Random;
 
@@ -371,6 +372,31 @@ public class UserService {
         return reminderRepository.findAllByReminderDateBetween(start, end);
     }
 
+    public List<GiftResponseDto> findGivenGiftList(Long userNo){
+        User user = findUserByUserNo(userNo);
+        List<Gift> giftList = giftRepository.findGiftsByUser(user);
+        List<GiftResponseDto> giftResponseDtoList = new ArrayList<>();
+        for(Gift gift : giftList){
+            if(gift.getIsGiven()){
+                GiftResponseDto dto = new GiftResponseDto(gift);
+                giftResponseDtoList.add(dto);
+            }
+        }
+        return giftResponseDtoList;
+    }
+    public List<GiftResponseDto> findReceivedGiftList(Long userNo){
+        User user = findUserByUserNo(userNo);
+        List<Gift> giftList = giftRepository.findGiftsByUser(user);
+        List<GiftResponseDto> giftResponseDtoList = new ArrayList<>();
+        for(Gift gift : giftList){
+            if(!gift.getIsGiven()){
+                GiftResponseDto dto = new GiftResponseDto(gift);
+                giftResponseDtoList.add(dto);
+            }
+        }
+        return giftResponseDtoList;
+    }
+
 
 
     //RETURN
@@ -382,17 +408,6 @@ public class UserService {
         for(Reminder r : reminderList){
             ReminderResponseDto dto = new ReminderResponseDto(r);
             r_List.add(dto);
-        }
-        List<GiftResponseDto> g_List = new ArrayList<>();
-        List<Gift> giftList = user.getGiftList();
-        for(Gift gift : giftList){
-            List<FriendResponseDto> friendList = new ArrayList<>();
-            for(Long f : gift.getFriendNoList()){
-                Friend friend = findFriendByFriendNo(f);
-                FriendResponseDto dto = new FriendResponseDto(friend);
-                friendList.add(dto);
-            }
-            g_List.add(new GiftResponseDto(gift, friendList));
         }
 
         List<FriendResponseDto> f_List = new ArrayList<>();
@@ -414,8 +429,29 @@ public class UserService {
             favor_List.add(Favor.valueOf(favorType));
         }
 
-        UserResponseDto dto = new UserResponseDto(user, r_List, g_List, f_List, favor_List, a_List);
+        HashMap<String, Integer> giftInfo = returnGiftInfo(user.getUserNo());
+
+        UserResponseDto dto = new UserResponseDto(user, r_List, f_List, favor_List, a_List, giftInfo);
         return dto;
+    }
+
+    public HashMap<String, Integer> returnGiftInfo(Long userNo){
+        User user = findUserByUserNo(userNo);
+
+        HashMap<String, Integer> hashMap = new HashMap<>();
+        List<Gift> giftList = giftRepository.findGiftsByUser(user);
+        hashMap.put("total", giftList.size());
+
+        int given = 0;
+        int received = 0;
+        for(Gift gift : giftList){
+            if(gift.getIsGiven()) given++;
+            else received++;
+        }
+        hashMap.put("given", given);
+        hashMap.put("received", received);
+
+        return hashMap;
     }
 
     public Boolean checkPassword (String inputPassword, String userPassword){

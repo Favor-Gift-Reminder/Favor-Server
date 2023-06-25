@@ -14,6 +14,8 @@ import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.LinkedList;
 import java.util.List;
 
 import static com.favor.favor.exception.ExceptionCode.*;
@@ -56,6 +58,17 @@ public class FriendService {
 
     @Transactional
     public void deleteFriend(Long friendNo){
+        Friend friend = findFriendByFriendNo(friendNo);
+
+        List<Long> giftNoList = friend.getGiftNoList();
+        for(Long g : giftNoList){
+            Gift gift = findGiftByGiftNo(g);
+            List<Long> friendNoList = gift.getFriendNoList();
+            friendNoList.remove(friendNo);
+            gift.setFriendNoList(friendNoList);
+            giftRepository.save(gift);
+        }
+
         friendRepository.deleteById(friendNo);
     }
 
@@ -102,23 +115,17 @@ public class FriendService {
         return friend;
     }
 
-
-
     //RETURN
     @Transactional
     public FriendResponseDto returnDto(Friend friend){
         User user = userRepository.findByUserNo(friend.getFriendUserNo()).orElseThrow(
-                () -> new RuntimeException()
+            () -> new RuntimeException()
         );
 
         List<Reminder> reminderList = user.getReminderList();
         List<ReminderResponseDto> reminderDtoList = new ArrayList<>();
         for(Reminder r : reminderList){
             reminderDtoList.add(new ReminderResponseDto(r));
-        }
-        List<GiftResponseDto> giftDtoList = new ArrayList<>();
-        for(Gift g : user.getGiftList()){
-            giftDtoList.add(new GiftResponseDto(g, null));
         }
         List<Favor> favorList = new ArrayList<>();
         for(Integer favorType : user.getFavorList()){
@@ -128,11 +135,10 @@ public class FriendService {
         for(Anniversary a : user.getAnniversaryList()){
             anniversaryNoList.add(a.getAnniversaryNo());
         }
+        HashMap<String, Integer> giftInfo = returnGiftInfo(friend.getFriendNo());
 
-        return new FriendResponseDto(friend, reminderDtoList, giftDtoList, favorList, anniversaryNoList);
+        return new FriendResponseDto(friend, reminderDtoList, favorList, anniversaryNoList, giftInfo);
     }
-
-
 
     //IS_EXISTING
     public void isExistingUserNo (Long userNo){
