@@ -26,9 +26,6 @@ public class Friend extends TimeStamped {
     private Long friendNo;
 
     private String friendName;
-    public void setFriendName(String friendName) {
-        this.friendName = friendName;
-    }
 
     private String friendMemo;
     public void setFriendMemo(String friendMemo) {
@@ -44,20 +41,6 @@ public class Friend extends TimeStamped {
     @Builder.Default
     @OneToMany(mappedBy = "friend", orphanRemoval = true)
     private List<Reminder> reminderList = new ArrayList<>();
-
-
-    @Builder.Default
-    @ElementCollection
-    private List<Integer> favorList = new ArrayList<>();
-    public void setFavorList(List<Favor> favorList){
-        ArrayList<Integer> favorTypeList = new ArrayList<>();
-        for(Favor favor : favorList){
-            favorTypeList.add(favor.getType());
-        }
-        this.favorList = favorTypeList;
-    }
-
-    private Boolean isUser;
 
     private Long friendUserNo;
 

@@ -1,6 +1,5 @@
 package com.favor.favor.friend;
 
-import com.favor.favor.anniversary.AnniversaryResponseDto;
 import com.favor.favor.common.enums.Favor;
 import com.favor.favor.gift.GiftResponseDto;
 import com.favor.favor.reminder.ReminderResponseDto;
@@ -13,8 +12,6 @@ import java.util.List;
 @Getter
 @AllArgsConstructor
 public class FriendResponseDto {
-
-    private Boolean isUser;
 
     private Long friendNo;
     private String friendName;
@@ -33,7 +30,6 @@ public class FriendResponseDto {
 
     @Builder
     public FriendResponseDto(Friend friend){
-        this.isUser = friend.getIsUser();
         this.friendNo = friend.getFriendNo();
         this.friendName = friend.getFriendName();
         this.friendMemo = friend.getFriendMemo();
@@ -54,7 +50,6 @@ public class FriendResponseDto {
                              List<Long> anniversaryNoList,
                              HashMap<String, Integer> giftInfo
     ){
-        this.isUser = friend.getIsUser();
         this.friendNo = friend.getFriendNo();
         this.friendName = friend.getFriendName();
         this.friendMemo = friend.getFriendMemo();
