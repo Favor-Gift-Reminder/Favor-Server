@@ -10,6 +10,7 @@ import lombok.extern.log4j.Log4j2;
 
 import javax.annotation.Nullable;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -30,6 +31,8 @@ public class GiftResponseDto {
     private Boolean isGiven;
     private Long userNo;
     private List<FriendResponseDto> friendList;
+    private LocalDateTime createdAt;
+    private LocalDateTime modifiedAt;
 
 
     @Builder
@@ -45,6 +48,8 @@ public class GiftResponseDto {
         this.isGiven = gift.getIsGiven();
         this.userNo = gift.getUser().getUserNo();
         this.friendList = new ArrayList<>();
+        this.createdAt = gift.getCreatedAt();
+        this.modifiedAt = gift.getModifiedAt();
         log.info("[GiftResponseDto] 실행 완료");
     }
     @Builder
@@ -60,6 +65,8 @@ public class GiftResponseDto {
         this.isGiven = gift.getIsGiven();
         this.userNo = gift.getUser().getUserNo();
         this.friendList = friendList;
+        this.createdAt = gift.getCreatedAt();
+        this.modifiedAt = gift.getModifiedAt();
         log.info("[GiftResponseDto] 실행 완료");
     }
 }

@@ -124,6 +124,39 @@ public class GiftController {
                         .build());
     }
 
+    @ApiOperation("선물 핀 여부 수정")
+    @ApiResponses(value={
+            @ApiResponse(code = 200,
+                    message = "GIFT_PIN_UPDATED",
+                    response = GiftResponseDto.class),
+            @ApiResponse(code = 401,
+                    message = "UNAUTHORIZED_USER"),
+            @ApiResponse(code = 404,
+                    message = "GIFT_NOT_FOUND / FRIEND_NOT_FOUND"),
+            @ApiResponse(code = 500,
+                    message = "SERVER_ERROR")
+    })
+    @ResponseStatus(HttpStatus.OK)
+    @Transactional
+    @PatchMapping("/pin/{giftNo}")
+    public ResponseEntity<DefaultResponseDto<Object>> updateIsPinned(
+            @PathVariable Long giftNo){
+
+        giftService.isExistingGiftNo(giftNo);
+
+
+        Gift gift = giftService.findGiftByGiftNo(giftNo);
+        giftService.updateIsPinned(gift);
+        GiftResponseDto dto = giftService.returnDto(gift);
+
+        return ResponseEntity.status(200)
+                .body(DefaultResponseDto.builder()
+                        .responseCode("GIFT_PIN_UPDATED")
+                        .responseMessage("선물 핀 여부 수정 완료")
+                        .data(dto)
+                        .build());
+    }
+
     @ApiOperation("선물 삭제")
     @ApiResponses(value={
             @ApiResponse(code = 200,

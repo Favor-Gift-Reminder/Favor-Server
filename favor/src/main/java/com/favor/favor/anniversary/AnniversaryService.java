@@ -67,8 +67,12 @@ public class AnniversaryService {
         LocalDate localDate = returnLocalDate(dto.getAnniversaryDate());
         anniversary.setAnniversaryDate(localDate);
         anniversary.setCategory(dto.getCategory());
-        anniversary.setIsPinned(dto.getIsPinned());
 
+        anniversaryRepository.save(anniversary);
+    }
+
+    public void updateIsPinned(Anniversary anniversary){
+        anniversary.setIsPinned(anniversary.getIsPinned() == true ? false : true);
         anniversaryRepository.save(anniversary);
     }
 
