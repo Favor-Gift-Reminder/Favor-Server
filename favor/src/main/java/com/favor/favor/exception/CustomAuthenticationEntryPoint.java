@@ -23,8 +23,8 @@ public class CustomAuthenticationEntryPoint implements AuthenticationEntryPoint 
         response.setStatus(401);
 
         JSONObject responseJson = new JSONObject();
-        responseJson.put("ResponseCode", "AUTHENTICATION_FAILED");
-        responseJson.put("ResponseMessage", "인증에 실패하였습니다.");
+        responseJson.put("responseCode", "AUTHENTICATION_FAILED");
+        responseJson.put("responseMessage", "인증에 실패하였습니다.");
 
         response.getWriter().print(responseJson);
     }
