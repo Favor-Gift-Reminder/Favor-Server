@@ -198,7 +198,7 @@ public class AnniversaryController {
     })
     @ResponseStatus(HttpStatus.OK)
     @Transactional
-    @GetMapping
+    @GetMapping("/admin")
     public ResponseEntity<DefaultResponseDto<Object>> readAll(){
 
         List<AnniversaryResponseDto> dto = anniversaryService.readAll();

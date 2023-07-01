@@ -206,7 +206,7 @@ public class GiftController {
     })
     @ResponseStatus(HttpStatus.OK)
     @Transactional
-    @GetMapping
+    @GetMapping("/admin")
     public ResponseEntity<DefaultResponseDto<Object>> readAll(){
 
         List<GiftResponseDto> dto = giftService.readAll();

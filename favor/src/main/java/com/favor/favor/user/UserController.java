@@ -202,7 +202,7 @@ public class UserController {
 
     }
 
-    @ApiOperation("회원 탈퇴 (임시)")
+    @ApiOperation("회원 탈퇴")
     @ApiResponses(value={
             @ApiResponse(code = 200,
                     message = "USER_DELETED",
@@ -236,7 +236,7 @@ public class UserController {
                         .build());
     }
 
-    @ApiOperation("비밀번호 변경 (임시)")
+    @ApiOperation("비밀번호 변경")
     @ApiResponses(value={
             @ApiResponse(code = 200,
                     message = "PASSWORD_UPDATED",
@@ -282,7 +282,7 @@ public class UserController {
     })
     @ResponseStatus(HttpStatus.OK)
     @Transactional
-    @GetMapping("/reminder-list")
+    @GetMapping("/reminders")
     public ResponseEntity<DefaultResponseDto<Object>> readReminderList(
             @AuthenticationPrincipal User loginUser){
 
@@ -313,7 +313,7 @@ public class UserController {
     })
     @ResponseStatus(HttpStatus.OK)
     @Transactional
-    @GetMapping("/reminder-list/{year}/{month}")
+    @GetMapping("/reminders/{year}/{month}")
     public ResponseEntity<DefaultResponseDto<Object>> readReminderListByFMonthAndYear(
             @AuthenticationPrincipal User loginUser,
             @PathVariable int year,
@@ -347,7 +347,7 @@ public class UserController {
     })
     @ResponseStatus(HttpStatus.OK)
     @Transactional
-    @GetMapping("/gift-list")
+    @GetMapping("/gifts")
     public ResponseEntity<DefaultResponseDto<Object>> readGiftList(
             @AuthenticationPrincipal User loginUser){
 
@@ -379,7 +379,7 @@ public class UserController {
     })
     @ResponseStatus(HttpStatus.OK)
     @Transactional
-    @GetMapping("/friend-list")
+    @GetMapping("/friends")
     public ResponseEntity<DefaultResponseDto<Object>> readFriendList(
             @AuthenticationPrincipal User loginUser){
 
@@ -411,7 +411,7 @@ public class UserController {
     })
     @ResponseStatus(HttpStatus.OK)
     @Transactional
-    @GetMapping("/anniversary-list")
+    @GetMapping("/anniversaries")
     public ResponseEntity<DefaultResponseDto<Object>> readAnniversaryList(
             @AuthenticationPrincipal User loginUser){
 
@@ -442,7 +442,7 @@ public class UserController {
     })
     @ResponseStatus(HttpStatus.OK)
     @Transactional
-    @GetMapping("/admin/all")
+    @GetMapping("/admin")
     public ResponseEntity<DefaultResponseDto<Object>> readAll(){
 
         List<UserResponseDto> dto = userService.readAll();
@@ -521,7 +521,7 @@ public class UserController {
                         .build());
     }
 
-    @ApiOperation("감정으로 회원 선물 검색")
+    @ApiOperation("감정으로 회원 선물 조회")
     @ApiResponses(value={
             @ApiResponse(code = 200,
                     message = "GIFTS_BY_EMOTION_FOUND",
@@ -567,7 +567,7 @@ public class UserController {
     })
     @ResponseStatus(HttpStatus.OK)
     @Transactional
-    @GetMapping("id/{userId}")
+    @GetMapping("/{userId}")
     public ResponseEntity<DefaultResponseDto<Object>> readUserByUserId(
             @PathVariable("userId") String userId){
 
@@ -594,7 +594,7 @@ public class UserController {
     })
     @ResponseStatus(HttpStatus.OK)
     @Transactional
-    @GetMapping("/given-gifts/{userNo}")
+    @GetMapping("/gifts-given/{userNo}")
     public ResponseEntity<DefaultResponseDto<Object>> readGivenGiftList(
             @PathVariable Long userNo){
         userService.isExistingUserNo(userNo);
@@ -620,7 +620,7 @@ public class UserController {
     })
     @ResponseStatus(HttpStatus.OK)
     @Transactional
-    @GetMapping("/received-gifts/{userNo}")
+    @GetMapping("/gifts-received/{userNo}")
     public ResponseEntity<DefaultResponseDto<Object>> readReceivedGiftList(
             @PathVariable Long userNo){
         userService.isExistingUserNo(userNo);

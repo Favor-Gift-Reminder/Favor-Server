@@ -39,7 +39,7 @@ public class ReminderController {
                     message = "SERVER_ERROR")
     })
     @ResponseStatus(HttpStatus.CREATED)
-    @PostMapping("/create/{friendNo}")
+    @PostMapping("/{friendNo}")
     public ResponseEntity<DefaultResponseDto<Object>> createReminder(
             @RequestBody ReminderRequestDto reminderRequestDto,
             @AuthenticationPrincipal User loginUser,
@@ -61,7 +61,7 @@ public class ReminderController {
                         .build());
     }
 
-    @ApiOperation("리마인더 추가")
+    @ApiOperation("친구의 기념일을 리마인더로 추가")
     @ApiResponses(value={
             @ApiResponse(code = 201,
                     message = "REMINDER_ADDED",
@@ -74,7 +74,7 @@ public class ReminderController {
                     message = "SERVER_ERROR")
     })
     @ResponseStatus(HttpStatus.CREATED)
-    @PostMapping("/add/{anniversaryNo}")
+    @PostMapping("/{anniversaryNo}")
     public ResponseEntity<DefaultResponseDto<Object>> addReminder(
             @AuthenticationPrincipal User loginUser,
             @PathVariable Long anniversaryNo){
@@ -204,7 +204,7 @@ public class ReminderController {
     })
     @ResponseStatus(HttpStatus.OK)
     @Transactional
-    @GetMapping
+    @GetMapping("/admin")
     public ResponseEntity<DefaultResponseDto<Object>> readAll(){
 
         List<ReminderResponseDto> dto = reminderService.readAll();

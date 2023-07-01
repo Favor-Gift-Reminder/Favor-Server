@@ -168,7 +168,7 @@ public class FriendController {
     })
     @ResponseStatus(HttpStatus.OK)
     @Transactional
-    @GetMapping
+    @GetMapping("/admin")
     public ResponseEntity<DefaultResponseDto<Object>> readAll(){
 
         List<FriendResponseDto> dto = friendService.readAll();
