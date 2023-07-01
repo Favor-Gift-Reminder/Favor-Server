@@ -2,6 +2,7 @@ package com.favor.favor.gift;
 
 import com.favor.favor.common.DefaultResponseDto;
 import com.favor.favor.friend.FriendResponseDto;
+import com.favor.favor.user.User;
 import com.favor.favor.user.UserResponseDto;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -11,6 +12,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
 import javax.transaction.Transactional;
@@ -30,17 +32,19 @@ public class GiftController {
                     message = "GIFT_CREATED",
                     response = GiftResponseDto.class),
             @ApiResponse(code = 400,
-                    message = "FILED_REQUIRED / *_CHARACTER_INVALID / *_LENGTH_INVALID"),
+                    message = "FIELD_REQUIRED / *_CHARACTER_INVALID / *_LENGTH_INVALID"),
             @ApiResponse(code = 404,
                     message = "USER_NOT_FOUND / FREIND_NOT_FOUND"),
             @ApiResponse(code = 500,
                     message = "SERVER_ERROR")
     })
     @ResponseStatus(HttpStatus.CREATED)
-    @PostMapping("/{userNo}")
+    @PostMapping
     public ResponseEntity<DefaultResponseDto<Object>> createGift(
             @RequestBody GiftRequestDto giftRequestDto,
-            @PathVariable Long userNo){
+            @AuthenticationPrincipal User loginUser){
+
+        Long userNo = loginUser.getUserNo();
 
         giftService.isExistingUserNo(userNo);
         for(Long friendNo : giftRequestDto.getFriendNoList()){
@@ -202,7 +206,7 @@ public class GiftController {
     })
     @ResponseStatus(HttpStatus.OK)
     @Transactional
-    @GetMapping
+    @GetMapping("/admin")
     public ResponseEntity<DefaultResponseDto<Object>> readAll(){
 
         List<GiftResponseDto> dto = giftService.readAll();
