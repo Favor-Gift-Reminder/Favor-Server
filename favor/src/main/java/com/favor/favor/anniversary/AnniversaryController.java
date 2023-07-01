@@ -1,6 +1,7 @@
 package com.favor.favor.anniversary;
 
 import com.favor.favor.common.DefaultResponseDto;
+import com.favor.favor.user.User;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiResponse;
@@ -9,6 +10,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
 import javax.transaction.Transactional;
@@ -29,17 +31,19 @@ public class AnniversaryController {
                     message = "REMINDER_CREATED",
                     response = AnniversaryResponseDto.class),
             @ApiResponse(code = 400,
-                    message = "FILED_REQUIRED / *_CHARACTER_INVALID / *_LENGTH_INVALID"),
+                    message = "FIELD_REQUIRED / *_CHARACTER_INVALID / *_LENGTH_INVALID"),
             @ApiResponse(code = 404,
                     message = "USER_NOT_FOUND / FREIND_NOT_FOUND"),
             @ApiResponse(code = 500,
                     message = "SERVER_ERROR")
     })
     @ResponseStatus(HttpStatus.CREATED)
-    @PostMapping("/{userNo}")
+    @PostMapping
     public ResponseEntity<DefaultResponseDto<Object>> createAnniversary(
             @RequestBody AnniversaryRequestDto anniversaryRequestDto,
-            @PathVariable Long userNo){
+            @AuthenticationPrincipal User loginUser){
+
+        Long userNo = loginUser.getUserNo();
 
         anniversaryService.isExistingUserNo(userNo);
 

@@ -12,6 +12,7 @@ import io.swagger.annotations.*;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
 import javax.transaction.Transactional;
@@ -31,7 +32,7 @@ public class UserController {
                     message = "USER_REGISTERED",
                     response = UserResponseDto.class),
             @ApiResponse(code = 400,
-                    message = "FILED_REQUIRED / *_CHARACTER_INVALID / *_LENGTH_INVALID"),
+                    message = "FIELD_REQUIRED / *_CHARACTER_INVALID / *_LENGTH_INVALID"),
             @ApiResponse(code = 401,
                     message = "UNAUTHORIZED_EMAIL"),
             @ApiResponse(code = 404,
@@ -66,7 +67,7 @@ public class UserController {
                     message = "PROFILE_UPDATED",
                     response = UserResponseDto.class),
             @ApiResponse(code = 400,
-                    message = "FILED_REQUIRED / *_CHARACTER_INVALID / *_LENGTH_INVALID"),
+                    message = "FIELD_REQUIRED / *_CHARACTER_INVALID / *_LENGTH_INVALID"),
             @ApiResponse(code = 401,
                     message = "UNAUTHORIZED_EMAIL"),
             @ApiResponse(code = 404,
@@ -78,10 +79,12 @@ public class UserController {
     })
     @ResponseStatus(HttpStatus.CREATED)
     @Transactional
-    @PatchMapping("/profile/{userNo}")
+    @PatchMapping("/profile")
     public ResponseEntity<DefaultResponseDto<Object>> createProfile(
             @RequestBody @Valid ProfileDto profileDto,
-            @PathVariable Long userNo) {
+            @AuthenticationPrincipal User loginUser) {
+
+        Long userNo = loginUser.getUserNo();
 
         userService.isExistingUserId(profileDto.getUserId());
 
@@ -102,7 +105,7 @@ public class UserController {
                     message = "USER_SIGNED_IN",
                     response = SignInResponseDto.class),
             @ApiResponse(code = 400,
-                    message = "FILED_REQUIRED / *_CHARACTER_INVALID / *_LENGTH_INVALID"),
+                    message = "FIELD_REQUIRED / *_CHARACTER_INVALID / *_LENGTH_INVALID"),
             @ApiResponse(code = 401,
                     message = "UNAUTHORIZED_EMAIL"),
             @ApiResponse(code = 404,
@@ -143,13 +146,16 @@ public class UserController {
     })
     @ResponseStatus(HttpStatus.OK)
     @Transactional
-    @GetMapping("/{userNo}")
+    @GetMapping
     public ResponseEntity<DefaultResponseDto<Object>> readUser(
-            @PathVariable Long userNo){
+            @AuthenticationPrincipal User loginUser){
+
+        Long userNo = loginUser.getUserNo();
 
         userService.isExistingUserNo(userNo);
 
-        User user = userService.readUser(userNo);
+        User user = userService.findUserByUserNo(userNo);
+
         UserResponseDto dto = userService.returnUserDto(user);
 
         return ResponseEntity.status(200)
@@ -174,17 +180,18 @@ public class UserController {
     })
     @ResponseStatus(HttpStatus.OK)
     @Transactional
-    @PatchMapping("/{userNo}")
+    @PatchMapping
     public ResponseEntity<DefaultResponseDto<Object>> updateUser(
-            @PathVariable Long userNo, 
+            @AuthenticationPrincipal User loginUser,
             @RequestBody @Valid UserUpdateRequestDto userUpdateRequestDto){
-        
+
+        Long userNo = loginUser.getUserNo();
+
         userService.isExistingUserNo(userNo);
 
-        User user = userService.findUserByUserNo(userNo);
-        userService.updateUser(user, userUpdateRequestDto);
+        userService.updateUser(loginUser, userUpdateRequestDto);
 
-        UserResponseDto dto = userService.returnUserDto(user);
+        UserResponseDto dto = userService.returnUserDto(loginUser);
 
         return ResponseEntity.status(200)
                 .body(DefaultResponseDto.builder()
@@ -209,14 +216,15 @@ public class UserController {
     })
     @ResponseStatus(HttpStatus.OK)
     @Transactional
-    @DeleteMapping("/{userNo}")
+    @DeleteMapping
     public ResponseEntity<DefaultResponseDto<Object>> deleteUser(
-            @PathVariable Long userNo){
+            @AuthenticationPrincipal User loginUser){
+
+        Long userNo = loginUser.getUserNo();
 
         userService.isExistingUserNo(userNo);
 
-        User user = userService.findUserByUserNo(userNo);
-        UserResponseDto dto = userService.returnUserDto(user);
+        UserResponseDto dto = userService.returnUserDto(loginUser);
 
         userService.deleteUser(userNo);
 
@@ -274,9 +282,11 @@ public class UserController {
     })
     @ResponseStatus(HttpStatus.OK)
     @Transactional
-    @GetMapping("/reminder-list/{userNo}")
+    @GetMapping("/reminder-list")
     public ResponseEntity<DefaultResponseDto<Object>> readReminderList(
-            @PathVariable Long userNo){
+            @AuthenticationPrincipal User loginUser){
+
+        Long userNo = loginUser.getUserNo();
 
         userService.isExistingUserNo(userNo);
 
@@ -303,11 +313,13 @@ public class UserController {
     })
     @ResponseStatus(HttpStatus.OK)
     @Transactional
-    @GetMapping("/reminder-list/{userNo}/{year}/{month}")
+    @GetMapping("/reminder-list/{year}/{month}")
     public ResponseEntity<DefaultResponseDto<Object>> readReminderListByFMonthAndYear(
-            @PathVariable Long userNo,
+            @AuthenticationPrincipal User loginUser,
             @PathVariable int year,
             @PathVariable int month){
+
+        Long userNo = loginUser.getUserNo();
 
         userService.isExistingUserNo(userNo);
 
@@ -335,9 +347,11 @@ public class UserController {
     })
     @ResponseStatus(HttpStatus.OK)
     @Transactional
-    @GetMapping("/gift-list/{userNo}")
+    @GetMapping("/gift-list")
     public ResponseEntity<DefaultResponseDto<Object>> readGiftList(
-            @PathVariable Long userNo){
+            @AuthenticationPrincipal User loginUser){
+
+        Long userNo = loginUser.getUserNo();
 
         userService.isExistingUserNo(userNo);
 
@@ -365,8 +379,11 @@ public class UserController {
     })
     @ResponseStatus(HttpStatus.OK)
     @Transactional
-    @GetMapping("/friend-list/{userNo}")
-    public ResponseEntity<DefaultResponseDto<Object>> readFriendList(@PathVariable Long userNo){
+    @GetMapping("/friend-list")
+    public ResponseEntity<DefaultResponseDto<Object>> readFriendList(
+            @AuthenticationPrincipal User loginUser){
+
+        Long userNo = loginUser.getUserNo();
 
         userService.isExistingUserNo(userNo);
 
@@ -394,8 +411,11 @@ public class UserController {
     })
     @ResponseStatus(HttpStatus.OK)
     @Transactional
-    @GetMapping("/anniversary-list/{userNo}")
-    public ResponseEntity<DefaultResponseDto<Object>> readAnniversaryList(@PathVariable Long userNo){
+    @GetMapping("/anniversary-list")
+    public ResponseEntity<DefaultResponseDto<Object>> readAnniversaryList(
+            @AuthenticationPrincipal User loginUser){
+
+        Long userNo = loginUser.getUserNo();
 
         userService.isExistingUserNo(userNo);
 
@@ -422,7 +442,7 @@ public class UserController {
     })
     @ResponseStatus(HttpStatus.OK)
     @Transactional
-    @GetMapping
+    @GetMapping("/admin/all")
     public ResponseEntity<DefaultResponseDto<Object>> readAll(){
 
         List<UserResponseDto> dto = userService.readAll();
@@ -450,10 +470,12 @@ public class UserController {
     })
     @ResponseStatus(HttpStatus.OK)
     @Transactional
-    @GetMapping("/gifts-by-name/{userNo}/{giftName}")
+    @GetMapping("/gifts-by-name/{giftName}")
     public ResponseEntity<DefaultResponseDto<Object>> readGiftListByName (
-            @PathVariable("userNo") Long userNo,
+            @AuthenticationPrincipal User loginUser,
             @PathVariable("giftName") String giftName){
+
+        Long userNo = loginUser.getUserNo();
 
         userService.isExistingUserNo(userNo);
 
@@ -481,11 +503,12 @@ public class UserController {
     })
     @ResponseStatus(HttpStatus.OK)
     @Transactional
-    @GetMapping("/gifts-by-category/{userNo}/{category}")
+    @GetMapping("/gifts-by-category/{category}")
     public ResponseEntity<DefaultResponseDto<Object>> readGiftListByCategory(
-            @PathVariable("userNo") Long userNo,
+            @AuthenticationPrincipal User loginUser,
             @PathVariable("category") Category category){
 
+        Long userNo = loginUser.getUserNo();
         userService.isExistingUserNo(userNo);
 
         List<GiftResponseDto> dto =  userService.readGiftListByCategory(userNo, category);
@@ -512,10 +535,11 @@ public class UserController {
     })
     @ResponseStatus(HttpStatus.OK)
     @Transactional
-    @GetMapping("/gifts-by-emotion/{userNo}/{emotion}")
+    @GetMapping("/gifts-by-emotion/{emotion}")
     public ResponseEntity<DefaultResponseDto<Object>> readGiftListByEmotion(
-            @PathVariable("userNo") Long userNo,
+            @AuthenticationPrincipal User loginUser,
             @PathVariable("emotion") Emotion emotion){
+        Long userNo = loginUser.getUserNo();
 
         userService.isExistingUserNo(userNo);
 

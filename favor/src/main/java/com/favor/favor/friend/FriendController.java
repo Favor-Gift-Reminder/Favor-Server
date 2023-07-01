@@ -3,6 +3,7 @@ package com.favor.favor.friend;
 import com.favor.favor.common.DefaultResponseDto;
 
 import com.favor.favor.gift.GiftResponseDto;
+import com.favor.favor.user.User;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiResponse;
@@ -10,6 +11,7 @@ import io.swagger.annotations.ApiResponses;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
 import javax.transaction.Transactional;
@@ -28,17 +30,19 @@ public class FriendController {
                     message = "FRIEND_ADDED",
                     response = FriendResponseDto.class),
             @ApiResponse(code = 400,
-                    message = "FILED_REQUIRED / *_CHARACTER_INVALID / *_LENGTH_INVALID"),
+                    message = "FIELD_REQUIRED / *_CHARACTER_INVALID / *_LENGTH_INVALID"),
             @ApiResponse(code = 404,
                     message = "USER_NOT_FOUND"),
             @ApiResponse(code = 500,
                     message = "SERVER_ERROR")
     })
     @ResponseStatus(HttpStatus.CREATED)
-    @PostMapping("/add/{userNo}")
+    @PostMapping
     public ResponseEntity<DefaultResponseDto<Object>> addFriend(
             @RequestBody FriendRequestDto friendRequestDto,
-            @PathVariable Long userNo){
+            @AuthenticationPrincipal User loginUser){
+
+        Long userNo = loginUser.getUserNo();
 
         friendService.isExistingUserNo(userNo);
         friendService.isExistingFriendUserNo(friendRequestDto.getFriendUserNo());
