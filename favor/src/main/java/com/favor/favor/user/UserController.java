@@ -594,9 +594,11 @@ public class UserController {
     })
     @ResponseStatus(HttpStatus.OK)
     @Transactional
-    @GetMapping("/gifts-given/{userNo}")
+    @GetMapping("/gifts-given")
     public ResponseEntity<DefaultResponseDto<Object>> readGivenGiftList(
-            @PathVariable Long userNo){
+            @AuthenticationPrincipal User loginUser){
+        Long userNo = loginUser.getUserNo();
+
         userService.isExistingUserNo(userNo);
         List<GiftResponseDto> dto = userService.findGivenGiftList(userNo);
 
@@ -620,9 +622,11 @@ public class UserController {
     })
     @ResponseStatus(HttpStatus.OK)
     @Transactional
-    @GetMapping("/gifts-received/{userNo}")
+    @GetMapping("/gifts-received")
     public ResponseEntity<DefaultResponseDto<Object>> readReceivedGiftList(
-            @PathVariable Long userNo){
+            @AuthenticationPrincipal User loginUser){
+        Long userNo = loginUser.getUserNo();
+
         userService.isExistingUserNo(userNo);
         List<GiftResponseDto> dto = userService.findReceivedGiftList(userNo);
 
