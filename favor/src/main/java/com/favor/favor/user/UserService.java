@@ -109,11 +109,11 @@ public class UserService {
             log.info("isright = " + passwordEncoder.matches(password, user.getPassword())
             );
             if(!passwordEncoder.matches(password, user.getPassword())){
-                throw new CustomException(null, PASSWORD_NOT_FOUND);
+                throw new RuntimeException();
             }
 
         }catch (RuntimeException e){
-            throw new CustomException(e, SERVER_ERROR);
+            throw new CustomException(e, PASSWORD_NOT_FOUND);
         }
     }
 
