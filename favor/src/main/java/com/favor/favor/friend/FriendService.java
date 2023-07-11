@@ -1,6 +1,7 @@
 package com.favor.favor.friend;
 
 import com.favor.favor.anniversary.Anniversary;
+import com.favor.favor.anniversary.AnniversaryResponseDto;
 import com.favor.favor.common.enums.Favor;
 import com.favor.favor.exception.CustomException;
 import com.favor.favor.gift.Gift;
@@ -164,16 +165,7 @@ public class FriendService {
     //RETURN
     @Transactional
     public FriendResponseDto returnDto(Friend friend){
-        User user = null;
-
-        try{
-            user = userRepository.findByUserNo(friend.getFriendUserNo()).orElseThrow(
-                    () -> new RuntimeException()
-            );
-        }catch(RuntimeException e){
-            throw new CustomException(e, USER_NOT_FOUND);
-        }
-
+        User user = friend.getUser();
 
         List<Reminder> reminderList = user.getReminderList();
         List<ReminderResponseDto> reminderDtoList = new ArrayList<>();
@@ -184,13 +176,13 @@ public class FriendService {
         for(Integer favorType : user.getFavorList()){
             favorList.add(Favor.valueOf(favorType));
         }
-        List<Long> anniversaryNoList = new ArrayList<>();
+        List<AnniversaryResponseDto> anniversaryList = new ArrayList<>();
         for(Anniversary a : user.getAnniversaryList()){
-            anniversaryNoList.add(a.getAnniversaryNo());
+            anniversaryList.add(new AnniversaryResponseDto(a));
         }
         HashMap<String, Integer> giftInfo = returnGiftInfo(friend.getFriendNo());
 
-        return new FriendResponseDto(friend, reminderDtoList, favorList, anniversaryNoList, giftInfo);
+        return new FriendResponseDto(friend, reminderDtoList, favorList, anniversaryList, giftInfo);
     }
 
     public HashMap<String, Integer> returnGiftInfo(Long friendNo) {

@@ -33,7 +33,7 @@ public class Friend extends TimeStamped {
     }
 
 
-    @ManyToOne(cascade = CascadeType.PERSIST)
+    @ManyToOne(cascade = CascadeType.PERSIST, fetch = FetchType.EAGER)
     @JoinColumn(name = "user_user_no")
     private User user;
 

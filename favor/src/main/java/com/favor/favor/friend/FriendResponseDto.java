@@ -1,7 +1,7 @@
 package com.favor.favor.friend;
 
+import com.favor.favor.anniversary.AnniversaryResponseDto;
 import com.favor.favor.common.enums.Favor;
-import com.favor.favor.gift.GiftResponseDto;
 import com.favor.favor.reminder.ReminderResponseDto;
 import lombok.*;
 
@@ -19,13 +19,12 @@ public class FriendResponseDto {
 
     private List<ReminderResponseDto> reminderList;
     private List<Favor> favorList;
-    private List<Long> anniversaryNoList;
+    private List<AnniversaryResponseDto> anniversaryList;
 
     private int givenGift;
     private int receivedGift;
     private int totalGift;
 
-    private Long friendUserNo;
     private Long userNo;
 
     @Builder
@@ -35,19 +34,18 @@ public class FriendResponseDto {
         this.friendMemo = friend.getFriendMemo();
         this.reminderList = new ArrayList<>();
         this.favorList = new ArrayList<>();
-        this.anniversaryNoList = new ArrayList<>();
+        this.anniversaryList = new ArrayList<>();
         this.givenGift = 0;
         this.receivedGift = 0;
         this.totalGift = 0;
-        this.friendUserNo = friend.getFriendUserNo();
-        this.userNo = friend.getUser().getUserNo();
+        this.userNo = friend.getFriendUserNo();
     }
 
     @Builder
     public FriendResponseDto(Friend friend,
                              List<ReminderResponseDto> reminderList,
                              List<Favor> favorList,
-                             List<Long> anniversaryNoList,
+                             List<AnniversaryResponseDto> anniversaryList,
                              HashMap<String, Integer> giftInfo
     ){
         this.friendNo = friend.getFriendNo();
@@ -55,11 +53,10 @@ public class FriendResponseDto {
         this.friendMemo = friend.getFriendMemo();
         this.reminderList = reminderList;
         this.favorList = favorList;
-        this.anniversaryNoList = anniversaryNoList;
+        this.anniversaryList = anniversaryList;
         this.givenGift = giftInfo.get("given");
         this.receivedGift = giftInfo.get("received");
         this.totalGift = giftInfo.get("total");
-        this.friendUserNo = friend.getFriendUserNo();
-        this.userNo = friend.getUser().getUserNo();
+        this.userNo = friend.getFriendUserNo();
     }
 }

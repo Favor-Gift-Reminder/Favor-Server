@@ -22,4 +22,4 @@ springboot:
   jwt:
     secret: ${JWT_SECRET}
 server:
-  port: ${SERVER_PORT}
+  port: 8080

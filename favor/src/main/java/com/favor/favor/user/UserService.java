@@ -18,6 +18,7 @@ import com.favor.favor.reminder.ReminderRepository;
 import com.favor.favor.reminder.ReminderResponseDto;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.hibernate.Hibernate;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -404,22 +405,19 @@ public class UserService {
     public UserResponseDto returnUserDto(User user){
 
         List<ReminderResponseDto> r_List = new ArrayList<>();
-        List<Reminder> reminderList = user.getReminderList();
-        for(Reminder r : reminderList){
+        for(Reminder r : user.getReminderList()){
             ReminderResponseDto dto = new ReminderResponseDto(r);
             r_List.add(dto);
         }
 
         List<FriendResponseDto> f_List = new ArrayList<>();
-        List<Friend> friendList = user.getFriendList();
-        for(Friend f : friendList){
+        for(Friend f : user.getFriendList()){
             FriendResponseDto dto = new FriendResponseDto(f);
             f_List.add(dto);
         }
 
         List<AnniversaryResponseDto> a_List = new ArrayList<>();
-        List<Anniversary> anniversaryList = user.getAnniversaryList();
-        for(Anniversary a : anniversaryList){
+        for(Anniversary a : user.getAnniversaryList()){
             AnniversaryResponseDto dto = new AnniversaryResponseDto(a);
             a_List.add(dto);
         }
