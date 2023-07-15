@@ -5,6 +5,7 @@ import com.favor.favor.common.enums.Favor;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import org.hibernate.validator.constraints.Length;
 
 import javax.validation.GroupSequence;
@@ -13,6 +14,7 @@ import java.util.List;
 
 @Getter
 @AllArgsConstructor
+@NoArgsConstructor
 @GroupSequence({
         UserUpdateRequestDto.class,
         ValidationSequence.Size.class,
