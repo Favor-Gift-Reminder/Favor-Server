@@ -27,7 +27,6 @@ import java.util.List;
 public class User extends TimeStamped implements UserDetails {
 
     @Id
-
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long userNo;
     private String email;

@@ -189,9 +189,14 @@ public class UserController {
 
         userService.isExistingUserNo(userNo);
 
-        userService.updateUser(loginUser, userUpdateRequestDto);
+//        ++
+        User user = userService.findUserByUserNo(userNo);
 
-        UserResponseDto dto = userService.returnUserDto(loginUser);
+//        userService.updateUser(loginUser, userUpdateRequestDto);
+        userService.updateUser(user, userUpdateRequestDto);
+//        UserResponseDto dto = userService.returnUserDto(loginUser);
+        UserResponseDto dto = userService.returnUserDto(user);
+
 
         return ResponseEntity.status(200)
                 .body(DefaultResponseDto.builder()

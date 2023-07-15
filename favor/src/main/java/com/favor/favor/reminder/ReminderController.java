@@ -39,7 +39,7 @@ public class ReminderController {
                     message = "SERVER_ERROR")
     })
     @ResponseStatus(HttpStatus.CREATED)
-    @PostMapping("/{friendNo}")
+    @PostMapping("/new/{friendNo}")
     public ResponseEntity<DefaultResponseDto<Object>> createReminder(
             @RequestBody ReminderRequestDto reminderRequestDto,
             @AuthenticationPrincipal User loginUser,

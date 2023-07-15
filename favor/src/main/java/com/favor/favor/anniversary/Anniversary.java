@@ -37,7 +37,7 @@ public class Anniversary extends TimeStamped {
     private Boolean isPinned;
     public void setIsPinned(Boolean isPinned){ this.isPinned = isPinned; }
 
-    @ManyToOne(cascade = CascadeType.REFRESH)
+    @ManyToOne(cascade = CascadeType.REFRESH, fetch = FetchType.EAGER)
     @JoinColumn(name = "user_user_no")
     private User user;
 

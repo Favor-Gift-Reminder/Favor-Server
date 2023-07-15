@@ -18,6 +18,7 @@ import com.favor.favor.reminder.ReminderRepository;
 import com.favor.favor.reminder.ReminderResponseDto;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.hibernate.Hibernate;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -45,23 +46,6 @@ public class UserService {
 
     @Transactional
     public User signUp(SignDto signDto) {
-
-//        final String CHARACTERS = "_abcdefghijklmnopqrstuvwxyz0123456789";
-//        Random random = new Random();
-//        StringBuilder tempUserId = new StringBuilder(20);
-
-//        boolean flag = true;
-//        while(flag){
-//            for (int i = 0; i < 20; i++) {
-//                tempUserId.append(CHARACTERS.charAt(random.nextInt(CHARACTERS.length())));
-//            }
-//            if(userRepository.existsByUserId(tempUserId.toString())){
-//                tempUserId.delete(0, tempUserId.length());
-//            }
-//            else {
-//                flag =false;
-//            }
-//        }
 
         User user = User.builder()
                 .name("Favor00")
@@ -144,7 +128,7 @@ public class UserService {
 
     public User updatePassword(String email, String password){
         User user = findUserByEmail(email);
-        user.setPassword(password);
+        user.setPassword(passwordEncoder.encode(password));
         save(user);
 
         return user;
@@ -404,22 +388,19 @@ public class UserService {
     public UserResponseDto returnUserDto(User user){
 
         List<ReminderResponseDto> r_List = new ArrayList<>();
-        List<Reminder> reminderList = user.getReminderList();
-        for(Reminder r : reminderList){
+        for(Reminder r : user.getReminderList()){
             ReminderResponseDto dto = new ReminderResponseDto(r);
             r_List.add(dto);
         }
 
         List<FriendResponseDto> f_List = new ArrayList<>();
-        List<Friend> friendList = user.getFriendList();
-        for(Friend f : friendList){
+        for(Friend f : user.getFriendList()){
             FriendResponseDto dto = new FriendResponseDto(f);
             f_List.add(dto);
         }
 
         List<AnniversaryResponseDto> a_List = new ArrayList<>();
-        List<Anniversary> anniversaryList = user.getAnniversaryList();
-        for(Anniversary a : anniversaryList){
+        for(Anniversary a : user.getAnniversaryList()){
             AnniversaryResponseDto dto = new AnniversaryResponseDto(a);
             a_List.add(dto);
         }
