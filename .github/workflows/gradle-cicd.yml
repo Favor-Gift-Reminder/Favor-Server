@@ -44,18 +44,26 @@ jobs:
           username: ${{ secrets.SERVER_USERNAME }}
           password: ${{ secrets.SERVER_PASSWORD }}
           script: |
-            if pgrep -f "$FILE_NAME" > /dev/null; then
-              cd "$APP_DIRECTORY"
-              kill -9 $(ps -ef | grep "$FILE_NAME" | awk '$3 == 1 {print $2}')
-              rm nohup.out
+            PID=$(pgrep -f "$FILE_NAME")
+            if [[ -n "$PID" ]]; then
+              echo "프로세스를 종료합니다: $PID"
+              kill -9 "$PID"
             else
               echo "프로세스가 이미 종료되었습니다."
             fi
             
             if [[ -f "$APP_DIRECTORY/$FILE_NAME" ]]; then
+              echo "파일을 삭제합니다: $APP_DIRECTORY/$FILE_NAME"
               rm "$APP_DIRECTORY/$FILE_NAME"
             else
               echo "파일이 이미 삭제되었습니다."
+            fi
+            
+            if [[ -f "$APP_DIRECTORY/nohup.out" ]]; then
+              echo "nohup.out 파일을 삭제합니다: $APP_DIRECTORY/nohup.out"
+              rm "$APP_DIRECTORY/nohup.out"
+            else
+              echo "nohup.out 파일이 존재하지 않습니다."
             fi
         env:
           APP_DIRECTORY: ${{ secrets.APP_DIRECTORY }}
@@ -70,8 +78,8 @@ jobs:
           source: "$SOURCE_DIRECTORY"
           target: "$TARGET_DIRECTORY"
         env:
-          SOURCE_DIRECTORY: ${{ secrets.APP_DIRECTORY }}
-          TARGET_DIRECTORY: ${{ secrets.SOURCE_DIRECTORY }}
+          SOURCE_DIRECTORY: ${{ secrets.SOURCE_DIRECTORY }}
+          TARGET_DIRECTORY: ${{ secrets.APP_DIRECTORY }}
 
       - name: Run New Service
         uses: appleboy/ssh-action@master
