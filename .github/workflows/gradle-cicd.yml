@@ -45,7 +45,7 @@ jobs:
           password: ${{ secrets.SERVER_PASSWORD }}
           script: |
             PID=$(pgrep -f "$FILE_NAME")
-            if [[ -n "$PID" ]]; then
+            if [[ "$PID" -eq 1 ]]; then
               echo "프로세스를 종료합니다: $PID"
               kill -9 "$PID"
             else
