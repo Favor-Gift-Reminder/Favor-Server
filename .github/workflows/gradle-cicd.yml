@@ -43,7 +43,7 @@ jobs:
           host: ${{ secrets.SERVER_HOST }}
           username: ${{ secrets.SERVER_USERNAME }}
           password: ${{ secrets.SERVER_PASSWORD }}
-          run: |
+          script: |
             if pgrep -f "$FILE_NAME" > /dev/null; then
               cd "$APP_DIRECTORY"
               kill -9 $(ps -ef | grep "$FILE_NAME" | awk '$3 == 1 {print $2}')
@@ -68,10 +68,10 @@ jobs:
           username: ${{ secrets.SERVER_USERNAME }}
           password: ${{ secrets.SERVER_PASSWORD }}
           source: "$SOURCE_DIRECTORY"
-          target: "$APP_DIRECTORY"
+          target: "$TARGET_DIRECTORY"
         env:
-          APP_DIRECTORY: ${{ secrets.APP_DIRECTORY }}
-          SOURCE_DIRECTORY: ${{ secrets.SOURCE_DIRECTORY }}
+          SOURCE_DIRECTORY: ${{ secrets.APP_DIRECTORY }}
+          TARGET_DIRECTORY: ${{ secrets.SOURCE_DIRECTORY }}
 
       - name: Run New Service
         uses: appleboy/ssh-action@master
@@ -79,7 +79,7 @@ jobs:
           host: ${{ secrets.SERVER_HOST }}
           username: ${{ secrets.SERVER_USERNAME }}
           password: ${{ secrets.SERVER_PASSWORD }}
-          run: |
+          script: |
             cd $APP_DIRECTORY
             nohup java -jar $FILENAME
         env:
