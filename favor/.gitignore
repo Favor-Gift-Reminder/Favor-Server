@@ -18,7 +18,7 @@ bin/
 !**/src/test/**/bin/
 
 ### IntelliJ IDEA ###
-.idea
+*.idea
 *.iws
 *.iml
 *.ipr
@@ -37,4 +37,6 @@ out/
 .vscode/
 
 ### Config Files ###
+application.yml
+application-dev.yml
 application-prod.yml
