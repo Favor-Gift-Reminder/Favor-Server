@@ -9,8 +9,7 @@ permissions:
   contents: read
 
 jobs:
-  continuous-integration:
-    name: Continuous Integration
+  CI/CD:
     runs-on: ubuntu-latest
 
     steps:
@@ -38,12 +37,6 @@ jobs:
           cd favor
           ./gradlew clean build --exclude-task test
 
-  continuous-deployment:
-    name: Continuous Deployment
-    runs-on: ubuntu-latest
-    needs: [ continuous-integration ]
-
-    steps:
       - name: Shutdown Old Service
         uses: appleboy/ssh-action@master
         with:
