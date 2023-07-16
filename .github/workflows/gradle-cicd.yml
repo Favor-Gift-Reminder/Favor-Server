@@ -9,12 +9,11 @@ permissions:
   contents: read
 
 jobs:
-  build:
-    name: Gradle CI/CD
+  continuous-integration:
+    name: Continuous Integration
     runs-on: ubuntu-latest
 
     steps:
-      # Continuous Integration
       - name: Checkout code
         uses: actions/checkout@v3
 
@@ -38,7 +37,11 @@ jobs:
           cd favor
           ./gradlew clean build --exclude-task test
 
-      # Continuous Deployment
+  continuous-deployment:
+    name: Continuous Deployment
+    runs-on: ubuntu-latest
+
+    steps:
       - name: Shutdown Old Service
         uses: appleboy/ssh-action@master
         with:
@@ -50,9 +53,9 @@ jobs:
             kill -9 $(ps -ef | grep "$FILE_NAME" | awk '$3 == 1 {print $2}')
             rm nohup.out
             rm $FILE_NAME
-          env:
-            APP_DIRECTORY: ${{ secrets.APP_DIRECTORY }}
-            FILE_NAME: ${{ secrets.FILE_NAME }}
+        env:
+          APP_DIRECTORY: ${{ secrets.APP_DIRECTORY }}
+          FILE_NAME: ${{ secrets.FILE_NAME }}
 
       - name: Move New Service
         uses: appleboy/scp-action@master
@@ -75,6 +78,6 @@ jobs:
           run: |
             cd $APP_DIRECTORY
             nohup java -jar $FILENAME
-          env:
-            APP_DIRECTORY: ${{ secrets.APP_DIRECTORY }}
-            FILE_NAME: ${{ secrets.FILE_NAME }}
+        env:
+          APP_DIRECTORY: ${{ secrets.APP_DIRECTORY }}
+          FILE_NAME: ${{ secrets.FILE_NAME }}
