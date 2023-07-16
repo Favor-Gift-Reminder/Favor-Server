@@ -43,11 +43,8 @@ jobs:
           host: ${{ secrets.SERVER_HOST }}
           username: ${{ secrets.SERVER_USERNAME }}
           password: ${{ secrets.SERVER_PASSWORD }}
-          run: |
+          script: |
             cd $APP_DIRECTORY
-            echo $APP_DIRECTORY
-            echo $(ps -ef | grep "$FILE_NAME" | awk '$3 == 1 {print $2}')
-            echo $FILE_NAME
             kill -9 $(ps -ef | grep "$FILE_NAME" | awk '$3 == 1 {print $2}')
             rm nohup.out
             rm $FILE_NAME
@@ -73,7 +70,7 @@ jobs:
           host: ${{ secrets.SERVER_HOST }}
           username: ${{ secrets.SERVER_USERNAME }}
           password: ${{ secrets.SERVER_PASSWORD }}
-          run: |
+          script: |
             cd $APP_DIRECTORY
             nohup java -jar $FILENAME
         env:
