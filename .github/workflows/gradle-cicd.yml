@@ -62,7 +62,7 @@ jobs:
           username: ${{ secrets.SERVER_USERNAME }}
           password: ${{ secrets.SERVER_PASSWORD }}
           source: "build/libs/*.jar"
-          target: "$TARGET_DIRECTORY"
+          target: $TARGET_DIRECTORY
           rm: true
         env:
           TARGET_DIRECTORY: ${{ secrets.APP_DIRECTORY }}
