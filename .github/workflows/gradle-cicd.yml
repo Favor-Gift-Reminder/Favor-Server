@@ -61,11 +61,9 @@ jobs:
           host: ${{ secrets.SERVER_HOST }}
           username: ${{ secrets.SERVER_USERNAME }}
           password: ${{ secrets.SERVER_PASSWORD }}
-          source: "build/libs/*.jar"
-          target: $TARGET_DIRECTORY
+          source: build/libs/*.jar
+          target: ${{ secrets.APP_DIRECTORY }}
           rm: true
-        env:
-          TARGET_DIRECTORY: ${{ secrets.APP_DIRECTORY }}
 
       - name: Run New Service
         uses: appleboy/ssh-action@master
