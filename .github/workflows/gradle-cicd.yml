@@ -43,11 +43,20 @@ jobs:
           host: ${{ secrets.SERVER_HOST }}
           username: ${{ secrets.SERVER_USERNAME }}
           password: ${{ secrets.SERVER_PASSWORD }}
-          script: |
-            cd $APP_DIRECTORY
-            kill -9 $(ps -ef | grep "$FILE_NAME" | awk '$3 == 1 {print $2}')
-            rm nohup.out
-            rm $FILE_NAME
+          run: |
+            if pgrep -f "$FILE_NAME" > /dev/null; then
+              cd "$APP_DIRECTORY"
+              kill -9 $(ps -ef | grep "$FILE_NAME" | awk '$3 == 1 {print $2}')
+              rm nohup.out
+            else
+              echo "프로세스가 이미 종료되었습니다."
+            fi
+            
+            if [[ -f "$APP_DIRECTORY/$FILE_NAME" ]]; then
+              rm "$APP_DIRECTORY/$FILE_NAME"
+            else
+              echo "파일이 이미 삭제되었습니다."
+            fi
         env:
           APP_DIRECTORY: ${{ secrets.APP_DIRECTORY }}
           FILE_NAME: ${{ secrets.FILE_NAME }}
@@ -70,7 +79,7 @@ jobs:
           host: ${{ secrets.SERVER_HOST }}
           username: ${{ secrets.SERVER_USERNAME }}
           password: ${{ secrets.SERVER_PASSWORD }}
-          script: |
+          run: |
             cd $APP_DIRECTORY
             nohup java -jar $FILENAME
         env:
