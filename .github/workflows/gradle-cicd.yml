@@ -44,17 +44,10 @@ jobs:
           username: ${{ secrets.SERVER_USERNAME }}
           password: ${{ secrets.SERVER_PASSWORD }}
           script: |
-              PID=$(pgrep -f "$FILE_NAME")
+              PID=$(ps -ef | grep "$SERVICE_NAME" | awk "$3 == 1 {print $2}")
               if [[ -n "$PID" ]]; then
-                echo "프로세스의 PID: $PID"
-                PPID=$(ps -o ppid= -p "$PID")
-                echo "프로세스의 PPID: $PPID"
-                if [[ "$PPID" -eq 1 ]]; then
-                  echo "프로세스의 PPID가 1이므로 프로세스를 종료합니다."
-                  kill -9 "$PID"
-                else
-                  echo "프로세스의 PPID가 1이 아니므로 종료하지 않습니다."
-                fi
+                echo "프로세스를 종료합니다: $PID"
+                kill -9 "$PID"
               else
                 echo "프로세스가 이미 종료되었습니다."
               fi
