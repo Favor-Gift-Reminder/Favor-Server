@@ -182,7 +182,8 @@ public class UserService {
 
         List<FriendResponseDto> f_List = new ArrayList<>();
         for(Friend f : user.getFriendList()){
-            FriendResponseDto dto = new FriendResponseDto(f);
+            User friendUser = findUserByUserNo(userNo);
+            FriendResponseDto dto = new FriendResponseDto(f, friendUser);
             f_List.add(dto);
         }
         return f_List;
@@ -384,6 +385,7 @@ public class UserService {
 
 
     //RETURN
+
     @Transactional
     public UserResponseDto returnUserDto(User user){
 
@@ -395,7 +397,8 @@ public class UserService {
 
         List<FriendResponseDto> f_List = new ArrayList<>();
         for(Friend f : user.getFriendList()){
-            FriendResponseDto dto = new FriendResponseDto(f);
+            User friendUser = findUserByUserNo(f.getFriendUserNo());
+            FriendResponseDto dto = new FriendResponseDto(f, friendUser);
             f_List.add(dto);
         }
 

@@ -3,6 +3,7 @@ package com.favor.favor.friend;
 import com.favor.favor.anniversary.AnniversaryResponseDto;
 import com.favor.favor.common.enums.Favor;
 import com.favor.favor.reminder.ReminderResponseDto;
+import com.favor.favor.user.User;
 import lombok.*;
 
 import java.util.ArrayList;
@@ -39,6 +40,20 @@ public class FriendResponseDto {
         this.receivedGift = 0;
         this.totalGift = 0;
         this.userNo = friend.getFriendUserNo();
+    }
+
+    @Builder
+    public FriendResponseDto(Friend friend, User user){
+        this.friendNo = friend.getFriendNo();
+        this.friendName = user.getUsername();
+        this.friendMemo = friend.getFriendMemo();
+        this.reminderList = new ArrayList<>();
+        this.favorList = new ArrayList<>();
+        this.anniversaryList = new ArrayList<>();
+        this.givenGift = 0;
+        this.receivedGift = 0;
+        this.totalGift = 0;
+        this.userNo = user.getUserNo();
     }
 
     @Builder
