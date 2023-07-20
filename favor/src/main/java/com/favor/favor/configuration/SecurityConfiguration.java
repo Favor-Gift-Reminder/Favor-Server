@@ -68,7 +68,8 @@ public class SecurityConfiguration   {
                     "/favicon.ico",
                     "/users/sign-in",
                     "/users/sign-up",
-                    "/users/profile/**").permitAll()
+                    "/users/profile/**",
+                    "/photos/**").permitAll()
             .anyRequest().authenticated()
 
 

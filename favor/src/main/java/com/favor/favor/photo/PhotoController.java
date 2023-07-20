@@ -10,17 +10,14 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
-import java.io.File;
-import java.util.List;
+import org.springframework.web.multipart.MultipartFile;
 
 @Api(tags = "Photo")
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/photos")
 public class PhotoController {
-
-    private final S3Service s3Service;
+    private final PhotoService photoService;
 
     @ApiOperation("사진 저장")
     @ApiResponses(value={
@@ -37,15 +34,9 @@ public class PhotoController {
     @ResponseStatus(HttpStatus.OK)
     @PostMapping
     public ResponseEntity<DefaultResponseDto<Object>> savePhoto(
-            @ModelAttribute PhotoDto photoDto){
+            @ModelAttribute MultipartFile photo){
 
-        StringBuffer sb = new StringBuffer();
-        List<File> fileList = photoDto.getFileList();
-        for(File file : fileList){
-            s3Service.uploadPhoto(file);
-        }
-
-        String result = sb.toString();
+        Photo result = photoService.savePhoto(photo);
 
         return ResponseEntity.status(201)
                 .body(DefaultResponseDto.builder()
