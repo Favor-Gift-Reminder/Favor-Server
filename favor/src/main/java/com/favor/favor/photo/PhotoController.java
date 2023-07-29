@@ -45,4 +45,31 @@ public class PhotoController {
                         .data(result)
                         .build());
     }
+
+    @ApiOperation("사진 삭제")
+    @ApiResponses(value={
+            @ApiResponse(code = 201,
+                    message = "PHOTO_REMOVED",
+                    response = GiftResponseDto.class),
+            @ApiResponse(code = 400,
+                    message = "FIELD_REQUIRED / *_CHARACTER_INVALID / *_LENGTH_INVALID"),
+            @ApiResponse(code = 404,
+                    message = ""),
+            @ApiResponse(code = 500,
+                    message = "SERVER_ERROR")
+    })
+    @ResponseStatus(HttpStatus.OK)
+    @DeleteMapping
+    public ResponseEntity<DefaultResponseDto<Object>> deletePhoto(
+            String filename){
+
+        photoService.deleteFileFromS3(filename);
+
+        return ResponseEntity.status(201)
+                .body(DefaultResponseDto.builder()
+                        .responseCode("PHOTO_REMOVED")
+                        .responseMessage("사진 삭제 완료")
+                        .data(null)
+                        .build());
+    }
 }

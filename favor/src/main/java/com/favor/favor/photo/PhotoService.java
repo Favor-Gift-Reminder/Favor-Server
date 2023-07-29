@@ -1,5 +1,6 @@
 package com.favor.favor.photo;
 
+import com.amazonaws.SdkClientException;
 import com.amazonaws.services.s3.AmazonS3Client;
 import com.amazonaws.services.s3.model.CannedAccessControlList;
 import com.amazonaws.services.s3.model.PutObjectRequest;
@@ -13,20 +14,18 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.Objects;
+import java.util.UUID;
 
 import static com.favor.favor.exception.ExceptionCode.SERVER_ERROR;
 
 @Service
 @RequiredArgsConstructor
 public class PhotoService {
-    private  String brandPhotoBucketName = "favor-app-bucket";
+    private  String bucketName = "favor-app-bucket";
     private final AmazonS3Client amazonS3Client;
 
-    /**
-     * MultipartFile을 File로 전환 |
-     * MultipartFile을 받아서 File의 형태로 전환하여 반환한다.
-     */
-    private File convertMultiPartToFile(MultipartFile file) throws IOException {
+    //MultipartFile을 File로 전환
+    private File convertFile(MultipartFile file) throws IOException {
         File convertingFile = new File(Objects.requireNonNull(file.getOriginalFilename()));
         FileOutputStream fileOutputStream = new FileOutputStream(convertingFile);
         fileOutputStream.write(file.getBytes());
@@ -35,15 +34,11 @@ public class PhotoService {
         return convertingFile;
     }
 
-    /**
-     * S3에 파일 저장 |
-     * 파일을 전환하고 특정 파일 관련된 폴더에 파일을 저장하고 URL을 반환한다. |
-     * 500(SERVER_ERROR)
-     */
+    //S3에 사진 업로드
     public String insertFileToS3(String bucketName, String fileName, MultipartFile file) {
 
         try {
-            File convertedFile = convertMultiPartToFile(file);
+            File convertedFile = convertFile(file);
             String uploadingFileName = fileName;
 
             amazonS3Client.putObject(new PutObjectRequest(bucketName, uploadingFileName, convertedFile)
@@ -56,18 +51,20 @@ public class PhotoService {
         }
     }
 
-    /**
-     * 브랜드 사진 저장 |
-     * 500(SERVER_ERROR)
-     */
+
+    public String getStoredFileName(String fileName){
+        return UUID.randomUUID() + fileName.substring(fileName.lastIndexOf('.'));
+    }
+
+    //사진 저장
     @Transactional
     public Photo savePhoto(MultipartFile file) {
 
         String filename = file.getOriginalFilename();
         Photo photo = new Photo(filename);
-        String originalFileName = photo.getFileName(filename);
+        String storedFileName = getStoredFileName(filename);
 
-        String brandPhotoUrl = insertFileToS3(brandPhotoBucketName, originalFileName, file);
+        String brandPhotoUrl = insertFileToS3(bucketName, storedFileName, file);
 
         try {
             photo = Photo.builder()
@@ -78,5 +75,14 @@ public class PhotoService {
         }
 
         return photo;
+    }
+
+    //S3 에서 사진 삭제
+    public void deleteFileFromS3(String fileName) {;
+        try {
+            amazonS3Client.deleteObject(bucketName, fileName);
+        } catch (SdkClientException e) {
+            throw new CustomException(e, SERVER_ERROR);
+        }
     }
 }

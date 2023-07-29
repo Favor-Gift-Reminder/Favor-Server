@@ -10,6 +10,7 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import java.util.UUID;
 
 @Getter
 @Entity
@@ -26,11 +27,5 @@ public class Photo extends TimeStamped {
         this.photoUrl = photoUrl;
     }
 
-    public String getFileName(String fileName){
 
-        int extensionIndex = fileName.lastIndexOf('.');
-        String originalFileName = fileName.substring(extensionIndex);
-
-        return originalFileName;
-    }
 }
