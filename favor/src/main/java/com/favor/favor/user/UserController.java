@@ -148,7 +148,8 @@ public class UserController {
     @Transactional
     @GetMapping
     public ResponseEntity<DefaultResponseDto<Object>> readUser(
-            @AuthenticationPrincipal User loginUser){
+            @AuthenticationPrincipal User loginUser
+    ){
 
         Long userNo = loginUser.getUserNo();
 
@@ -183,7 +184,8 @@ public class UserController {
     @PatchMapping
     public ResponseEntity<DefaultResponseDto<Object>> updateUser(
             @AuthenticationPrincipal User loginUser,
-            @RequestBody @Valid UserUpdateRequestDto userUpdateRequestDto){
+            @RequestBody @Valid UserUpdateRequestDto userUpdateRequestDto
+    ){
 
         Long userNo = loginUser.getUserNo();
 

@@ -55,6 +55,9 @@ public class PhotoService {
     public String getStoredFileName(String fileName){
         return UUID.randomUUID() + fileName.substring(fileName.lastIndexOf('.'));
     }
+    public String getUserProfileFileName(String fileName){
+        return  "user_profile/"  + UUID.randomUUID()+ fileName.substring(fileName.lastIndexOf('.'));
+    }
 
     //사진 저장
     @Transactional
@@ -77,8 +80,28 @@ public class PhotoService {
         return photo;
     }
 
+    @Transactional
+    public Photo saveUserProfilePhoto(MultipartFile file) {
+
+        String filename = file.getOriginalFilename();
+        Photo photo = new Photo(filename);
+        String storedFileName = getUserProfileFileName(filename);
+
+        String brandPhotoUrl = insertFileToS3(bucketName, storedFileName, file);
+
+        try {
+            photo = Photo.builder()
+                    .photoUrl(brandPhotoUrl)
+                    .build();
+        } catch (RuntimeException e) {
+            throw new CustomException(e, SERVER_ERROR);
+        }
+
+        return photo;
+    }
+
     //S3 에서 사진 삭제
-    public void deleteFileFromS3(String fileName) {;
+    public void deleteFileFromS3(String fileName) {
         try {
             amazonS3Client.deleteObject(bucketName, fileName);
         } catch (SdkClientException e) {
@@ -87,19 +110,17 @@ public class PhotoService {
     }
 
     //fileName 을 fileUrl 로 변경
-    public String extractFileUrl(String fileName){
-        String baseUrl = "https://favor-app-bucket.s3.ap-northeast-2.amazonaws.com/";
-        return baseUrl + fileName;
+    public String createFileUrl(String fileName){
+        StringBuilder stringBuilder = new StringBuilder();
+        stringBuilder.append("https://favor-app-bucket.s3.ap-northeast-2.amazonaws.com/")
+                .append(fileName);
+        return stringBuilder.toString();
     }
 
     //fileUrl 에서 fileName 추출
     public static String extractFileName(String url) {
         int lastSlashIndex = url.lastIndexOf('/');
-        if (lastSlashIndex != -1 && lastSlashIndex < url.length() - 1) {
-            return url.substring(lastSlashIndex + 1);
-        } else {
-            return null;
-        }
+        return url.substring(lastSlashIndex + 1);
     }
 
 }
