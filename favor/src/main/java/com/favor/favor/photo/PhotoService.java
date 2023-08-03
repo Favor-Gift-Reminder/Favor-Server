@@ -51,7 +51,7 @@ public class PhotoService {
         }
     }
 
-
+    //사진 저장 이름 생성
     public String getStoredFileName(String fileName){
         return UUID.randomUUID() + fileName.substring(fileName.lastIndexOf('.'));
     }
@@ -85,4 +85,21 @@ public class PhotoService {
             throw new CustomException(e, SERVER_ERROR);
         }
     }
+
+    //fileName 을 fileUrl 로 변경
+    public String extractFileUrl(String fileName){
+        String baseUrl = "https://favor-app-bucket.s3.ap-northeast-2.amazonaws.com/";
+        return baseUrl + fileName;
+    }
+
+    //fileUrl 에서 fileName 추출
+    public static String extractFileName(String url) {
+        int lastSlashIndex = url.lastIndexOf('/');
+        if (lastSlashIndex != -1 && lastSlashIndex < url.length() - 1) {
+            return url.substring(lastSlashIndex + 1);
+        } else {
+            return null;
+        }
+    }
+
 }

@@ -3,6 +3,7 @@ package com.favor.favor.gift;
 import com.favor.favor.common.enums.Category;
 import com.favor.favor.common.enums.Emotion;
 import com.favor.favor.common.TimeStamped;
+import com.favor.favor.photo.Photo;
 import com.favor.favor.user.User;
 import lombok.*;
 
@@ -23,6 +24,8 @@ public class Gift extends TimeStamped {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long giftNo;
 
+//    @OneToMany(mappedBy = "gift", cascade = CascadeType.ALL , orphanRemoval = true)
+//    private List<Photo> giftPhotos = new ArrayList<>();
     private String giftName;
     public void setGiftName(String giftName){
         this.giftName = giftName;
