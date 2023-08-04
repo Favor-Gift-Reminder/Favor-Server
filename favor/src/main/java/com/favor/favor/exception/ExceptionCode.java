@@ -49,6 +49,7 @@ public enum ExceptionCode {
      * 404 NOT_FOUND : Resource 를 찾을 수 없음
      */
     EMAIL_NOT_FOUND(NOT_FOUND, "등록된 이메일이 없습니다."),
+    FILE_NOT_FOUND(NOT_FOUND, "등록된 파일이 없습니다."),
     USER_NOT_FOUND(NOT_FOUND, "등록된 회원이 없습니다."),
     PASSWORD_NOT_FOUND(NOT_FOUND, "비밀번호를 잘못 입력하였습니다."),
     FRIEND_NOT_FOUND(NOT_FOUND, "등록된 친구가 없습니다."),

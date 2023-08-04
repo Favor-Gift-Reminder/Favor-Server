@@ -79,9 +79,15 @@ public class User extends TimeStamped implements UserDetails {
     private List<Friend> friendList = new ArrayList<>();
 
     @OneToOne(cascade = CascadeType.ALL)
-    private Photo userPhoto;
-    public void setUserPhoto(Photo userPhoto) {
-        this.userPhoto = userPhoto;
+    private Photo userProfilePhoto;
+    public void setUserProfilePhoto(Photo userPhoto) {
+        this.userProfilePhoto = userPhoto;
+    }
+
+    @OneToOne(cascade = CascadeType.ALL)
+    private Photo userBackgroundPhoto;
+    public void setUserBackgroundPhoto(Photo userPhoto) {
+        this.userBackgroundPhoto = userPhoto;
     }
 
     private Role role;

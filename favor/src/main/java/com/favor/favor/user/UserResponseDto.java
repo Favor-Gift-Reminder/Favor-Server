@@ -4,7 +4,6 @@ import com.favor.favor.anniversary.AnniversaryResponseDto;
 import com.favor.favor.common.enums.Favor;
 import com.favor.favor.common.enums.Role;
 import com.favor.favor.friend.FriendResponseDto;
-import com.favor.favor.gift.GiftResponseDto;
 import com.favor.favor.photo.Photo;
 import com.favor.favor.reminder.ReminderResponseDto;
 import io.swagger.annotations.ApiModelProperty;
@@ -56,7 +55,10 @@ public class  UserResponseDto {
     private List<Favor> favorList;
 
     @ApiModelProperty(value = "")
-    private Photo userPhoto;
+    private Photo userProfilePhoto;
+
+    @ApiModelProperty(value = "")
+    private Photo userBackgroundPhoto;
 
     @Builder
     public UserResponseDto(User user,
@@ -77,6 +79,7 @@ public class  UserResponseDto {
         this.friendList = friendList;
         this.favorList = favorList;
         this.anniversaryList = anniversaryList;
-        this.userPhoto = user.getUserPhoto();
+        this.userProfilePhoto = user.getUserProfilePhoto();
+        this.userBackgroundPhoto = user.getUserBackgroundPhoto();
     }
 }
