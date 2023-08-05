@@ -120,7 +120,6 @@ public class UserService {
 
     @Transactional
     public void deleteUser(Long userNo) {
-        User user = findUserByUserNo(userNo);
         friendRepository.deleteFriendsByFriendUserNo(userNo);
         userRepository.deleteByUserNo(userNo);
     }

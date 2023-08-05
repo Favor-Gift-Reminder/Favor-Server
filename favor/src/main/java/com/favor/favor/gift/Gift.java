@@ -74,4 +74,6 @@ public class Gift extends TimeStamped {
     public void setFriendNoList(List<Long> friendNoList){
         this.friendNoList = friendNoList;
     }
+
+//    @ManyToOne(cascade = Cas)
 }

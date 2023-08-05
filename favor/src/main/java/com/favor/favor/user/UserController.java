@@ -25,6 +25,7 @@ import java.util.List;
 @RequiredArgsConstructor
 public class UserController {
     private final UserService userService;
+    private final UserPhotoService userPhotoService;
 
     @ApiOperation(value = "회원가입")
     @ApiResponses(value={
@@ -231,7 +232,11 @@ public class UserController {
 
         userService.isExistingUserNo(userNo);
 
-        UserResponseDto dto = userService.returnUserDto(loginUser);
+        User user = userService.findUserByUserNo(userNo);
+        UserResponseDto dto = userService.returnUserDto(user);
+
+        userPhotoService.deleteUserProfilePhoto(userNo);
+        userPhotoService.deleteUserBackgroundPhoto(userNo);
 
         userService.deleteUser(userNo);
 
