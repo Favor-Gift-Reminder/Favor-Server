@@ -136,28 +136,46 @@ public class GiftService {
     }
 
 
+    @Transactional
     public GiftResponseDto returnDto(Gift gift){
         List<FriendResponseDto> friendResponseDtoList = new ArrayList<>();
 
         List<Long> friendNoList = gift.getFriendNoList();
         List<Long> deletedNoList = new ArrayList<>();
 
-        for(Long f : friendNoList){
-            Friend friend = null;
-            try{
-                friend = findFriendByFriendNo(f);
-            }catch(Exception e){
-                deletedNoList.add(f);
+
+        for(Long f : new ArrayList<>(friendNoList)){
+            if(findFriendByFriendNo(f) == null){
+                friendNoList.remove(f);
                 continue;
+            }else{
+                Friend friend = findFriendByFriendNo(f);
+                friendResponseDtoList.add(new FriendResponseDto(friend));
             }
-            FriendResponseDto dto = new FriendResponseDto(friend);
-            friendResponseDtoList.add(dto);
+
+//            Friend friend = null;
+//            try{
+//                friend = findFriendByFriendNo(f);
+//            }catch(Exception e){
+//                throw new CustomException(e, FRIEND_NOT_FOUND);
+//                deletedNoList.add(f);
+//                continue;
+//            }
+//            FriendResponseDto dto = new FriendResponseDto(friend);
+//            friendResponseDtoList.add(dto);
         }
-        for(Long f : deletedNoList){
-            friendNoList.remove(f);
-        }
+        log.info("[SYSTEM] for(Long f : friendNoList) 완료");
+//
+//        for(Long f : new ArrayList<>(friendNoList)){
+//            friendNoList.remove(f);
+//        }
+//        log.info("[SYSTEM] for(Long f : deletedNoList) 완료");
+
         gift.setFriendNoList(friendNoList);
+        log.info("[SYSTEM] gift.setFriendNoList(friendNoList) 완료");
+
         giftRepository.save(gift);
+        log.info("[SYSTEM] giftRepository.save(gift) 완료");
 
         return new GiftResponseDto(gift, friendResponseDtoList);
     }

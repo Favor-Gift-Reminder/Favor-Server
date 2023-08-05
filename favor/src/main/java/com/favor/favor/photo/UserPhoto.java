@@ -14,7 +14,7 @@ import javax.persistence.Id;
 @Getter
 @Entity
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class Photo extends TimeStamped {
+public class UserPhoto extends TimeStamped {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -22,7 +22,7 @@ public class Photo extends TimeStamped {
     private String photoUrl;
 
     @Builder
-    public Photo(String photoUrl) {
+    public UserPhoto(String photoUrl) {
         this.photoUrl = photoUrl;
     }
 

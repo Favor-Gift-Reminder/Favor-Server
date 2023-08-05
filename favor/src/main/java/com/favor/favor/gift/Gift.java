@@ -3,7 +3,7 @@ package com.favor.favor.gift;
 import com.favor.favor.common.enums.Category;
 import com.favor.favor.common.enums.Emotion;
 import com.favor.favor.common.TimeStamped;
-import com.favor.favor.photo.Photo;
+import com.favor.favor.photo.GiftPhoto;
 import com.favor.favor.user.User;
 import lombok.*;
 
@@ -11,6 +11,7 @@ import javax.persistence.*;
 import javax.transaction.Transactional;
 import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.List;
 
 @Entity
@@ -75,5 +76,9 @@ public class Gift extends TimeStamped {
         this.friendNoList = friendNoList;
     }
 
-//    @ManyToOne(cascade = Cas)
+    @OneToMany(cascade = CascadeType.ALL)
+    private List<GiftPhoto> giftPhotoList = new ArrayList<>();
+    public void setGiftPhotoList(List<GiftPhoto> giftPhotoList){
+        this.giftPhotoList = giftPhotoList;
+    }
 }

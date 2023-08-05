@@ -5,7 +5,6 @@ import com.amazonaws.services.s3.AmazonS3Client;
 import com.amazonaws.services.s3.model.CannedAccessControlList;
 import com.amazonaws.services.s3.model.PutObjectRequest;
 import com.favor.favor.exception.CustomException;
-import com.favor.favor.user.User;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -14,7 +13,6 @@ import org.springframework.web.multipart.MultipartFile;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.net.URL;
 import java.util.Objects;
 import java.util.UUID;
 
@@ -88,22 +86,22 @@ public class PhotoService {
 
     //사진 저장
     @Transactional
-    public Photo savePhoto(MultipartFile file) {
+    public UserPhoto savePhoto(MultipartFile file) {
 
         String filename = file.getOriginalFilename();
-        Photo photo = new Photo(filename);
+        UserPhoto userPhoto = new UserPhoto(filename);
         String storedFileName = getStoredFileName(filename);
 
         String brandPhotoUrl = uploadFileToS3(storedFileName, file);
 
         try {
-            photo = Photo.builder()
+            userPhoto = UserPhoto.builder()
                     .photoUrl(brandPhotoUrl)
                     .build();
         } catch (RuntimeException e) {
             throw new CustomException(e, SERVER_ERROR);
         }
 
-        return photo;
+        return userPhoto;
     }
 }

@@ -36,7 +36,7 @@ public class PhotoController {
     public ResponseEntity<DefaultResponseDto<Object>> savePhoto(
             @ModelAttribute MultipartFile photo){
 
-        Photo result = photoService.savePhoto(photo);
+        UserPhoto result = photoService.savePhoto(photo);
 
         return ResponseEntity.status(201)
                 .body(DefaultResponseDto.builder()

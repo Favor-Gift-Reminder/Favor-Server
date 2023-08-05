@@ -1,7 +1,7 @@
 package com.favor.favor.user;
 
 import com.favor.favor.exception.CustomException;
-import com.favor.favor.photo.Photo;
+import com.favor.favor.photo.UserPhoto;
 import com.favor.favor.photo.PhotoService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -11,14 +11,15 @@ import javax.transaction.Transactional;
 import java.net.URL;
 import java.util.UUID;
 
+import static com.favor.favor.exception.ExceptionCode.FILE_NOT_FOUND;
 import static com.favor.favor.exception.ExceptionCode.SERVER_ERROR;
 
 @Service
 @RequiredArgsConstructor
 public class UserPhotoService {
     private final UserRepository userRepository;
-    private final PhotoService photoService;
     private final UserService userService;
+    private final PhotoService photoService;
 
     //유저 프로필사진 등록/수정
     @Transactional
@@ -28,25 +29,25 @@ public class UserPhotoService {
             deleteUserProfilePhoto(userNo);
         }
 
-        String filename = file.getOriginalFilename();
-        Photo photo = null;
-        String storedFileName = getUserProfileFileName(filename);
+        String fileName = file.getOriginalFilename();
+        UserPhoto userPhoto = null;
+        String storedFileName = getUserProfileFileName(fileName);
 
-        String photoUrl = photoService.uploadFileToS3(storedFileName, file);
+        String profilePhotoUrl = photoService.uploadFileToS3(storedFileName, file);
         try {
-            photo = Photo.builder()
-                    .photoUrl(photoUrl)
+            userPhoto = UserPhoto.builder()
+                    .photoUrl(profilePhotoUrl)
                     .build();
         } catch (RuntimeException e) {
             throw new CustomException(e, SERVER_ERROR);
         }
 
-        user.setUserProfilePhoto(photo);
+        user.setUserProfilePhoto(userPhoto);
         return userRepository.save(user);
     }
 
     //유저 프로필사진 조회
-    public Photo getUserProfilePhoto(Long userNo) {
+    public UserPhoto getUserProfilePhoto(Long userNo) {
         return userService.findUserByUserNo(userNo).getUserProfilePhoto();
     }
 
@@ -73,24 +74,24 @@ public class UserPhotoService {
             deleteUserBackgroundPhoto(userNo);
         }
         String filename = file.getOriginalFilename();
-        Photo photo = null;
+        UserPhoto userPhoto = null;
         String storedFileName = getUserBackgroundFileName(filename);
 
-        String photoUrl = photoService.uploadFileToS3(storedFileName, file);
+        String backgroundPhotoUrl = photoService.uploadFileToS3(storedFileName, file);
         try {
-            photo = Photo.builder()
-                    .photoUrl(photoUrl)
+            userPhoto = UserPhoto.builder()
+                    .photoUrl(backgroundPhotoUrl)
                     .build();
         } catch (RuntimeException e) {
             throw new CustomException(e, SERVER_ERROR);
         }
 
-        user.setUserBackgroundPhoto(photo);
+        user.setUserBackgroundPhoto(userPhoto);
         return userRepository.save(user);
     }
 
     //유저 배경사진 조회
-    public Photo getUserBackgroundPhoto(Long userNo) {
+    public UserPhoto getUserBackgroundPhoto(Long userNo) {
         return userService.findUserByUserNo(userNo).getUserBackgroundPhoto();
     }
 

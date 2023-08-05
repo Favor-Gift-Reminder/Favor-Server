@@ -1,7 +1,7 @@
 package com.favor.favor.user;
 
 import com.favor.favor.common.DefaultResponseDto;
-import com.favor.favor.photo.Photo;
+import com.favor.favor.photo.UserPhoto;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiResponse;
@@ -75,7 +75,7 @@ public class UserPhotoController {
     public ResponseEntity<DefaultResponseDto<Object>> getUserProfilePhoto(
             @AuthenticationPrincipal User loginUser
     ) {
-        Photo dto = userPhotoService.getUserProfilePhoto(loginUser.getUserNo());
+        UserPhoto dto = userPhotoService.getUserProfilePhoto(loginUser.getUserNo());
 
         return ResponseEntity.status(200)
                 .body(DefaultResponseDto.builder()
@@ -168,7 +168,7 @@ public class UserPhotoController {
     public ResponseEntity<DefaultResponseDto<Object>> getUserBackgroundPhoto(
             @AuthenticationPrincipal User loginUser
     ) {
-        Photo dto = userPhotoService.getUserBackgroundPhoto(loginUser.getUserNo());
+        UserPhoto dto = userPhotoService.getUserBackgroundPhoto(loginUser.getUserNo());
 
         return ResponseEntity.status(200)
                 .body(DefaultResponseDto.builder()

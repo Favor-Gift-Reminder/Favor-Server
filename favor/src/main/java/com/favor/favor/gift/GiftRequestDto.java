@@ -10,6 +10,7 @@ import lombok.NoArgsConstructor;
 
 import javax.transaction.Transactional;
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 
 @Getter
@@ -53,6 +54,7 @@ public class GiftRequestDto {
                 .isGiven(isGiven)
                 .user(user)
                 .friendNoList(friendNoList)
+                .giftPhotoList(new ArrayList<>())
                 .build();
     }
 }

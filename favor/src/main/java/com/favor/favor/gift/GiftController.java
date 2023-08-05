@@ -10,6 +10,7 @@ import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -22,7 +23,7 @@ import java.util.List;
 @RestController
 @RequestMapping("/gifts")
 @RequiredArgsConstructor
-@Log4j2
+@Slf4j
 public class GiftController {
     private final GiftService giftService;
 
@@ -181,10 +182,14 @@ public class GiftController {
 
         giftService.isExistingGiftNo(giftNo);
 
+
         Gift gift = giftService.findGiftByGiftNo(giftNo);
+        log.info("[SYSTEM] giftService.findGiftByGiftNo(giftNo) 완료");
         GiftResponseDto dto = giftService.returnDto(gift);
+        log.info("[SYSTEM] giftService.returnDto(gift) 완료");
 
         giftService.deleteGift(giftNo);
+        log.info("[SYSTEM] giftService.deleteGift(giftNo) 완료");
 
         return ResponseEntity.status(200)
                 .body(DefaultResponseDto.builder()
