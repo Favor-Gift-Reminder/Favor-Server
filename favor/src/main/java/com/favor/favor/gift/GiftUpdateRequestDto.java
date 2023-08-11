@@ -1,6 +1,6 @@
 package com.favor.favor.gift;
 
-import com.favor.favor.common.enums.Category;
+import com.favor.favor.common.enums.CategoryGift;
 import com.favor.favor.common.enums.Emotion;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.AllArgsConstructor;
@@ -23,7 +23,7 @@ public class GiftUpdateRequestDto {
     private String giftMemo;
 
     @ApiModelProperty(position = 4, required = false, value = "카데고리", example = "생일")
-    private Category category;
+    private CategoryGift categoryGift;
 
     @ApiModelProperty(position = 5, required = false, value = "감정", example = "기뻐요")
     private Emotion emotion;

@@ -1,15 +1,12 @@
 package com.favor.favor.gift;
 
 import com.favor.favor.common.DefaultResponseDto;
-import com.favor.favor.friend.FriendResponseDto;
 import com.favor.favor.user.User;
-import com.favor.favor.user.UserResponseDto;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
 import lombok.RequiredArgsConstructor;
-import lombok.extern.log4j.Log4j2;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -125,6 +122,41 @@ public class GiftController {
                 .body(DefaultResponseDto.builder()
                         .responseCode("GIFT_UPDATED")
                         .responseMessage("선물 수정 완료")
+                        .data(dto)
+                        .build());
+    }
+
+    @ApiOperation("선물 임시친구목록 수정")
+    @ApiResponses(value={
+            @ApiResponse(code = 200,
+                    message = "GIFT_TEMP_FRIEND_LIST_UPDATED",
+                    response = GiftResponseDto.class),
+            @ApiResponse(code = 401,
+                    message = "UNAUTHORIZED_USER"),
+            @ApiResponse(code = 404,
+                    message = "GIFT_NOT_FOUND / FRIEND_NOT_FOUND"),
+            @ApiResponse(code = 500,
+                    message = "SERVER_ERROR")
+    })
+    @ResponseStatus(HttpStatus.OK)
+    @Transactional
+    @PatchMapping("/temp-friend-list/{giftNo}")
+    public ResponseEntity<DefaultResponseDto<Object>> updateTempFriendListGift(
+            @PathVariable Long giftNo,
+            List<String> tempFriendList
+            ){
+
+        giftService.isExistingGiftNo(giftNo);
+
+
+        Gift gift = giftService.findGiftByGiftNo(giftNo);
+        giftService.updateTempFriendList(gift, tempFriendList);
+        GiftResponseDto dto = giftService.returnDto(gift);
+
+        return ResponseEntity.status(200)
+                .body(DefaultResponseDto.builder()
+                        .responseCode("GIFT_TEMP_FRIEND_LIST_UPDATED")
+                        .responseMessage("선물 임시친구목록 수정 완료")
                         .data(dto)
                         .build());
     }

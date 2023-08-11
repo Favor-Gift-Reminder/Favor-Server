@@ -3,7 +3,7 @@ package com.favor.favor.user;
 
 import com.favor.favor.anniversary.AnniversaryResponseDto;
 import com.favor.favor.common.DefaultResponseDto;
-import com.favor.favor.common.enums.Category;
+import com.favor.favor.common.enums.CategoryGift;
 import com.favor.favor.common.enums.Emotion;
 import com.favor.favor.friend.FriendResponseDto;
 import com.favor.favor.gift.GiftResponseDto;
@@ -518,12 +518,12 @@ public class UserController {
     @GetMapping("/gifts-by-category/{category}")
     public ResponseEntity<DefaultResponseDto<Object>> readGiftListByCategory(
             @AuthenticationPrincipal User loginUser,
-            @PathVariable("category") Category category){
+            @PathVariable("category") CategoryGift categoryGift){
 
         Long userNo = loginUser.getUserNo();
         userService.isExistingUserNo(userNo);
 
-        List<GiftResponseDto> dto =  userService.readGiftListByCategory(userNo, category);
+        List<GiftResponseDto> dto =  userService.readGiftListByCategory(userNo, categoryGift);
 
         return ResponseEntity.status(200)
                 .body(DefaultResponseDto.builder()

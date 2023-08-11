@@ -66,7 +66,7 @@ public class AnniversaryService {
         anniversary.setAnniversaryTitle(dto.getAnniversaryTitle());
         LocalDate localDate = returnLocalDate(dto.getAnniversaryDate());
         anniversary.setAnniversaryDate(localDate);
-        anniversary.setCategory(dto.getCategory());
+        anniversary.setCategory(dto.getCategoryGift());
 
         anniversaryRepository.save(anniversary);
     }

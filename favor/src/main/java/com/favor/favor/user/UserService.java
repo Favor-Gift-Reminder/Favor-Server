@@ -3,7 +3,7 @@ package com.favor.favor.user;
 import com.favor.favor.anniversary.Anniversary;
 import com.favor.favor.anniversary.AnniversaryResponseDto;
 import com.favor.favor.auth.JwtTokenProvider;
-import com.favor.favor.common.enums.Category;
+import com.favor.favor.common.enums.CategoryGift;
 import com.favor.favor.common.enums.Emotion;
 import com.favor.favor.common.enums.Favor;
 import com.favor.favor.common.enums.Role;
@@ -18,7 +18,6 @@ import com.favor.favor.reminder.ReminderRepository;
 import com.favor.favor.reminder.ReminderResponseDto;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.hibernate.Hibernate;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -27,7 +26,6 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
-import java.util.Random;
 
 import static com.favor.favor.exception.ExceptionCode.*;
 
@@ -220,9 +218,9 @@ public class UserService {
         return g_List;
     }
 
-    public List<GiftResponseDto> readGiftListByCategory(Long userNo, Category category){
+    public List<GiftResponseDto> readGiftListByCategory(Long userNo, CategoryGift categoryGift){
         User user = findUserByUserNo(userNo);
-        Integer categoryNo = category.getType();
+        Integer categoryNo = categoryGift.getType();
         List<Gift> giftList = giftRepository.findGiftsByUserAndCategory(user, categoryNo);
         List<GiftResponseDto> g_List = new ArrayList<>();
         for(Gift gift : giftList){

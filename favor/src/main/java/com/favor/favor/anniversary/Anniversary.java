@@ -1,15 +1,13 @@
 package com.favor.favor.anniversary;
 
 import com.favor.favor.common.TimeStamped;
-import com.favor.favor.common.enums.Category;
+import com.favor.favor.common.enums.CategoryGift;
 import com.favor.favor.user.User;
 import lombok.*;
 
 import javax.persistence.*;
 import javax.transaction.Transactional;
 import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.List;
 
 @Entity
 @Getter
@@ -30,8 +28,8 @@ public class Anniversary extends TimeStamped {
     public void setAnniversaryDate(LocalDate anniversaryDate){ this.anniversaryDate = anniversaryDate; }
 
     private Integer category;
-    public void setCategory(Category category){
-        this.category = category.getType();
+    public void setCategory(CategoryGift categoryGift){
+        this.category = categoryGift.getType();
     }
 
     private Boolean isPinned;

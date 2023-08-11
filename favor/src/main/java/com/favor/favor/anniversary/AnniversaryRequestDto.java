@@ -1,6 +1,6 @@
 package com.favor.favor.anniversary;
 
-import com.favor.favor.common.enums.Category;
+import com.favor.favor.common.enums.CategoryGift;
 import com.favor.favor.user.User;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.AllArgsConstructor;
@@ -21,14 +21,14 @@ public class AnniversaryRequestDto {
     private String anniversaryDate;
 
     @ApiModelProperty(position = 3, required = true, value = "종류", example = "생일")
-    private Category category;
+    private CategoryGift categoryGift;
 
     @Transactional
     public Anniversary toEntity(User user, LocalDate localDate){
         return Anniversary.builder()
                 .anniversaryTitle(anniversaryTitle)
                 .anniversaryDate(localDate)
-                .category(category.getType())
+                .category(categoryGift.getType())
                 .isPinned(false)
                 .user(user)
                 .build();

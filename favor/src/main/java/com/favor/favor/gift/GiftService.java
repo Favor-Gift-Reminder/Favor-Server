@@ -10,7 +10,6 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
-import javax.swing.text.html.Option;
 import javax.transaction.Transactional;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -18,7 +17,6 @@ import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 
 import static com.favor.favor.exception.ExceptionCode.*;
 
@@ -54,7 +52,7 @@ public class GiftService {
     public void updateGift(GiftUpdateRequestDto dto, Gift gift){
         gift.setGiftName(dto.getGiftName());
         gift.setGiftMemo(dto.getGiftMemo());
-        gift.setCategory(dto.getCategory());
+        gift.setCategory(dto.getCategoryGift());
         gift.setEmotion(dto.getEmotion());
         gift.setIsGiven(dto.getIsGiven());
         gift.setGiftDate(returnLocalDate(dto.getGiftDate()));
@@ -77,6 +75,11 @@ public class GiftService {
     }
     public void updateIsPinned(Gift gift){
         gift.setIsPinned(gift.getIsPinned() == true ? false : true);
+        giftRepository.save(gift);
+    }
+
+    public void updateTempFriendList(Gift gift, List<String> tempFriendList){
+        gift.setTempFriendList(tempFriendList);
         giftRepository.save(gift);
     }
 

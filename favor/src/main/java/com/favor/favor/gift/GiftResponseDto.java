@@ -1,6 +1,6 @@
 package com.favor.favor.gift;
 
-import com.favor.favor.common.enums.Category;
+import com.favor.favor.common.enums.CategoryGift;
 import com.favor.favor.common.enums.Emotion;
 import com.favor.favor.friend.FriendResponseDto;
 import com.favor.favor.photo.GiftPhoto;
@@ -9,11 +9,9 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.extern.log4j.Log4j2;
 
-import javax.annotation.Nullable;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 @Log4j2
@@ -26,7 +24,7 @@ public class GiftResponseDto {
     private String giftName;
     private LocalDate giftDate;
     private String giftMemo;
-    private Category category;
+    private CategoryGift categoryGift;
     private Emotion emotion;
     private Boolean isPinned;
     private Boolean isGiven;
@@ -35,6 +33,7 @@ public class GiftResponseDto {
     private LocalDateTime createdAt;
     private LocalDateTime modifiedAt;
     private List<GiftPhoto> giftPhotoList;
+    private List<String> tempFriendList;
 
 
     @Builder
@@ -44,7 +43,7 @@ public class GiftResponseDto {
         this.giftName = gift.getGiftName();
         this.giftDate = gift.getGiftDate();
         this.giftMemo = gift.getGiftMemo();
-        this.category = Category.valueOf(gift.getCategory());
+        this.categoryGift = CategoryGift.valueOf(gift.getCategory());
         this.emotion = Emotion.valueOf(gift.getEmotion());
         this.isPinned = gift.getIsPinned();
         this.isGiven = gift.getIsGiven();
@@ -53,6 +52,7 @@ public class GiftResponseDto {
         this.createdAt = gift.getCreatedAt();
         this.modifiedAt = gift.getModifiedAt();
         this.giftPhotoList = gift.getGiftPhotoList();
+        this.tempFriendList = gift.getTempFriendList();
         log.info("[GiftResponseDto] 실행 완료");
     }
     @Builder
@@ -62,7 +62,7 @@ public class GiftResponseDto {
         this.giftName = gift.getGiftName();
         this.giftDate = gift.getGiftDate();
         this.giftMemo = gift.getGiftMemo();
-        this.category = Category.valueOf(gift.getCategory());
+        this.categoryGift = CategoryGift.valueOf(gift.getCategory());
         this.emotion = Emotion.valueOf(gift.getEmotion());
         this.isPinned = gift.getIsPinned();
         this.isGiven = gift.getIsGiven();
@@ -71,6 +71,7 @@ public class GiftResponseDto {
         this.createdAt = gift.getCreatedAt();
         this.modifiedAt = gift.getModifiedAt();
         this.giftPhotoList = gift.getGiftPhotoList();
+        this.tempFriendList = gift.getTempFriendList();
         log.info("[GiftResponseDto] 실행 완료");
     }
 }

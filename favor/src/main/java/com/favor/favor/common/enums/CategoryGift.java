@@ -2,7 +2,7 @@ package com.favor.favor.common.enums;
 
 import lombok.Getter;
 
-public enum Category {
+public enum CategoryGift {
 //    가벼운선물, 생일, 집들이, 시험, 승진, 졸업, 기타
     가벼운선물(1),
     생일(2),
@@ -14,46 +14,46 @@ public enum Category {
 
     @Getter
     Integer type;
-    Category (Integer type){
+    CategoryGift(Integer type){
         this.type = type;
     }
 
-    public static Category validateType(String category){
+    public static CategoryGift validateType(String category){
         try{
-            return Category.valueOf(category);
+            return CategoryGift.valueOf(category);
         }catch(IllegalStateException e){
             //커스텀 전 임시
             throw new IllegalArgumentException();
         }
     }
 
-    public static Category valueOf(Integer type){
-        Category category = null;
+    public static CategoryGift valueOf(Integer type){
+        CategoryGift categoryGift = null;
         switch (type){
             case 1:
-                category = Category.가벼운선물;
+                categoryGift = CategoryGift.가벼운선물;
                 break;
             case 2:
-                category = Category.생일;
+                categoryGift = CategoryGift.생일;
                 break;
             case 3:
-                category = Category.집들이;
+                categoryGift = CategoryGift.집들이;
                 break;
             case 4:
-                category = Category.시험;
+                categoryGift = CategoryGift.시험;
                 break;
             case 5:
-                category = Category.승진;
+                categoryGift = CategoryGift.승진;
                 break;
             case 6:
-                category = Category.졸업;
+                categoryGift = CategoryGift.졸업;
                 break;
             case 7:
-                category = Category.기타;
+                categoryGift = CategoryGift.기타;
                 break;
             default:
                 break;
         }
-        return category;
+        return categoryGift;
     }
 }

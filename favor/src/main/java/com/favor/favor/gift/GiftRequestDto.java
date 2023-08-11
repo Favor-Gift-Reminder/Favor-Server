@@ -1,6 +1,6 @@
 package com.favor.favor.gift;
 
-import com.favor.favor.common.enums.Category;
+import com.favor.favor.common.enums.CategoryGift;
 import com.favor.favor.common.enums.Emotion;
 import com.favor.favor.user.User;
 import io.swagger.annotations.ApiModelProperty;
@@ -27,7 +27,7 @@ public class GiftRequestDto {
     private String giftMemo;
 
     @ApiModelProperty(position = 4, required = false, value = "카테고리", example = "생일")
-    private Category category;
+    private CategoryGift categoryGift;
 
     @ApiModelProperty(position = 5, required = false, value = "감정", example = "기뻐요")
     private Emotion emotion;
@@ -48,7 +48,7 @@ public class GiftRequestDto {
                 .giftName(giftName)
                 .giftDate(giftDate)
                 .giftMemo(giftMemo)
-                .category(category.getType())
+                .category(categoryGift.getType())
                 .emotion(emotion.getType())
                 .isPinned(false)
                 .isGiven(isGiven)

@@ -1,6 +1,6 @@
 package com.favor.favor.gift;
 
-import com.favor.favor.common.enums.Category;
+import com.favor.favor.common.enums.CategoryGift;
 import com.favor.favor.common.enums.Emotion;
 import com.favor.favor.common.TimeStamped;
 import com.favor.favor.photo.GiftPhoto;
@@ -11,7 +11,6 @@ import javax.persistence.*;
 import javax.transaction.Transactional;
 import java.time.LocalDate;
 import java.util.ArrayList;
-import java.util.LinkedList;
 import java.util.List;
 
 @Entity
@@ -43,8 +42,8 @@ public class Gift extends TimeStamped {
     }
 
     private Integer category;
-    public void setCategory(Category category){
-        this.category = category.getType();
+    public void setCategory(CategoryGift categoryGift){
+        this.category = categoryGift.getType();
     }
 
     private Integer emotion;
@@ -78,7 +77,13 @@ public class Gift extends TimeStamped {
 
     @OneToMany(cascade = CascadeType.ALL)
     private List<GiftPhoto> giftPhotoList = new ArrayList<>();
-    public void setGiftPhotoList(List<GiftPhoto> giftPhotoList){
+    public void setGiftPhotoList(List<GiftPhoto> giftPhotoList) {
         this.giftPhotoList = giftPhotoList;
+    }
+
+    @ElementCollection
+    private List<String> tempFriendList;
+    public void setTempFriendList(List<String> tempFriendList){
+        this.tempFriendList = tempFriendList;
     }
 }
