@@ -1,5 +1,6 @@
 package com.favor.favor.anniversary;
 
+import com.favor.favor.common.enums.CategoryAnniversary;
 import com.favor.favor.common.enums.CategoryGift;
 import com.favor.favor.user.User;
 import io.swagger.annotations.ApiModelProperty;
@@ -20,15 +21,15 @@ public class AnniversaryRequestDto {
     @ApiModelProperty(position = 2, required = true, value = "날짜", example = "1996-02-29")
     private String anniversaryDate;
 
-    @ApiModelProperty(position = 3, required = true, value = "종류", example = "생일")
-    private CategoryGift categoryGift;
+    @ApiModelProperty(position = 3, required = true, value = "종류", example = "축하_생일")
+    private CategoryAnniversary categoryAnniversary;
 
     @Transactional
     public Anniversary toEntity(User user, LocalDate localDate){
         return Anniversary.builder()
                 .anniversaryTitle(anniversaryTitle)
                 .anniversaryDate(localDate)
-                .category(categoryGift.getType())
+                .category(categoryAnniversary.getType())
                 .isPinned(false)
                 .user(user)
                 .build();
