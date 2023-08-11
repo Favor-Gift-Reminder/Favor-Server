@@ -47,7 +47,7 @@ public class UserPhotoController {
         userService.isExistingUserNo(userNo);
 
         User user = userPhotoService.updateUserProfilePhoto(userNo, file);
-        UserResponseDto dto = userService.returnUserDto(user);
+        UserPhoto dto = user.getUserProfilePhoto();
 
         return ResponseEntity.status(201)
                 .body(DefaultResponseDto.builder()
@@ -140,7 +140,7 @@ public class UserPhotoController {
         userService.isExistingUserNo(userNo);
 
         User user = userPhotoService.updateUserBackgroundPhoto(userNo, file);
-        UserResponseDto dto = userService.returnUserDto(user);
+        UserPhoto dto = user.getUserBackgroundPhoto();
 
         return ResponseEntity.status(201)
                 .body(DefaultResponseDto.builder()

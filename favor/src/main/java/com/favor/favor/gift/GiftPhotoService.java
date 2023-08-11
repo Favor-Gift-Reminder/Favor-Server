@@ -3,14 +3,11 @@ package com.favor.favor.gift;
 import com.favor.favor.exception.CustomException;
 import com.favor.favor.photo.GiftPhoto;
 import com.favor.favor.photo.PhotoService;
-import com.favor.favor.user.User;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.transaction.Transactional;
-import java.net.URL;
-import java.util.LinkedList;
 import java.util.List;
 import java.util.UUID;
 

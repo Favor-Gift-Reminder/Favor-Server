@@ -51,9 +51,9 @@ public class ReminderService {
         return reminderRepository.save(reminder);
     }
 
-    public void updateReminder(ReminderUpdateRequestDto dto, Long reminderNo, Long friendNo){
+    public void updateReminder(ReminderUpdateRequestDto dto, Long reminderNo){
         Reminder reminder = findReminderByReminderNo(reminderNo);
-        Friend friend = findFriendByFriendNo(friendNo);
+        Friend friend = reminder.getFriend();
 
         reminder.setTitle(dto.getTitle());
         reminder.setReminderDate(dto.getReminderDate());

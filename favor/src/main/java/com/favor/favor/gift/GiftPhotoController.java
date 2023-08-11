@@ -2,11 +2,7 @@ package com.favor.favor.gift;
 
 import com.favor.favor.common.DefaultResponseDto;
 import com.favor.favor.photo.GiftPhoto;
-import com.favor.favor.photo.UserPhoto;
-import com.favor.favor.user.User;
-import com.favor.favor.user.UserPhotoService;
 import com.favor.favor.user.UserResponseDto;
-import com.favor.favor.user.UserService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiResponse;
@@ -14,7 +10,6 @@ import io.swagger.annotations.ApiResponses;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -53,7 +48,7 @@ public class GiftPhotoController {
 
         Gift gift = giftPhotoService.addGiftPhoto(giftNo, file);
 
-        GiftResponseDto dto = giftService.returnDto(gift);
+        List<GiftPhoto> dto = giftPhotoService.getGiftPhotoList(giftNo);
 
         return ResponseEntity.status(201)
                 .body(DefaultResponseDto.builder()
@@ -109,8 +104,8 @@ public class GiftPhotoController {
     public ResponseEntity<DefaultResponseDto<Object>> deleteUserProfilePhoto(
             Long giftNo, String fileUrl) {
 
-        Gift gift = giftPhotoService.deleteGiftPhoto(giftNo, fileUrl);
-        GiftResponseDto dto = new GiftResponseDto(gift);
+        giftPhotoService.deleteGiftPhoto(giftNo, fileUrl);
+        List<GiftPhoto> dto = giftPhotoService.getGiftPhotoList(giftNo);
 
         return ResponseEntity.status(200)
                 .body(DefaultResponseDto.builder()

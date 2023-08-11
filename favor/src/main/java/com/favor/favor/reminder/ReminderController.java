@@ -148,7 +148,7 @@ public class ReminderController {
         reminderService.isExistingFriendNo(friendNo);
 
         Reminder reminder = reminderService.findReminderByReminderNo(reminderNo);
-        reminderService.updateReminder(reminderUpdateRequestDto, reminderNo, friendNo);
+        reminderService.updateReminder(reminderUpdateRequestDto, reminderNo);
         ReminderResponseDto dto = reminderService.returnDto(reminder);
 
         return ResponseEntity.status(200)

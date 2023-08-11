@@ -27,6 +27,7 @@ public class FriendResponseDto {
     private int totalGift;
 
     private Long userNo;
+    private String userId;
 
     @Builder
     public FriendResponseDto(Friend friend){
@@ -40,6 +41,7 @@ public class FriendResponseDto {
         this.receivedGift = 0;
         this.totalGift = 0;
         this.userNo = friend.getFriendUserNo();
+        this.userId = "";
     }
 
     @Builder
@@ -54,10 +56,12 @@ public class FriendResponseDto {
         this.receivedGift = 0;
         this.totalGift = 0;
         this.userNo = user.getUserNo();
+        this.userId = user.getUserId();
     }
 
     @Builder
     public FriendResponseDto(Friend friend,
+                             User user,
                              List<ReminderResponseDto> reminderList,
                              List<Favor> favorList,
                              List<AnniversaryResponseDto> anniversaryList,
@@ -73,5 +77,6 @@ public class FriendResponseDto {
         this.receivedGift = giftInfo.get("received");
         this.totalGift = giftInfo.get("total");
         this.userNo = friend.getFriendUserNo();
+        this.userId = user.getUserId();
     }
 }

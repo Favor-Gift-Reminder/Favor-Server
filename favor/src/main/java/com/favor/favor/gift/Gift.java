@@ -24,8 +24,6 @@ public class Gift extends TimeStamped {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long giftNo;
 
-//    @OneToMany(mappedBy = "gift", cascade = CascadeType.ALL , orphanRemoval = true)
-//    private List<Photo> giftPhotos = new ArrayList<>();
     private String giftName;
     public void setGiftName(String giftName){
         this.giftName = giftName;
@@ -83,7 +81,7 @@ public class Gift extends TimeStamped {
 
     @ElementCollection
     private List<String> tempFriendList;
-    public void setTempFriendList(List<String> tempFriendList){
-        this.tempFriendList = tempFriendList;
+    public void setTempFriendList(GiftTempFriendListDto tempFriendList){
+        this.tempFriendList = tempFriendList.getTempFrindList();
     }
 }

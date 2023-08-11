@@ -182,7 +182,7 @@ public class FriendService {
         }
         HashMap<String, Integer> giftInfo = returnGiftInfo(friend.getFriendNo());
 
-        return new FriendResponseDto(friend, reminderDtoList, favorList, anniversaryList, giftInfo);
+        return new FriendResponseDto(friend, user, reminderDtoList, favorList, anniversaryList, giftInfo);
     }
 
     public HashMap<String, Integer> returnGiftInfo(Long friendNo) {

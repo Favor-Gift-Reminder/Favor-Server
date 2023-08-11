@@ -143,14 +143,14 @@ public class GiftController {
     @PatchMapping("/temp-friend-list/{giftNo}")
     public ResponseEntity<DefaultResponseDto<Object>> updateTempFriendListGift(
             @PathVariable Long giftNo,
-            List<String> tempFriendList
+            @RequestBody GiftTempFriendListDto tempFriendListDto
             ){
 
         giftService.isExistingGiftNo(giftNo);
 
 
         Gift gift = giftService.findGiftByGiftNo(giftNo);
-        giftService.updateTempFriendList(gift, tempFriendList);
+        giftService.updateTempFriendList(gift, tempFriendListDto);
         GiftResponseDto dto = giftService.returnDto(gift);
 
         return ResponseEntity.status(200)

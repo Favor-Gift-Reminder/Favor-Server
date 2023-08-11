@@ -78,7 +78,7 @@ public class GiftService {
         giftRepository.save(gift);
     }
 
-    public void updateTempFriendList(Gift gift, List<String> tempFriendList){
+    public void updateTempFriendList(Gift gift, GiftTempFriendListDto tempFriendList){
         gift.setTempFriendList(tempFriendList);
         giftRepository.save(gift);
     }
