@@ -1,6 +1,7 @@
 package com.favor.favor.anniversary;
 
 import com.favor.favor.common.TimeStamped;
+import com.favor.favor.common.enums.CategoryAnniversary;
 import com.favor.favor.common.enums.CategoryGift;
 import com.favor.favor.user.User;
 import lombok.*;
@@ -28,8 +29,8 @@ public class Anniversary extends TimeStamped {
     public void setAnniversaryDate(LocalDate anniversaryDate){ this.anniversaryDate = anniversaryDate; }
 
     private Integer category;
-    public void setCategory(CategoryGift categoryGift){
-        this.category = categoryGift.getType();
+    public void setCategory(CategoryAnniversary categoryAnniversary){
+        this.category = categoryAnniversary.getType();
     }
 
     private Boolean isPinned;

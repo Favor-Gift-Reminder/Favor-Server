@@ -214,11 +214,13 @@ public class GiftController {
 
         giftService.isExistingGiftNo(giftNo);
 
-
         Gift gift = giftService.findGiftByGiftNo(giftNo);
         log.info("[SYSTEM] giftService.findGiftByGiftNo(giftNo) 완료");
+        log.info("[SYSTEM] gift = {}", gift);
+
         GiftResponseDto dto = giftService.returnDto(gift);
         log.info("[SYSTEM] giftService.returnDto(gift) 완료");
+        log.info("[SYSTEM] dto = {}", dto);
 
         giftService.deleteGift(giftNo);
         log.info("[SYSTEM] giftService.deleteGift(giftNo) 완료");

@@ -8,7 +8,6 @@ import com.favor.favor.user.User;
 import lombok.*;
 
 import javax.persistence.*;
-import javax.transaction.Transactional;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
@@ -18,7 +17,7 @@ import java.util.List;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor
 @Builder
-@Transactional
+@ToString
 public class Gift extends TimeStamped {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -69,12 +68,16 @@ public class Gift extends TimeStamped {
     @Builder.Default
     @ElementCollection
     private List<Long> friendNoList = new ArrayList<>();
-    public void setFriendNoList(List<Long> friendNoList){
-        this.friendNoList = friendNoList;
+    public void addFriendNo(Long friendNo){
+        friendNoList.add(friendNo);
+    }
+    public void removeFriendNo(Long friendNo){
+        friendNoList.remove(friendNo);
     }
 
+
     @OneToMany(cascade = CascadeType.ALL)
-    private List<GiftPhoto> giftPhotoList = new ArrayList<>();
+    private List<GiftPhoto> giftPhotoList;
     public void setGiftPhotoList(List<GiftPhoto> giftPhotoList) {
         this.giftPhotoList = giftPhotoList;
     }

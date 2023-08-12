@@ -58,19 +58,19 @@ public class FriendService {
 
     }
 
+    //친구 삭제
     @Transactional
     public void deleteFriend(Long friendNo){
         Friend friend = findFriendByFriendNo(friendNo);
 
+        //친구의 giftNoList
         List<Long> giftNoList = friend.getGiftNoList();
+        //선물들의 친구 목록에서 친구 삭제
         for(Long g : giftNoList){
             Gift gift = findGiftByGiftNo(g);
-            List<Long> friendNoList = gift.getFriendNoList();
-            friendNoList.remove(friendNo);
-            gift.setFriendNoList(friendNoList);
+            gift.removeFriendNo(friendNo);
             giftRepository.save(gift);
         }
-
         friendRepository.deleteById(friendNo);
     }
 
@@ -166,6 +166,7 @@ public class FriendService {
     @Transactional
     public FriendResponseDto returnDto(Friend friend){
         User user = friend.getUser();
+        User friendUser = findUserByUserNo(friend.getFriendUserNo());
 
         List<Reminder> reminderList = user.getReminderList();
         List<ReminderResponseDto> reminderDtoList = new ArrayList<>();
@@ -182,7 +183,9 @@ public class FriendService {
         }
         HashMap<String, Integer> giftInfo = returnGiftInfo(friend.getFriendNo());
 
-        return new FriendResponseDto(friend, user, reminderDtoList, favorList, anniversaryList, giftInfo);
+        String friendId = friendUser.getUserId();
+
+        return new FriendResponseDto(friend, user, reminderDtoList, favorList, anniversaryList, giftInfo, friendId);
     }
 
     public HashMap<String, Integer> returnGiftInfo(Long friendNo) {

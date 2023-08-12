@@ -27,7 +27,7 @@ public class FriendResponseDto {
     private int totalGift;
 
     private Long userNo;
-    private String userId;
+    private String friendId;
 
     @Builder
     public FriendResponseDto(Friend friend){
@@ -41,7 +41,7 @@ public class FriendResponseDto {
         this.receivedGift = 0;
         this.totalGift = 0;
         this.userNo = friend.getFriendUserNo();
-        this.userId = "";
+        this.friendId = "";
     }
 
     @Builder
@@ -55,8 +55,8 @@ public class FriendResponseDto {
         this.givenGift = 0;
         this.receivedGift = 0;
         this.totalGift = 0;
-        this.userNo = user.getUserNo();
-        this.userId = user.getUserId();
+        this.userNo = friend.getFriendUserNo();
+        this.friendId = "";
     }
 
     @Builder
@@ -65,7 +65,8 @@ public class FriendResponseDto {
                              List<ReminderResponseDto> reminderList,
                              List<Favor> favorList,
                              List<AnniversaryResponseDto> anniversaryList,
-                             HashMap<String, Integer> giftInfo
+                             HashMap<String, Integer> giftInfo,
+                             String friendId
     ){
         this.friendNo = friend.getFriendNo();
         this.friendName = friend.getFriendName();
@@ -77,6 +78,27 @@ public class FriendResponseDto {
         this.receivedGift = giftInfo.get("received");
         this.totalGift = giftInfo.get("total");
         this.userNo = friend.getFriendUserNo();
-        this.userId = user.getUserId();
+        this.friendId = friendId;
+    }
+
+    @Builder
+    public FriendResponseDto(Friend friend,
+                             List<ReminderResponseDto> reminderList,
+                             List<Favor> favorList,
+                             List<AnniversaryResponseDto> anniversaryList,
+                             HashMap<String, Integer> giftInfo,
+                             User friendUser
+    ){
+        this.friendNo = friend.getFriendNo();
+        this.friendName = friendUser.getUsername();
+        this.friendMemo = friend.getFriendMemo();
+        this.reminderList = reminderList;
+        this.favorList = favorList;
+        this.anniversaryList = anniversaryList;
+        this.givenGift = giftInfo.get("given");
+        this.receivedGift = giftInfo.get("received");
+        this.totalGift = giftInfo.get("total");
+        this.userNo = friend.getFriendUserNo();
+        this.friendId = friendUser.getUserId();
     }
 }

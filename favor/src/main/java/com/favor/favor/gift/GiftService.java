@@ -30,11 +30,15 @@ public class GiftService {
 
     @Transactional
     public Gift createGift(GiftRequestDto giftRequestDto, Long userNo){
-        log.info("[Service] [createGift] 실행");
+        log.info("[SERVICE] [createGift] 실행");
         User user =  findUserByUserNo(userNo);
+        log.info("[SERVICE] user = {}", user);
         LocalDate localDate = returnLocalDate(giftRequestDto.getGiftDate());
+        log.info("[SERVICE] locaDate = {}", localDate);
         Gift gift = giftRepository.save(giftRequestDto.toEntity(user, localDate));
+        log.info("[SERVICE] gift = {}", gift);
         addGiftNo(gift.getGiftNo(), gift.getFriendNoList());
+
         return giftRepository.save(gift);
     }
     @Transactional
@@ -50,6 +54,7 @@ public class GiftService {
     }
 
     public void updateGift(GiftUpdateRequestDto dto, Gift gift){
+        //수정된 gift 정보 저장 (친구 목록 제외)
         gift.setGiftName(dto.getGiftName());
         gift.setGiftMemo(dto.getGiftMemo());
         gift.setCategory(dto.getCategoryGift());
@@ -60,17 +65,27 @@ public class GiftService {
         List<Long> existingFriendNoList = gift.getFriendNoList();
         List<Long> updatedFriendNoList = dto.getFriendNoList();
 
+        //친구 목록 수정 시
+        //빠진 친구들의 선물 목록에서 선물 식별자 삭제
         for (Long friendNo : existingFriendNoList) {
             if (!updatedFriendNoList.contains(friendNo)) {
                 Friend friend = findFriendByFriendNo(friendNo);
                 friend.getGiftNoList().remove(gift.getGiftNo());
                 friendRepository.save(friend);
+                //선물의 친구 식별자 목록에서 빠진 친구 삭제
+                gift.removeFriendNo(friendNo);
             }
         }
-
-        gift.setFriendNoList(dto.getFriendNoList());
-        addGiftNo(gift.getGiftNo(), dto.getFriendNoList());
-
+        //추가된 친구들의 선물 목록에 선물 식별자 추가
+        for (Long friendNo : updatedFriendNoList) {
+            if (!existingFriendNoList.contains(friendNo)) {
+                Friend friend = findFriendByFriendNo(friendNo);
+                friend.getGiftNoList().add(gift.getGiftNo());
+                friendRepository.save(friend);
+                //선물의 친구 식별자 목록에 추가된 친구 추가
+                gift.addFriendNo(friendNo);
+            }
+        }
         giftRepository.save(gift);
     }
     public void updateIsPinned(Gift gift){
@@ -84,9 +99,20 @@ public class GiftService {
     }
 
     public void deleteGift(Long giftNo){
+        Gift gift = findGiftByGiftNo(giftNo);
+        log.info("[SERVICE] gift = {}", gift);
+        List<Long> friendNoList = gift.getFriendNoList();
+        log.info("[SERVICE] friendNoList = {}", friendNoList);
+
+        //선물 삭제시 선물을 보유하고 있던 유저의 선물 식별자 목록에서 선물 식별자가 사라짐
+        for(Long friendNo : friendNoList){
+            Friend friend = findFriendByFriendNo(friendNo);
+            log.info("[SERVICE] friend = {}", friend);
+            friend.getGiftNoList().remove(giftNo);
+        }
+
         giftRepository.deleteById(giftNo);
     }
-
 
     public List<GiftResponseDto> readAll(){
         List<GiftResponseDto> g_List = new ArrayList<>();
@@ -139,43 +165,17 @@ public class GiftService {
     }
 
 
+    // Gift만 입력받아도 FriendList 를 가진 responseDTO 를 반환
     @Transactional
     public GiftResponseDto returnDto(Gift gift){
-        List<FriendResponseDto> friendResponseDtoList = new ArrayList<>();
 
         List<Long> friendNoList = gift.getFriendNoList();
-        List<Long> deletedNoList = new ArrayList<>();
+        List<FriendResponseDto> friendResponseDtoList = new ArrayList<>();
 
-
-        for(Long f : new ArrayList<>(friendNoList)){
-            if(findFriendByFriendNo(f) == null){
-                friendNoList.remove(f);
-                continue;
-            }else{
-                Friend friend = findFriendByFriendNo(f);
-                friendResponseDtoList.add(new FriendResponseDto(friend));
-            }
-
-//            Friend friend = null;
-//            try{
-//                friend = findFriendByFriendNo(f);
-//            }catch(Exception e){
-//                throw new CustomException(e, FRIEND_NOT_FOUND);
-//                deletedNoList.add(f);
-//                continue;
-//            }
-//            FriendResponseDto dto = new FriendResponseDto(friend);
-//            friendResponseDtoList.add(dto);
+        for(Long friendNo : friendNoList){
+            FriendResponseDto friendResponseDto = new FriendResponseDto(findFriendByFriendNo(friendNo));
+            friendResponseDtoList.add(friendResponseDto);
         }
-        log.info("[SYSTEM] for(Long f : friendNoList) 완료");
-//
-//        for(Long f : new ArrayList<>(friendNoList)){
-//            friendNoList.remove(f);
-//        }
-//        log.info("[SYSTEM] for(Long f : deletedNoList) 완료");
-
-        gift.setFriendNoList(friendNoList);
-        log.info("[SYSTEM] gift.setFriendNoList(friendNoList) 완료");
 
         giftRepository.save(gift);
         log.info("[SYSTEM] giftRepository.save(gift) 완료");

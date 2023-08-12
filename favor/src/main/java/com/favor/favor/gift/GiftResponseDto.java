@@ -7,6 +7,7 @@ import com.favor.favor.photo.GiftPhoto;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
+import lombok.ToString;
 import lombok.extern.log4j.Log4j2;
 
 import java.time.LocalDate;
@@ -18,6 +19,7 @@ import java.util.List;
 @Getter
 @AllArgsConstructor
 @Builder
+@ToString
 public class GiftResponseDto {
 
     private Long giftNo;
