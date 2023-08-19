@@ -142,10 +142,9 @@ public class ReminderController {
     @PatchMapping("/{reminderNo}")
     public ResponseEntity<DefaultResponseDto<Object>> updateReminder(
             @RequestBody ReminderUpdateRequestDto reminderUpdateRequestDto,
-            @PathVariable Long reminderNo, Long friendNo){
+            @PathVariable Long reminderNo){
 
         reminderService.isExistingReminderNo(reminderNo);
-        reminderService.isExistingFriendNo(friendNo);
 
         Reminder reminder = reminderService.findReminderByReminderNo(reminderNo);
         reminderService.updateReminder(reminderUpdateRequestDto, reminderNo);
@@ -207,7 +206,7 @@ public class ReminderController {
     @GetMapping("/admin")
     public ResponseEntity<DefaultResponseDto<Object>> readAll(){
 
-        List<ReminderResponseDto> dto = reminderService.readAll();
+        List<ReminderSimpleDto> dto = reminderService.readAll();
 
         return ResponseEntity.status(200)
                 .body(DefaultResponseDto.builder()

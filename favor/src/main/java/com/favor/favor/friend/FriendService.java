@@ -9,6 +9,7 @@ import com.favor.favor.gift.GiftRepository;
 import com.favor.favor.gift.GiftResponseDto;
 import com.favor.favor.reminder.Reminder;
 import com.favor.favor.reminder.ReminderResponseDto;
+import com.favor.favor.reminder.ReminderSimpleDto;
 import com.favor.favor.user.User;
 import com.favor.favor.user.UserRepository;
 import lombok.RequiredArgsConstructor;
@@ -165,27 +166,26 @@ public class FriendService {
     //RETURN
     @Transactional
     public FriendResponseDto returnDto(Friend friend){
-        User user = friend.getUser();
         User friendUser = findUserByUserNo(friend.getFriendUserNo());
 
-        List<Reminder> reminderList = user.getReminderList();
-        List<ReminderResponseDto> reminderDtoList = new ArrayList<>();
+        List<Reminder> reminderList = friendUser.getReminderList();
+        List<ReminderSimpleDto> reminderDtoList = new ArrayList<>();
         for(Reminder r : reminderList){
-            reminderDtoList.add(new ReminderResponseDto(r));
+            reminderDtoList.add(new ReminderSimpleDto(r));
         }
         List<Favor> favorList = new ArrayList<>();
-        for(Integer favorType : user.getFavorList()){
+        for(Integer favorType : friendUser.getFavorList()){
             favorList.add(Favor.valueOf(favorType));
         }
         List<AnniversaryResponseDto> anniversaryList = new ArrayList<>();
-        for(Anniversary a : user.getAnniversaryList()){
+        for(Anniversary a : friendUser.getAnniversaryList()){
             anniversaryList.add(new AnniversaryResponseDto(a));
         }
         HashMap<String, Integer> giftInfo = returnGiftInfo(friend.getFriendNo());
 
         String friendId = friendUser.getUserId();
 
-        return new FriendResponseDto(friend, user, reminderDtoList, favorList, anniversaryList, giftInfo, friendId);
+        return new FriendResponseDto(friend, friendUser, reminderDtoList, favorList, anniversaryList, giftInfo, friendId);
     }
 
     public HashMap<String, Integer> returnGiftInfo(Long friendNo) {

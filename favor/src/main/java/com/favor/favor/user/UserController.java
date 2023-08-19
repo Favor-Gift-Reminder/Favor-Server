@@ -6,8 +6,11 @@ import com.favor.favor.common.DefaultResponseDto;
 import com.favor.favor.common.enums.CategoryGift;
 import com.favor.favor.common.enums.Emotion;
 import com.favor.favor.friend.FriendResponseDto;
+import com.favor.favor.friend.FriendSimpleDto;
 import com.favor.favor.gift.GiftResponseDto;
+import com.favor.favor.gift.GiftSimpleDto;
 import com.favor.favor.reminder.ReminderResponseDto;
+import com.favor.favor.reminder.ReminderSimpleDto;
 import io.swagger.annotations.*;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -189,15 +192,10 @@ public class UserController {
     ){
 
         Long userNo = loginUser.getUserNo();
-
         userService.isExistingUserNo(userNo);
-
-//        ++
         User user = userService.findUserByUserNo(userNo);
 
-//        userService.updateUser(loginUser, userUpdateRequestDto);
         userService.updateUser(user, userUpdateRequestDto);
-//        UserResponseDto dto = userService.returnUserDto(loginUser);
         UserResponseDto dto = userService.returnUserDto(user);
 
 
@@ -302,7 +300,7 @@ public class UserController {
 
         userService.isExistingUserNo(userNo);
 
-        List<ReminderResponseDto> reminders = userService.readReminderList(userNo);
+        List<ReminderSimpleDto> reminders = userService.readReminderList(userNo);
 
         return ResponseEntity.status(200)
                 .body(DefaultResponseDto.builder()
@@ -335,7 +333,7 @@ public class UserController {
 
         userService.isExistingUserNo(userNo);
 
-        List<ReminderResponseDto> dto = userService.readReminderListByFMonthAndYear(userNo, year, month);
+        List<ReminderSimpleDto> dto = userService.readReminderListByFMonthAndYear(userNo, year, month);
 
         return ResponseEntity.status(200)
                 .body(DefaultResponseDto.builder()
@@ -367,7 +365,7 @@ public class UserController {
 
         userService.isExistingUserNo(userNo);
 
-        List<GiftResponseDto> gifts = userService.readGiftList(userNo);
+        List<GiftSimpleDto> gifts = userService.readGiftList(userNo);
 
         return ResponseEntity.status(200)
                 .body(DefaultResponseDto.builder()
@@ -399,7 +397,7 @@ public class UserController {
 
         userService.isExistingUserNo(userNo);
 
-        List<FriendResponseDto> friends = userService.readFriendList(userNo);
+        List<FriendSimpleDto> friends = userService.readFriendList(userNo);
 
         return ResponseEntity.status(200)
                 .body(DefaultResponseDto.builder()
@@ -491,7 +489,7 @@ public class UserController {
 
         userService.isExistingUserNo(userNo);
 
-        List<GiftResponseDto> dto =  userService.readGiftListByName(userNo, giftName);
+        List<GiftSimpleDto> dto =  userService.readGiftListByName(userNo, giftName);
 
         return ResponseEntity.status(200)
                 .body(DefaultResponseDto.builder()
@@ -523,7 +521,7 @@ public class UserController {
         Long userNo = loginUser.getUserNo();
         userService.isExistingUserNo(userNo);
 
-        List<GiftResponseDto> dto =  userService.readGiftListByCategory(userNo, categoryGift);
+        List<GiftSimpleDto> dto =  userService.readGiftListByCategory(userNo, categoryGift);
 
         return ResponseEntity.status(200)
                 .body(DefaultResponseDto.builder()
@@ -555,7 +553,7 @@ public class UserController {
 
         userService.isExistingUserNo(userNo);
 
-        List<GiftResponseDto> dto =  userService.readGiftListByEmotion(userNo, emotion);
+        List<GiftSimpleDto> dto =  userService.readGiftListByEmotion(userNo, emotion);
 
         return ResponseEntity.status(200)
                 .body(DefaultResponseDto.builder()
@@ -612,7 +610,7 @@ public class UserController {
         Long userNo = loginUser.getUserNo();
 
         userService.isExistingUserNo(userNo);
-        List<GiftResponseDto> dto = userService.findGivenGiftList(userNo);
+        List<GiftSimpleDto> dto = userService.findGivenGiftList(userNo);
 
         return ResponseEntity.status(200)
                 .body(DefaultResponseDto.builder()
@@ -640,7 +638,7 @@ public class UserController {
         Long userNo = loginUser.getUserNo();
 
         userService.isExistingUserNo(userNo);
-        List<GiftResponseDto> dto = userService.findReceivedGiftList(userNo);
+        List<GiftSimpleDto> dto = userService.findReceivedGiftList(userNo);
 
         return ResponseEntity.status(200)
                 .body(DefaultResponseDto.builder()

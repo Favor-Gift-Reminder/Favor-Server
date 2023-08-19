@@ -4,6 +4,8 @@ import com.favor.favor.exception.CustomException;
 import com.favor.favor.friend.Friend;
 import com.favor.favor.friend.FriendRepository;
 import com.favor.favor.friend.FriendResponseDto;
+import com.favor.favor.friend.FriendSimpleDto;
+import com.favor.favor.photo.UserPhoto;
 import com.favor.favor.user.User;
 import com.favor.favor.user.UserRepository;
 import lombok.RequiredArgsConstructor;
@@ -170,10 +172,13 @@ public class GiftService {
     public GiftResponseDto returnDto(Gift gift){
 
         List<Long> friendNoList = gift.getFriendNoList();
-        List<FriendResponseDto> friendResponseDtoList = new ArrayList<>();
 
+        List<FriendSimpleDto> friendResponseDtoList = new ArrayList<>();
         for(Long friendNo : friendNoList){
-            FriendResponseDto friendResponseDto = new FriendResponseDto(findFriendByFriendNo(friendNo));
+            Friend friend = findFriendByFriendNo(friendNo);
+            User friendUser = findUserByUserNo(friend.getFriendUserNo());
+            UserPhoto photo = friendUser.getUserProfilePhoto();
+            FriendSimpleDto friendResponseDto = new FriendSimpleDto(friend, friendUser, photo);
             friendResponseDtoList.add(friendResponseDto);
         }
 

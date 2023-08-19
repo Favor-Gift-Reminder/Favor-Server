@@ -3,6 +3,7 @@ package com.favor.favor.gift;
 import com.favor.favor.common.enums.CategoryGift;
 import com.favor.favor.common.enums.Emotion;
 import com.favor.favor.friend.FriendResponseDto;
+import com.favor.favor.friend.FriendSimpleDto;
 import com.favor.favor.photo.GiftPhoto;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -31,7 +32,7 @@ public class GiftResponseDto {
     private Boolean isPinned;
     private Boolean isGiven;
     private Long userNo;
-    private List<FriendResponseDto> friendList;
+    private List<FriendSimpleDto> friendList;
     private LocalDateTime createdAt;
     private LocalDateTime modifiedAt;
     private List<GiftPhoto> giftPhotoList;
@@ -58,7 +59,7 @@ public class GiftResponseDto {
         log.info("[GiftResponseDto] 실행 완료");
     }
     @Builder
-    public GiftResponseDto(Gift gift, List<FriendResponseDto> friendList){
+    public GiftResponseDto(Gift gift, List<FriendSimpleDto> friendList){
         log.info("[GiftResponseDto] 실행");
         this.giftNo = gift.getGiftNo();
         this.giftName = gift.getGiftName();

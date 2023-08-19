@@ -2,11 +2,12 @@ package com.favor.favor.friend;
 
 import com.favor.favor.anniversary.AnniversaryResponseDto;
 import com.favor.favor.common.enums.Favor;
+import com.favor.favor.photo.UserPhoto;
 import com.favor.favor.reminder.ReminderResponseDto;
+import com.favor.favor.reminder.ReminderSimpleDto;
 import com.favor.favor.user.User;
 import lombok.*;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
@@ -18,7 +19,7 @@ public class FriendResponseDto {
     private String friendName;
     private String friendMemo;
 
-    private List<ReminderResponseDto> reminderList;
+    private List<ReminderSimpleDto> reminderList;
     private List<Favor> favorList;
     private List<AnniversaryResponseDto> anniversaryList;
 
@@ -28,48 +29,19 @@ public class FriendResponseDto {
 
     private Long userNo;
     private String friendId;
-
-    @Builder
-    public FriendResponseDto(Friend friend){
-        this.friendNo = friend.getFriendNo();
-        this.friendName = friend.getFriendName();
-        this.friendMemo = friend.getFriendMemo();
-        this.reminderList = new ArrayList<>();
-        this.favorList = new ArrayList<>();
-        this.anniversaryList = new ArrayList<>();
-        this.givenGift = 0;
-        this.receivedGift = 0;
-        this.totalGift = 0;
-        this.userNo = friend.getFriendUserNo();
-        this.friendId = "";
-    }
-
-    @Builder
-    public FriendResponseDto(Friend friend, User user){
-        this.friendNo = friend.getFriendNo();
-        this.friendName = user.getUsername();
-        this.friendMemo = friend.getFriendMemo();
-        this.reminderList = new ArrayList<>();
-        this.favorList = new ArrayList<>();
-        this.anniversaryList = new ArrayList<>();
-        this.givenGift = 0;
-        this.receivedGift = 0;
-        this.totalGift = 0;
-        this.userNo = friend.getFriendUserNo();
-        this.friendId = "";
-    }
+    private UserPhoto photo;
 
     @Builder
     public FriendResponseDto(Friend friend,
-                             User user,
-                             List<ReminderResponseDto> reminderList,
+                             User friendUser,
+                             List<ReminderSimpleDto> reminderList,
                              List<Favor> favorList,
                              List<AnniversaryResponseDto> anniversaryList,
                              HashMap<String, Integer> giftInfo,
                              String friendId
     ){
         this.friendNo = friend.getFriendNo();
-        this.friendName = friend.getFriendName();
+        this.friendName = friendUser.getName();
         this.friendMemo = friend.getFriendMemo();
         this.reminderList = reminderList;
         this.favorList = favorList;
@@ -79,26 +51,6 @@ public class FriendResponseDto {
         this.totalGift = giftInfo.get("total");
         this.userNo = friend.getFriendUserNo();
         this.friendId = friendId;
-    }
-
-    @Builder
-    public FriendResponseDto(Friend friend,
-                             List<ReminderResponseDto> reminderList,
-                             List<Favor> favorList,
-                             List<AnniversaryResponseDto> anniversaryList,
-                             HashMap<String, Integer> giftInfo,
-                             User friendUser
-    ){
-        this.friendNo = friend.getFriendNo();
-        this.friendName = friendUser.getUsername();
-        this.friendMemo = friend.getFriendMemo();
-        this.reminderList = reminderList;
-        this.favorList = favorList;
-        this.anniversaryList = anniversaryList;
-        this.givenGift = giftInfo.get("given");
-        this.receivedGift = giftInfo.get("received");
-        this.totalGift = giftInfo.get("total");
-        this.userNo = friend.getFriendUserNo();
-        this.friendId = friendUser.getUserId();
+        this.photo = friendUser.getUserProfilePhoto();
     }
 }

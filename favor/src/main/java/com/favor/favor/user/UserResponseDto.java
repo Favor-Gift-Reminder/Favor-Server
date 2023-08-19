@@ -4,8 +4,10 @@ import com.favor.favor.anniversary.AnniversaryResponseDto;
 import com.favor.favor.common.enums.Favor;
 import com.favor.favor.common.enums.Role;
 import com.favor.favor.friend.FriendResponseDto;
+import com.favor.favor.friend.FriendSimpleDto;
 import com.favor.favor.photo.UserPhoto;
 import com.favor.favor.reminder.ReminderResponseDto;
+import com.favor.favor.reminder.ReminderSimpleDto;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -43,10 +45,10 @@ public class  UserResponseDto {
     private int totalGift;
 
     @ApiModelProperty(value = "")
-    private List<ReminderResponseDto> reminderList;
+    private List<ReminderSimpleDto> reminderList;
 
     @ApiModelProperty(value = "")
-    private List<FriendResponseDto> friendList;
+    private List<FriendSimpleDto> friendList;
 
     @ApiModelProperty(value = "")
     private List<AnniversaryResponseDto> anniversaryList;
@@ -62,8 +64,8 @@ public class  UserResponseDto {
 
     @Builder
     public UserResponseDto(User user,
-                           List<ReminderResponseDto> reminderList,
-                           List<FriendResponseDto> friendList,
+                           List<ReminderSimpleDto> reminderList,
+                           List<FriendSimpleDto> friendList,
                            List<Favor> favorList,
                            List<AnniversaryResponseDto> anniversaryList,
                            HashMap<String, Integer> giftInfo){
