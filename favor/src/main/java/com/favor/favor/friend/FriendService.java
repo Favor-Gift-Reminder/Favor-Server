@@ -7,6 +7,7 @@ import com.favor.favor.exception.CustomException;
 import com.favor.favor.gift.Gift;
 import com.favor.favor.gift.GiftRepository;
 import com.favor.favor.gift.GiftResponseDto;
+import com.favor.favor.gift.GiftSimpleDto;
 import com.favor.favor.reminder.Reminder;
 import com.favor.favor.reminder.ReminderResponseDto;
 import com.favor.favor.reminder.ReminderSimpleDto;
@@ -45,7 +46,7 @@ public class FriendService {
         Boolean isDuplicate = false;
         List<Friend> friendList = user.getFriendList();
         for(Friend f : friendList){
-            if(f.getFriendUserNo() == friendUser.getUserNo()) {
+            if(f.getFriendUserNo() == friendUser.getUserNo() || f.getFriendUserNo() == user.getUserNo()) {
                 isDuplicate = true;
                 break;
             }
@@ -130,32 +131,32 @@ public class FriendService {
         }
         return friend;
     }
-    public List<GiftResponseDto> findGiftListByFriendNo(Long friendNo){
+    public List<GiftSimpleDto> findGiftListByFriendNo(Long friendNo){
         List<Gift> giftList = giftRepository.findGiftsByFriendNoListContains(friendNo);
-        List<GiftResponseDto> giftResponseDtoList = new ArrayList<>();
+        List<GiftSimpleDto> giftResponseDtoList = new ArrayList<>();
         for(Gift gift : giftList){
-            GiftResponseDto dto = new GiftResponseDto(gift);
+            GiftSimpleDto dto = new GiftSimpleDto(gift);
             giftResponseDtoList.add(dto);
         }
         return giftResponseDtoList;
     }
-    public List<GiftResponseDto> findGivenGiftList(Long friendNo){
+    public List<GiftSimpleDto> findGivenGiftList(Long friendNo){
         List<Gift> giftList = giftRepository.findGiftsByFriendNoListContains(friendNo);
-        List<GiftResponseDto> giftResponseDtoList = new ArrayList<>();
+        List<GiftSimpleDto> giftResponseDtoList = new ArrayList<>();
         for(Gift gift : giftList){
             if(gift.getIsGiven()){
-                GiftResponseDto dto = new GiftResponseDto(gift);
+                GiftSimpleDto dto = new GiftSimpleDto(gift);
                 giftResponseDtoList.add(dto);
             }
         }
         return giftResponseDtoList;
     }
-    public List<GiftResponseDto> findReceivedGiftList(Long friendNo){
+    public List<GiftSimpleDto> findReceivedGiftList(Long friendNo){
         List<Gift> giftList = giftRepository.findGiftsByFriendNoListContains(friendNo);
-        List<GiftResponseDto> giftResponseDtoList = new ArrayList<>();
+        List<GiftSimpleDto> giftResponseDtoList = new ArrayList<>();
         for(Gift gift : giftList){
             if(!gift.getIsGiven()){
-                GiftResponseDto dto = new GiftResponseDto(gift);
+                GiftSimpleDto dto = new GiftSimpleDto(gift);
                 giftResponseDtoList.add(dto);
             }
         }

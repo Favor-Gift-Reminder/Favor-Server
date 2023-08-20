@@ -20,7 +20,6 @@ import java.util.List;
 @RestController
 @RequestMapping("/anniversaries")
 @RequiredArgsConstructor
-@Log4j2
 public class AnniversaryController {
 
     private final AnniversaryService anniversaryService;
@@ -71,7 +70,6 @@ public class AnniversaryController {
                     message = "SERVER_ERROR")
     })
     @ResponseStatus(HttpStatus.OK)
-    @Transactional
     @GetMapping("/{anniversaryNo}")
     public ResponseEntity<DefaultResponseDto<Object>> readAnniversary(
             @PathVariable Long anniversaryNo){
@@ -101,7 +99,6 @@ public class AnniversaryController {
                     message = "SERVER_ERROR")
     })
     @ResponseStatus(HttpStatus.OK)
-    @Transactional
     @PatchMapping("/{anniversaryNo}")
     public ResponseEntity<DefaultResponseDto<Object>> updateAnniversary(
             @RequestBody AnniversaryUpdateRequestDto anniversaryUpdateRequestDto,
@@ -134,7 +131,6 @@ public class AnniversaryController {
                     message = "SERVER_ERROR")
     })
     @ResponseStatus(HttpStatus.OK)
-    @Transactional
     @PatchMapping("/pin/{anniversaryNo}")
     public ResponseEntity<DefaultResponseDto<Object>> updateIsPinned(
             @PathVariable Long anniversaryNo){
@@ -166,7 +162,6 @@ public class AnniversaryController {
                     message = "SERVER_ERROR")
     })
     @ResponseStatus(HttpStatus.OK)
-    @Transactional
     @DeleteMapping("/{anniversaryNo}")
     public ResponseEntity<DefaultResponseDto<Object>> deleteAnniversary(
             @PathVariable Long anniversaryNo){
@@ -197,7 +192,6 @@ public class AnniversaryController {
                     message = "SERVER_ERROR")
     })
     @ResponseStatus(HttpStatus.OK)
-    @Transactional
     @GetMapping("/admin")
     public ResponseEntity<DefaultResponseDto<Object>> readAll(){
 

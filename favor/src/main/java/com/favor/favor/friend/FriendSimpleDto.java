@@ -11,14 +11,12 @@ import lombok.Getter;
 public class FriendSimpleDto {
     private Long friendNo;
     private String friendName;
-    private Long userNo;
-    private String photo;
+    private UserPhoto photo;
 
     @Builder
     public FriendSimpleDto(Friend friend, User friendUser, UserPhoto photo){
         this.friendNo = friend.getFriendNo();
         this.friendName = friendUser.getName();
-        this.userNo = friend.getFriendUserNo();
-        this.photo = photo.getPhotoUrl();
+        this.photo = photo;
     }
 }

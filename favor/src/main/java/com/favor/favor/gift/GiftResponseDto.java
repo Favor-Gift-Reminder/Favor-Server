@@ -1,8 +1,7 @@
 package com.favor.favor.gift;
 
-import com.favor.favor.common.enums.CategoryGift;
+import com.favor.favor.common.enums.GiftCategory;
 import com.favor.favor.common.enums.Emotion;
-import com.favor.favor.friend.FriendResponseDto;
 import com.favor.favor.friend.FriendSimpleDto;
 import com.favor.favor.photo.GiftPhoto;
 import lombok.AllArgsConstructor;
@@ -27,7 +26,7 @@ public class GiftResponseDto {
     private String giftName;
     private LocalDate giftDate;
     private String giftMemo;
-    private CategoryGift categoryGift;
+    private GiftCategory giftCategory;
     private Emotion emotion;
     private Boolean isPinned;
     private Boolean isGiven;
@@ -46,7 +45,7 @@ public class GiftResponseDto {
         this.giftName = gift.getGiftName();
         this.giftDate = gift.getGiftDate();
         this.giftMemo = gift.getGiftMemo();
-        this.categoryGift = CategoryGift.valueOf(gift.getCategory());
+        this.giftCategory = GiftCategory.valueOf(gift.getCategory());
         this.emotion = Emotion.valueOf(gift.getEmotion());
         this.isPinned = gift.getIsPinned();
         this.isGiven = gift.getIsGiven();
@@ -65,7 +64,7 @@ public class GiftResponseDto {
         this.giftName = gift.getGiftName();
         this.giftDate = gift.getGiftDate();
         this.giftMemo = gift.getGiftMemo();
-        this.categoryGift = CategoryGift.valueOf(gift.getCategory());
+        this.giftCategory = GiftCategory.valueOf(gift.getCategory());
         this.emotion = Emotion.valueOf(gift.getEmotion());
         this.isPinned = gift.getIsPinned();
         this.isGiven = gift.getIsGiven();

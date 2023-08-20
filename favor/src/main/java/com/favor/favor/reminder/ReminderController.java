@@ -108,7 +108,6 @@ public class ReminderController {
                     message = "SERVER_ERROR")
     })
     @ResponseStatus(HttpStatus.OK)
-    @Transactional
     @GetMapping("/{reminderNo}")
     public ResponseEntity<DefaultResponseDto<Object>> readReminder(
             @PathVariable Long reminderNo){
@@ -138,7 +137,6 @@ public class ReminderController {
                     message = "SERVER_ERROR")
     })
     @ResponseStatus(HttpStatus.OK)
-    @Transactional
     @PatchMapping("/{reminderNo}")
     public ResponseEntity<DefaultResponseDto<Object>> updateReminder(
             @RequestBody ReminderUpdateRequestDto reminderUpdateRequestDto,
@@ -171,7 +169,6 @@ public class ReminderController {
                     message = "SERVER_ERROR")
     })
     @ResponseStatus(HttpStatus.OK)
-    @Transactional
     @DeleteMapping("/{reminderNo}")
     public ResponseEntity<DefaultResponseDto<Object>> deleteReminder(
             @PathVariable Long reminderNo){
@@ -202,7 +199,6 @@ public class ReminderController {
                     message = "SERVER_ERROR")
     })
     @ResponseStatus(HttpStatus.OK)
-    @Transactional
     @GetMapping("/admin")
     public ResponseEntity<DefaultResponseDto<Object>> readAll(){
 

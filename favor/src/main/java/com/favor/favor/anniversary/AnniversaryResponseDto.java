@@ -1,6 +1,6 @@
 package com.favor.favor.anniversary;
 
-import com.favor.favor.common.enums.CategoryAnniversary;
+import com.favor.favor.common.enums.AnniversaryCategory;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -18,7 +18,7 @@ public class AnniversaryResponseDto {
     private Long userNo;
     private LocalDateTime createdAt;
     private LocalDateTime modifiedAt;
-    private CategoryAnniversary categoryAnniversary;
+    private AnniversaryCategory anniversaryCategory;
 
     @Builder
     public AnniversaryResponseDto(Anniversary anniversary){
@@ -29,6 +29,6 @@ public class AnniversaryResponseDto {
         this.userNo = anniversary.getUser().getUserNo();
         this.createdAt = anniversary.getCreatedAt();
         this.modifiedAt = anniversary.getModifiedAt();
-        this.categoryAnniversary = CategoryAnniversary.valueOf(anniversary.getCategory());
+        this.anniversaryCategory = AnniversaryCategory.valueOf(anniversary.getCategory());
     }
 }

@@ -3,6 +3,7 @@ package com.favor.favor.friend;
 import com.favor.favor.common.DefaultResponseDto;
 
 import com.favor.favor.gift.GiftResponseDto;
+import com.favor.favor.gift.GiftSimpleDto;
 import com.favor.favor.user.User;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -71,7 +72,6 @@ public class FriendController {
                     message = "SERVER_ERROR")
     })
     @ResponseStatus(HttpStatus.OK)
-    @Transactional
     @GetMapping("/{friendNo}")
     public ResponseEntity<DefaultResponseDto<Object>> readFriend(
             @PathVariable Long friendNo){
@@ -102,7 +102,6 @@ public class FriendController {
                     message = "SERVER_ERROR")
     })
     @ResponseStatus(HttpStatus.OK)
-    @Transactional
     @PatchMapping("/{friendNo}")
     public ResponseEntity<DefaultResponseDto<Object>> updateFriend(
             @PathVariable Long friendNo,
@@ -137,7 +136,6 @@ public class FriendController {
                     message = "SERVER_ERROR")
     })
     @ResponseStatus(HttpStatus.OK)
-    @Transactional
     @DeleteMapping("/{friendNo}")
     public ResponseEntity<DefaultResponseDto<Object>> deleteFriend(
             @PathVariable Long friendNo){
@@ -167,7 +165,6 @@ public class FriendController {
                     message = "SERVER_ERROR")
     })
     @ResponseStatus(HttpStatus.OK)
-    @Transactional
     @GetMapping("/admin")
     public ResponseEntity<DefaultResponseDto<Object>> readAll(){
 
@@ -192,12 +189,11 @@ public class FriendController {
                     message = "SERVER_ERROR")
     })
     @ResponseStatus(HttpStatus.OK)
-    @Transactional
     @GetMapping("/total-gifts/{friendNo}")
     public ResponseEntity<DefaultResponseDto<Object>> readTotalGiftList(
             @PathVariable Long friendNo){
         friendService.isExistingFriendNo(friendNo);
-        List<GiftResponseDto> dto = friendService.findGiftListByFriendNo(friendNo);
+        List<GiftSimpleDto> dto = friendService.findGiftListByFriendNo(friendNo);
 
         return ResponseEntity.status(200)
                 .body(DefaultResponseDto.builder()
@@ -218,12 +214,11 @@ public class FriendController {
                     message = "SERVER_ERROR")
     })
     @ResponseStatus(HttpStatus.OK)
-    @Transactional
     @GetMapping("/given-gifts/{friendNo}")
     public ResponseEntity<DefaultResponseDto<Object>> readGivenGiftList(
             @PathVariable Long friendNo){ // 유저 입장에서 받은 선물이므로 관련 친구가 준 선물임
         friendService.isExistingFriendNo(friendNo);
-        List<GiftResponseDto> dto = friendService.findReceivedGiftList(friendNo);
+        List<GiftSimpleDto> dto = friendService.findReceivedGiftList(friendNo);
 
         return ResponseEntity.status(200)
                 .body(DefaultResponseDto.builder()
@@ -244,12 +239,11 @@ public class FriendController {
                     message = "SERVER_ERROR")
     })
     @ResponseStatus(HttpStatus.OK)
-    @Transactional
     @GetMapping("/received-gifts/{friendNo}")
     public ResponseEntity<DefaultResponseDto<Object>> readReceivedGiftList(
             @PathVariable Long friendNo){// 유저 입장에서 준 선물이므로 관련 친구가 받은 선물임
         friendService.isExistingFriendNo(friendNo);
-        List<GiftResponseDto> dto = friendService.findGivenGiftList(friendNo);
+        List<GiftSimpleDto> dto = friendService.findGivenGiftList(friendNo);
 
         return ResponseEntity.status(200)
                 .body(DefaultResponseDto.builder()

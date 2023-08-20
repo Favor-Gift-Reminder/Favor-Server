@@ -3,13 +3,12 @@ package com.favor.favor.user;
 import com.favor.favor.anniversary.Anniversary;
 import com.favor.favor.anniversary.AnniversaryResponseDto;
 import com.favor.favor.auth.JwtTokenProvider;
-import com.favor.favor.common.enums.CategoryGift;
+import com.favor.favor.common.enums.GiftCategory;
 import com.favor.favor.common.enums.Emotion;
 import com.favor.favor.common.enums.Favor;
 import com.favor.favor.common.enums.Role;
 import com.favor.favor.exception.CustomException;
 import com.favor.favor.friend.Friend;
-import com.favor.favor.friend.FriendResponseDto;
 import com.favor.favor.friend.FriendRepository;
 import com.favor.favor.friend.FriendSimpleDto;
 import com.favor.favor.gift.*;
@@ -17,7 +16,6 @@ import com.favor.favor.gift.GiftResponseDto;
 import com.favor.favor.photo.UserPhoto;
 import com.favor.favor.reminder.Reminder;
 import com.favor.favor.reminder.ReminderRepository;
-import com.favor.favor.reminder.ReminderResponseDto;
 import com.favor.favor.reminder.ReminderSimpleDto;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -202,9 +200,9 @@ public class UserService {
         return g_List;
     }
 
-    public List<GiftSimpleDto> readGiftListByCategory(Long userNo, CategoryGift categoryGift){
+    public List<GiftSimpleDto> readGiftListByCategory(Long userNo, GiftCategory giftCategory){
         User user = findUserByUserNo(userNo);
-        Integer categoryNo = categoryGift.getType();
+        Integer categoryNo = giftCategory.getType();
         List<Gift> giftList = giftRepository.findGiftsByUserAndCategory(user, categoryNo);
         List<GiftSimpleDto> g_List = new ArrayList<>();
         for(Gift gift : giftList){

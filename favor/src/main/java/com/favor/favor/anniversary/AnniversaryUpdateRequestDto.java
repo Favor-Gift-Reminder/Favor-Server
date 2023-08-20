@@ -1,7 +1,6 @@
 package com.favor.favor.anniversary;
 
-import com.favor.favor.common.enums.CategoryAnniversary;
-import com.favor.favor.common.enums.CategoryGift;
+import com.favor.favor.common.enums.AnniversaryCategory;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -20,7 +19,7 @@ public class AnniversaryUpdateRequestDto {
     private String anniversaryDate;
 
     @ApiModelProperty(position = 3, required = true, value = "종류", example = "축하_생일")
-    private CategoryAnniversary categoryAnniversary;
+    private AnniversaryCategory anniversaryCategory;
 
     @ApiModelProperty(position = 4, required = true, value = "핀 여부", example = "false")
     private Boolean isPinned;

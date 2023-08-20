@@ -73,7 +73,6 @@ public class GiftController {
                     message = "SERVER_ERROR")
     })
     @ResponseStatus(HttpStatus.OK)
-    @Transactional
     @GetMapping("/{giftNo}")
     public ResponseEntity<DefaultResponseDto<Object>> readGift(
             @PathVariable Long giftNo){
@@ -105,7 +104,6 @@ public class GiftController {
                     message = "SERVER_ERROR")
     })
     @ResponseStatus(HttpStatus.OK)
-    @Transactional
     @PatchMapping("/{giftNo}")
     public ResponseEntity<DefaultResponseDto<Object>> updateGift(
             @RequestBody GiftUpdateRequestDto giftUpdateRequestDto,
@@ -139,7 +137,6 @@ public class GiftController {
                     message = "SERVER_ERROR")
     })
     @ResponseStatus(HttpStatus.OK)
-    @Transactional
     @PatchMapping("/temp-friend-list/{giftNo}")
     public ResponseEntity<DefaultResponseDto<Object>> updateTempFriendListGift(
             @PathVariable Long giftNo,
@@ -174,7 +171,6 @@ public class GiftController {
                     message = "SERVER_ERROR")
     })
     @ResponseStatus(HttpStatus.OK)
-    @Transactional
     @PatchMapping("/pin/{giftNo}")
     public ResponseEntity<DefaultResponseDto<Object>> updateIsPinned(
             @PathVariable Long giftNo){
@@ -207,7 +203,6 @@ public class GiftController {
                     message = "SERVER_ERROR")
     })
     @ResponseStatus(HttpStatus.OK)
-    @Transactional
     @DeleteMapping("/{giftNo}")
     public ResponseEntity<DefaultResponseDto<Object>> deleteGift(
             @PathVariable Long giftNo){
@@ -244,7 +239,6 @@ public class GiftController {
                     message = "SERVER_ERROR")
     })
     @ResponseStatus(HttpStatus.OK)
-    @Transactional
     @GetMapping("/admin")
     public ResponseEntity<DefaultResponseDto<Object>> readAll(){
 

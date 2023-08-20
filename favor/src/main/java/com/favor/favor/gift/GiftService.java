@@ -3,7 +3,6 @@ package com.favor.favor.gift;
 import com.favor.favor.exception.CustomException;
 import com.favor.favor.friend.Friend;
 import com.favor.favor.friend.FriendRepository;
-import com.favor.favor.friend.FriendResponseDto;
 import com.favor.favor.friend.FriendSimpleDto;
 import com.favor.favor.photo.UserPhoto;
 import com.favor.favor.user.User;
@@ -55,11 +54,12 @@ public class GiftService {
         }
     }
 
+    @Transactional
     public void updateGift(GiftUpdateRequestDto dto, Gift gift){
         //수정된 gift 정보 저장 (친구 목록 제외)
         gift.setGiftName(dto.getGiftName());
         gift.setGiftMemo(dto.getGiftMemo());
-        gift.setCategory(dto.getCategoryGift());
+        gift.setCategory(dto.getGiftCategory());
         gift.setEmotion(dto.getEmotion());
         gift.setIsGiven(dto.getIsGiven());
         gift.setGiftDate(returnLocalDate(dto.getGiftDate()));
@@ -69,6 +69,7 @@ public class GiftService {
 
         //친구 목록 수정 시
         //빠진 친구들의 선물 목록에서 선물 식별자 삭제
+        //@Transactional 없는 경우 ConcurrentModificationException 발생
         for (Long friendNo : existingFriendNoList) {
             if (!updatedFriendNoList.contains(friendNo)) {
                 Friend friend = findFriendByFriendNo(friendNo);
@@ -90,6 +91,7 @@ public class GiftService {
         }
         giftRepository.save(gift);
     }
+
     public void updateIsPinned(Gift gift){
         gift.setIsPinned(gift.getIsPinned() == true ? false : true);
         giftRepository.save(gift);

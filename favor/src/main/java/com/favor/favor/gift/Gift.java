@@ -1,11 +1,12 @@
 package com.favor.favor.gift;
 
-import com.favor.favor.common.enums.CategoryGift;
+import com.favor.favor.common.enums.GiftCategory;
 import com.favor.favor.common.enums.Emotion;
 import com.favor.favor.common.TimeStamped;
 import com.favor.favor.photo.GiftPhoto;
 import com.favor.favor.user.User;
 import lombok.*;
+import org.springframework.lang.Nullable;
 
 import javax.persistence.*;
 import java.time.LocalDate;
@@ -28,19 +29,21 @@ public class Gift extends TimeStamped {
         this.giftName = giftName;
     }
 
+    @Nullable
     private LocalDate giftDate;
     public void setGiftDate(LocalDate giftDate){
         this.giftDate = giftDate;
     }
 
+    @Nullable
     private String giftMemo;
     public void setGiftMemo(String giftMemo){
         this.giftMemo = giftMemo;
     }
 
     private Integer category;
-    public void setCategory(CategoryGift categoryGift){
-        this.category = categoryGift.getType();
+    public void setCategory(GiftCategory giftCategory){
+        this.category = giftCategory.getType();
     }
 
     private Integer emotion;
@@ -65,6 +68,7 @@ public class Gift extends TimeStamped {
     private User user;
     public void setUser(User user) { this.user = user; }
 
+    @Nullable
     @Builder.Default
     @ElementCollection
     private List<Long> friendNoList = new ArrayList<>();
@@ -82,6 +86,7 @@ public class Gift extends TimeStamped {
         this.giftPhotoList = giftPhotoList;
     }
 
+    @Nullable
     @ElementCollection
     private List<String> tempFriendList;
     public void setTempFriendList(GiftTempFriendListDto tempFriendList){

@@ -1,21 +1,17 @@
 package com.favor.favor.anniversary;
 
 import com.favor.favor.common.TimeStamped;
-import com.favor.favor.common.enums.CategoryAnniversary;
-import com.favor.favor.common.enums.CategoryGift;
+import com.favor.favor.common.enums.AnniversaryCategory;
 import com.favor.favor.user.User;
 import lombok.*;
 
 import javax.persistence.*;
-import javax.transaction.Transactional;
 import java.time.LocalDate;
+
 
 @Entity
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-@AllArgsConstructor
-@Builder
-@Transactional
 public class Anniversary extends TimeStamped {
 
     @Id
@@ -29,8 +25,8 @@ public class Anniversary extends TimeStamped {
     public void setAnniversaryDate(LocalDate anniversaryDate){ this.anniversaryDate = anniversaryDate; }
 
     private Integer category;
-    public void setCategory(CategoryAnniversary categoryAnniversary){
-        this.category = categoryAnniversary.getType();
+    public void setCategory(AnniversaryCategory anniversaryCategory){
+        this.category = anniversaryCategory.getType();
     }
 
     private Boolean isPinned;
@@ -40,4 +36,12 @@ public class Anniversary extends TimeStamped {
     @JoinColumn(name = "user_user_no")
     private User user;
 
+    @Builder
+    public Anniversary(String anniversaryTitle, LocalDate anniversaryDate, Integer category, Boolean isPinned, User user) {
+        this.anniversaryTitle = anniversaryTitle;
+        this.anniversaryDate = anniversaryDate;
+        this.category = category;
+        this.isPinned = isPinned;
+        this.user = user;
+    }
 }

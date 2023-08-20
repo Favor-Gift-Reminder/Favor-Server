@@ -3,7 +3,7 @@ package com.favor.favor.user;
 
 import com.favor.favor.anniversary.AnniversaryResponseDto;
 import com.favor.favor.common.DefaultResponseDto;
-import com.favor.favor.common.enums.CategoryGift;
+import com.favor.favor.common.enums.GiftCategory;
 import com.favor.favor.common.enums.Emotion;
 import com.favor.favor.friend.FriendResponseDto;
 import com.favor.favor.friend.FriendSimpleDto;
@@ -18,7 +18,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
-import javax.transaction.Transactional;
 import javax.validation.Valid;
 import java.util.List;
 
@@ -82,7 +81,6 @@ public class UserController {
                     message = "SERVER_ERROR")
     })
     @ResponseStatus(HttpStatus.CREATED)
-    @Transactional
     @PatchMapping("/profile")
     public ResponseEntity<DefaultResponseDto<Object>> createProfile(
             @RequestBody @Valid ProfileDto profileDto,
@@ -149,7 +147,6 @@ public class UserController {
                     message = "SERVER_ERROR")
     })
     @ResponseStatus(HttpStatus.OK)
-    @Transactional
     @GetMapping
     public ResponseEntity<DefaultResponseDto<Object>> readUser(
             @AuthenticationPrincipal User loginUser
@@ -184,7 +181,6 @@ public class UserController {
                     message = "SERVER_ERROR")
     })
     @ResponseStatus(HttpStatus.OK)
-    @Transactional
     @PatchMapping
     public ResponseEntity<DefaultResponseDto<Object>> updateUser(
             @AuthenticationPrincipal User loginUser,
@@ -221,7 +217,6 @@ public class UserController {
                     message = "SERVER_ERROR")
     })
     @ResponseStatus(HttpStatus.OK)
-    @Transactional
     @DeleteMapping
     public ResponseEntity<DefaultResponseDto<Object>> deleteUser(
             @AuthenticationPrincipal User loginUser){
@@ -259,7 +254,6 @@ public class UserController {
                     message = "SERVER_ERROR")
     })
     @ResponseStatus(HttpStatus.OK)
-    @Transactional
     @PatchMapping("/password")
     public ResponseEntity<DefaultResponseDto<Object>> updatePassword(
             @RequestBody @Valid UserUpdatePasswordRequestDto passwordDto){
@@ -291,7 +285,6 @@ public class UserController {
                     message = "SERVER_ERROR")
     })
     @ResponseStatus(HttpStatus.OK)
-    @Transactional
     @GetMapping("/reminders")
     public ResponseEntity<DefaultResponseDto<Object>> readReminderList(
             @AuthenticationPrincipal User loginUser){
@@ -322,7 +315,6 @@ public class UserController {
                     message = "SERVER_ERROR")
     })
     @ResponseStatus(HttpStatus.OK)
-    @Transactional
     @GetMapping("/reminders/{year}/{month}")
     public ResponseEntity<DefaultResponseDto<Object>> readReminderListByFMonthAndYear(
             @AuthenticationPrincipal User loginUser,
@@ -356,7 +348,6 @@ public class UserController {
                     message = "SERVER_ERROR")
     })
     @ResponseStatus(HttpStatus.OK)
-    @Transactional
     @GetMapping("/gifts")
     public ResponseEntity<DefaultResponseDto<Object>> readGiftList(
             @AuthenticationPrincipal User loginUser){
@@ -388,7 +379,6 @@ public class UserController {
                     message = "SERVER_ERROR")
     })
     @ResponseStatus(HttpStatus.OK)
-    @Transactional
     @GetMapping("/friends")
     public ResponseEntity<DefaultResponseDto<Object>> readFriendList(
             @AuthenticationPrincipal User loginUser){
@@ -420,7 +410,6 @@ public class UserController {
                     message = "SERVER_ERROR")
     })
     @ResponseStatus(HttpStatus.OK)
-    @Transactional
     @GetMapping("/anniversaries")
     public ResponseEntity<DefaultResponseDto<Object>> readAnniversaryList(
             @AuthenticationPrincipal User loginUser){
@@ -451,7 +440,6 @@ public class UserController {
                     message = "SERVER_ERROR")
     })
     @ResponseStatus(HttpStatus.OK)
-    @Transactional
     @GetMapping("/admin")
     public ResponseEntity<DefaultResponseDto<Object>> readAll(){
 
@@ -479,7 +467,6 @@ public class UserController {
                     message = "SERVER_ERROR")
     })
     @ResponseStatus(HttpStatus.OK)
-    @Transactional
     @GetMapping("/gifts-by-name/{giftName}")
     public ResponseEntity<DefaultResponseDto<Object>> readGiftListByName (
             @AuthenticationPrincipal User loginUser,
@@ -512,16 +499,15 @@ public class UserController {
                     message = "SERVER_ERROR")
     })
     @ResponseStatus(HttpStatus.OK)
-    @Transactional
     @GetMapping("/gifts-by-category/{category}")
     public ResponseEntity<DefaultResponseDto<Object>> readGiftListByCategory(
             @AuthenticationPrincipal User loginUser,
-            @PathVariable("category") CategoryGift categoryGift){
+            @PathVariable("category") GiftCategory giftCategory){
 
         Long userNo = loginUser.getUserNo();
         userService.isExistingUserNo(userNo);
 
-        List<GiftSimpleDto> dto =  userService.readGiftListByCategory(userNo, categoryGift);
+        List<GiftSimpleDto> dto =  userService.readGiftListByCategory(userNo, giftCategory);
 
         return ResponseEntity.status(200)
                 .body(DefaultResponseDto.builder()
@@ -544,7 +530,6 @@ public class UserController {
                     message = "SERVER_ERROR")
     })
     @ResponseStatus(HttpStatus.OK)
-    @Transactional
     @GetMapping("/gifts-by-emotion/{emotion}")
     public ResponseEntity<DefaultResponseDto<Object>> readGiftListByEmotion(
             @AuthenticationPrincipal User loginUser,
@@ -576,7 +561,6 @@ public class UserController {
                     message = "SERVER_ERROR")
     })
     @ResponseStatus(HttpStatus.OK)
-    @Transactional
     @GetMapping("/{userId}")
     public ResponseEntity<DefaultResponseDto<Object>> readUserByUserId(
             @PathVariable("userId") String userId){
@@ -603,7 +587,6 @@ public class UserController {
                     message = "SERVER_ERROR")
     })
     @ResponseStatus(HttpStatus.OK)
-    @Transactional
     @GetMapping("/gifts-given")
     public ResponseEntity<DefaultResponseDto<Object>> readGivenGiftList(
             @AuthenticationPrincipal User loginUser){
@@ -631,7 +614,6 @@ public class UserController {
                     message = "SERVER_ERROR")
     })
     @ResponseStatus(HttpStatus.OK)
-    @Transactional
     @GetMapping("/gifts-received")
     public ResponseEntity<DefaultResponseDto<Object>> readReceivedGiftList(
             @AuthenticationPrincipal User loginUser){

@@ -1,7 +1,6 @@
 package com.favor.favor.anniversary;
 
-import com.favor.favor.common.enums.CategoryAnniversary;
-import com.favor.favor.common.enums.CategoryGift;
+import com.favor.favor.common.enums.AnniversaryCategory;
 import com.favor.favor.user.User;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.AllArgsConstructor;
@@ -22,16 +21,17 @@ public class AnniversaryRequestDto {
     private String anniversaryDate;
 
     @ApiModelProperty(position = 3, required = true, value = "종류", example = "축하_생일")
-    private CategoryAnniversary categoryAnniversary;
+    private AnniversaryCategory anniversaryCategory;
 
     @Transactional
-    public Anniversary toEntity(User user, LocalDate localDate){
+    public Anniversary toEntity(String anniversaryTitle, User user){
         return Anniversary.builder()
                 .anniversaryTitle(anniversaryTitle)
-                .anniversaryDate(localDate)
-                .category(categoryAnniversary.getType())
+                .anniversaryDate(LocalDate.parse(anniversaryDate))
+                .category(anniversaryCategory.getType())
                 .isPinned(false)
                 .user(user)
                 .build();
     }
+
 }

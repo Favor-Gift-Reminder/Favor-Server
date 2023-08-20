@@ -1,12 +1,13 @@
 package com.favor.favor.gift;
 
-import com.favor.favor.common.enums.CategoryGift;
+import com.favor.favor.common.enums.GiftCategory;
 import com.favor.favor.common.enums.Emotion;
 import com.favor.favor.user.User;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import org.springframework.lang.Nullable;
 
 import javax.transaction.Transactional;
 import javax.validation.constraints.NotNull;
@@ -23,15 +24,17 @@ public class GiftRequestDto {
     private String giftName;
 
     @ApiModelProperty(position = 2, required = false, value = "선물날짜", example = "1996-02-29")
-    @NotNull
+    @Nullable
     private String giftDate;
 
+
     @ApiModelProperty(position = 3, required = false, value = "선물메모", example = "선물메모")
+    @Nullable
     private String giftMemo;
 
     @ApiModelProperty(position = 4, required = false, value = "카테고리", example = "생일")
     @NotNull
-    private CategoryGift categoryGift;
+    private GiftCategory giftCategory;
 
     @ApiModelProperty(position = 5, required = false, value = "감정", example = "기뻐요")
     private Emotion emotion;
@@ -45,9 +48,11 @@ public class GiftRequestDto {
     private Boolean isGiven;
 
     @ApiModelProperty(position = 8, required = false, value = "연관친구 리스트", example = "[1]")
+    @Nullable
     private List<Long> friendNoList;
 
     @ApiModelProperty(position = 9, required = true, value = "임시친구 리스트", example = "[\"차은우\", \"카리나\"]")
+    @Nullable
     private List<String> tempFriendList;
 
     @Transactional
@@ -56,7 +61,7 @@ public class GiftRequestDto {
                 .giftName(giftName)
                 .giftDate(giftDate)
                 .giftMemo(giftMemo)
-                .category(categoryGift.getType())
+                .category(giftCategory.getType())
                 .emotion(emotion.getType())
                 .isPinned(false)
                 .isGiven(isGiven)
