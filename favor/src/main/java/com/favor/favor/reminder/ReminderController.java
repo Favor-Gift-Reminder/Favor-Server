@@ -108,7 +108,6 @@ public class ReminderController {
                     message = "SERVER_ERROR")
     })
     @ResponseStatus(HttpStatus.OK)
-    @Transactional
     @GetMapping("/{reminderNo}")
     public ResponseEntity<DefaultResponseDto<Object>> readReminder(
             @PathVariable Long reminderNo){
@@ -138,17 +137,15 @@ public class ReminderController {
                     message = "SERVER_ERROR")
     })
     @ResponseStatus(HttpStatus.OK)
-    @Transactional
     @PatchMapping("/{reminderNo}")
     public ResponseEntity<DefaultResponseDto<Object>> updateReminder(
             @RequestBody ReminderUpdateRequestDto reminderUpdateRequestDto,
-            @PathVariable Long reminderNo, Long friendNo){
+            @PathVariable Long reminderNo){
 
         reminderService.isExistingReminderNo(reminderNo);
-        reminderService.isExistingFriendNo(friendNo);
 
         Reminder reminder = reminderService.findReminderByReminderNo(reminderNo);
-        reminderService.updateReminder(reminderUpdateRequestDto, reminderNo, friendNo);
+        reminderService.updateReminder(reminderUpdateRequestDto, reminderNo);
         ReminderResponseDto dto = reminderService.returnDto(reminder);
 
         return ResponseEntity.status(200)
@@ -172,7 +169,6 @@ public class ReminderController {
                     message = "SERVER_ERROR")
     })
     @ResponseStatus(HttpStatus.OK)
-    @Transactional
     @DeleteMapping("/{reminderNo}")
     public ResponseEntity<DefaultResponseDto<Object>> deleteReminder(
             @PathVariable Long reminderNo){
@@ -203,11 +199,10 @@ public class ReminderController {
                     message = "SERVER_ERROR")
     })
     @ResponseStatus(HttpStatus.OK)
-    @Transactional
     @GetMapping("/admin")
     public ResponseEntity<DefaultResponseDto<Object>> readAll(){
 
-        List<ReminderResponseDto> dto = reminderService.readAll();
+        List<ReminderSimpleDto> dto = reminderService.readAll();
 
         return ResponseEntity.status(200)
                 .body(DefaultResponseDto.builder()

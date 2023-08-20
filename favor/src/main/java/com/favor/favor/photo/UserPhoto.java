@@ -1,33 +1,30 @@
 package com.favor.favor.photo;
 
 import com.favor.favor.common.TimeStamped;
-import lombok.*;
+import lombok.AccessLevel;
+import lombok.Builder;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.transaction.Transactional;
 
-@Entity
 @Getter
+@Entity
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-@AllArgsConstructor
-@Builder
-@Transactional
-public class Photo extends TimeStamped {
-
+public class UserPhoto extends TimeStamped {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long photoNo;
+    private Long id;
 
-    private Long photoIdx;
+    private String photoUrl;
 
-    private String originalFileName;
-
-    private String storedFileName;
-
-    private long fileSize;
+    @Builder
+    public UserPhoto(String photoUrl) {
+        this.photoUrl = photoUrl;
+    }
 
 
 }

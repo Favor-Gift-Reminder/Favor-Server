@@ -7,8 +7,10 @@ import com.favor.favor.exception.CustomException;
 import com.favor.favor.gift.Gift;
 import com.favor.favor.gift.GiftRepository;
 import com.favor.favor.gift.GiftResponseDto;
+import com.favor.favor.gift.GiftSimpleDto;
 import com.favor.favor.reminder.Reminder;
 import com.favor.favor.reminder.ReminderResponseDto;
+import com.favor.favor.reminder.ReminderSimpleDto;
 import com.favor.favor.user.User;
 import com.favor.favor.user.UserRepository;
 import lombok.RequiredArgsConstructor;
@@ -44,7 +46,7 @@ public class FriendService {
         Boolean isDuplicate = false;
         List<Friend> friendList = user.getFriendList();
         for(Friend f : friendList){
-            if(f.getFriendUserNo() == friendUser.getUserNo()) {
+            if(f.getFriendUserNo() == friendUser.getUserNo() || f.getFriendUserNo() == user.getUserNo()) {
                 isDuplicate = true;
                 break;
             }
@@ -58,19 +60,19 @@ public class FriendService {
 
     }
 
+    //친구 삭제
     @Transactional
     public void deleteFriend(Long friendNo){
         Friend friend = findFriendByFriendNo(friendNo);
 
+        //친구의 giftNoList
         List<Long> giftNoList = friend.getGiftNoList();
+        //선물들의 친구 목록에서 친구 삭제
         for(Long g : giftNoList){
             Gift gift = findGiftByGiftNo(g);
-            List<Long> friendNoList = gift.getFriendNoList();
-            friendNoList.remove(friendNo);
-            gift.setFriendNoList(friendNoList);
+            gift.removeFriendNo(friendNo);
             giftRepository.save(gift);
         }
-
         friendRepository.deleteById(friendNo);
     }
 
@@ -129,32 +131,32 @@ public class FriendService {
         }
         return friend;
     }
-    public List<GiftResponseDto> findGiftListByFriendNo(Long friendNo){
+    public List<GiftSimpleDto> findGiftListByFriendNo(Long friendNo){
         List<Gift> giftList = giftRepository.findGiftsByFriendNoListContains(friendNo);
-        List<GiftResponseDto> giftResponseDtoList = new ArrayList<>();
+        List<GiftSimpleDto> giftResponseDtoList = new ArrayList<>();
         for(Gift gift : giftList){
-            GiftResponseDto dto = new GiftResponseDto(gift);
+            GiftSimpleDto dto = new GiftSimpleDto(gift);
             giftResponseDtoList.add(dto);
         }
         return giftResponseDtoList;
     }
-    public List<GiftResponseDto> findGivenGiftList(Long friendNo){
+    public List<GiftSimpleDto> findGivenGiftList(Long friendNo){
         List<Gift> giftList = giftRepository.findGiftsByFriendNoListContains(friendNo);
-        List<GiftResponseDto> giftResponseDtoList = new ArrayList<>();
+        List<GiftSimpleDto> giftResponseDtoList = new ArrayList<>();
         for(Gift gift : giftList){
             if(gift.getIsGiven()){
-                GiftResponseDto dto = new GiftResponseDto(gift);
+                GiftSimpleDto dto = new GiftSimpleDto(gift);
                 giftResponseDtoList.add(dto);
             }
         }
         return giftResponseDtoList;
     }
-    public List<GiftResponseDto> findReceivedGiftList(Long friendNo){
+    public List<GiftSimpleDto> findReceivedGiftList(Long friendNo){
         List<Gift> giftList = giftRepository.findGiftsByFriendNoListContains(friendNo);
-        List<GiftResponseDto> giftResponseDtoList = new ArrayList<>();
+        List<GiftSimpleDto> giftResponseDtoList = new ArrayList<>();
         for(Gift gift : giftList){
             if(!gift.getIsGiven()){
-                GiftResponseDto dto = new GiftResponseDto(gift);
+                GiftSimpleDto dto = new GiftSimpleDto(gift);
                 giftResponseDtoList.add(dto);
             }
         }
@@ -165,24 +167,26 @@ public class FriendService {
     //RETURN
     @Transactional
     public FriendResponseDto returnDto(Friend friend){
-        User user = friend.getUser();
+        User friendUser = findUserByUserNo(friend.getFriendUserNo());
 
-        List<Reminder> reminderList = user.getReminderList();
-        List<ReminderResponseDto> reminderDtoList = new ArrayList<>();
+        List<Reminder> reminderList = friendUser.getReminderList();
+        List<ReminderSimpleDto> reminderDtoList = new ArrayList<>();
         for(Reminder r : reminderList){
-            reminderDtoList.add(new ReminderResponseDto(r));
+            reminderDtoList.add(new ReminderSimpleDto(r));
         }
         List<Favor> favorList = new ArrayList<>();
-        for(Integer favorType : user.getFavorList()){
+        for(Integer favorType : friendUser.getFavorList()){
             favorList.add(Favor.valueOf(favorType));
         }
         List<AnniversaryResponseDto> anniversaryList = new ArrayList<>();
-        for(Anniversary a : user.getAnniversaryList()){
+        for(Anniversary a : friendUser.getAnniversaryList()){
             anniversaryList.add(new AnniversaryResponseDto(a));
         }
         HashMap<String, Integer> giftInfo = returnGiftInfo(friend.getFriendNo());
 
-        return new FriendResponseDto(friend, reminderDtoList, favorList, anniversaryList, giftInfo);
+        String friendId = friendUser.getUserId();
+
+        return new FriendResponseDto(friend, friendUser, reminderDtoList, favorList, anniversaryList, giftInfo, friendId);
     }
 
     public HashMap<String, Integer> returnGiftInfo(Long friendNo) {

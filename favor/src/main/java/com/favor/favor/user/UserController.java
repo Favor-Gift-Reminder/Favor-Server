@@ -3,11 +3,14 @@ package com.favor.favor.user;
 
 import com.favor.favor.anniversary.AnniversaryResponseDto;
 import com.favor.favor.common.DefaultResponseDto;
-import com.favor.favor.common.enums.Category;
+import com.favor.favor.common.enums.GiftCategory;
 import com.favor.favor.common.enums.Emotion;
 import com.favor.favor.friend.FriendResponseDto;
+import com.favor.favor.friend.FriendSimpleDto;
 import com.favor.favor.gift.GiftResponseDto;
+import com.favor.favor.gift.GiftSimpleDto;
 import com.favor.favor.reminder.ReminderResponseDto;
+import com.favor.favor.reminder.ReminderSimpleDto;
 import io.swagger.annotations.*;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -15,7 +18,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
-import javax.transaction.Transactional;
 import javax.validation.Valid;
 import java.util.List;
 
@@ -25,6 +27,7 @@ import java.util.List;
 @RequiredArgsConstructor
 public class UserController {
     private final UserService userService;
+    private final UserPhotoService userPhotoService;
 
     @ApiOperation(value = "회원가입")
     @ApiResponses(value={
@@ -78,7 +81,6 @@ public class UserController {
                     message = "SERVER_ERROR")
     })
     @ResponseStatus(HttpStatus.CREATED)
-    @Transactional
     @PatchMapping("/profile")
     public ResponseEntity<DefaultResponseDto<Object>> createProfile(
             @RequestBody @Valid ProfileDto profileDto,
@@ -145,10 +147,10 @@ public class UserController {
                     message = "SERVER_ERROR")
     })
     @ResponseStatus(HttpStatus.OK)
-    @Transactional
     @GetMapping
     public ResponseEntity<DefaultResponseDto<Object>> readUser(
-            @AuthenticationPrincipal User loginUser){
+            @AuthenticationPrincipal User loginUser
+    ){
 
         Long userNo = loginUser.getUserNo();
 
@@ -179,22 +181,17 @@ public class UserController {
                     message = "SERVER_ERROR")
     })
     @ResponseStatus(HttpStatus.OK)
-    @Transactional
     @PatchMapping
     public ResponseEntity<DefaultResponseDto<Object>> updateUser(
             @AuthenticationPrincipal User loginUser,
-            @RequestBody @Valid UserUpdateRequestDto userUpdateRequestDto){
+            @RequestBody @Valid UserUpdateRequestDto userUpdateRequestDto
+    ){
 
         Long userNo = loginUser.getUserNo();
-
         userService.isExistingUserNo(userNo);
-
-//        ++
         User user = userService.findUserByUserNo(userNo);
 
-//        userService.updateUser(loginUser, userUpdateRequestDto);
         userService.updateUser(user, userUpdateRequestDto);
-//        UserResponseDto dto = userService.returnUserDto(loginUser);
         UserResponseDto dto = userService.returnUserDto(user);
 
 
@@ -220,7 +217,6 @@ public class UserController {
                     message = "SERVER_ERROR")
     })
     @ResponseStatus(HttpStatus.OK)
-    @Transactional
     @DeleteMapping
     public ResponseEntity<DefaultResponseDto<Object>> deleteUser(
             @AuthenticationPrincipal User loginUser){
@@ -229,7 +225,11 @@ public class UserController {
 
         userService.isExistingUserNo(userNo);
 
-        UserResponseDto dto = userService.returnUserDto(loginUser);
+        User user = userService.findUserByUserNo(userNo);
+        UserResponseDto dto = userService.returnUserDto(user);
+
+        userPhotoService.deleteUserProfilePhoto(userNo);
+        userPhotoService.deleteUserBackgroundPhoto(userNo);
 
         userService.deleteUser(userNo);
 
@@ -254,7 +254,6 @@ public class UserController {
                     message = "SERVER_ERROR")
     })
     @ResponseStatus(HttpStatus.OK)
-    @Transactional
     @PatchMapping("/password")
     public ResponseEntity<DefaultResponseDto<Object>> updatePassword(
             @RequestBody @Valid UserUpdatePasswordRequestDto passwordDto){
@@ -286,7 +285,6 @@ public class UserController {
                     message = "SERVER_ERROR")
     })
     @ResponseStatus(HttpStatus.OK)
-    @Transactional
     @GetMapping("/reminders")
     public ResponseEntity<DefaultResponseDto<Object>> readReminderList(
             @AuthenticationPrincipal User loginUser){
@@ -295,7 +293,7 @@ public class UserController {
 
         userService.isExistingUserNo(userNo);
 
-        List<ReminderResponseDto> reminders = userService.readReminderList(userNo);
+        List<ReminderSimpleDto> reminders = userService.readReminderList(userNo);
 
         return ResponseEntity.status(200)
                 .body(DefaultResponseDto.builder()
@@ -317,7 +315,6 @@ public class UserController {
                     message = "SERVER_ERROR")
     })
     @ResponseStatus(HttpStatus.OK)
-    @Transactional
     @GetMapping("/reminders/{year}/{month}")
     public ResponseEntity<DefaultResponseDto<Object>> readReminderListByFMonthAndYear(
             @AuthenticationPrincipal User loginUser,
@@ -328,7 +325,7 @@ public class UserController {
 
         userService.isExistingUserNo(userNo);
 
-        List<ReminderResponseDto> dto = userService.readReminderListByFMonthAndYear(userNo, year, month);
+        List<ReminderSimpleDto> dto = userService.readReminderListByFMonthAndYear(userNo, year, month);
 
         return ResponseEntity.status(200)
                 .body(DefaultResponseDto.builder()
@@ -351,7 +348,6 @@ public class UserController {
                     message = "SERVER_ERROR")
     })
     @ResponseStatus(HttpStatus.OK)
-    @Transactional
     @GetMapping("/gifts")
     public ResponseEntity<DefaultResponseDto<Object>> readGiftList(
             @AuthenticationPrincipal User loginUser){
@@ -360,7 +356,7 @@ public class UserController {
 
         userService.isExistingUserNo(userNo);
 
-        List<GiftResponseDto> gifts = userService.readGiftList(userNo);
+        List<GiftSimpleDto> gifts = userService.readGiftList(userNo);
 
         return ResponseEntity.status(200)
                 .body(DefaultResponseDto.builder()
@@ -383,7 +379,6 @@ public class UserController {
                     message = "SERVER_ERROR")
     })
     @ResponseStatus(HttpStatus.OK)
-    @Transactional
     @GetMapping("/friends")
     public ResponseEntity<DefaultResponseDto<Object>> readFriendList(
             @AuthenticationPrincipal User loginUser){
@@ -392,7 +387,7 @@ public class UserController {
 
         userService.isExistingUserNo(userNo);
 
-        List<FriendResponseDto> friends = userService.readFriendList(userNo);
+        List<FriendSimpleDto> friends = userService.readFriendList(userNo);
 
         return ResponseEntity.status(200)
                 .body(DefaultResponseDto.builder()
@@ -415,7 +410,6 @@ public class UserController {
                     message = "SERVER_ERROR")
     })
     @ResponseStatus(HttpStatus.OK)
-    @Transactional
     @GetMapping("/anniversaries")
     public ResponseEntity<DefaultResponseDto<Object>> readAnniversaryList(
             @AuthenticationPrincipal User loginUser){
@@ -446,7 +440,6 @@ public class UserController {
                     message = "SERVER_ERROR")
     })
     @ResponseStatus(HttpStatus.OK)
-    @Transactional
     @GetMapping("/admin")
     public ResponseEntity<DefaultResponseDto<Object>> readAll(){
 
@@ -474,7 +467,6 @@ public class UserController {
                     message = "SERVER_ERROR")
     })
     @ResponseStatus(HttpStatus.OK)
-    @Transactional
     @GetMapping("/gifts-by-name/{giftName}")
     public ResponseEntity<DefaultResponseDto<Object>> readGiftListByName (
             @AuthenticationPrincipal User loginUser,
@@ -484,7 +476,7 @@ public class UserController {
 
         userService.isExistingUserNo(userNo);
 
-        List<GiftResponseDto> dto =  userService.readGiftListByName(userNo, giftName);
+        List<GiftSimpleDto> dto =  userService.readGiftListByName(userNo, giftName);
 
         return ResponseEntity.status(200)
                 .body(DefaultResponseDto.builder()
@@ -507,16 +499,15 @@ public class UserController {
                     message = "SERVER_ERROR")
     })
     @ResponseStatus(HttpStatus.OK)
-    @Transactional
     @GetMapping("/gifts-by-category/{category}")
     public ResponseEntity<DefaultResponseDto<Object>> readGiftListByCategory(
             @AuthenticationPrincipal User loginUser,
-            @PathVariable("category") Category category){
+            @PathVariable("category") GiftCategory giftCategory){
 
         Long userNo = loginUser.getUserNo();
         userService.isExistingUserNo(userNo);
 
-        List<GiftResponseDto> dto =  userService.readGiftListByCategory(userNo, category);
+        List<GiftSimpleDto> dto =  userService.readGiftListByCategory(userNo, giftCategory);
 
         return ResponseEntity.status(200)
                 .body(DefaultResponseDto.builder()
@@ -539,7 +530,6 @@ public class UserController {
                     message = "SERVER_ERROR")
     })
     @ResponseStatus(HttpStatus.OK)
-    @Transactional
     @GetMapping("/gifts-by-emotion/{emotion}")
     public ResponseEntity<DefaultResponseDto<Object>> readGiftListByEmotion(
             @AuthenticationPrincipal User loginUser,
@@ -548,7 +538,7 @@ public class UserController {
 
         userService.isExistingUserNo(userNo);
 
-        List<GiftResponseDto> dto =  userService.readGiftListByEmotion(userNo, emotion);
+        List<GiftSimpleDto> dto =  userService.readGiftListByEmotion(userNo, emotion);
 
         return ResponseEntity.status(200)
                 .body(DefaultResponseDto.builder()
@@ -571,7 +561,6 @@ public class UserController {
                     message = "SERVER_ERROR")
     })
     @ResponseStatus(HttpStatus.OK)
-    @Transactional
     @GetMapping("/{userId}")
     public ResponseEntity<DefaultResponseDto<Object>> readUserByUserId(
             @PathVariable("userId") String userId){
@@ -598,14 +587,13 @@ public class UserController {
                     message = "SERVER_ERROR")
     })
     @ResponseStatus(HttpStatus.OK)
-    @Transactional
     @GetMapping("/gifts-given")
     public ResponseEntity<DefaultResponseDto<Object>> readGivenGiftList(
             @AuthenticationPrincipal User loginUser){
         Long userNo = loginUser.getUserNo();
 
         userService.isExistingUserNo(userNo);
-        List<GiftResponseDto> dto = userService.findGivenGiftList(userNo);
+        List<GiftSimpleDto> dto = userService.findGivenGiftList(userNo);
 
         return ResponseEntity.status(200)
                 .body(DefaultResponseDto.builder()
@@ -626,14 +614,13 @@ public class UserController {
                     message = "SERVER_ERROR")
     })
     @ResponseStatus(HttpStatus.OK)
-    @Transactional
     @GetMapping("/gifts-received")
     public ResponseEntity<DefaultResponseDto<Object>> readReceivedGiftList(
             @AuthenticationPrincipal User loginUser){
         Long userNo = loginUser.getUserNo();
 
         userService.isExistingUserNo(userNo);
-        List<GiftResponseDto> dto = userService.findReceivedGiftList(userNo);
+        List<GiftSimpleDto> dto = userService.findReceivedGiftList(userNo);
 
         return ResponseEntity.status(200)
                 .body(DefaultResponseDto.builder()

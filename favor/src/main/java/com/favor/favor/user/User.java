@@ -7,6 +7,7 @@ import com.favor.favor.common.enums.Role;
 import com.favor.favor.common.TimeStamped;
 import com.favor.favor.friend.Friend;
 import com.favor.favor.gift.Gift;
+import com.favor.favor.photo.UserPhoto;
 import com.favor.favor.reminder.Reminder;
 import lombok.*;
 import org.springframework.security.core.GrantedAuthority;
@@ -76,6 +77,18 @@ public class User extends TimeStamped implements UserDetails {
     @JsonIgnore
     @OneToMany(mappedBy = "user", orphanRemoval = true)
     private List<Friend> friendList = new ArrayList<>();
+
+    @OneToOne(cascade = CascadeType.ALL)
+    private UserPhoto userProfilePhoto;
+    public void setUserProfilePhoto(UserPhoto userPhoto) {
+        this.userProfilePhoto = userPhoto;
+    }
+
+    @OneToOne(cascade = CascadeType.ALL)
+    private UserPhoto userBackgroundPhoto;
+    public void setUserBackgroundPhoto(UserPhoto userPhoto) {
+        this.userBackgroundPhoto = userPhoto;
+    }
 
     private Role role;
 

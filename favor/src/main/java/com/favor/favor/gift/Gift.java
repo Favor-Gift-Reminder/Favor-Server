@@ -1,13 +1,14 @@
 package com.favor.favor.gift;
 
-import com.favor.favor.common.enums.Category;
+import com.favor.favor.common.enums.GiftCategory;
 import com.favor.favor.common.enums.Emotion;
 import com.favor.favor.common.TimeStamped;
+import com.favor.favor.photo.GiftPhoto;
 import com.favor.favor.user.User;
 import lombok.*;
+import org.springframework.lang.Nullable;
 
 import javax.persistence.*;
-import javax.transaction.Transactional;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
@@ -17,7 +18,7 @@ import java.util.List;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor
 @Builder
-@Transactional
+@ToString
 public class Gift extends TimeStamped {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -28,19 +29,21 @@ public class Gift extends TimeStamped {
         this.giftName = giftName;
     }
 
+    @Nullable
     private LocalDate giftDate;
     public void setGiftDate(LocalDate giftDate){
         this.giftDate = giftDate;
     }
 
+    @Nullable
     private String giftMemo;
     public void setGiftMemo(String giftMemo){
         this.giftMemo = giftMemo;
     }
 
     private Integer category;
-    public void setCategory(Category category){
-        this.category = category.getType();
+    public void setCategory(GiftCategory giftCategory){
+        this.category = giftCategory.getType();
     }
 
     private Integer emotion;
@@ -65,10 +68,28 @@ public class Gift extends TimeStamped {
     private User user;
     public void setUser(User user) { this.user = user; }
 
+    @Nullable
     @Builder.Default
     @ElementCollection
     private List<Long> friendNoList = new ArrayList<>();
-    public void setFriendNoList(List<Long> friendNoList){
-        this.friendNoList = friendNoList;
+    public void addFriendNo(Long friendNo){
+        friendNoList.add(friendNo);
+    }
+    public void removeFriendNo(Long friendNo){
+        friendNoList.remove(friendNo);
+    }
+
+
+    @OneToMany(cascade = CascadeType.ALL)
+    private List<GiftPhoto> giftPhotoList;
+    public void setGiftPhotoList(List<GiftPhoto> giftPhotoList) {
+        this.giftPhotoList = giftPhotoList;
+    }
+
+    @Nullable
+    @ElementCollection
+    private List<String> tempFriendList;
+    public void setTempFriendList(GiftTempFriendListDto tempFriendList){
+        this.tempFriendList = tempFriendList.getTempFrindList();
     }
 }

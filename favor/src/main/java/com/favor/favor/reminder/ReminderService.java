@@ -5,6 +5,8 @@ import com.favor.favor.anniversary.AnniversaryRepository;
 import com.favor.favor.exception.CustomException;
 import com.favor.favor.friend.Friend;
 import com.favor.favor.friend.FriendRepository;
+import com.favor.favor.friend.FriendSimpleDto;
+import com.favor.favor.photo.UserPhoto;
 import com.favor.favor.user.User;
 import com.favor.favor.user.UserRepository;
 import lombok.RequiredArgsConstructor;
@@ -51,9 +53,9 @@ public class ReminderService {
         return reminderRepository.save(reminder);
     }
 
-    public void updateReminder(ReminderUpdateRequestDto dto, Long reminderNo, Long friendNo){
+    public void updateReminder(ReminderUpdateRequestDto dto, Long reminderNo){
         Reminder reminder = findReminderByReminderNo(reminderNo);
-        Friend friend = findFriendByFriendNo(friendNo);
+        Friend friend = reminder.getFriend();
 
         reminder.setTitle(dto.getTitle());
         reminder.setReminderDate(dto.getReminderDate());
@@ -69,10 +71,10 @@ public class ReminderService {
         reminderRepository.deleteById(reminderNo);
     }
 
-    public List<ReminderResponseDto> readAll(){
-        List<ReminderResponseDto> r_List = new ArrayList<>();
+    public List<ReminderSimpleDto> readAll(){
+        List<ReminderSimpleDto> r_List = new ArrayList<>();
         for(Reminder r : reminderRepository.findAll()){
-            ReminderResponseDto dto = new ReminderResponseDto(r);
+            ReminderSimpleDto dto = new ReminderSimpleDto(r);
             r_List.add(dto);
         }
         return r_List;
@@ -144,7 +146,11 @@ public class ReminderService {
 
 
     public ReminderResponseDto returnDto(Reminder reminder){
-        return new ReminderResponseDto(reminder);
+        Friend friend = reminder.getFriend();
+        User friendUser = findUserByUserNo(friend.getFriendUserNo());
+        UserPhoto photo = friendUser.getUserProfilePhoto();
+        FriendSimpleDto dto = new FriendSimpleDto(friend, friendUser, photo);
+        return new ReminderResponseDto(reminder, dto);
     }
     public LocalDate returnLocalDate(String dateString){
         String patternDate = "yyyy-MM-dd";

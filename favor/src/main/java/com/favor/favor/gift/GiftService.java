@@ -3,14 +3,14 @@ package com.favor.favor.gift;
 import com.favor.favor.exception.CustomException;
 import com.favor.favor.friend.Friend;
 import com.favor.favor.friend.FriendRepository;
-import com.favor.favor.friend.FriendResponseDto;
+import com.favor.favor.friend.FriendSimpleDto;
+import com.favor.favor.photo.UserPhoto;
 import com.favor.favor.user.User;
 import com.favor.favor.user.UserRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
-import javax.swing.text.html.Option;
 import javax.transaction.Transactional;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -18,7 +18,6 @@ import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 
 import static com.favor.favor.exception.ExceptionCode.*;
 
@@ -32,11 +31,15 @@ public class GiftService {
 
     @Transactional
     public Gift createGift(GiftRequestDto giftRequestDto, Long userNo){
-        log.info("[Service] [createGift] 실행");
+        log.info("[SERVICE] [createGift] 실행");
         User user =  findUserByUserNo(userNo);
+        log.info("[SERVICE] user = {}", user);
         LocalDate localDate = returnLocalDate(giftRequestDto.getGiftDate());
+        log.info("[SERVICE] locaDate = {}", localDate);
         Gift gift = giftRepository.save(giftRequestDto.toEntity(user, localDate));
+        log.info("[SERVICE] gift = {}", gift);
         addGiftNo(gift.getGiftNo(), gift.getFriendNoList());
+
         return giftRepository.save(gift);
     }
     @Transactional
@@ -51,10 +54,12 @@ public class GiftService {
         }
     }
 
+    @Transactional
     public void updateGift(GiftUpdateRequestDto dto, Gift gift){
+        //수정된 gift 정보 저장 (친구 목록 제외)
         gift.setGiftName(dto.getGiftName());
         gift.setGiftMemo(dto.getGiftMemo());
-        gift.setCategory(dto.getCategory());
+        gift.setCategory(dto.getGiftCategory());
         gift.setEmotion(dto.getEmotion());
         gift.setIsGiven(dto.getIsGiven());
         gift.setGiftDate(returnLocalDate(dto.getGiftDate()));
@@ -62,28 +67,56 @@ public class GiftService {
         List<Long> existingFriendNoList = gift.getFriendNoList();
         List<Long> updatedFriendNoList = dto.getFriendNoList();
 
+        //친구 목록 수정 시
+        //빠진 친구들의 선물 목록에서 선물 식별자 삭제
+        //@Transactional 없는 경우 ConcurrentModificationException 발생
         for (Long friendNo : existingFriendNoList) {
             if (!updatedFriendNoList.contains(friendNo)) {
                 Friend friend = findFriendByFriendNo(friendNo);
                 friend.getGiftNoList().remove(gift.getGiftNo());
                 friendRepository.save(friend);
+                //선물의 친구 식별자 목록에서 빠진 친구 삭제
+                gift.removeFriendNo(friendNo);
             }
         }
-
-        gift.setFriendNoList(dto.getFriendNoList());
-        addGiftNo(gift.getGiftNo(), dto.getFriendNoList());
-
+        //추가된 친구들의 선물 목록에 선물 식별자 추가
+        for (Long friendNo : updatedFriendNoList) {
+            if (!existingFriendNoList.contains(friendNo)) {
+                Friend friend = findFriendByFriendNo(friendNo);
+                friend.getGiftNoList().add(gift.getGiftNo());
+                friendRepository.save(friend);
+                //선물의 친구 식별자 목록에 추가된 친구 추가
+                gift.addFriendNo(friendNo);
+            }
+        }
         giftRepository.save(gift);
     }
+
     public void updateIsPinned(Gift gift){
         gift.setIsPinned(gift.getIsPinned() == true ? false : true);
         giftRepository.save(gift);
     }
 
-    public void deleteGift(Long giftNo){
-        giftRepository.deleteById(giftNo);
+    public void updateTempFriendList(Gift gift, GiftTempFriendListDto tempFriendList){
+        gift.setTempFriendList(tempFriendList);
+        giftRepository.save(gift);
     }
 
+    public void deleteGift(Long giftNo){
+        Gift gift = findGiftByGiftNo(giftNo);
+        log.info("[SERVICE] gift = {}", gift);
+        List<Long> friendNoList = gift.getFriendNoList();
+        log.info("[SERVICE] friendNoList = {}", friendNoList);
+
+        //선물 삭제시 선물을 보유하고 있던 유저의 선물 식별자 목록에서 선물 식별자가 사라짐
+        for(Long friendNo : friendNoList){
+            Friend friend = findFriendByFriendNo(friendNo);
+            log.info("[SERVICE] friend = {}", friend);
+            friend.getGiftNoList().remove(giftNo);
+        }
+
+        giftRepository.deleteById(giftNo);
+    }
 
     public List<GiftResponseDto> readAll(){
         List<GiftResponseDto> g_List = new ArrayList<>();
@@ -136,28 +169,23 @@ public class GiftService {
     }
 
 
+    // Gift만 입력받아도 FriendList 를 가진 responseDTO 를 반환
+    @Transactional
     public GiftResponseDto returnDto(Gift gift){
-        List<FriendResponseDto> friendResponseDtoList = new ArrayList<>();
 
         List<Long> friendNoList = gift.getFriendNoList();
-        List<Long> deletedNoList = new ArrayList<>();
 
-        for(Long f : friendNoList){
-            Friend friend = null;
-            try{
-                friend = findFriendByFriendNo(f);
-            }catch(Exception e){
-                deletedNoList.add(f);
-                continue;
-            }
-            FriendResponseDto dto = new FriendResponseDto(friend);
-            friendResponseDtoList.add(dto);
+        List<FriendSimpleDto> friendResponseDtoList = new ArrayList<>();
+        for(Long friendNo : friendNoList){
+            Friend friend = findFriendByFriendNo(friendNo);
+            User friendUser = findUserByUserNo(friend.getFriendUserNo());
+            UserPhoto photo = friendUser.getUserProfilePhoto();
+            FriendSimpleDto friendResponseDto = new FriendSimpleDto(friend, friendUser, photo);
+            friendResponseDtoList.add(friendResponseDto);
         }
-        for(Long f : deletedNoList){
-            friendNoList.remove(f);
-        }
-        gift.setFriendNoList(friendNoList);
+
         giftRepository.save(gift);
+        log.info("[SYSTEM] giftRepository.save(gift) 완료");
 
         return new GiftResponseDto(gift, friendResponseDtoList);
     }

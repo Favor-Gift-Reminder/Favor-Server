@@ -1,15 +1,13 @@
 package com.favor.favor.gift;
 
 import com.favor.favor.common.DefaultResponseDto;
-import com.favor.favor.friend.FriendResponseDto;
 import com.favor.favor.user.User;
-import com.favor.favor.user.UserResponseDto;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
 import lombok.RequiredArgsConstructor;
-import lombok.extern.log4j.Log4j2;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -22,7 +20,7 @@ import java.util.List;
 @RestController
 @RequestMapping("/gifts")
 @RequiredArgsConstructor
-@Log4j2
+@Slf4j
 public class GiftController {
     private final GiftService giftService;
 
@@ -75,7 +73,6 @@ public class GiftController {
                     message = "SERVER_ERROR")
     })
     @ResponseStatus(HttpStatus.OK)
-    @Transactional
     @GetMapping("/{giftNo}")
     public ResponseEntity<DefaultResponseDto<Object>> readGift(
             @PathVariable Long giftNo){
@@ -107,7 +104,6 @@ public class GiftController {
                     message = "SERVER_ERROR")
     })
     @ResponseStatus(HttpStatus.OK)
-    @Transactional
     @PatchMapping("/{giftNo}")
     public ResponseEntity<DefaultResponseDto<Object>> updateGift(
             @RequestBody GiftUpdateRequestDto giftUpdateRequestDto,
@@ -128,6 +124,40 @@ public class GiftController {
                         .build());
     }
 
+    @ApiOperation("선물 임시친구목록 수정")
+    @ApiResponses(value={
+            @ApiResponse(code = 200,
+                    message = "GIFT_TEMP_FRIEND_LIST_UPDATED",
+                    response = GiftResponseDto.class),
+            @ApiResponse(code = 401,
+                    message = "UNAUTHORIZED_USER"),
+            @ApiResponse(code = 404,
+                    message = "GIFT_NOT_FOUND / FRIEND_NOT_FOUND"),
+            @ApiResponse(code = 500,
+                    message = "SERVER_ERROR")
+    })
+    @ResponseStatus(HttpStatus.OK)
+    @PatchMapping("/temp-friend-list/{giftNo}")
+    public ResponseEntity<DefaultResponseDto<Object>> updateTempFriendListGift(
+            @PathVariable Long giftNo,
+            @RequestBody GiftTempFriendListDto tempFriendListDto
+            ){
+
+        giftService.isExistingGiftNo(giftNo);
+
+
+        Gift gift = giftService.findGiftByGiftNo(giftNo);
+        giftService.updateTempFriendList(gift, tempFriendListDto);
+        GiftResponseDto dto = giftService.returnDto(gift);
+
+        return ResponseEntity.status(200)
+                .body(DefaultResponseDto.builder()
+                        .responseCode("GIFT_TEMP_FRIEND_LIST_UPDATED")
+                        .responseMessage("선물 임시친구목록 수정 완료")
+                        .data(dto)
+                        .build());
+    }
+
     @ApiOperation("선물 핀 여부 수정")
     @ApiResponses(value={
             @ApiResponse(code = 200,
@@ -141,7 +171,6 @@ public class GiftController {
                     message = "SERVER_ERROR")
     })
     @ResponseStatus(HttpStatus.OK)
-    @Transactional
     @PatchMapping("/pin/{giftNo}")
     public ResponseEntity<DefaultResponseDto<Object>> updateIsPinned(
             @PathVariable Long giftNo){
@@ -174,7 +203,6 @@ public class GiftController {
                     message = "SERVER_ERROR")
     })
     @ResponseStatus(HttpStatus.OK)
-    @Transactional
     @DeleteMapping("/{giftNo}")
     public ResponseEntity<DefaultResponseDto<Object>> deleteGift(
             @PathVariable Long giftNo){
@@ -182,9 +210,15 @@ public class GiftController {
         giftService.isExistingGiftNo(giftNo);
 
         Gift gift = giftService.findGiftByGiftNo(giftNo);
+        log.info("[SYSTEM] giftService.findGiftByGiftNo(giftNo) 완료");
+        log.info("[SYSTEM] gift = {}", gift);
+
         GiftResponseDto dto = giftService.returnDto(gift);
+        log.info("[SYSTEM] giftService.returnDto(gift) 완료");
+        log.info("[SYSTEM] dto = {}", dto);
 
         giftService.deleteGift(giftNo);
+        log.info("[SYSTEM] giftService.deleteGift(giftNo) 완료");
 
         return ResponseEntity.status(200)
                 .body(DefaultResponseDto.builder()
@@ -205,7 +239,6 @@ public class GiftController {
                     message = "SERVER_ERROR")
     })
     @ResponseStatus(HttpStatus.OK)
-    @Transactional
     @GetMapping("/admin")
     public ResponseEntity<DefaultResponseDto<Object>> readAll(){
 
