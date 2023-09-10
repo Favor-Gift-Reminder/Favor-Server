@@ -35,9 +35,6 @@ jobs:
           chmod +x gradlew
 
       - name: Build with Gradle
-        env:
-            DOCKERHUB_USERNAME: ${{ secrets.DOCKER_USERNAME }}
-            DOCKERHUB_PASSWORD: ${{ secrets.DOCKER_PASSWORD }}
         run: |
           cd favor
           ./gradlew jib
