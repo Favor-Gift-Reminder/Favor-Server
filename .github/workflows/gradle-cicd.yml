@@ -9,7 +9,7 @@ permissions:
   contents: read
 
 jobs:
-  CICD:
+  Build and Deploy:
     runs-on: ubuntu-latest
 
     steps:
@@ -33,6 +33,22 @@ jobs:
           chmod +x gradlew
 
       - name: Build with Gradle
+        env:
+            DOCKERHUB_USERNAME: ${{ secrets.DOCKER_USERNAME }}
+            DOCKERHUB_PASSWORD: ${{ secrets.DOCKER_PASSWORD }}
         run: |
           cd favor
-          ./gradlew clean bootJar
+          ./gradlew jib
+
+      - name: Deploy to Server
+        uses: appleboy/ssh-action@v1.0.0
+        with:
+          host: ${{ secrets.HOST_ADDRESS }}
+          username: ${{ secrets.SERVER_USERNAME }}
+          password: ${{ secrets.SERVER_PASSWORD }}
+          port : ${{ secrets.SERVER_PORT }}
+          script: |
+            docker stop ${{ secrets.APPLICATION_NAME }}
+            docker rm ${{ secrets.APPLICATION_NAME }}
+            docker pull ${{ secrets.DOCKER_USERNAME }}/${{ secrets.DOCKER_REPO }}
+            docker run -d -p ${{ secrets.DEPLOY_PORT }}:8080 -e TZ=Asia/Seoul --name ${{ secrets.APPLICATION_NAME }} ${{ secrets.DOCKER_USERNAME }}/${{ secrets.DOCKER_REPO }}

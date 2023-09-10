@@ -2,6 +2,7 @@ plugins {
     id 'java'
     id 'org.springframework.boot' version '2.7.5'
     id 'io.spring.dependency-management' version '1.0.15.RELEASE'
+    id 'com.google.cloud.tools.jib' version '3.3.2'
 }
 
 group = 'com.favor'
@@ -11,6 +12,27 @@ sourceCompatibility = '11'
 configurations {
     compileOnly {
         extendsFrom annotationProcessor
+    }
+}
+
+jib {
+    to {
+        image = "justuser0129/favor"
+        tags = [ "latest" ]
+    }
+    from {
+        image = "eclipse-temurin:11-jre"
+        platforms {
+            platform {
+                architecture = "arm64"
+                os = "linux"
+            }
+        }
+    }
+    container {
+        creationTime = "USE_CURRENT_TIMESTAMP"
+        jvmFlags = ["-Xms128m", "-Xmx128m", '-Dfile.encoding=UTF-8']
+        ports = ['8080']
     }
 }
 
