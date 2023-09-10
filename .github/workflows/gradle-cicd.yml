@@ -50,4 +50,4 @@ jobs:
             docker stop ${{ secrets.APPLICATION_NAME }}
             docker rm ${{ secrets.APPLICATION_NAME }}
             docker pull ${{ secrets.DOCKER_USERNAME }}/${{ secrets.DOCKER_REPO }}
-            docker run -d -p ${{ secrets.DEPLOY_PORT }}:8080 -e TZ=Asia/Seoul --name ${{ secrets.APPLICATION_NAME }} ${{ secrets.DOCKER_USERNAME }}/${{ secrets.DOCKER_REPO }}
+            docker run --network=host -d -p ${{ secrets.DEPLOY_PORT }}:8080 -e TZ=Asia/Seoul --name ${{ secrets.APPLICATION_NAME }} ${{ secrets.DOCKER_USERNAME }}/${{ secrets.DOCKER_REPO }}
