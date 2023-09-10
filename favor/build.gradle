@@ -26,12 +26,6 @@ jib {
     }
     from {
         image = "eclipse-temurin:11-jre"
-        platforms {
-            platform {
-                architecture = "arm64"
-                os = "linux"
-            }
-        }
         auth {
             username = project.findProperty('DockerUsername')
             password = project.findProperty('DockerPassword')
