@@ -22,8 +22,10 @@ jobs:
           java-version: '11'
           distribution: 'temurin'
 
-      - name: Create application.yml
+      - name: Create properties
         run: |
+          cd favor
+          echo "${{ secrets.GRADLE_PROPERTIES_CONTENT }}" > gradle.properties
           mkdir -p src/main/resources
           echo "${{ secrets.APPLICATION_YML_CONTENT }}" > src/main/resources/application.yml
 

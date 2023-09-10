@@ -19,6 +19,10 @@ jib {
     to {
         image = "justuser0129/favor"
         tags = [ "latest" ]
+        auth {
+            username = project.findProperty('DockerUsername')
+            password = project.findProperty('DockerPassword')
+        }
     }
     from {
         image = "eclipse-temurin:11-jre"
@@ -27,6 +31,10 @@ jib {
                 architecture = "arm64"
                 os = "linux"
             }
+        }
+        auth {
+            username = project.findProperty('DockerUsername')
+            password = project.findProperty('DockerPassword')
         }
     }
     container {
