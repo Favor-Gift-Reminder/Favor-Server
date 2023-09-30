@@ -11,7 +11,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
-import javax.transaction.Transactional;
+import org.springframework.transaction.annotation.Transactional;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
@@ -23,6 +23,7 @@ import static com.favor.favor.exception.ExceptionCode.*;
 
 @Slf4j
 @Service
+@Transactional(readOnly = true)
 @RequiredArgsConstructor
 public class GiftService {
     private final GiftRepository giftRepository;
@@ -92,16 +93,19 @@ public class GiftService {
         giftRepository.save(gift);
     }
 
+    @Transactional
     public void updateIsPinned(Gift gift){
         gift.setIsPinned(gift.getIsPinned() == true ? false : true);
         giftRepository.save(gift);
     }
 
+    @Transactional
     public void updateTempFriendList(Gift gift, GiftTempFriendListDto tempFriendList){
         gift.setTempFriendList(tempFriendList);
         giftRepository.save(gift);
     }
 
+    @Transactional
     public void deleteGift(Long giftNo){
         Gift gift = findGiftByGiftNo(giftNo);
         log.info("[SERVICE] gift = {}", gift);

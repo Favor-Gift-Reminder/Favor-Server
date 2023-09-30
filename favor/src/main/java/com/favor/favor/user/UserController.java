@@ -53,8 +53,7 @@ public class UserController {
 
         userService.isExistingEmail(signDto.getEmail());
 
-        User user = userService.signUp(signDto);
-        UserResponseDto dto = userService.returnUserDto(user);
+        UserResponseDto dto = userService.signUp(signDto);
 
         return ResponseEntity.status(201)
                 .body(DefaultResponseDto.builder()
@@ -90,8 +89,7 @@ public class UserController {
 
         userService.isExistingUserId(profileDto.getUserId());
 
-        User user = userService.createProfile(profileDto, userNo);
-        UserResponseDto dto = userService.returnUserDto(user);
+        UserResponseDto dto = userService.createProfile(profileDto, userNo);
 
         return ResponseEntity.status(200)
                 .body(DefaultResponseDto.builder()
@@ -189,11 +187,7 @@ public class UserController {
 
         Long userNo = loginUser.getUserNo();
         userService.isExistingUserNo(userNo);
-        User user = userService.findUserByUserNo(userNo);
-
-        userService.updateUser(user, userUpdateRequestDto);
-        UserResponseDto dto = userService.returnUserDto(user);
-
+        UserResponseDto dto = userService.updateUser(userNo, userUpdateRequestDto);
 
         return ResponseEntity.status(200)
                 .body(DefaultResponseDto.builder()
@@ -225,9 +219,6 @@ public class UserController {
 
         userService.isExistingUserNo(userNo);
 
-        User user = userService.findUserByUserNo(userNo);
-        UserResponseDto dto = userService.returnUserDto(user);
-
         userPhotoService.deleteUserProfilePhoto(userNo);
         userPhotoService.deleteUserBackgroundPhoto(userNo);
 
@@ -237,7 +228,6 @@ public class UserController {
                 .body(DefaultResponseDto.builder()
                         .responseCode("USER_DELETED")
                         .responseMessage("회원 탈퇴 완료 (임시)")
-                        .data(dto)
                         .build());
     }
 
@@ -260,8 +250,7 @@ public class UserController {
 
         userService.validateExistingEmail(passwordDto.getEmail());
 
-        User user = userService.updatePassword(passwordDto.getEmail(), passwordDto.getPassword1());
-        UserResponseDto dto = userService.returnUserDto(user);
+        UserResponseDto dto = userService.updatePassword(passwordDto.getEmail(), passwordDto.getPassword());
 
         return ResponseEntity.status(200)
                 .body(DefaultResponseDto.builder()

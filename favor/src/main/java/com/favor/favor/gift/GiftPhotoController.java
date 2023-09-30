@@ -71,7 +71,6 @@ public class GiftPhotoController {
                     message = "SERVER_ERROR")
     })
     @ResponseStatus(HttpStatus.OK)
-    @Transactional
     @GetMapping
     public ResponseEntity<DefaultResponseDto<Object>> getUserProfilePhoto(Long giftNo) {
         Gift gift = giftService.findGiftByGiftNo(giftNo);
@@ -99,7 +98,6 @@ public class GiftPhotoController {
                     message = "SERVER_ERROR")
     })
     @ResponseStatus(HttpStatus.OK)
-    @Transactional
     @DeleteMapping
     public ResponseEntity<DefaultResponseDto<Object>> deleteUserProfilePhoto(
             Long giftNo, String fileUrl) {

@@ -70,7 +70,6 @@ public class UserPhotoController {
                     message = "SERVER_ERROR")
     })
     @ResponseStatus(HttpStatus.OK)
-    @Transactional
     @GetMapping("/profile")
     public ResponseEntity<DefaultResponseDto<Object>> getUserProfilePhoto(
             @AuthenticationPrincipal User loginUser
@@ -98,7 +97,6 @@ public class UserPhotoController {
                     message = "SERVER_ERROR")
     })
     @ResponseStatus(HttpStatus.OK)
-    @Transactional
     @DeleteMapping("/profile")
     public ResponseEntity<DefaultResponseDto<Object>> deleteUserProfilePhoto(
             @AuthenticationPrincipal User loginUser
@@ -163,7 +161,6 @@ public class UserPhotoController {
                     message = "SERVER_ERROR")
     })
     @ResponseStatus(HttpStatus.OK)
-    @Transactional
     @GetMapping("/background")
     public ResponseEntity<DefaultResponseDto<Object>> getUserBackgroundPhoto(
             @AuthenticationPrincipal User loginUser
@@ -191,7 +188,6 @@ public class UserPhotoController {
                     message = "SERVER_ERROR")
     })
     @ResponseStatus(HttpStatus.OK)
-    @Transactional
     @DeleteMapping("/background")
     public ResponseEntity<DefaultResponseDto<Object>> deleteUserBackgroundPhoto(
             @AuthenticationPrincipal User loginUser

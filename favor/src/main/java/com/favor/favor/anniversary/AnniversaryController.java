@@ -32,7 +32,7 @@ public class AnniversaryController {
             @ApiResponse(code = 400,
                     message = "FIELD_REQUIRED / *_CHARACTER_INVALID / *_LENGTH_INVALID"),
             @ApiResponse(code = 404,
-                    message = "USER_NOT_FOUND / FREIND_NOT_FOUND"),
+                    message = "USER_NOT_FOUND / FRIEND_NOT_FOUND"),
             @ApiResponse(code = 500,
                     message = "SERVER_ERROR")
     })

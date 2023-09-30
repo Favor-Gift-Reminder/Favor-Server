@@ -15,11 +15,9 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
-@Log4j2
 @Getter
 @AllArgsConstructor
 @Builder
-@ToString
 public class GiftResponseDto {
 
     private Long giftNo;
@@ -40,7 +38,6 @@ public class GiftResponseDto {
 
     @Builder
     public GiftResponseDto(Gift gift){
-        log.info("[GiftResponseDto] 실행");
         this.giftNo = gift.getGiftNo();
         this.giftName = gift.getGiftName();
         this.giftDate = gift.getGiftDate();
@@ -55,11 +52,9 @@ public class GiftResponseDto {
         this.modifiedAt = gift.getModifiedAt();
         this.giftPhotoList = gift.getGiftPhotoList();
         this.tempFriendList = gift.getTempFriendList();
-        log.info("[GiftResponseDto] 실행 완료");
     }
     @Builder
     public GiftResponseDto(Gift gift, List<FriendSimpleDto> friendList){
-        log.info("[GiftResponseDto] 실행");
         this.giftNo = gift.getGiftNo();
         this.giftName = gift.getGiftName();
         this.giftDate = gift.getGiftDate();
@@ -74,6 +69,5 @@ public class GiftResponseDto {
         this.modifiedAt = gift.getModifiedAt();
         this.giftPhotoList = gift.getGiftPhotoList();
         this.tempFriendList = gift.getTempFriendList();
-        log.info("[GiftResponseDto] 실행 완료");
     }
 }

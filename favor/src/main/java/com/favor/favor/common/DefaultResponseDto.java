@@ -5,10 +5,10 @@ import io.swagger.annotations.ApiModelProperty;
 import lombok.*;
 
 @Getter
-@Builder
+@ApiModel(value = "기본 응답")
 @NoArgsConstructor
 @AllArgsConstructor
-@ApiModel(value = "기본 응답")
+@Builder
 public class DefaultResponseDto <T> {
 
     @ApiModelProperty(position = 1, value = "응답 코드", example = "RESPONSE_CODE")

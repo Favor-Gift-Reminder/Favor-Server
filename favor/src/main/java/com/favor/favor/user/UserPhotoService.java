@@ -5,16 +5,16 @@ import com.favor.favor.photo.UserPhoto;
 import com.favor.favor.photo.PhotoService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
-import javax.transaction.Transactional;
 import java.net.URL;
 import java.util.UUID;
 
-import static com.favor.favor.exception.ExceptionCode.FILE_NOT_FOUND;
 import static com.favor.favor.exception.ExceptionCode.SERVER_ERROR;
 
 @Service
+@Transactional(readOnly = true)
 @RequiredArgsConstructor
 public class UserPhotoService {
     private final UserRepository userRepository;

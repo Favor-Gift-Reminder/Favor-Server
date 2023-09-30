@@ -20,12 +20,14 @@ import static com.favor.favor.exception.ExceptionCode.FILE_NOT_FOUND;
 import static com.favor.favor.exception.ExceptionCode.SERVER_ERROR;
 
 @Service
+@Transactional(readOnly = true)
 @RequiredArgsConstructor
 public class PhotoService {
     private  String bucketName = "favor-app-bucket";
     private final AmazonS3Client amazonS3Client;
 
     //S3에 사진 업로드
+    @Transactional
     public String uploadFileToS3(String fileName, MultipartFile file) {
 
         try {
@@ -43,6 +45,7 @@ public class PhotoService {
     }
 
     //S3 에서 사진 삭제
+    @Transactional
     public void deleteFileFromS3(String fileName) {
         try {
             amazonS3Client.deleteObject(bucketName, fileName);
