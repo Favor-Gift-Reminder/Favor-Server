@@ -15,6 +15,10 @@ import org.springframework.web.multipart.MultipartFile;
 
 import javax.transaction.Transactional;
 
+import static com.favor.favor.common.DefaultResponseDto.resWithData;
+import static com.favor.favor.common.DefaultResponseDto.resWithoutData;
+
+
 @Api(tags = "User-Photo")
 @RestController
 @RequestMapping("/userphotos")
@@ -23,10 +27,10 @@ public class UserPhotoController {
     private final UserPhotoService userPhotoService;
     private final UserService userService;
 
-    @ApiOperation(value = "회원 프로필 사진 등록/수정")
+    @ApiOperation(value = "회원 프로필 사진 수정")
     @ApiResponses(value={
             @ApiResponse(code = 201,
-                    message = "USER_PROFILE_PHOTO_ADDED/UPDATED",
+                    message = "USER_PROFILE_PHOTO_UPDATED",
                     response = UserResponseDto.class),
             @ApiResponse(code = 400,
                     message = "FIELD_REQUIRED / *_CHARACTER_INVALID / *_LENGTH_INVALID"),
@@ -50,11 +54,7 @@ public class UserPhotoController {
         UserPhoto dto = user.getUserProfilePhoto();
 
         return ResponseEntity.status(201)
-                .body(DefaultResponseDto.builder()
-                        .responseCode("USER_PROFILE_PHOTO_ADDED/UPDATED")
-                        .responseMessage("회원 사진 등록/수정 완료")
-                        .data(dto)
-                        .build());
+                .body(resWithData("USER_PROFILE_PHOTO_UPDATED", "회원 사진 수정 완료", dto));
     }
 
     @ApiOperation("회원 프로필 사진 조회")
@@ -77,11 +77,7 @@ public class UserPhotoController {
         UserPhoto dto = userPhotoService.getUserProfilePhoto(loginUser.getUserNo());
 
         return ResponseEntity.status(200)
-                .body(DefaultResponseDto.builder()
-                        .responseCode("USER_PROFILE_PHOTO_FOUND")
-                        .responseMessage("회원 사진 조회 완료")
-                        .data(dto)
-                        .build());
+                .body(resWithData("USER_PROFILE_PHOTO_FOUND", "회원 사진 조회 완료", dto));
     }
 
     @ApiOperation("회원 프로필 사진 삭제")
@@ -103,21 +99,14 @@ public class UserPhotoController {
     ) {
         Long userNo = loginUser.getUserNo();
 
-        UserResponseDto dto = userService
-                .returnUserDto(userPhotoService.deleteUserProfilePhoto(userNo));
-
         return ResponseEntity.status(200)
-                .body(DefaultResponseDto.builder()
-                        .responseCode("USER_PROFILE_PHOTO_DELETED")
-                        .responseMessage("회원 사진 삭제 완료")
-                        .data(dto)
-                        .build());
+                .body(resWithoutData("USER_PROFILE_PHOTO_DELETED", "회원 사진 삭제 완료"));
     }
 
-    @ApiOperation(value = "회원 배경 사진 등록/수정")
+    @ApiOperation(value = "회원 배경 사진 수정")
     @ApiResponses(value={
             @ApiResponse(code = 201,
-                    message = "USER_BACKGROUND_PHOTO_ADDED/UPDATED",
+                    message = "USER_BACKGROUND_PHOTO_UPDATED",
                     response = UserResponseDto.class),
             @ApiResponse(code = 400,
                     message = "FIELD_REQUIRED / *_CHARACTER_INVALID / *_LENGTH_INVALID"),
@@ -141,11 +130,7 @@ public class UserPhotoController {
         UserPhoto dto = user.getUserBackgroundPhoto();
 
         return ResponseEntity.status(201)
-                .body(DefaultResponseDto.builder()
-                        .responseCode("USER_BACKGROUND_PHOTO_ADDED/UPDATED")
-                        .responseMessage("회원 배경 사진 등록/수정 완료")
-                        .data(dto)
-                        .build());
+                .body(resWithData("USER_BACKGROUND_PHOTO_UPDATED", "회원 배경 사진 수정 완료", dto));
     }
 
     @ApiOperation("회원 배경 사진 조회")
@@ -168,11 +153,7 @@ public class UserPhotoController {
         UserPhoto dto = userPhotoService.getUserBackgroundPhoto(loginUser.getUserNo());
 
         return ResponseEntity.status(200)
-                .body(DefaultResponseDto.builder()
-                        .responseCode("USER_BACKGROUND_PHOTO_FOUND")
-                        .responseMessage("회원 배경 사진 조회 완료")
-                        .data(dto)
-                        .build());
+                .body(resWithData("USER_BACKGROUND_PHOTO_FOUND", "회원 배경 사진 조회 완료", dto));
     }
 
     @ApiOperation("회원 배경 사진 삭제")
@@ -194,14 +175,7 @@ public class UserPhotoController {
     ) {
         Long userNo = loginUser.getUserNo();
 
-        UserResponseDto dto = userService
-                .returnUserDto(userPhotoService.deleteUserBackgroundPhoto(userNo));
-
         return ResponseEntity.status(200)
-                .body(DefaultResponseDto.builder()
-                        .responseCode("USER_BACKGROUND_PHOTO_DELETED")
-                        .responseMessage("회원 배경 사진 삭제 완료")
-                        .data(dto)
-                        .build());
+                .body(resWithoutData("USER_BACKGROUND_PHOTO_DELETED", "회원 배경 사진 수정 완료"));
     }
 }

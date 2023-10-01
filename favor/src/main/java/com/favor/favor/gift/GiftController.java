@@ -13,8 +13,10 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
-import javax.transaction.Transactional;
 import java.util.List;
+
+import static com.favor.favor.common.DefaultResponseDto.resWithData;
+import static com.favor.favor.common.DefaultResponseDto.resWithoutData;
 
 @Api(tags = "Gift")
 @RestController
@@ -53,11 +55,7 @@ public class GiftController {
         GiftResponseDto dto = giftService.returnDto(gift);
 
         return ResponseEntity.status(201)
-                .body(DefaultResponseDto.builder()
-                        .responseCode("GIFT_CREATED")
-                        .responseMessage("선물 생성 완료")
-                        .data(dto)
-                        .build());
+                .body(resWithData("GIFT_CREATED", "선물 생성 완료", dto));
     }
 
     @ApiOperation("선물 조회")
@@ -84,11 +82,7 @@ public class GiftController {
         log.info("[Controller] [readGift] DTO 반환");
 
         return ResponseEntity.status(200)
-                .body(DefaultResponseDto.builder()
-                        .responseCode("GIFT_FOUND")
-                        .responseMessage("선물 조회 완료")
-                        .data(dto)
-                        .build());
+                .body(resWithData("GIFT_FOUND", "선물 조회 완료", dto));
     }
 
     @ApiOperation("선물 수정")
@@ -117,11 +111,7 @@ public class GiftController {
         GiftResponseDto dto = giftService.returnDto(gift);
 
         return ResponseEntity.status(200)
-                .body(DefaultResponseDto.builder()
-                        .responseCode("GIFT_UPDATED")
-                        .responseMessage("선물 수정 완료")
-                        .data(dto)
-                        .build());
+                .body(resWithData("GIFT_UPDATED", "선물 수정 완료", dto));
     }
 
     @ApiOperation("선물 임시친구목록 수정")
@@ -151,11 +141,7 @@ public class GiftController {
         GiftResponseDto dto = giftService.returnDto(gift);
 
         return ResponseEntity.status(200)
-                .body(DefaultResponseDto.builder()
-                        .responseCode("GIFT_TEMP_FRIEND_LIST_UPDATED")
-                        .responseMessage("선물 임시친구목록 수정 완료")
-                        .data(dto)
-                        .build());
+                .body(resWithData("GIFT_TEMP_FRIEND_LIST_UPDATED", "선물 임시친구목록 수정 완료", dto));
     }
 
     @ApiOperation("선물 핀 여부 수정")
@@ -183,11 +169,7 @@ public class GiftController {
         GiftResponseDto dto = giftService.returnDto(gift);
 
         return ResponseEntity.status(200)
-                .body(DefaultResponseDto.builder()
-                        .responseCode("GIFT_PIN_UPDATED")
-                        .responseMessage("선물 핀 여부 수정 완료")
-                        .data(dto)
-                        .build());
+                .body(resWithData("GIFT_PIN_UPDATED", "선물 핀 여부 수정 완료", dto));
     }
 
     @ApiOperation("선물 삭제")
@@ -221,11 +203,7 @@ public class GiftController {
         log.info("[SYSTEM] giftService.deleteGift(giftNo) 완료");
 
         return ResponseEntity.status(200)
-                .body(DefaultResponseDto.builder()
-                        .responseCode("GIFT_DELETED")
-                        .responseMessage("선물 삭제 완료")
-                        .data(dto)
-                        .build());
+                .body(resWithoutData("GIFT_DELETED", "선물 삭제 완료"));
     }
 
     @ApiOperation("전체 선물 조회")
@@ -245,11 +223,7 @@ public class GiftController {
         List<GiftResponseDto> dto = giftService.readAll();
 
         return ResponseEntity.status(200)
-                .body(DefaultResponseDto.builder()
-                        .responseCode("GIFTS_FOUND")
-                        .responseMessage("전체 선물 조회 완료")
-                        .data(dto)
-                        .build());
+                .body(resWithData("GIFTS_FOUND", "전체 선물 조회 완료", dto));
 
     }
 }
