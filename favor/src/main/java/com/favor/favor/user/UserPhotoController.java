@@ -13,15 +13,11 @@ import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
-import javax.transaction.Transactional;
-
-import static com.favor.favor.common.DefaultResponseDto.resWithData;
-import static com.favor.favor.common.DefaultResponseDto.resWithoutData;
-
+import static com.favor.favor.common.DefaultResponseDto.*;
 
 @Api(tags = "User-Photo")
 @RestController
-@RequestMapping("/userphotos")
+@RequestMapping("/user-photos")
 @RequiredArgsConstructor
 public class UserPhotoController {
     private final UserPhotoService userPhotoService;
@@ -94,13 +90,15 @@ public class UserPhotoController {
     })
     @ResponseStatus(HttpStatus.OK)
     @DeleteMapping("/profile")
-    public ResponseEntity<DefaultResponseDto<Object>> deleteUserProfilePhoto(
-            @AuthenticationPrincipal User loginUser
-    ) {
+    public ResponseEntity<DefaultResponseDto<Object>> deleteUserProfilePhoto(@AuthenticationPrincipal User loginUser)
+    {
         Long userNo = loginUser.getUserNo();
+
+        userPhotoService.deleteUserProfilePhoto(userNo);
 
         return ResponseEntity.status(200)
                 .body(resWithoutData("USER_PROFILE_PHOTO_DELETED", "회원 사진 삭제 완료"));
+
     }
 
     @ApiOperation(value = "회원 배경 사진 수정")
@@ -174,6 +172,8 @@ public class UserPhotoController {
             @AuthenticationPrincipal User loginUser
     ) {
         Long userNo = loginUser.getUserNo();
+
+        userPhotoService.deleteUserBackgroundPhoto(userNo);
 
         return ResponseEntity.status(200)
                 .body(resWithoutData("USER_BACKGROUND_PHOTO_DELETED", "회원 배경 사진 수정 완료"));

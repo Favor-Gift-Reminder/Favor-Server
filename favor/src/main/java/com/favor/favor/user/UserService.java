@@ -1,6 +1,5 @@
 package com.favor.favor.user;
 
-import com.favor.favor.anniversary.Anniversary;
 import com.favor.favor.anniversary.AnniversaryResponseDto;
 import com.favor.favor.auth.JwtTokenProvider;
 import com.favor.favor.common.enums.GiftCategory;
@@ -8,12 +7,9 @@ import com.favor.favor.common.enums.Emotion;
 import com.favor.favor.common.enums.Favor;
 import com.favor.favor.common.enums.Role;
 import com.favor.favor.exception.CustomException;
-import com.favor.favor.friend.Friend;
 import com.favor.favor.friend.FriendRepository;
 import com.favor.favor.friend.FriendSimpleDto;
 import com.favor.favor.gift.*;
-import com.favor.favor.gift.GiftResponseDto;
-import com.favor.favor.photo.UserPhoto;
 import com.favor.favor.reminder.Reminder;
 import com.favor.favor.reminder.ReminderRepository;
 import com.favor.favor.reminder.ReminderSimpleDto;
@@ -25,10 +21,9 @@ import org.springframework.transaction.annotation.Transactional;
 
 
 import java.time.LocalDate;
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
-import java.util.Optional;
+import java.util.Objects;
 import java.util.stream.Collectors;
 
 import static com.favor.favor.exception.ExceptionCode.*;
@@ -45,8 +40,6 @@ public class UserService {
     private final PasswordEncoder passwordEncoder;
     private final JwtTokenProvider jwtTokenProvider;
 
-
-
     @Transactional
     public UserResponseDto signUp(SignDto signDto) {
 
@@ -59,10 +52,8 @@ public class UserService {
                 .build();
         save(user);
 
-        return user.toDto(user, getReminderList(user), getFriendList(user), getFavorList(user), getAnniversaryList(user), getGiftInfo(user.getUserNo()));
+        return user.toDto(user, readReminderList(user.getUserNo()), readFriendList(user.getUserNo()), readFavorList(user.getUserNo()), readAnniversaryList(user.getUserNo()), getGiftInfo(user.getUserNo()));
     }
-
-
 
     @Transactional
     public UserResponseDto createProfile(ProfileDto profileDto, Long userNo) {
@@ -72,7 +63,7 @@ public class UserService {
         user.setUserId(profileDto.getUserId());
         save(user);
 
-        return user.toDto(user, getReminderList(user), getFriendList(user), getFavorList(user), getAnniversaryList(user), getGiftInfo(user.getUserNo()));
+        return user.toDto(user, readReminderList(user.getUserNo()), readFriendList(user.getUserNo()), readFavorList(user.getUserNo()), readAnniversaryList(user.getUserNo()), getGiftInfo(user.getUserNo()));
     }
 
     public SignInResponseDto signIn(SignDto dto){
@@ -88,7 +79,6 @@ public class UserService {
 
         return new SignInResponseDto(token);
     }
-
 
     public void isRightPassword(String password, User user){
         try{
@@ -113,7 +103,7 @@ public class UserService {
         user.setFavorList(userUpdateRequestDto.getFavorList());
         save(user);
 
-        return user.toDto(user, getReminderList(user), getFriendList(user), getFavorList(user), getAnniversaryList(user), getGiftInfo(user.getUserNo()));
+        return user.toDto(user, readReminderList(user.getUserNo()), readFriendList(user.getUserNo()), readFavorList(user.getUserNo()), readAnniversaryList(user.getUserNo()), getGiftInfo(user.getUserNo()));
     }
 
     @Transactional
@@ -122,78 +112,39 @@ public class UserService {
         userRepository.deleteByUserNo(userNo);
     }
 
-
     @Transactional
     public UserResponseDto updatePassword(String email, String password){
         User user = findUserByEmail(email);
         user.setPassword(passwordEncoder.encode(password));
         save(user);
 
-        return user.toDto(user, getReminderList(user), getFriendList(user), getFavorList(user), getAnniversaryList(user), getGiftInfo(user.getUserNo()));
+        return user.toDto(user, readReminderList(user.getUserNo()), readFriendList(user.getUserNo()), readFavorList(user.getUserNo()), readAnniversaryList(user.getUserNo()), getGiftInfo(user.getUserNo()));
     }
 
-
-    public List<ReminderSimpleDto> readReminderList(Long userNo){
+    public UserResponseDto readUserInfo(Long userNo) {
         User user = findUserByUserNo(userNo);
-
-        List<ReminderSimpleDto> r_List = new ArrayList<>();
-        for(Reminder r : user.getReminderList()){
-            ReminderSimpleDto dto = new ReminderSimpleDto(r);
-            r_List.add(dto);
-        }
-        return r_List;
+        return user.toDto(user, readReminderList(user.getUserNo()), readFriendList(user.getUserNo()), readFavorList(user.getUserNo()), readAnniversaryList(user.getUserNo()), getGiftInfo(user.getUserNo()));
     }
-
-    public List<AnniversaryResponseDto> readAnniversaryList(Long userNo){
-        User user = findUserByUserNo(userNo);
-
-        List<AnniversaryResponseDto> r_List = new ArrayList<>();
-        for(Anniversary r : user.getAnniversaryList()){
-            AnniversaryResponseDto dto = new AnniversaryResponseDto(r);
-            r_List.add(dto);
-        }
-        return r_List;
-    }
-
-    public List<GiftSimpleDto> readGiftList(Long userNo){
-        User user = findUserByUserNo(userNo);
-
-        List<GiftSimpleDto> g_List = new ArrayList<>();
-        for(Gift gift : user.getGiftList()){
-            g_List.add(new GiftSimpleDto(gift));
-        }
-        return g_List;
-    }
-
-    public List<FriendSimpleDto> readFriendList(Long userNo){
-        User user = findUserByUserNo(userNo);
-
-        List<FriendSimpleDto> f_List = new ArrayList<>();
-        for(Friend f : user.getFriendList()){
-            User friendUser = findUserByUserNo(f.getFriendUserNo());
-            UserPhoto photo = friendUser.getUserProfilePhoto();
-            FriendSimpleDto dto = new FriendSimpleDto(f, friendUser, photo);
-            f_List.add(dto);
-        }
-        return f_List;
-    }
-
 
     @Transactional
     public List<UserResponseDto> readAll(){
         return userRepository.findAll().stream()
-                .map(user -> user.toDto(user, getReminderList(user), getFriendList(user), getFavorList(user), getAnniversaryList(user), getGiftInfo(user.getUserNo())))
+                .map(user -> user.toDto(user, readReminderList(user.getUserNo()), readFriendList(user.getUserNo()), readFavorList(user.getUserNo()), readAnniversaryList(user.getUserNo()), getGiftInfo(user.getUserNo())))
                 .collect(Collectors.toList());
     }
 
+    public List<GiftSimpleDto> readGiftList(Long userNo) {
+        User user = findUserByUserNo(userNo);
 
-
+        return giftRepository.findGiftsByUser(user).stream()
+                .map(GiftSimpleDto::new).collect(Collectors.toList());
+    }
 
     public List<GiftSimpleDto> readGiftListByName(Long userNo, String giftName){
         User user = findUserByUserNo(userNo);
 
         return giftRepository.findGiftsByUserAndGiftNameContains(user, giftName).stream()
-                .map(gift -> new GiftSimpleDto(gift)).collect(Collectors.toList());
+                .map(GiftSimpleDto::new).collect(Collectors.toList());
     }
 
     public List<GiftSimpleDto> readGiftListByCategory(Long userNo, GiftCategory giftCategory){
@@ -201,7 +152,7 @@ public class UserService {
         Integer categoryNo = giftCategory.getType();
 
         return giftRepository.findGiftsByUserAndCategory(user, categoryNo).stream()
-                .map(gift -> new GiftSimpleDto(gift))
+                .map(GiftSimpleDto::new)
                 .collect(Collectors.toList());
     }
 
@@ -210,17 +161,14 @@ public class UserService {
         Integer emotionNo = emotion.getType();
 
         return giftRepository.findGiftsByUserAndEmotion(user, emotionNo).stream()
-                .map(gift -> new GiftSimpleDto(gift))
+                .map(GiftSimpleDto::new)
                 .collect(Collectors.toList());
     }
 
-
-
-
     @Transactional
-    public User save(User user){
+    public void save(User user){
         try{
-            return userRepository.save(user);
+            userRepository.save(user);
         } catch(RuntimeException e){
             //500
             throw new CustomException(e, SERVER_ERROR);
@@ -229,7 +177,7 @@ public class UserService {
 
     //VALIDATE
     public void validateExistingEmail (String email){
-        Boolean isExistingEmail = null;
+        Boolean isExistingEmail;
         try{
             isExistingEmail = userRepository.existsByEmail(email);
         } catch(RuntimeException e){
@@ -240,14 +188,12 @@ public class UserService {
         }
     }
 
-
-
     //FIND
     public User findUserByUserNo(Long userNo){
-        User user = null;
+        User user;
         try{
             user = userRepository.findByUserNo(userNo).orElseThrow(
-                    () -> new RuntimeException()
+                    RuntimeException::new
             );
         } catch (RuntimeException e){
             throw new CustomException(e, USER_NOT_FOUND);
@@ -256,38 +202,29 @@ public class UserService {
     }
 
     public User findUserByUserId(String userId){
-        User user = null;
+        User user;
         try{
             user = userRepository.findByUserId(userId).orElseThrow(
-                    () -> new RuntimeException()
+                    RuntimeException::new
             );
         } catch (RuntimeException e){
             throw new CustomException(e, USER_NOT_FOUND);
         }
         return user;
     }
+
     public User findUserByEmail(String email){
-        User user = null;
+        User user;
         try{
             user = userRepository.findByEmail(email).orElseThrow(
-                    () -> new RuntimeException()
+                    RuntimeException::new
             );
         } catch (RuntimeException e){
             throw new CustomException(e, USER_NOT_FOUND);
         }
         return user;
     }
-    public Friend findFriendByFriendNo(Long friendNo){
-        Friend friend = null;
-        try{
-            friend = friendRepository.findByFriendNo(friendNo).orElseThrow(
-                    () -> new RuntimeException()
-            );
-        } catch (RuntimeException e){
-            throw new CustomException(e, FRIEND_NOT_FOUND);
-        }
-        return friend;
-    }
+
     public List<ReminderSimpleDto> readReminderListByFMonthAndYear(Long userNo, int year, int month){
 
         try{
@@ -296,119 +233,55 @@ public class UserService {
             throw new CustomException(e, DATE_INVALID);
         }
 
-        List<ReminderSimpleDto> reminderDtoList = new ArrayList<>();
-        List<Reminder> reminderList = findReminderListByMonthAndYear(year, month);
-
-        for(Reminder r : reminderList){
-            ReminderSimpleDto dto = new ReminderSimpleDto(r);
-            if(dto.getUserNo()==userNo) reminderDtoList.add(dto);
-        }
-
-        return reminderDtoList;
+        return readReminderListByMonthAndYear(year, month).stream()
+                .map(ReminderSimpleDto::new)
+                .filter(reminderSimpleDto -> Objects.equals(reminderSimpleDto.getUserNo(), userNo))
+                .collect(Collectors.toList());
     }
-    public List<Reminder> findReminderListByMonthAndYear(int year, int month){
+
+    public List<Reminder> readReminderListByMonthAndYear(int year, int month){
         LocalDate start = LocalDate.of(year, month, 1);
         LocalDate end = start.plusMonths(1).minusDays(1);
 
         return reminderRepository.findAllByReminderDateBetween(start, end);
     }
 
-    public List<GiftSimpleDto> findGivenGiftList(Long userNo){
+    public List<GiftSimpleDto> readGivenGiftList(Long userNo){
         User user = findUserByUserNo(userNo);
-        List<Gift> giftList = giftRepository.findGiftsByUser(user);
-        List<GiftSimpleDto> giftResponseDtoList = new ArrayList<>();
-        for(Gift gift : giftList){
-            if(gift.getIsGiven()){
-                GiftSimpleDto dto = new GiftSimpleDto(gift);
-                giftResponseDtoList.add(dto);
-            }
-        }
-        return giftResponseDtoList;
-    }
-    public List<GiftSimpleDto> findReceivedGiftList(Long userNo){
-        User user = findUserByUserNo(userNo);
-        List<Gift> giftList = giftRepository.findGiftsByUser(user);
-        List<GiftSimpleDto> giftResponseDtoList = new ArrayList<>();
-        for(Gift gift : giftList){
-            if(!gift.getIsGiven()){
-                GiftSimpleDto dto = new GiftSimpleDto(gift);
-                giftResponseDtoList.add(dto);
-            }
-        }
-        return giftResponseDtoList;
+        return giftRepository.findGiftsByUser(user).stream()
+                .map(GiftSimpleDto::new)
+                .collect(Collectors.toList());
     }
 
+    public List<GiftSimpleDto> readReceivedGiftList(Long userNo){
+        User user = findUserByUserNo(userNo);
+        return giftRepository.findGiftsByUser(user).stream()
+                .map(GiftSimpleDto::new)
+                .collect(Collectors.toList());
+    }
 
-    public List<ReminderSimpleDto> getReminderList(User user) {
+    public List<ReminderSimpleDto> readReminderList(Long userNo) {
+        User user = findUserByUserNo(userNo);
         return user.getReminderList().stream()
-                .map(reminder -> new ReminderSimpleDto(reminder)).collect(Collectors.toList());
+                .map(ReminderSimpleDto::new).collect(Collectors.toList());
     }
 
-    public List<FriendSimpleDto> getFriendList(User user) {
+    public List<FriendSimpleDto> readFriendList(Long userNo) {
+        User user = findUserByUserNo(userNo);
         return user.getFriendList().stream()
                 .map(friend -> new FriendSimpleDto(friend, friend.getUser(), friend.getUser().getUserProfilePhoto())).collect(Collectors.toList());
     }
 
-    public List<AnniversaryResponseDto> getAnniversaryList(User user) {
+    public List<AnniversaryResponseDto> readAnniversaryList(Long userNo) {
+        User user = findUserByUserNo(userNo);
         return user.getAnniversaryList().stream()
-                .map(anniversary -> new AnniversaryResponseDto(anniversary)).collect(Collectors.toList());
+                .map(AnniversaryResponseDto::new).collect(Collectors.toList());
     }
 
-    public List<Favor> getFavorList(User user) {
+    public List<Favor> readFavorList(Long userNo) {
+        User user = findUserByUserNo(userNo);
         return user.getFavorList().stream()
                 .map(Favor::valueOf).collect(Collectors.toList());
-    }
-
-    //RETURN
-    @Transactional
-    public UserResponseDto returnUserDto(User user){
-
-        List<ReminderSimpleDto> r_List = user.getReminderList().stream()
-                .map(reminder -> new ReminderSimpleDto(reminder)).collect(Collectors.toList());
-
-        List<FriendSimpleDto> f_List = new ArrayList<>();
-        for(Friend f : user.getFriendList()){
-            User friendUser = findUserByUserNo(f.getFriendUserNo());
-            UserPhoto photo = friendUser.getUserProfilePhoto();
-            FriendSimpleDto dto = new FriendSimpleDto(f, friendUser, photo);
-            f_List.add(dto);
-        }
-
-        List<AnniversaryResponseDto> a_List = new ArrayList<>();
-        for(Anniversary a : user.getAnniversaryList()){
-            AnniversaryResponseDto dto = new AnniversaryResponseDto(a);
-            a_List.add(dto);
-        }
-
-        List<Favor> favor_List = new ArrayList<>();
-        for(Integer favorType : user.getFavorList()){
-            favor_List.add(Favor.valueOf(favorType));
-        }
-
-        HashMap<String, Integer> giftInfo = getGiftInfo(user.getUserNo());
-
-        UserResponseDto dto = new UserResponseDto(user, r_List, f_List, favor_List, a_List, giftInfo);
-        return dto;
-    }
-
-    @Transactional
-    public GiftResponseDto returnGiftDto(Gift gift){
-
-        List<Long> friendNoList = gift.getFriendNoList();
-        List<FriendSimpleDto> friendResponseDtoList = new ArrayList<>();
-
-        for(Long friendNo : friendNoList){
-            Friend friend = findFriendByFriendNo(friendNo);
-            User friendUser = findUserByUserNo(friend.getFriendUserNo());
-            UserPhoto photo = friendUser.getUserProfilePhoto();
-            FriendSimpleDto dto = new FriendSimpleDto(friend, friendUser, photo);
-            friendResponseDtoList.add(dto);
-        }
-
-        giftRepository.save(gift);
-        log.info("[SYSTEM] giftRepository.save(gift) 완료");
-
-        return new GiftResponseDto(gift, friendResponseDtoList);
     }
 
     public HashMap<String, Integer> getGiftInfo(Long userNo){
@@ -430,15 +303,9 @@ public class UserService {
         return hashMap;
     }
 
-    public Boolean checkPassword (String inputPassword, String userPassword){
-        return passwordEncoder.matches(inputPassword, userPassword);
-    }
-
-
-
     //IS_EXISTING
     public void isExistingUserId (String id){
-        Boolean isExistingId = null;
+        Boolean isExistingId;
         try{
             isExistingId = userRepository.existsByUserId(id);
         } catch(RuntimeException e){
@@ -450,7 +317,7 @@ public class UserService {
     }
 
     public void isExistingEmail (String email){
-        Boolean isExistingEmail = null;
+        Boolean isExistingEmail;
         try{
             isExistingEmail = userRepository.existsByEmail(email);
         } catch(RuntimeException e){
@@ -462,7 +329,7 @@ public class UserService {
     }
 
     public void isExistingUserByEmail (String email){
-        Boolean isExistingEmail = null;
+        Boolean isExistingEmail;
         try{
             isExistingEmail = userRepository.existsByEmail(email);
         } catch(RuntimeException e){
@@ -474,7 +341,7 @@ public class UserService {
     }
 
     public void isExistingUserNo (Long userNo){
-        Boolean isExistingUser = null;
+        Boolean isExistingUser;
         try{
             isExistingUser = userRepository.existsByUserNo(userNo);
         } catch(RuntimeException e){

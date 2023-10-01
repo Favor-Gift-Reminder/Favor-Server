@@ -5,11 +5,8 @@ import com.favor.favor.anniversary.AnniversaryResponseDto;
 import com.favor.favor.common.DefaultResponseDto;
 import com.favor.favor.common.enums.GiftCategory;
 import com.favor.favor.common.enums.Emotion;
-import com.favor.favor.friend.FriendResponseDto;
 import com.favor.favor.friend.FriendSimpleDto;
-import com.favor.favor.gift.GiftResponseDto;
 import com.favor.favor.gift.GiftSimpleDto;
-import com.favor.favor.reminder.ReminderResponseDto;
 import com.favor.favor.reminder.ReminderSimpleDto;
 import io.swagger.annotations.*;
 import lombok.RequiredArgsConstructor;
@@ -145,9 +142,7 @@ public class UserController {
 
         userService.isExistingUserNo(userNo);
 
-        User user = userService.findUserByUserNo(userNo);
-
-        UserResponseDto dto = userService.returnUserDto(user);
+        UserResponseDto dto = userService.readUserInfo(userNo);
 
         return ResponseEntity.status(200)
                 .body(resWithData("USER_FOUND", "회원 조회 완료", dto));
@@ -208,14 +203,7 @@ public class UserController {
         userService.deleteUser(userNo);
 
         return ResponseEntity.status(200)
-<<<<<<< Updated upstream
-                .body(DefaultResponseDto.builder()
-                        .responseCode("USER_DELETED")
-                        .responseMessage("회원 탈퇴 완료 (임시)")
-                        .build());
-=======
                 .body(resWithoutData("USER_DELETED", "회원 탈퇴 완료"));
->>>>>>> Stashed changes
     }
 
     @ApiOperation("비밀번호 변경")
@@ -248,7 +236,7 @@ public class UserController {
     @ApiResponses(value={
             @ApiResponse(code = 200,
                     message = "REMINDERS_FOUND",
-                    response = ReminderResponseDto.class),
+                    response = ReminderSimpleDto.class),
             @ApiResponse(code = 401,
                     message = "UNAUTHORIZED_USER"),
             @ApiResponse(code = 404,
@@ -274,7 +262,7 @@ public class UserController {
     @ApiResponses(value={
             @ApiResponse(code = 200,
                     message = "REMINDER_FOUND_BY_FILTER",
-                    response = ReminderResponseDto.class),
+                    response = ReminderSimpleDto.class),
             @ApiResponse(code = 401,
                     message = "UNAUTHORIZED_USER"),
             @ApiResponse(code = 404,
@@ -303,7 +291,7 @@ public class UserController {
     @ApiResponses(value={
             @ApiResponse(code = 200,
                     message = "GIFTS_FOUND",
-                    response = GiftResponseDto.class),
+                    response = GiftSimpleDto.class),
             @ApiResponse(code = 401,
                     message = "UNAUTHORIZED_USER"),
             @ApiResponse(code = 404,
@@ -330,7 +318,7 @@ public class UserController {
     @ApiResponses(value={
             @ApiResponse(code = 200,
                     message = "FRIENDS_FOUND",
-                    response = FriendResponseDto.class),
+                    response = FriendSimpleDto.class),
             @ApiResponse(code = 401,
                     message = "UNAUTHORIZED_USER"),
             @ApiResponse(code = 404,
@@ -406,7 +394,7 @@ public class UserController {
     @ApiResponses(value={
             @ApiResponse(code = 200,
                     message = "GIFTS_BY_NAME_FOUND",
-                    response = GiftResponseDto.class),
+                    response = GiftSimpleDto.class),
             @ApiResponse(code = 401,
                     message = "UNAUTHORIZED_USER"),
             @ApiResponse(code = 404,
@@ -434,7 +422,7 @@ public class UserController {
     @ApiResponses(value={
             @ApiResponse(code = 200,
                     message = "GIFTS_BY_CATEGORY_FOUND",
-                    response = GiftResponseDto.class),
+                    response = GiftSimpleDto.class),
             @ApiResponse(code = 401,
                     message = "UNAUTHORIZED_USER"),
             @ApiResponse(code = 404,
@@ -461,7 +449,7 @@ public class UserController {
     @ApiResponses(value={
             @ApiResponse(code = 200,
                     message = "GIFTS_BY_EMOTION_FOUND",
-                    response = GiftResponseDto.class),
+                    response = GiftSimpleDto.class),
             @ApiResponse(code = 401,
                     message = "UNAUTHORIZED_USER"),
             @ApiResponse(code = 404,
@@ -502,7 +490,7 @@ public class UserController {
             @PathVariable("userId") String userId){
 
         User user = userService.findUserByUserId(userId);
-        UserResponseDto dto = userService.returnUserDto(user);
+        UserResponseDto dto = userService.readUserInfo(user.getUserNo());
 
         return ResponseEntity.status(200)
                 .body(resWithData("USER_BY_ID_FOUND", "아이디로 회원 조회 완료", dto));
@@ -512,7 +500,7 @@ public class UserController {
     @ApiResponses(value={
             @ApiResponse(code = 200,
                     message = "GIVEN_GIFTS_FOUND",
-                    response = GiftResponseDto.class),
+                    response = GiftSimpleDto.class),
             @ApiResponse(code = 401,
                     message = "UNAUTHORIZED_USER"),
             @ApiResponse(code = 500,
@@ -525,7 +513,7 @@ public class UserController {
         Long userNo = loginUser.getUserNo();
 
         userService.isExistingUserNo(userNo);
-        List<GiftSimpleDto> dto = userService.findGivenGiftList(userNo);
+        List<GiftSimpleDto> dto = userService.readGivenGiftList(userNo);
 
         return ResponseEntity.status(200)
                 .body(resWithData("GIVEN_GIFTS_FOUND", "유저가 준 선물 전체 조회 완료", dto));
@@ -535,7 +523,7 @@ public class UserController {
     @ApiResponses(value={
             @ApiResponse(code = 200,
                     message = "RECEIVED_GIFTS_FOUND",
-                    response = GiftResponseDto.class),
+                    response = GiftSimpleDto.class),
             @ApiResponse(code = 401,
                     message = "UNAUTHORIZED_USER"),
             @ApiResponse(code = 500,
@@ -548,7 +536,7 @@ public class UserController {
         Long userNo = loginUser.getUserNo();
 
         userService.isExistingUserNo(userNo);
-        List<GiftSimpleDto> dto = userService.findReceivedGiftList(userNo);
+        List<GiftSimpleDto> dto = userService.readReceivedGiftList(userNo);
 
         return ResponseEntity.status(200)
                 .body(resWithData("RECEIVED_GIFTS_FOUND", "유저가 받은 선물 전체 조회 완료", dto));
