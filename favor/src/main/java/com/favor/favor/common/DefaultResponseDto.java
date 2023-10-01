@@ -6,9 +6,12 @@ import lombok.*;
 
 @Getter
 @ApiModel(value = "기본 응답")
+<<<<<<< Updated upstream
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
+=======
+>>>>>>> Stashed changes
 public class DefaultResponseDto <T> {
 
     @ApiModelProperty(position = 1, value = "응답 코드", example = "RESPONSE_CODE")
@@ -18,11 +21,22 @@ public class DefaultResponseDto <T> {
     @ApiModelProperty(position = 3, value = "응답 데이터", example = "응답 데이터")
     private T data;
 
-    public static <T> DefaultResponseDto<T> response(final String responseCode, final String responseMessage){
-        return response(responseCode, responseMessage, null);
+
+    @Builder
+    private DefaultResponseDto(String responseCode, String responseMessage, T data){
+        this.responseCode = responseCode;
+        this.responseMessage = responseMessage;
+        this.data = data;
     }
 
-    public static <T> DefaultResponseDto<T> response(final String responseCode, final String responseMessage, final T data){
+    public static <T> DefaultResponseDto<T> resWithoutData(final String responseCode, final String responseMessage){
+        return DefaultResponseDto.<T>builder()
+                .responseCode(responseCode)
+                .responseMessage(responseMessage)
+                .build();
+    }
+
+    public static <T> DefaultResponseDto<T> resWithData(final String responseCode, final String responseMessage, final T data){
         return DefaultResponseDto.<T>builder()
                 .responseCode(responseCode)
                 .responseMessage(responseMessage)
