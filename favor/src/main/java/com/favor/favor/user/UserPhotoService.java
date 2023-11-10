@@ -4,15 +4,18 @@ import com.favor.favor.exception.CustomException;
 import com.favor.favor.photo.UserPhoto;
 import com.favor.favor.photo.PhotoService;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.net.URL;
+import java.util.Optional;
 import java.util.UUID;
 
 import static com.favor.favor.exception.ExceptionCode.SERVER_ERROR;
 
+@Slf4j
 @Service
 @Transactional(readOnly = true)
 @RequiredArgsConstructor
@@ -53,15 +56,12 @@ public class UserPhotoService {
 
     //유저 프로필사진 삭제
     @Transactional
-    public User deleteUserProfilePhoto(Long userNo) {
+    public void deleteUserProfilePhoto(Long userNo) {
 
         User user = userService.findUserByUserNo(userNo);
         String fileName = extractProfilePhotoFileName(user);
-
         user.setUserProfilePhoto(null);
         photoService.deleteFileFromS3(fileName);
-
-        return userRepository.save(user);
     }
 
 
@@ -97,15 +97,12 @@ public class UserPhotoService {
 
     //유저 배경사진 삭제
     @Transactional
-    public User deleteUserBackgroundPhoto(Long userNo) {
+    public void deleteUserBackgroundPhoto(Long userNo) {
 
         User user = userService.findUserByUserNo(userNo);
         String fileName = extractBackgroundPhotoFileName(user);
-
         user.setUserBackgroundPhoto(null);
         photoService.deleteFileFromS3(fileName);
-
-        return userRepository.save(user);
     }
 
 
@@ -123,11 +120,10 @@ public class UserPhotoService {
 
     //유저의 프로필 사진 이름 추출
     public static String extractProfilePhotoFileName(User user) {
-        String path = null;
-
+        String path;
         try {
-            URL url = new URL(user.getUserProfilePhoto().getPhotoUrl());
-            path = url.getPath();
+            if (user.getUserProfilePhoto() == null) return "";
+            path = new URL(user.getUserProfilePhoto().getPhotoUrl()).getPath();
 
             if (path.startsWith("/")) {
                 path = path.substring(1);
@@ -140,11 +136,11 @@ public class UserPhotoService {
     }
     //유저의 배경 사진 이름 추출
     public static String extractBackgroundPhotoFileName(User user) {
-        String path = null;
+        String path;
 
         try {
-            URL url = new URL(user.getUserBackgroundPhoto().getPhotoUrl());
-            path = url.getPath();
+            if (user.getUserBackgroundPhoto() == null) return "";
+            path = new URL(user.getUserBackgroundPhoto().getPhotoUrl()).getPath();
 
             if (path.startsWith("/")) {
                 path = path.substring(1);

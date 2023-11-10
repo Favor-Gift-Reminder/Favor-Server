@@ -48,6 +48,7 @@ public class PhotoService {
     @Transactional
     public void deleteFileFromS3(String fileName) {
         try {
+            if (fileName == "") return;
             amazonS3Client.deleteObject(bucketName, fileName);
         } catch (SdkClientException e) {
             throw new CustomException(e, FILE_NOT_FOUND);

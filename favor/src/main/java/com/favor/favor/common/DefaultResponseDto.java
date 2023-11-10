@@ -6,12 +6,6 @@ import lombok.*;
 
 @Getter
 @ApiModel(value = "기본 응답")
-<<<<<<< Updated upstream
-@NoArgsConstructor
-@AllArgsConstructor
-@Builder
-=======
->>>>>>> Stashed changes
 public class DefaultResponseDto <T> {
 
     @ApiModelProperty(position = 1, value = "응답 코드", example = "RESPONSE_CODE")
