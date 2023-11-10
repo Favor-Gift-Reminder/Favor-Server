@@ -7,7 +7,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
-import javax.transaction.Transactional;
+import org.springframework.transaction.annotation.Transactional;
 import java.util.List;
 import java.util.UUID;
 
@@ -15,6 +15,7 @@ import static com.favor.favor.exception.ExceptionCode.FILE_NOT_FOUND;
 import static com.favor.favor.exception.ExceptionCode.SERVER_ERROR;
 
 @Service
+@Transactional(readOnly = true)
 @RequiredArgsConstructor
 public class GiftPhotoService {
     private final GiftRepository giftRepository;
@@ -43,22 +44,6 @@ public class GiftPhotoService {
             throw new CustomException(e, SERVER_ERROR);
         }
 
-//        for(MultipartFile file : fileList){
-//            String fileName = file.getOriginalFilename();
-//            String storedFileName = getGiftFileName(fileName);
-//
-//            String giftPhotoUrl = photoService.uploadFileToS3(storedFileName, file);
-//            try{
-//                GiftPhoto giftPhoto = GiftPhoto.builder()
-//                        .photoUrl(giftPhotoUrl)
-//                        .build();
-//
-//                giftPhotoList.add(giftPhoto);
-//
-//            }catch(RuntimeException e){
-//                throw new CustomException(e, SERVER_ERROR);
-//            }
-//        }
         gift.setGiftPhotoList(giftPhotoList);
         return giftRepository.save(gift);
     }
@@ -69,6 +54,7 @@ public class GiftPhotoService {
     }
 
     //선물 사진 삭제
+    @Transactional
     public Gift deleteGiftPhoto(Long giftNo, String photoUrl){
         Gift gift = giftService.findGiftByGiftNo(giftNo);
         List<GiftPhoto> giftPhotoList = gift.getGiftPhotoList();

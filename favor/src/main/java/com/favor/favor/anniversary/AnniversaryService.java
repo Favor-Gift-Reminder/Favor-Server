@@ -7,8 +7,8 @@ import com.favor.favor.user.User;
 import com.favor.favor.user.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
-import javax.transaction.Transactional;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
@@ -16,6 +16,7 @@ import java.util.List;
 import static com.favor.favor.exception.ExceptionCode.*;
 
 @Service
+@Transactional(readOnly = true)
 @RequiredArgsConstructor
 public class AnniversaryService {
 
@@ -30,6 +31,7 @@ public class AnniversaryService {
         return anniversaryRepository.save(anniversary);
     }
 
+    @Transactional
     public void updateAnniversary(AnniversaryUpdateRequestDto dto, Anniversary anniversary){
         anniversary.setAnniversaryTitle(dto.getAnniversaryTitle());
         anniversary.setAnniversaryDate(LocalDate.parse(dto.getAnniversaryDate()));
@@ -38,6 +40,7 @@ public class AnniversaryService {
         anniversaryRepository.save(anniversary);
     }
 
+    @Transactional
     public void updateIsPinned(Anniversary anniversary){
         anniversary.setIsPinned(anniversary.getIsPinned() == true ? false : true);
         anniversaryRepository.save(anniversary);

@@ -16,6 +16,9 @@ import org.springframework.web.multipart.MultipartFile;
 import javax.transaction.Transactional;
 import java.util.List;
 
+import static com.favor.favor.common.DefaultResponseDto.resWithData;
+import static com.favor.favor.common.DefaultResponseDto.resWithoutData;
+
 @Api(tags = "Gift-Photo")
 @RestController
 @RequestMapping("/giftphotos")
@@ -51,11 +54,7 @@ public class GiftPhotoController {
         List<GiftPhoto> dto = giftPhotoService.getGiftPhotoList(giftNo);
 
         return ResponseEntity.status(201)
-                .body(DefaultResponseDto.builder()
-                        .responseCode("GIFT_PHOTO_LIST_ADDED")
-                        .responseMessage("선물 사진 추가")
-                        .data(dto)
-                        .build());
+                .body(resWithData("GIFT_PHOTO_LIST_ADDED", "선물 사진 추가", dto));
     }
 
     @ApiOperation("선물 사진 목록 조회")
@@ -71,7 +70,6 @@ public class GiftPhotoController {
                     message = "SERVER_ERROR")
     })
     @ResponseStatus(HttpStatus.OK)
-    @Transactional
     @GetMapping
     public ResponseEntity<DefaultResponseDto<Object>> getUserProfilePhoto(Long giftNo) {
         Gift gift = giftService.findGiftByGiftNo(giftNo);
@@ -79,11 +77,7 @@ public class GiftPhotoController {
         List<GiftPhoto> dto = giftPhotoService.getGiftPhotoList(giftNo);
 
         return ResponseEntity.status(200)
-                .body(DefaultResponseDto.builder()
-                        .responseCode("GIFT_PHOTO_LIST_FOUND")
-                        .responseMessage("선물 사진 목록 조회 완료")
-                        .data(dto)
-                        .build());
+                .body(resWithData("GIFT_PHOTO_LIST_FOUND", "선물 사진 목록 조회 완료", dto));
     }
 
     @ApiOperation("선물 사진 삭제")
@@ -99,19 +93,13 @@ public class GiftPhotoController {
                     message = "SERVER_ERROR")
     })
     @ResponseStatus(HttpStatus.OK)
-    @Transactional
     @DeleteMapping
     public ResponseEntity<DefaultResponseDto<Object>> deleteUserProfilePhoto(
             Long giftNo, String fileUrl) {
 
         giftPhotoService.deleteGiftPhoto(giftNo, fileUrl);
-        List<GiftPhoto> dto = giftPhotoService.getGiftPhotoList(giftNo);
 
         return ResponseEntity.status(200)
-                .body(DefaultResponseDto.builder()
-                        .responseCode("GIFT_PHOTO_DELETED")
-                        .responseMessage("선물 사진 삭제 완료")
-                        .data(dto)
-                        .build());
+                .body(resWithoutData("GIFT_PHOTO_DELETED", "선물 사진 삭제 완료"));
     }
 }

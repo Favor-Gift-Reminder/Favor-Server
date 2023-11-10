@@ -15,8 +15,11 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
-import javax.transaction.Transactional;
 import java.util.List;
+
+import static com.favor.favor.common.DefaultResponseDto.resWithData;
+import static com.favor.favor.common.DefaultResponseDto.resWithoutData;
+
 
 @Api(tags = "Friend")
 @RestController
@@ -52,11 +55,7 @@ public class FriendController {
         FriendResponseDto dto = friendService.returnDto(friend);
 
         return ResponseEntity.status(201)
-                .body(DefaultResponseDto.builder()
-                        .responseCode("FRIEND_ADDED")
-                        .responseMessage("친구 추가 완료")
-                        .data(dto)
-                        .build());
+                .body(resWithData("FRIEND_ADDED", "친구 추가 완료", dto));
     }
 
     @ApiOperation("친구 조회")
@@ -82,11 +81,7 @@ public class FriendController {
         FriendResponseDto dto = friendService.returnDto(friend);
 
         return ResponseEntity.status(200)
-                .body(DefaultResponseDto.builder()
-                        .responseCode("FRIEND_FOUND")
-                        .responseMessage("친구 조회 완료")
-                        .data(dto)
-                        .build());
+                .body(resWithData("FRIEND_FOUND", "친구 조회 완료", dto));
     }
 
     @ApiOperation("친구 메모 수정")
@@ -116,11 +111,7 @@ public class FriendController {
         FriendResponseDto dto = friendService.returnDto(friend);
 
         return ResponseEntity.status(200)
-                .body(DefaultResponseDto.builder()
-                        .responseCode("FRIEND_MEMO_UPDATED")
-                        .responseMessage("친구 메모 수정 완료")
-                        .data(dto)
-                        .build());
+                .body(resWithData("FRIEND_MEMO_UPDATED", "친구 메모 수정 완료", dto));
     }
 
     @ApiOperation("친구 삭제")
@@ -147,11 +138,7 @@ public class FriendController {
         friendService.deleteFriend(friendNo);
 
         return ResponseEntity.status(200)
-                .body(DefaultResponseDto.builder()
-                        .responseCode("FRIEND_DELETED")
-                        .responseMessage("친구 삭제 완료")
-                        .data(dto)
-                        .build());
+                .body(resWithoutData("FRIEND_DELETED", "친구 삭제 완료"));
     }
 
     @ApiOperation("전체 친구 조회")
@@ -171,11 +158,7 @@ public class FriendController {
         List<FriendResponseDto> dto = friendService.readAll();
 
         return ResponseEntity.status(200)
-                .body(DefaultResponseDto.builder()
-                        .responseCode("FRIENDS_FOUND")
-                        .responseMessage("전체 친구 조회 완료")
-                        .data(dto)
-                        .build());
+                .body(resWithData("FRIENDS_FOUND", "전체 친구 조회 완료", dto));
     }
 
     @ApiOperation("친구의 선물 전체 조회")
@@ -196,11 +179,7 @@ public class FriendController {
         List<GiftSimpleDto> dto = friendService.findGiftListByFriendNo(friendNo);
 
         return ResponseEntity.status(200)
-                .body(DefaultResponseDto.builder()
-                        .responseCode("GIFTS_FOUND")
-                        .responseMessage("친구의 선물 전체 조회 완료")
-                        .data(dto)
-                        .build());
+                .body(resWithData("GIFTS_FOUND", "친구의 선물 전체 조회 완료", dto));
     }
 
     @ApiOperation("친구가 준 선물 전체 조회")
@@ -221,11 +200,7 @@ public class FriendController {
         List<GiftSimpleDto> dto = friendService.findReceivedGiftList(friendNo);
 
         return ResponseEntity.status(200)
-                .body(DefaultResponseDto.builder()
-                        .responseCode("GIFTS_FOUND")
-                        .responseMessage("친구가 준 선물 전체 조회 완료")
-                        .data(dto)
-                        .build());
+                .body(resWithData("GIFTS_FOUND", "친구가 준 선물 전체 조회 완료", dto));
     }
 
     @ApiOperation("친구가 받은 선물 전체 조회")
@@ -246,10 +221,6 @@ public class FriendController {
         List<GiftSimpleDto> dto = friendService.findGivenGiftList(friendNo);
 
         return ResponseEntity.status(200)
-                .body(DefaultResponseDto.builder()
-                        .responseCode("GIFTS_FOUND")
-                        .responseMessage("친구가 받은 선물 전체 조회 완료")
-                        .data(dto)
-                        .build());
+                .body(resWithData("GIFTS_FOUND", "친구가 받은 선물 전체 조회 완료", dto));
     }
 }

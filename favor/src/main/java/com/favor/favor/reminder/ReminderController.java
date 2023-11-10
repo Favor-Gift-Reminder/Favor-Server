@@ -14,14 +14,15 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
-import javax.transaction.Transactional;
 import java.util.List;
+
+import static com.favor.favor.common.DefaultResponseDto.resWithData;
+import static com.favor.favor.common.DefaultResponseDto.resWithoutData;
 
 @Api(tags = "Reminder")
 @RestController
 @RequestMapping("/reminders")
 @RequiredArgsConstructor
-@Log4j2
 public class ReminderController {
 
     private final ReminderService reminderService;
@@ -34,7 +35,7 @@ public class ReminderController {
             @ApiResponse(code = 400,
                     message = "FIELD_REQUIRED / *_CHARACTER_INVALID / *_LENGTH_INVALID"),
             @ApiResponse(code = 404,
-                    message = "USER_NOT_FOUND / FREIND_NOT_FOUND"),
+                    message = "USER_NOT_FOUND / FRIEND_NOT_FOUND"),
             @ApiResponse(code = 500,
                     message = "SERVER_ERROR")
     })
@@ -54,11 +55,7 @@ public class ReminderController {
         ReminderResponseDto dto = reminderService.returnDto(reminder);
 
         return ResponseEntity.status(201)
-                .body(DefaultResponseDto.builder()
-                        .responseCode("REMINDER_CREATED")
-                        .responseMessage("리마인더 생성 완료")
-                        .data(dto)
-                        .build());
+                .body(resWithData("REMINDER_CREATED", "리마인더 생성 완료", dto));
     }
 
     @ApiOperation("친구의 기념일을 리마인더로 추가")
@@ -88,11 +85,7 @@ public class ReminderController {
         ReminderResponseDto dto = reminderService.returnDto(reminder);
 
         return ResponseEntity.status(201)
-                .body(DefaultResponseDto.builder()
-                        .responseCode("REMINDER_ADDED")
-                        .responseMessage("리마인더 추가 완료")
-                        .data(dto)
-                        .build());
+                .body(resWithData("REMINDER_ADDED", "리마인더 추가 완료", dto));
     }
 
     @ApiOperation("리마인더 조회")
@@ -117,11 +110,12 @@ public class ReminderController {
         ReminderResponseDto dto = reminderService.returnDto(reminder);
 
         return ResponseEntity.status(200)
-                .body(DefaultResponseDto.builder()
-                        .responseCode("REMINDER_FOUND")
-                        .responseMessage("리마인더 조회 완료")
-                        .data(dto)
-                        .build());
+                .body(resWithData("REMINDER_FOUND", "리마인더 조회 완료", dto));
+//                .body(DefaultResponseDto.builder()
+//                        .responseCode("REMINDER_FOUND")
+//                        .responseMessage("리마인더 조회 완료")
+//                        .data(dto)
+//                        .build());
     }
 
     @ApiOperation("리마인더 수정")
@@ -149,11 +143,7 @@ public class ReminderController {
         ReminderResponseDto dto = reminderService.returnDto(reminder);
 
         return ResponseEntity.status(200)
-                .body(DefaultResponseDto.builder()
-                        .responseCode("REMINDER_UPDATED")
-                        .responseMessage("리마인더 수정 완료")
-                        .data(dto)
-                        .build());
+                .body(resWithData("REMINDER_UPDATED", "리마인더 수정 완료", dto));
     }
 
     @ApiOperation("리마인더 삭제")
@@ -181,11 +171,7 @@ public class ReminderController {
         reminderService.deleteReminder(reminderNo);
 
         return ResponseEntity.status(200)
-                .body(DefaultResponseDto.builder()
-                        .responseCode("REMINDER_DELETED")
-                        .responseMessage("리마인더 삭제 완료")
-                        .data(dto)
-                        .build());
+                .body(resWithoutData("REMINDER_DELETED", "리마인더 삭제 완료"));
     }
 
     @ApiOperation("전체 리마인더 조회")
@@ -205,11 +191,7 @@ public class ReminderController {
         List<ReminderSimpleDto> dto = reminderService.readAll();
 
         return ResponseEntity.status(200)
-                .body(DefaultResponseDto.builder()
-                        .responseCode("REMINDERS_FOUND")
-                        .responseMessage("전체 리마인더 조회 완료")
-                        .data(dto)
-                        .build());
+                .body(resWithData("REMINDERS_FOUND", "전체 리마인더 조회 완료", dto));
     }
 
 

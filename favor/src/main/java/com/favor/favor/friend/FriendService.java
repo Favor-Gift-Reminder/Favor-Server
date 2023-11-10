@@ -6,17 +6,14 @@ import com.favor.favor.common.enums.Favor;
 import com.favor.favor.exception.CustomException;
 import com.favor.favor.gift.Gift;
 import com.favor.favor.gift.GiftRepository;
-import com.favor.favor.gift.GiftResponseDto;
 import com.favor.favor.gift.GiftSimpleDto;
 import com.favor.favor.reminder.Reminder;
-import com.favor.favor.reminder.ReminderResponseDto;
+import org.springframework.transaction.annotation.Transactional;
 import com.favor.favor.reminder.ReminderSimpleDto;
 import com.favor.favor.user.User;
 import com.favor.favor.user.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
-
-import javax.transaction.Transactional;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -24,6 +21,7 @@ import java.util.List;
 import static com.favor.favor.exception.ExceptionCode.*;
 
 @Service
+@Transactional(readOnly = true)
 @RequiredArgsConstructor
 public class FriendService {
     private final FriendRepository friendRepository;
@@ -54,6 +52,7 @@ public class FriendService {
         return isDuplicate;
     }
 
+    @Transactional
     public void updateMemo(Friend friend, MemoUpdateRequestDto memoUpdateRequestDto){
         friend.setFriendMemo(memoUpdateRequestDto.getMemo());
         friendRepository.save(friend);
@@ -76,7 +75,6 @@ public class FriendService {
         friendRepository.deleteById(friendNo);
     }
 
-    @Transactional
     public List<FriendResponseDto> readAll(){
         List<FriendResponseDto> f_List = new ArrayList<>();
         List<Friend> friendList = friendRepository.findAll();
@@ -165,7 +163,6 @@ public class FriendService {
 
 
     //RETURN
-    @Transactional
     public FriendResponseDto returnDto(Friend friend){
         User friendUser = findUserByUserNo(friend.getFriendUserNo());
 

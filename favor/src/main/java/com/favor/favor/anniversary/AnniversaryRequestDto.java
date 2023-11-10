@@ -23,7 +23,6 @@ public class AnniversaryRequestDto {
     @ApiModelProperty(position = 3, required = true, value = "종류", example = "축하_생일")
     private AnniversaryCategory anniversaryCategory;
 
-    @Transactional
     public Anniversary toEntity(String anniversaryTitle, User user){
         return Anniversary.builder()
                 .anniversaryTitle(anniversaryTitle)

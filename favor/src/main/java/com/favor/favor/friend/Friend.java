@@ -18,7 +18,6 @@ import java.util.List;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor
 @Builder
-@Transactional
 public class Friend extends TimeStamped {
 
     @Id

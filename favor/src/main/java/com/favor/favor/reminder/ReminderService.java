@@ -11,6 +11,7 @@ import com.favor.favor.user.User;
 import com.favor.favor.user.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -22,6 +23,7 @@ import java.util.List;
 import static com.favor.favor.exception.ExceptionCode.*;
 
 @Service
+@Transactional(readOnly = true)
 @RequiredArgsConstructor
 public class ReminderService {
     private final ReminderRepository reminderRepository;
@@ -29,6 +31,7 @@ public class ReminderService {
     private final FriendRepository friendRepository;
     private final AnniversaryRepository anniversaryRepository;
 
+    @Transactional
     public Reminder createReminder(ReminderRequestDto reminderRequestDto, Long userNo, Long friendNo){
         User user = findUserByUserNo(userNo);
         Friend friend = findFriendByFriendNo(friendNo);
@@ -37,6 +40,7 @@ public class ReminderService {
         return reminderRepository.save(reminderRequestDto.toEntity(user, friend, localDate, localDateTime));
     }
 
+    @Transactional
     public Reminder addReminder(Long userNo, Long anniversaryNo){
         Anniversary anniversary = findAnniversaryByAnniversaryNo(anniversaryNo);
         User user = findUserByUserNo(userNo);
@@ -53,6 +57,7 @@ public class ReminderService {
         return reminderRepository.save(reminder);
     }
 
+    @Transactional
     public void updateReminder(ReminderUpdateRequestDto dto, Long reminderNo){
         Reminder reminder = findReminderByReminderNo(reminderNo);
         Friend friend = reminder.getFriend();
@@ -67,6 +72,7 @@ public class ReminderService {
         reminderRepository.save(reminder);
     }
 
+    @Transactional
     public void deleteReminder(Long reminderNo){
         reminderRepository.deleteById(reminderNo);
     }

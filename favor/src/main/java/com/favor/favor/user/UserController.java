@@ -5,11 +5,8 @@ import com.favor.favor.anniversary.AnniversaryResponseDto;
 import com.favor.favor.common.DefaultResponseDto;
 import com.favor.favor.common.enums.GiftCategory;
 import com.favor.favor.common.enums.Emotion;
-import com.favor.favor.friend.FriendResponseDto;
 import com.favor.favor.friend.FriendSimpleDto;
-import com.favor.favor.gift.GiftResponseDto;
 import com.favor.favor.gift.GiftSimpleDto;
-import com.favor.favor.reminder.ReminderResponseDto;
 import com.favor.favor.reminder.ReminderSimpleDto;
 import io.swagger.annotations.*;
 import lombok.RequiredArgsConstructor;
@@ -20,6 +17,9 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import java.util.List;
+
+import static com.favor.favor.common.DefaultResponseDto.resWithData;
+import static com.favor.favor.common.DefaultResponseDto.resWithoutData;
 
 @Api(tags = "User")
 @RestController
@@ -53,15 +53,10 @@ public class UserController {
 
         userService.isExistingEmail(signDto.getEmail());
 
-        User user = userService.signUp(signDto);
-        UserResponseDto dto = userService.returnUserDto(user);
+        UserResponseDto dto = userService.signUp(signDto);
 
         return ResponseEntity.status(201)
-                .body(DefaultResponseDto.builder()
-                        .responseCode("USER_REGISTERED")
-                        .responseMessage("회원가입 완료")
-                        .data(dto)
-                        .build());
+                .body(resWithData("USER_REGISTERED", "회원가입 완료", dto));
     }
 
     @ApiOperation("프로필 생성")
@@ -90,15 +85,10 @@ public class UserController {
 
         userService.isExistingUserId(profileDto.getUserId());
 
-        User user = userService.createProfile(profileDto, userNo);
-        UserResponseDto dto = userService.returnUserDto(user);
+        UserResponseDto dto = userService.createProfile(profileDto, userNo);
 
         return ResponseEntity.status(200)
-                .body(DefaultResponseDto.builder()
-                        .responseCode("PROFILE_UPDATED")
-                        .responseMessage("프로필 생성 완료")
-                        .data(dto)
-                        .build());
+                .body(resWithData("PROFILE_UPDATED", "프로필 생성 완료", dto));
     }
 
     @ApiOperation(value = "로그인")
@@ -126,11 +116,7 @@ public class UserController {
         SignInResponseDto dto = userService.signIn(signDto);
 
         return ResponseEntity.status(201)
-                .body(DefaultResponseDto.builder()
-                        .responseCode("LOG_IN_SUCCESS")
-                        .responseMessage("로그인 완료")
-                        .data(dto)
-                        .build());
+                .body(resWithData("LOG_IN_SUCCESS", "로그인 완료", dto));
     }
 
 
@@ -156,16 +142,10 @@ public class UserController {
 
         userService.isExistingUserNo(userNo);
 
-        User user = userService.findUserByUserNo(userNo);
-
-        UserResponseDto dto = userService.returnUserDto(user);
+        UserResponseDto dto = userService.readUserInfo(userNo);
 
         return ResponseEntity.status(200)
-                .body(DefaultResponseDto.builder()
-                        .responseCode("USER_FOUND")
-                        .responseMessage("회원 조회 완료")
-                        .data(dto)
-                        .build());
+                .body(resWithData("USER_FOUND", "회원 조회 완료", dto));
     }
 
     @ApiOperation("회원 수정")
@@ -189,18 +169,10 @@ public class UserController {
 
         Long userNo = loginUser.getUserNo();
         userService.isExistingUserNo(userNo);
-        User user = userService.findUserByUserNo(userNo);
-
-        userService.updateUser(user, userUpdateRequestDto);
-        UserResponseDto dto = userService.returnUserDto(user);
-
+        UserResponseDto dto = userService.updateUser(userNo, userUpdateRequestDto);
 
         return ResponseEntity.status(200)
-                .body(DefaultResponseDto.builder()
-                        .responseCode("USER_UPDATED")
-                        .responseMessage("회원 수정 완료")
-                        .data(dto)
-                        .build());
+                .body(resWithData("USER_UPDATED", "회원 수정 완료", dto));
 
     }
 
@@ -225,20 +197,13 @@ public class UserController {
 
         userService.isExistingUserNo(userNo);
 
-        User user = userService.findUserByUserNo(userNo);
-        UserResponseDto dto = userService.returnUserDto(user);
-
         userPhotoService.deleteUserProfilePhoto(userNo);
         userPhotoService.deleteUserBackgroundPhoto(userNo);
 
         userService.deleteUser(userNo);
 
         return ResponseEntity.status(200)
-                .body(DefaultResponseDto.builder()
-                        .responseCode("USER_DELETED")
-                        .responseMessage("회원 탈퇴 완료 (임시)")
-                        .data(dto)
-                        .build());
+                .body(resWithoutData("USER_DELETED", "회원 탈퇴 완료"));
     }
 
     @ApiOperation("비밀번호 변경")
@@ -260,15 +225,10 @@ public class UserController {
 
         userService.validateExistingEmail(passwordDto.getEmail());
 
-        User user = userService.updatePassword(passwordDto.getEmail(), passwordDto.getPassword1());
-        UserResponseDto dto = userService.returnUserDto(user);
+        UserResponseDto dto = userService.updatePassword(passwordDto.getEmail(), passwordDto.getPassword());
 
         return ResponseEntity.status(200)
-                .body(DefaultResponseDto.builder()
-                        .responseCode("PASSWORD_UPDATED")
-                        .responseMessage("비밀번호 변경 완료")
-                        .data(dto)
-                        .build());
+                .body(resWithData("PASSWORD_UPDATED", "비밀번호 변경 완료", dto));
     }
 
 
@@ -276,7 +236,7 @@ public class UserController {
     @ApiResponses(value={
             @ApiResponse(code = 200,
                     message = "REMINDERS_FOUND",
-                    response = ReminderResponseDto.class),
+                    response = ReminderSimpleDto.class),
             @ApiResponse(code = 401,
                     message = "UNAUTHORIZED_USER"),
             @ApiResponse(code = 404,
@@ -293,20 +253,16 @@ public class UserController {
 
         userService.isExistingUserNo(userNo);
 
-        List<ReminderSimpleDto> reminders = userService.readReminderList(userNo);
+        List<ReminderSimpleDto> dto = userService.readReminderList(userNo);
 
         return ResponseEntity.status(200)
-                .body(DefaultResponseDto.builder()
-                        .responseCode("REMINDERS_FOUND")
-                        .responseMessage("회원의 리마인더 전체 조회 완료")
-                        .data(reminders)
-                        .build());
+                .body(resWithData("REMINDERS_FOUND", "회원의 리마인더 전체 조회 완료", dto));
     }
     @ApiOperation("회원의 리마인더 필터 조회")
     @ApiResponses(value={
             @ApiResponse(code = 200,
                     message = "REMINDER_FOUND_BY_FILTER",
-                    response = ReminderResponseDto.class),
+                    response = ReminderSimpleDto.class),
             @ApiResponse(code = 401,
                     message = "UNAUTHORIZED_USER"),
             @ApiResponse(code = 404,
@@ -328,18 +284,14 @@ public class UserController {
         List<ReminderSimpleDto> dto = userService.readReminderListByFMonthAndYear(userNo, year, month);
 
         return ResponseEntity.status(200)
-                .body(DefaultResponseDto.builder()
-                        .responseCode("REMINDER_FOUND_BY_FILTER")
-                        .responseMessage("리마인더 필터 조회 완료")
-                        .data(dto)
-                        .build());
+                .body(resWithData("REMINDER_FOUND_BY_FILTER", "회원가입 완료", dto));
     }
 
     @ApiOperation("회원의 선물 전체 조회")
     @ApiResponses(value={
             @ApiResponse(code = 200,
                     message = "GIFTS_FOUND",
-                    response = GiftResponseDto.class),
+                    response = GiftSimpleDto.class),
             @ApiResponse(code = 401,
                     message = "UNAUTHORIZED_USER"),
             @ApiResponse(code = 404,
@@ -356,21 +308,17 @@ public class UserController {
 
         userService.isExistingUserNo(userNo);
 
-        List<GiftSimpleDto> gifts = userService.readGiftList(userNo);
+        List<GiftSimpleDto> dto = userService.readGiftList(userNo);
 
         return ResponseEntity.status(200)
-                .body(DefaultResponseDto.builder()
-                        .responseCode("GIFTS_FOUND")
-                        .responseMessage("회원의 선물 전체 조회 완료")
-                        .data(gifts)
-                        .build());
+                .body(resWithData("GIFTS_FOUND", "회원의 선물 전체 조회 완료", dto));
     }
 
     @ApiOperation("회원의 친구 전체 조회")
     @ApiResponses(value={
             @ApiResponse(code = 200,
                     message = "FRIENDS_FOUND",
-                    response = FriendResponseDto.class),
+                    response = FriendSimpleDto.class),
             @ApiResponse(code = 401,
                     message = "UNAUTHORIZED_USER"),
             @ApiResponse(code = 404,
@@ -387,14 +335,10 @@ public class UserController {
 
         userService.isExistingUserNo(userNo);
 
-        List<FriendSimpleDto> friends = userService.readFriendList(userNo);
+        List<FriendSimpleDto> dto = userService.readFriendList(userNo);
 
         return ResponseEntity.status(200)
-                .body(DefaultResponseDto.builder()
-                        .responseCode("FRIENDS_FOUND")
-                        .responseMessage("회원의 친구 전체 조회 완료")
-                        .data(friends)
-                        .build());
+                .body(resWithData("FRIENDS_FOUND", "회원의 친구 전체 조회 완료", dto));
     }
 
     @ApiOperation("회원의 기념일 전체 조회")
@@ -418,14 +362,10 @@ public class UserController {
 
         userService.isExistingUserNo(userNo);
 
-        List<AnniversaryResponseDto> friends = userService.readAnniversaryList(userNo);
+        List<AnniversaryResponseDto> dto = userService.readAnniversaryList(userNo);
 
         return ResponseEntity.status(200)
-                .body(DefaultResponseDto.builder()
-                        .responseCode("ANNIVERSARY_FOUND")
-                        .responseMessage("회원의 기념일 전체 조회 완료")
-                        .data(friends)
-                        .build());
+                .body(resWithData("ANNIVERSARY_FOUND", "회원의 기념일 전체 조회 완료", dto));
     }
 
 
@@ -446,11 +386,7 @@ public class UserController {
         List<UserResponseDto> dto = userService.readAll();
 
         return ResponseEntity.status(200)
-                .body(DefaultResponseDto.builder()
-                        .responseCode("USERS_FOUND")
-                        .responseMessage("전체 회원 조회 완료")
-                        .data(dto)
-                        .build());
+                .body(resWithData("USERS_FOUND", "전체 회원 조회 완료", dto));
     }
 
 
@@ -458,7 +394,7 @@ public class UserController {
     @ApiResponses(value={
             @ApiResponse(code = 200,
                     message = "GIFTS_BY_NAME_FOUND",
-                    response = GiftResponseDto.class),
+                    response = GiftSimpleDto.class),
             @ApiResponse(code = 401,
                     message = "UNAUTHORIZED_USER"),
             @ApiResponse(code = 404,
@@ -479,18 +415,14 @@ public class UserController {
         List<GiftSimpleDto> dto =  userService.readGiftListByName(userNo, giftName);
 
         return ResponseEntity.status(200)
-                .body(DefaultResponseDto.builder()
-                        .responseCode("GIFTS_BY_NAME_FOUND")
-                        .responseMessage("이름으로 회원 선물 조회 완료")
-                        .data(dto)
-                        .build());
+                .body(resWithData("GIFTS_BY_NAME_FOUND", "이름으로 회원 선물 조회 완료", dto));
     }
 
     @ApiOperation("카테고리로 회원 선물 조회")
     @ApiResponses(value={
             @ApiResponse(code = 200,
                     message = "GIFTS_BY_CATEGORY_FOUND",
-                    response = GiftResponseDto.class),
+                    response = GiftSimpleDto.class),
             @ApiResponse(code = 401,
                     message = "UNAUTHORIZED_USER"),
             @ApiResponse(code = 404,
@@ -510,18 +442,14 @@ public class UserController {
         List<GiftSimpleDto> dto =  userService.readGiftListByCategory(userNo, giftCategory);
 
         return ResponseEntity.status(200)
-                .body(DefaultResponseDto.builder()
-                        .responseCode("GIFTS_BY_CATEGORY_FOUND")
-                        .responseMessage("카테고리로 회원 선물 조회 완료")
-                        .data(dto)
-                        .build());
+                .body(resWithData("GIFTS_BY_CATEGORY_FOUND", "카테고리로 회원 선물 조회 완료", dto));
     }
 
     @ApiOperation("감정으로 회원 선물 조회")
     @ApiResponses(value={
             @ApiResponse(code = 200,
                     message = "GIFTS_BY_EMOTION_FOUND",
-                    response = GiftResponseDto.class),
+                    response = GiftSimpleDto.class),
             @ApiResponse(code = 401,
                     message = "UNAUTHORIZED_USER"),
             @ApiResponse(code = 404,
@@ -541,11 +469,7 @@ public class UserController {
         List<GiftSimpleDto> dto =  userService.readGiftListByEmotion(userNo, emotion);
 
         return ResponseEntity.status(200)
-                .body(DefaultResponseDto.builder()
-                        .responseCode("GIFTS_BY_CATEGORY_FOUND")
-                        .responseMessage("감정으로 회원 선물 조회 완료")
-                        .data(dto)
-                        .build());
+                .body(resWithData("GIFTS_BY_CATEGORY_FOUND", "감정으로 회원 선물 조회 완료", dto));
     }
 
     @ApiOperation("아이디로 회원 조회")
@@ -566,21 +490,17 @@ public class UserController {
             @PathVariable("userId") String userId){
 
         User user = userService.findUserByUserId(userId);
-        UserResponseDto dto = userService.returnUserDto(user);
+        UserResponseDto dto = userService.readUserInfo(user.getUserNo());
 
         return ResponseEntity.status(200)
-                .body(DefaultResponseDto.builder()
-                        .responseCode("USER_BY_ID_FOUND")
-                        .responseMessage("아이디로 회원 조회 완료")
-                        .data(dto)
-                        .build());
+                .body(resWithData("USER_BY_ID_FOUND", "아이디로 회원 조회 완료", dto));
     }
 
     @ApiOperation("유저가 준 선물 전체 조회")
     @ApiResponses(value={
             @ApiResponse(code = 200,
-                    message = "GIFTS_FOUND",
-                    response = GiftResponseDto.class),
+                    message = "GIVEN_GIFTS_FOUND",
+                    response = GiftSimpleDto.class),
             @ApiResponse(code = 401,
                     message = "UNAUTHORIZED_USER"),
             @ApiResponse(code = 500,
@@ -593,21 +513,17 @@ public class UserController {
         Long userNo = loginUser.getUserNo();
 
         userService.isExistingUserNo(userNo);
-        List<GiftSimpleDto> dto = userService.findGivenGiftList(userNo);
+        List<GiftSimpleDto> dto = userService.readGivenGiftList(userNo);
 
         return ResponseEntity.status(200)
-                .body(DefaultResponseDto.builder()
-                        .responseCode("GIFTS_FOUND")
-                        .responseMessage("유저가 준 선물 전체 조회 완료")
-                        .data(dto)
-                        .build());
+                .body(resWithData("GIVEN_GIFTS_FOUND", "유저가 준 선물 전체 조회 완료", dto));
     }
 
     @ApiOperation("유저가 받은 선물 전체 조회")
     @ApiResponses(value={
             @ApiResponse(code = 200,
-                    message = "GIFTS_FOUND",
-                    response = GiftResponseDto.class),
+                    message = "RECEIVED_GIFTS_FOUND",
+                    response = GiftSimpleDto.class),
             @ApiResponse(code = 401,
                     message = "UNAUTHORIZED_USER"),
             @ApiResponse(code = 500,
@@ -620,14 +536,10 @@ public class UserController {
         Long userNo = loginUser.getUserNo();
 
         userService.isExistingUserNo(userNo);
-        List<GiftSimpleDto> dto = userService.findReceivedGiftList(userNo);
+        List<GiftSimpleDto> dto = userService.readReceivedGiftList(userNo);
 
         return ResponseEntity.status(200)
-                .body(DefaultResponseDto.builder()
-                        .responseCode("GIFTS_FOUND")
-                        .responseMessage("유저가 받은 선물 전체 조회 완료")
-                        .data(dto)
-                        .build());
+                .body(resWithData("RECEIVED_GIFTS_FOUND", "유저가 받은 선물 전체 조회 완료", dto));
     }
 
 }

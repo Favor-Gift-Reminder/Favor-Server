@@ -3,10 +3,8 @@ package com.favor.favor.user;
 import com.favor.favor.anniversary.AnniversaryResponseDto;
 import com.favor.favor.common.enums.Favor;
 import com.favor.favor.common.enums.Role;
-import com.favor.favor.friend.FriendResponseDto;
 import com.favor.favor.friend.FriendSimpleDto;
 import com.favor.favor.photo.UserPhoto;
-import com.favor.favor.reminder.ReminderResponseDto;
 import com.favor.favor.reminder.ReminderSimpleDto;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.AllArgsConstructor;
@@ -30,7 +28,7 @@ public class  UserResponseDto {
     private String name;
 
     @ApiModelProperty(value = "favor")
-    private String userid;
+    private String userId;
 
     @ApiModelProperty(value = "USER")
     private Role role;
@@ -72,7 +70,7 @@ public class  UserResponseDto {
         this.userNo = user.getUserNo();
         this.email = user.getEmail();
         this.name = user.getName();
-        this.userid = user.getUserId();
+        this.userId = user.getUserId();
         this.role = user.getRole();
         this.givenGift = giftInfo.get("given");
         this.receivedGift = giftInfo.get("received");
