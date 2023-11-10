@@ -65,7 +65,7 @@ public class GiftService {
         gift.setIsGiven(dto.getIsGiven());
         gift.setGiftDate(returnLocalDate(dto.getGiftDate()));
 
-        List<Long> existingFriendNoList = gift.getFriendNoList();
+        List<Long> existingFriendNoList = new ArrayList<>(gift.getFriendNoList());
         List<Long> updatedFriendNoList = dto.getFriendNoList();
 
         //친구 목록 수정 시
