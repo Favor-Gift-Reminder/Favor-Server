@@ -40,18 +40,23 @@ public class ReminderController {
                     message = "SERVER_ERROR")
     })
     @ResponseStatus(HttpStatus.CREATED)
-    @PostMapping("/new/{friendNo}")
+    @PostMapping("/new")
     public ResponseEntity<DefaultResponseDto<Object>> createReminder(
             @RequestBody ReminderRequestDto reminderRequestDto,
-            @AuthenticationPrincipal User loginUser,
-            @PathVariable Long friendNo){
+            @AuthenticationPrincipal User loginUser){
 
         Long userNo = loginUser.getUserNo();
 
         reminderService.isExistingUserNo(userNo);
-        reminderService.isExistingFriendNo(friendNo);
-
-        Reminder reminder = reminderService.createReminder(reminderRequestDto, userNo, friendNo);
+        if(reminderRequestDto.getFriendNo() != null){
+            reminderService.isExistingFriendNo(reminderRequestDto.getFriendNo());
+        }
+        Reminder reminder = null;
+        if(reminderRequestDto.getFriendNo() != null){
+            reminder = reminderService.createReminder(reminderRequestDto, userNo, reminderRequestDto.getFriendNo());
+        }else{
+            reminder = reminderService.createReminder(reminderRequestDto, userNo, null);
+        }
         ReminderResponseDto dto = reminderService.returnDto(reminder);
 
         return ResponseEntity.status(201)

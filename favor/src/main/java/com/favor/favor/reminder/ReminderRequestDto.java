@@ -30,6 +30,9 @@ public class ReminderRequestDto {
     @ApiModelProperty(position = 5, required = true, value = "메모", example = "메모")
     private String reminderMemo;
 
+    @ApiModelProperty(position = 5, required = false, value = "친구 식별자", example = "1")
+    private Long friendNo;
+
     public Reminder toEntity(User user, Friend friend, LocalDate localDate, LocalDateTime localDateTime){
         return Reminder.builder()
                 .reminderTitle(reminderTitle)

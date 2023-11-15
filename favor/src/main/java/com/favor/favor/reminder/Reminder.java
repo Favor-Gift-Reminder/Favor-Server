@@ -50,8 +50,8 @@ public class Reminder {
     @JoinColumn(name = "user_user_no")
     private User user;
 
-    @ManyToOne(cascade = CascadeType.REFRESH, fetch = FetchType.EAGER)
-    @JoinColumn(name = "friend_friend_no")
+    @ManyToOne(cascade = CascadeType.REFRESH, fetch = FetchType.EAGER, optional = true)
+    @JoinColumn(name = "friend_friend_no", nullable = true)
     private Friend friend;
     public void setFriend(Friend friend){
         this.friend = friend;
