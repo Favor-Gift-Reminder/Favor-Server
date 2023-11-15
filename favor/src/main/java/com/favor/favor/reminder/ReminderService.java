@@ -34,7 +34,10 @@ public class ReminderService {
     @Transactional
     public Reminder createReminder(ReminderRequestDto reminderRequestDto, Long userNo, Long friendNo){
         User user = findUserByUserNo(userNo);
-        Friend friend = findFriendByFriendNo(friendNo);
+        Friend friend = null;
+        if (friendNo != null) {
+            friend = findFriendByFriendNo(friendNo);
+        }
         LocalDate localDate = returnLocalDate(reminderRequestDto.getReminderDate());
         LocalDateTime localDateTime = returnLocalDateTime(reminderRequestDto.getAlarmTime());
         return reminderRepository.save(reminderRequestDto.toEntity(user, friend, localDate, localDateTime));
@@ -153,9 +156,12 @@ public class ReminderService {
 
     public ReminderResponseDto returnDto(Reminder reminder){
         Friend friend = reminder.getFriend();
-        User friendUser = findUserByUserNo(friend.getFriendUserNo());
-        UserPhoto photo = friendUser.getUserProfilePhoto();
-        FriendSimpleDto dto = new FriendSimpleDto(friend, friendUser, photo);
+        FriendSimpleDto dto = null;
+        if(friend != null) {
+            User friendUser = findUserByUserNo(friend.getFriendUserNo());
+            UserPhoto photo = friendUser.getUserProfilePhoto();
+            dto = new FriendSimpleDto(friend, friendUser, photo);
+        }
         return new ReminderResponseDto(reminder, dto);
     }
     public LocalDate returnLocalDate(String dateString){
