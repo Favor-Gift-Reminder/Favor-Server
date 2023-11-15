@@ -7,9 +7,11 @@ import com.favor.favor.common.enums.Emotion;
 import com.favor.favor.common.enums.Favor;
 import com.favor.favor.common.enums.Role;
 import com.favor.favor.exception.CustomException;
+import com.favor.favor.friend.Friend;
 import com.favor.favor.friend.FriendRepository;
 import com.favor.favor.friend.FriendSimpleDto;
 import com.favor.favor.gift.*;
+import com.favor.favor.photo.UserPhoto;
 import com.favor.favor.reminder.Reminder;
 import com.favor.favor.reminder.ReminderRepository;
 import com.favor.favor.reminder.ReminderSimpleDto;
@@ -226,18 +228,28 @@ public class UserService {
     }
 
     public List<ReminderSimpleDto> readReminderListByFMonthAndYear(Long userNo, int year, int month){
-
         try{
             LocalDate.of(year, month, 1);
         } catch(Exception e){
             throw new CustomException(e, DATE_INVALID);
         }
 
-        return readReminderListByMonthAndYear(year, month).stream()
-                .map(ReminderSimpleDto::new)
-                .filter(reminderSimpleDto -> Objects.equals(reminderSimpleDto.getUserNo(), userNo))
+        List<Reminder> reminders = readReminderListByMonthAndYear(year, month);
+        return reminders.stream()
+                .filter(reminder -> reminder.getUser().getUserNo().equals(userNo))
+                .map(reminder -> {
+                    Friend friend = reminder.getFriend();
+                    FriendSimpleDto friendDto = null;
+                    if (friend != null) {
+                        User friendUser = findUserByUserNo(friend.getFriendUserNo());
+                        UserPhoto photo = friendUser != null ? friendUser.getUserProfilePhoto() : null;
+                        friendDto = new FriendSimpleDto(friend, friendUser, photo);
+                    }
+                    return new ReminderSimpleDto(reminder, friendDto);
+                })
                 .collect(Collectors.toList());
     }
+
 
     public List<Reminder> readReminderListByMonthAndYear(int year, int month){
         LocalDate start = LocalDate.of(year, month, 1);
@@ -263,8 +275,18 @@ public class UserService {
     public List<ReminderSimpleDto> readReminderList(Long userNo) {
         User user = findUserByUserNo(userNo);
         return user.getReminderList().stream()
-                .map(ReminderSimpleDto::new).collect(Collectors.toList());
+                .map(reminder -> {
+                    Friend friend = reminder.getFriend();
+                    FriendSimpleDto friendDto = null;
+                    if (friend != null) {
+                        User friendUser = findUserByUserNo(friend.getFriendUserNo());
+                        UserPhoto photo = friendUser != null ? friendUser.getUserProfilePhoto() : null;
+                        friendDto = new FriendSimpleDto(friend, friendUser, photo);
+                    }
+                    return new ReminderSimpleDto(reminder, friendDto);
+                }).collect(Collectors.toList());
     }
+
 
     public List<FriendSimpleDto> readFriendList(Long userNo) {
         User user = findUserByUserNo(userNo);

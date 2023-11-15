@@ -7,6 +7,7 @@ import com.favor.favor.exception.CustomException;
 import com.favor.favor.gift.Gift;
 import com.favor.favor.gift.GiftRepository;
 import com.favor.favor.gift.GiftSimpleDto;
+import com.favor.favor.photo.UserPhoto;
 import com.favor.favor.reminder.Reminder;
 import org.springframework.transaction.annotation.Transactional;
 import com.favor.favor.reminder.ReminderSimpleDto;
@@ -169,7 +170,14 @@ public class FriendService {
         List<Reminder> reminderList = friendUser.getReminderList();
         List<ReminderSimpleDto> reminderDtoList = new ArrayList<>();
         for(Reminder r : reminderList){
-            reminderDtoList.add(new ReminderSimpleDto(r));
+            Friend reminderFriend = r.getFriend();
+            FriendSimpleDto friendsimpleDto = null;
+            if(reminderFriend != null) {
+                User reminderFriendUser = findUserByUserNo(reminderFriend.getFriendUserNo());
+                UserPhoto photo = reminderFriendUser.getUserProfilePhoto();
+                friendsimpleDto = new FriendSimpleDto(reminderFriend, reminderFriendUser, photo);
+            }
+            reminderDtoList.add(new ReminderSimpleDto(r, friendsimpleDto));
         }
         List<Favor> favorList = new ArrayList<>();
         for(Integer favorType : friendUser.getFavorList()){

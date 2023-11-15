@@ -83,7 +83,14 @@ public class ReminderService {
     public List<ReminderSimpleDto> readAll(){
         List<ReminderSimpleDto> r_List = new ArrayList<>();
         for(Reminder r : reminderRepository.findAll()){
-            ReminderSimpleDto dto = new ReminderSimpleDto(r);
+            Friend friend = r.getFriend();
+            FriendSimpleDto friendsimpleDto = null;
+            if(friend != null) {
+                User friendUser = findUserByUserNo(friend.getFriendUserNo());
+                UserPhoto photo = friendUser.getUserProfilePhoto();
+                friendsimpleDto = new FriendSimpleDto(friend, friendUser, photo);
+            }
+            ReminderSimpleDto dto = new ReminderSimpleDto(r, friendsimpleDto);
             r_List.add(dto);
         }
         return r_List;
