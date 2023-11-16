@@ -291,7 +291,11 @@ public class UserService {
     public List<FriendSimpleDto> readFriendList(Long userNo) {
         User user = findUserByUserNo(userNo);
         return user.getFriendList().stream()
-                .map(friend -> new FriendSimpleDto(friend, friend.getUser(), friend.getUser().getUserProfilePhoto())).collect(Collectors.toList());
+                .map(friend -> {
+                    User friendUser = findUserByUserNo(friend.getFriendUserNo()); // Retrieve the user associated with the friend
+                    return new FriendSimpleDto(friend, friendUser, friendUser.getUserProfilePhoto());
+                })
+                .collect(Collectors.toList());
     }
 
     public List<AnniversaryResponseDto> readAnniversaryList(Long userNo) {
