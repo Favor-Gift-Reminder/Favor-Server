@@ -36,8 +36,9 @@ public class FriendService {
         Long friendUserNo = dto.getFriendUserNo();
         User friendUser = findUserByUserNo(friendUserNo);
 
-        if(isDuplicateFriendUser(user, friendUser))  throw new CustomException(null, DUPLICATE_FRIEND);
-
+        if(isDuplicateFriendUser(user, friendUser)) {
+            throw new CustomException(null, DUPLICATE_FRIEND);
+        }
         return save(dto.toEntity(user, friendUser));
     }
 
