@@ -26,4 +26,8 @@ public class ReminderUpdateRequestDto {
 
     @ApiModelProperty(position = 5, required = false, dataType = "String", value = "메모", example = "페이버")
     private String reminderMemo;
+
+    @ApiModelProperty(position = 6, required = false, dataType = "Long", value = "친구 식별자", example = "1")
+    private Long friendNo;
+
 }
