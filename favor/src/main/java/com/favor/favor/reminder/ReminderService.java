@@ -63,7 +63,10 @@ public class ReminderService {
     @Transactional
     public void updateReminder(ReminderUpdateRequestDto dto, Long reminderNo){
         Reminder reminder = findReminderByReminderNo(reminderNo);
-        Friend friend = reminder.getFriend();
+        Friend friend = null;
+        if(dto.getFriendNo() != null){
+            friend = findFriendByFriendNo(dto.getFriendNo());
+        }
 
         reminder.setTitle(dto.getTitle());
         reminder.setReminderDate(dto.getReminderDate());
