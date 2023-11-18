@@ -71,7 +71,7 @@ public class ReminderService {
         reminder.setTitle(dto.getTitle());
         reminder.setReminderDate(dto.getReminderDate());
         reminder.setIsAlarmSet(dto.getIsAlarmSet());
-        reminder.setAlarmTime(dto.getAlarmTime());
+        reminder.setAlarmTime(returnLocalDateTime(dto.getAlarmTime()));
         reminder.setReminderMemo(dto.getReminderMemo());
         reminder.setFriend(friend);
 
