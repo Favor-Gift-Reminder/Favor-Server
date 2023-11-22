@@ -38,7 +38,6 @@ public class GiftController {
             @ApiResponse(code = 500,
                     message = "SERVER_ERROR")
     })
-    @ResponseStatus(HttpStatus.CREATED)
     @PostMapping
     public ResponseEntity<DefaultResponseDto<Object>> createGift(
             @RequestBody GiftRequestDto giftRequestDto,
@@ -70,7 +69,6 @@ public class GiftController {
             @ApiResponse(code = 500,
                     message = "SERVER_ERROR")
     })
-    @ResponseStatus(HttpStatus.OK)
     @GetMapping("/{giftNo}")
     public ResponseEntity<DefaultResponseDto<Object>> readGift(
             @PathVariable Long giftNo){
@@ -97,7 +95,6 @@ public class GiftController {
             @ApiResponse(code = 500,
                     message = "SERVER_ERROR")
     })
-    @ResponseStatus(HttpStatus.OK)
     @PatchMapping("/{giftNo}")
     public ResponseEntity<DefaultResponseDto<Object>> updateGift(
             @RequestBody GiftUpdateRequestDto giftUpdateRequestDto,
@@ -126,7 +123,6 @@ public class GiftController {
             @ApiResponse(code = 500,
                     message = "SERVER_ERROR")
     })
-    @ResponseStatus(HttpStatus.OK)
     @PatchMapping("/temp-friend-list/{giftNo}")
     public ResponseEntity<DefaultResponseDto<Object>> updateTempFriendListGift(
             @PathVariable Long giftNo,
@@ -156,7 +152,6 @@ public class GiftController {
             @ApiResponse(code = 500,
                     message = "SERVER_ERROR")
     })
-    @ResponseStatus(HttpStatus.OK)
     @PatchMapping("/pin/{giftNo}")
     public ResponseEntity<DefaultResponseDto<Object>> updateIsPinned(
             @PathVariable Long giftNo){
@@ -184,7 +179,6 @@ public class GiftController {
             @ApiResponse(code = 500,
                     message = "SERVER_ERROR")
     })
-    @ResponseStatus(HttpStatus.OK)
     @DeleteMapping("/{giftNo}")
     public ResponseEntity<DefaultResponseDto<Object>> deleteGift(
             @PathVariable Long giftNo){
@@ -216,7 +210,6 @@ public class GiftController {
             @ApiResponse(code = 500,
                     message = "SERVER_ERROR")
     })
-    @ResponseStatus(HttpStatus.OK)
     @GetMapping("/admin")
     public ResponseEntity<DefaultResponseDto<Object>> readAll(){
 

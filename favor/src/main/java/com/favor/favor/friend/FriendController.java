@@ -40,7 +40,6 @@ public class FriendController {
             @ApiResponse(code = 500,
                     message = "SERVER_ERROR")
     })
-    @ResponseStatus(HttpStatus.CREATED)
     @PostMapping
     public ResponseEntity<DefaultResponseDto<Object>> addFriend(
             @RequestBody FriendRequestDto friendRequestDto,
@@ -70,7 +69,6 @@ public class FriendController {
             @ApiResponse(code = 500,
                     message = "SERVER_ERROR")
     })
-    @ResponseStatus(HttpStatus.OK)
     @GetMapping("/{friendNo}")
     public ResponseEntity<DefaultResponseDto<Object>> readFriend(
             @PathVariable Long friendNo){
@@ -96,7 +94,6 @@ public class FriendController {
             @ApiResponse(code = 500,
                     message = "SERVER_ERROR")
     })
-    @ResponseStatus(HttpStatus.OK)
     @PatchMapping("/{friendNo}")
     public ResponseEntity<DefaultResponseDto<Object>> updateFriend(
             @PathVariable Long friendNo,
@@ -126,7 +123,6 @@ public class FriendController {
             @ApiResponse(code = 500,
                     message = "SERVER_ERROR")
     })
-    @ResponseStatus(HttpStatus.OK)
     @DeleteMapping("/{friendNo}")
     public ResponseEntity<DefaultResponseDto<Object>> deleteFriend(
             @PathVariable Long friendNo){
@@ -151,7 +147,6 @@ public class FriendController {
             @ApiResponse(code = 500,
                     message = "SERVER_ERROR")
     })
-    @ResponseStatus(HttpStatus.OK)
     @GetMapping("/admin")
     public ResponseEntity<DefaultResponseDto<Object>> readAll(){
 
@@ -171,7 +166,6 @@ public class FriendController {
             @ApiResponse(code = 500,
                     message = "SERVER_ERROR")
     })
-    @ResponseStatus(HttpStatus.OK)
     @GetMapping("/total-gifts/{friendNo}")
     public ResponseEntity<DefaultResponseDto<Object>> readTotalGiftList(
             @PathVariable Long friendNo){
@@ -192,7 +186,6 @@ public class FriendController {
             @ApiResponse(code = 500,
                     message = "SERVER_ERROR")
     })
-    @ResponseStatus(HttpStatus.OK)
     @GetMapping("/given-gifts/{friendNo}")
     public ResponseEntity<DefaultResponseDto<Object>> readGivenGiftList(
             @PathVariable Long friendNo){ // 유저 입장에서 받은 선물이므로 관련 친구가 준 선물임
@@ -213,7 +206,6 @@ public class FriendController {
             @ApiResponse(code = 500,
                     message = "SERVER_ERROR")
     })
-    @ResponseStatus(HttpStatus.OK)
     @GetMapping("/received-gifts/{friendNo}")
     public ResponseEntity<DefaultResponseDto<Object>> readReceivedGiftList(
             @PathVariable Long friendNo){// 유저 입장에서 준 선물이므로 관련 친구가 받은 선물임

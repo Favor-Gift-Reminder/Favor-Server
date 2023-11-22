@@ -37,7 +37,6 @@ public class UserPhotoController {
             @ApiResponse(code = 500,
                     message = "SERVER_ERROR")
     })
-    @ResponseStatus(HttpStatus.CREATED)
     @PostMapping("/profile")
     public ResponseEntity<DefaultResponseDto<Object>> updateUserProfilePhoto(
             @ModelAttribute MultipartFile file,
@@ -65,7 +64,6 @@ public class UserPhotoController {
             @ApiResponse(code = 500,
                     message = "SERVER_ERROR")
     })
-    @ResponseStatus(HttpStatus.OK)
     @GetMapping("/profile")
     public ResponseEntity<DefaultResponseDto<Object>> getUserProfilePhoto(
             @AuthenticationPrincipal User loginUser
@@ -88,7 +86,6 @@ public class UserPhotoController {
             @ApiResponse(code = 500,
                     message = "SERVER_ERROR")
     })
-    @ResponseStatus(HttpStatus.OK)
     @DeleteMapping("/profile")
     public ResponseEntity<DefaultResponseDto<Object>> deleteUserProfilePhoto(@AuthenticationPrincipal User loginUser)
     {
@@ -115,7 +112,6 @@ public class UserPhotoController {
             @ApiResponse(code = 500,
                     message = "SERVER_ERROR")
     })
-    @ResponseStatus(HttpStatus.CREATED)
     @PostMapping("/background")
     public ResponseEntity<DefaultResponseDto<Object>> updateUserBackgroundPhoto(
             @ModelAttribute MultipartFile file,
@@ -143,7 +139,6 @@ public class UserPhotoController {
             @ApiResponse(code = 500,
                     message = "SERVER_ERROR")
     })
-    @ResponseStatus(HttpStatus.OK)
     @GetMapping("/background")
     public ResponseEntity<DefaultResponseDto<Object>> getUserBackgroundPhoto(
             @AuthenticationPrincipal User loginUser
@@ -166,7 +161,6 @@ public class UserPhotoController {
             @ApiResponse(code = 500,
                     message = "SERVER_ERROR")
     })
-    @ResponseStatus(HttpStatus.OK)
     @DeleteMapping("/background")
     public ResponseEntity<DefaultResponseDto<Object>> deleteUserBackgroundPhoto(
             @AuthenticationPrincipal User loginUser

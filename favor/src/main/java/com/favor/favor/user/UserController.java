@@ -45,7 +45,6 @@ public class UserController {
             @ApiResponse(code = 500,
                     message = "SERVER_ERROR")
     })
-    @ResponseStatus(HttpStatus.CREATED)
     @PostMapping("/sign-up")
     public ResponseEntity<DefaultResponseDto<Object>> signUp(
             @RequestBody @Valid SignDto signDto
@@ -75,7 +74,6 @@ public class UserController {
             @ApiResponse(code = 500,
                     message = "SERVER_ERROR")
     })
-    @ResponseStatus(HttpStatus.CREATED)
     @PatchMapping("/profile")
     public ResponseEntity<DefaultResponseDto<Object>> createProfile(
             @RequestBody @Valid ProfileDto profileDto,
@@ -107,7 +105,6 @@ public class UserController {
             @ApiResponse(code = 500,
                     message = "SERVER_ERROR")
     })
-    @ResponseStatus(HttpStatus.CREATED)
     @PostMapping("/sign-in")
     public ResponseEntity<DefaultResponseDto<Object>> signIn(
             @RequestBody @Valid SignDto signDto
@@ -132,7 +129,6 @@ public class UserController {
             @ApiResponse(code = 500,
                     message = "SERVER_ERROR")
     })
-    @ResponseStatus(HttpStatus.OK)
     @GetMapping
     public ResponseEntity<DefaultResponseDto<Object>> readUser(
             @AuthenticationPrincipal User loginUser
@@ -160,7 +156,6 @@ public class UserController {
             @ApiResponse(code = 500,
                     message = "SERVER_ERROR")
     })
-    @ResponseStatus(HttpStatus.OK)
     @PatchMapping
     public ResponseEntity<DefaultResponseDto<Object>> updateUser(
             @AuthenticationPrincipal User loginUser,
@@ -188,7 +183,6 @@ public class UserController {
             @ApiResponse(code = 500,
                     message = "SERVER_ERROR")
     })
-    @ResponseStatus(HttpStatus.OK)
     @DeleteMapping
     public ResponseEntity<DefaultResponseDto<Object>> deleteUser(
             @AuthenticationPrincipal User loginUser){
@@ -218,7 +212,6 @@ public class UserController {
             @ApiResponse(code = 500,
                     message = "SERVER_ERROR")
     })
-    @ResponseStatus(HttpStatus.OK)
     @PatchMapping("/password")
     public ResponseEntity<DefaultResponseDto<Object>> updatePassword(
             @RequestBody @Valid UserUpdatePasswordRequestDto passwordDto){
@@ -244,7 +237,6 @@ public class UserController {
             @ApiResponse(code = 500,
                     message = "SERVER_ERROR")
     })
-    @ResponseStatus(HttpStatus.OK)
     @GetMapping("/reminders")
     public ResponseEntity<DefaultResponseDto<Object>> readReminderList(
             @AuthenticationPrincipal User loginUser){
@@ -270,7 +262,6 @@ public class UserController {
             @ApiResponse(code = 500,
                     message = "SERVER_ERROR")
     })
-    @ResponseStatus(HttpStatus.OK)
     @GetMapping("/reminders/{year}/{month}")
     public ResponseEntity<DefaultResponseDto<Object>> readReminderListByFMonthAndYear(
             @AuthenticationPrincipal User loginUser,
@@ -299,7 +290,6 @@ public class UserController {
             @ApiResponse(code = 500,
                     message = "SERVER_ERROR")
     })
-    @ResponseStatus(HttpStatus.OK)
     @GetMapping("/gifts")
     public ResponseEntity<DefaultResponseDto<Object>> readGiftList(
             @AuthenticationPrincipal User loginUser){
@@ -326,7 +316,6 @@ public class UserController {
             @ApiResponse(code = 500,
                     message = "SERVER_ERROR")
     })
-    @ResponseStatus(HttpStatus.OK)
     @GetMapping("/friends")
     public ResponseEntity<DefaultResponseDto<Object>> readFriendList(
             @AuthenticationPrincipal User loginUser){
@@ -353,7 +342,6 @@ public class UserController {
             @ApiResponse(code = 500,
                     message = "SERVER_ERROR")
     })
-    @ResponseStatus(HttpStatus.OK)
     @GetMapping("/anniversaries")
     public ResponseEntity<DefaultResponseDto<Object>> readAnniversaryList(
             @AuthenticationPrincipal User loginUser){
@@ -379,7 +367,6 @@ public class UserController {
             @ApiResponse(code = 500,
                     message = "SERVER_ERROR")
     })
-    @ResponseStatus(HttpStatus.OK)
     @GetMapping("/admin")
     public ResponseEntity<DefaultResponseDto<Object>> readAll(){
 
@@ -402,7 +389,6 @@ public class UserController {
             @ApiResponse(code = 500,
                     message = "SERVER_ERROR")
     })
-    @ResponseStatus(HttpStatus.OK)
     @GetMapping("/gifts-by-name/{giftName}")
     public ResponseEntity<DefaultResponseDto<Object>> readGiftListByName (
             @AuthenticationPrincipal User loginUser,
@@ -430,7 +416,6 @@ public class UserController {
             @ApiResponse(code = 500,
                     message = "SERVER_ERROR")
     })
-    @ResponseStatus(HttpStatus.OK)
     @GetMapping("/gifts-by-category/{category}")
     public ResponseEntity<DefaultResponseDto<Object>> readGiftListByCategory(
             @AuthenticationPrincipal User loginUser,
@@ -457,7 +442,6 @@ public class UserController {
             @ApiResponse(code = 500,
                     message = "SERVER_ERROR")
     })
-    @ResponseStatus(HttpStatus.OK)
     @GetMapping("/gifts-by-emotion/{emotion}")
     public ResponseEntity<DefaultResponseDto<Object>> readGiftListByEmotion(
             @AuthenticationPrincipal User loginUser,
@@ -484,7 +468,6 @@ public class UserController {
             @ApiResponse(code = 500,
                     message = "SERVER_ERROR")
     })
-    @ResponseStatus(HttpStatus.OK)
     @GetMapping("/{userId}")
     public ResponseEntity<DefaultResponseDto<Object>> readUserByUserId(
             @PathVariable("userId") String userId){
@@ -506,7 +489,6 @@ public class UserController {
             @ApiResponse(code = 500,
                     message = "SERVER_ERROR")
     })
-    @ResponseStatus(HttpStatus.OK)
     @GetMapping("/gifts-given")
     public ResponseEntity<DefaultResponseDto<Object>> readGivenGiftList(
             @AuthenticationPrincipal User loginUser){
@@ -529,7 +511,6 @@ public class UserController {
             @ApiResponse(code = 500,
                     message = "SERVER_ERROR")
     })
-    @ResponseStatus(HttpStatus.OK)
     @GetMapping("/gifts-received")
     public ResponseEntity<DefaultResponseDto<Object>> readReceivedGiftList(
             @AuthenticationPrincipal User loginUser){

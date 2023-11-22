@@ -31,7 +31,6 @@ public class PhotoController {
             @ApiResponse(code = 500,
                     message = "SERVER_ERROR")
     })
-    @ResponseStatus(HttpStatus.OK)
     @PostMapping
     public ResponseEntity<DefaultResponseDto<Object>> savePhoto(
             @ModelAttribute MultipartFile photo){
@@ -58,7 +57,6 @@ public class PhotoController {
             @ApiResponse(code = 500,
                     message = "SERVER_ERROR")
     })
-    @ResponseStatus(HttpStatus.OK)
     @DeleteMapping
     public ResponseEntity<DefaultResponseDto<Object>> deletePhoto(
             String filename){

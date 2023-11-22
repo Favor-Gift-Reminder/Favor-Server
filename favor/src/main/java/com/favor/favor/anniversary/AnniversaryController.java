@@ -37,7 +37,6 @@ public class AnniversaryController {
             @ApiResponse(code = 500,
                     message = "SERVER_ERROR")
     })
-    @ResponseStatus(HttpStatus.CREATED)
     @PostMapping
     public ResponseEntity<DefaultResponseDto<Object>> createAnniversary(
             @RequestBody AnniversaryRequestDto anniversaryRequestDto,
@@ -66,7 +65,6 @@ public class AnniversaryController {
             @ApiResponse(code = 500,
                     message = "SERVER_ERROR")
     })
-    @ResponseStatus(HttpStatus.OK)
     @GetMapping("/{anniversaryNo}")
     public ResponseEntity<DefaultResponseDto<Object>> readAnniversary(
             @PathVariable Long anniversaryNo){
@@ -91,7 +89,6 @@ public class AnniversaryController {
             @ApiResponse(code = 500,
                     message = "SERVER_ERROR")
     })
-    @ResponseStatus(HttpStatus.OK)
     @PatchMapping("/{anniversaryNo}")
     public ResponseEntity<DefaultResponseDto<Object>> updateAnniversary(
             @RequestBody AnniversaryUpdateRequestDto anniversaryUpdateRequestDto,
@@ -119,7 +116,6 @@ public class AnniversaryController {
             @ApiResponse(code = 500,
                     message = "SERVER_ERROR")
     })
-    @ResponseStatus(HttpStatus.OK)
     @PatchMapping("/pin/{anniversaryNo}")
     public ResponseEntity<DefaultResponseDto<Object>> updateIsPinned(
             @PathVariable Long anniversaryNo){
@@ -146,7 +142,6 @@ public class AnniversaryController {
             @ApiResponse(code = 500,
                     message = "SERVER_ERROR")
     })
-    @ResponseStatus(HttpStatus.OK)
     @DeleteMapping("/{anniversaryNo}")
     public ResponseEntity<DefaultResponseDto<Object>> deleteAnniversary(
             @PathVariable Long anniversaryNo){
@@ -171,7 +166,6 @@ public class AnniversaryController {
             @ApiResponse(code = 500,
                     message = "SERVER_ERROR")
     })
-    @ResponseStatus(HttpStatus.OK)
     @GetMapping("/admin")
     public ResponseEntity<DefaultResponseDto<Object>> readAll(){
 

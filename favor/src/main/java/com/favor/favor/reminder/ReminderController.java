@@ -39,7 +39,6 @@ public class ReminderController {
             @ApiResponse(code = 500,
                     message = "SERVER_ERROR")
     })
-    @ResponseStatus(HttpStatus.CREATED)
     @PostMapping("/new")
     public ResponseEntity<DefaultResponseDto<Object>> createReminder(
             @RequestBody ReminderRequestDto reminderRequestDto,
@@ -75,7 +74,6 @@ public class ReminderController {
             @ApiResponse(code = 500,
                     message = "SERVER_ERROR")
     })
-    @ResponseStatus(HttpStatus.CREATED)
     @PostMapping("/{anniversaryNo}")
     public ResponseEntity<DefaultResponseDto<Object>> addReminder(
             @AuthenticationPrincipal User loginUser,
@@ -105,7 +103,6 @@ public class ReminderController {
             @ApiResponse(code = 500,
                     message = "SERVER_ERROR")
     })
-    @ResponseStatus(HttpStatus.OK)
     @GetMapping("/{reminderNo}")
     public ResponseEntity<DefaultResponseDto<Object>> readReminder(
             @PathVariable Long reminderNo){
@@ -116,11 +113,6 @@ public class ReminderController {
 
         return ResponseEntity.status(200)
                 .body(resWithData("REMINDER_FOUND", "리마인더 조회 완료", dto));
-//                .body(DefaultResponseDto.builder()
-//                        .responseCode("REMINDER_FOUND")
-//                        .responseMessage("리마인더 조회 완료")
-//                        .data(dto)
-//                        .build());
     }
 
     @ApiOperation("리마인더 수정")
@@ -135,7 +127,6 @@ public class ReminderController {
             @ApiResponse(code = 500,
                     message = "SERVER_ERROR")
     })
-    @ResponseStatus(HttpStatus.OK)
     @PatchMapping("/{reminderNo}")
     public ResponseEntity<DefaultResponseDto<Object>> updateReminder(
             @RequestBody ReminderUpdateRequestDto reminderUpdateRequestDto,
@@ -163,7 +154,6 @@ public class ReminderController {
             @ApiResponse(code = 500,
                     message = "SERVER_ERROR")
     })
-    @ResponseStatus(HttpStatus.OK)
     @DeleteMapping("/{reminderNo}")
     public ResponseEntity<DefaultResponseDto<Object>> deleteReminder(
             @PathVariable Long reminderNo){
@@ -189,7 +179,6 @@ public class ReminderController {
             @ApiResponse(code = 500,
                     message = "SERVER_ERROR")
     })
-    @ResponseStatus(HttpStatus.OK)
     @GetMapping("/admin")
     public ResponseEntity<DefaultResponseDto<Object>> readAll(){
 
