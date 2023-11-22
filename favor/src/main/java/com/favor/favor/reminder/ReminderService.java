@@ -52,7 +52,7 @@ public class ReminderService {
                 .reminderTitle(anniversary.getAnniversaryTitle())
                 .reminderDate(anniversary.getAnniversaryDate())
                 .reminderMemo("")
-                .isAlarmSet(false)
+                .isAlarmSet(true)
                 .alarmTime(null)
                 .user(user)
                 .friend(friend)
