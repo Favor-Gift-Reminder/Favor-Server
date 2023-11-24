@@ -14,9 +14,6 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
-import static com.favor.favor.common.DefaultResponseDto.resWithData;
-import static com.favor.favor.common.DefaultResponseDto.resWithoutData;
-
 @Api(tags = "Anniversary")
 @RestController
 @RequestMapping("/anniversaries")
@@ -44,13 +41,10 @@ public class AnniversaryController {
 
         Long userNo = loginUser.getUserNo();
 
-        anniversaryService.isExistingUserNo(userNo);
+        AnniversaryResponseDto anniversaryResponseDto = anniversaryService.createAnniversary(userNo, anniversaryRequestDto);
 
-        Anniversary anniversary = anniversaryService.createAnniversary(anniversaryRequestDto, userNo);
-        AnniversaryResponseDto dto = anniversaryService.returnDto(anniversary);
-
-        return ResponseEntity.status(201)
-                .body(resWithData("ANIVERSARY_CREATED", "기념일 생성 완료", dto));
+        return ResponseEntity.status(HttpStatus.CREATED)
+                .body(DefaultResponseDto.from("ANNIVERSARY_CREATED", "기념일 생성 완료", anniversaryResponseDto));
     }
 
     @ApiOperation("기념일 조회")
@@ -69,12 +63,9 @@ public class AnniversaryController {
     public ResponseEntity<DefaultResponseDto<Object>> readAnniversary(
             @PathVariable Long anniversaryNo){
 
-        anniversaryService.isExistingAnniversaryNo(anniversaryNo);
-        Anniversary anniversary = anniversaryService.findAnniversaryByAnniversaryNo(anniversaryNo);
-        AnniversaryResponseDto dto = anniversaryService.returnDto(anniversary);
+        AnniversaryResponseDto anniversaryResponseDto = anniversaryService.readAnniversary(anniversaryNo);
 
-        return ResponseEntity.status(200)
-                .body(resWithData("ANNIVERSARY_FOUND", "기념일 조회 완료", dto));
+        return ResponseEntity.ok(DefaultResponseDto.from("ANNIVERSARY_FOUND", "기념일 조회 완료", anniversaryResponseDto));
     }
 
     @ApiOperation("기념일 수정")
@@ -94,14 +85,9 @@ public class AnniversaryController {
             @RequestBody AnniversaryUpdateRequestDto anniversaryUpdateRequestDto,
             @PathVariable Long anniversaryNo){
 
-        anniversaryService.isExistingAnniversaryNo(anniversaryNo);
+        AnniversaryResponseDto anniversaryResponseDto = anniversaryService.updateAnniversary(anniversaryNo, anniversaryUpdateRequestDto);
 
-        Anniversary anniversary = anniversaryService.findAnniversaryByAnniversaryNo(anniversaryNo);
-        anniversaryService.updateAnniversary(anniversaryUpdateRequestDto, anniversary);
-        AnniversaryResponseDto dto = anniversaryService.returnDto(anniversary);
-
-        return ResponseEntity.status(200)
-                .body(resWithData("ANNIVERSARY_UPDATED", "기념일 수정 완료", dto));
+        return ResponseEntity.ok(DefaultResponseDto.from("ANNIVERSARY_UPDATED", "기념일 수정 완료", anniversaryResponseDto));
     }
 
     @ApiOperation("기념일 핀 여부 수정")
@@ -120,14 +106,9 @@ public class AnniversaryController {
     public ResponseEntity<DefaultResponseDto<Object>> updateIsPinned(
             @PathVariable Long anniversaryNo){
 
-        anniversaryService.isExistingAnniversaryNo(anniversaryNo);
+        AnniversaryResponseDto anniversaryResponseDto = anniversaryService.updateIsPinned(anniversaryNo);
 
-        Anniversary anniversary = anniversaryService.findAnniversaryByAnniversaryNo(anniversaryNo);
-        anniversaryService.updateIsPinned(anniversary);
-        AnniversaryResponseDto dto = anniversaryService.returnDto(anniversary);
-
-        return ResponseEntity.status(200)
-                .body(resWithData("ANNIVERSARY_PIN_UPDATED", "기념일 핀 수정 완료", dto));
+        return ResponseEntity.ok(DefaultResponseDto.from("ANNIVERSARY_PIN_UPDATED", "기념일 핀 수정 완료", anniversaryResponseDto));
     }
 
     @ApiOperation("기념일 삭제")
@@ -146,14 +127,9 @@ public class AnniversaryController {
     public ResponseEntity<DefaultResponseDto<Object>> deleteAnniversary(
             @PathVariable Long anniversaryNo){
 
-        anniversaryService.isExistingAnniversaryNo(anniversaryNo);
-
-        Anniversary anniversary = anniversaryService.findAnniversaryByAnniversaryNo(anniversaryNo);
-
         anniversaryService.deleteAnniversary(anniversaryNo);
 
-        return ResponseEntity.status(200)
-                .body(resWithoutData("ANNIVERSARY_DELETED", "기념일_삭제_완료"));
+        return ResponseEntity.ok(DefaultResponseDto.from("ANNIVERSARY_DELETED", "기념일_삭제_완료"));
     }
 
     @ApiOperation("전체 기념일 조회")
@@ -171,7 +147,6 @@ public class AnniversaryController {
 
         List<AnniversaryResponseDto> dto = anniversaryService.readAll();
 
-        return ResponseEntity.status(200)
-                .body(resWithData("ANIVERSARIES_FOUND", "전체 기념일 조회 완료", dto));
+        return ResponseEntity.ok(DefaultResponseDto.from("ANNIVERSARIES_FOUND", "전체 기념일 조회 완료", dto));
     }
 }

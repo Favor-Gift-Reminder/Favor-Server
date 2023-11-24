@@ -9,7 +9,6 @@ import lombok.NoArgsConstructor;
 
 @Getter
 @NoArgsConstructor
-@AllArgsConstructor
 public class AnniversaryUpdateRequestDto {
 
     @ApiModelProperty(position = 1, required = true, value = "제목", example = "제목")

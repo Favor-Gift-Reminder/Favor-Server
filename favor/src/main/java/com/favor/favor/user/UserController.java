@@ -10,7 +10,6 @@ import com.favor.favor.gift.GiftSimpleDto;
 import com.favor.favor.reminder.ReminderSimpleDto;
 import io.swagger.annotations.*;
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
@@ -18,8 +17,8 @@ import org.springframework.web.bind.annotation.*;
 import javax.validation.Valid;
 import java.util.List;
 
-import static com.favor.favor.common.DefaultResponseDto.resWithData;
-import static com.favor.favor.common.DefaultResponseDto.resWithoutData;
+import static com.favor.favor.common.DefaultResponseDto.from;
+import static com.favor.favor.common.DefaultResponseDto.from;
 
 @Api(tags = "User")
 @RestController
@@ -55,7 +54,7 @@ public class UserController {
         UserResponseDto dto = userService.signUp(signDto);
 
         return ResponseEntity.status(201)
-                .body(resWithData("USER_REGISTERED", "회원가입 완료", dto));
+                .body(DefaultResponseDto.from("USER_REGISTERED", "회원가입 완료", dto));
     }
 
     @ApiOperation("프로필 생성")
@@ -86,7 +85,7 @@ public class UserController {
         UserResponseDto dto = userService.createProfile(profileDto, userNo);
 
         return ResponseEntity.status(200)
-                .body(resWithData("PROFILE_UPDATED", "프로필 생성 완료", dto));
+                .body(DefaultResponseDto.from("PROFILE_UPDATED", "프로필 생성 완료", dto));
     }
 
     @ApiOperation(value = "로그인")
@@ -113,7 +112,7 @@ public class UserController {
         SignInResponseDto dto = userService.signIn(signDto);
 
         return ResponseEntity.status(201)
-                .body(resWithData("LOG_IN_SUCCESS", "로그인 완료", dto));
+                .body(DefaultResponseDto.from("LOG_IN_SUCCESS", "로그인 완료", dto));
     }
 
 
@@ -141,7 +140,7 @@ public class UserController {
         UserResponseDto dto = userService.readUserInfo(userNo);
 
         return ResponseEntity.status(200)
-                .body(resWithData("USER_FOUND", "회원 조회 완료", dto));
+                .body(DefaultResponseDto.from("USER_FOUND", "회원 조회 완료", dto));
     }
 
     @ApiOperation("회원 수정")
@@ -167,7 +166,7 @@ public class UserController {
         UserResponseDto dto = userService.updateUser(userNo, userUpdateRequestDto);
 
         return ResponseEntity.status(200)
-                .body(resWithData("USER_UPDATED", "회원 수정 완료", dto));
+                .body(DefaultResponseDto.from("USER_UPDATED", "회원 수정 완료", dto));
 
     }
 
@@ -197,7 +196,7 @@ public class UserController {
         userService.deleteUser(userNo);
 
         return ResponseEntity.status(200)
-                .body(resWithoutData("USER_DELETED", "회원 탈퇴 완료"));
+                .body(from("USER_DELETED", "회원 탈퇴 완료"));
     }
 
     @ApiOperation("비밀번호 변경")
@@ -221,7 +220,7 @@ public class UserController {
         UserResponseDto dto = userService.updatePassword(passwordDto.getEmail(), passwordDto.getPassword());
 
         return ResponseEntity.status(200)
-                .body(resWithData("PASSWORD_UPDATED", "비밀번호 변경 완료", dto));
+                .body(DefaultResponseDto.from("PASSWORD_UPDATED", "비밀번호 변경 완료", dto));
     }
 
 
@@ -248,7 +247,7 @@ public class UserController {
         List<ReminderSimpleDto> dto = userService.readReminderList(userNo);
 
         return ResponseEntity.status(200)
-                .body(resWithData("REMINDERS_FOUND", "회원의 리마인더 전체 조회 완료", dto));
+                .body(DefaultResponseDto.from("REMINDERS_FOUND", "회원의 리마인더 전체 조회 완료", dto));
     }
     @ApiOperation("회원의 리마인더 필터 조회")
     @ApiResponses(value={
@@ -275,7 +274,7 @@ public class UserController {
         List<ReminderSimpleDto> dto = userService.readReminderListByFMonthAndYear(userNo, year, month);
 
         return ResponseEntity.status(200)
-                .body(resWithData("REMINDER_FOUND_BY_FILTER", "회원가입 완료", dto));
+                .body(DefaultResponseDto.from("REMINDER_FOUND_BY_FILTER", "회원가입 완료", dto));
     }
 
     @ApiOperation("회원의 선물 전체 조회")
@@ -301,7 +300,7 @@ public class UserController {
         List<GiftSimpleDto> dto = userService.readGiftList(userNo);
 
         return ResponseEntity.status(200)
-                .body(resWithData("GIFTS_FOUND", "회원의 선물 전체 조회 완료", dto));
+                .body(DefaultResponseDto.from("GIFTS_FOUND", "회원의 선물 전체 조회 완료", dto));
     }
 
     @ApiOperation("회원의 친구 전체 조회")
@@ -327,7 +326,7 @@ public class UserController {
         List<FriendSimpleDto> dto = userService.readFriendList(userNo);
 
         return ResponseEntity.status(200)
-                .body(resWithData("FRIENDS_FOUND", "회원의 친구 전체 조회 완료", dto));
+                .body(DefaultResponseDto.from("FRIENDS_FOUND", "회원의 친구 전체 조회 완료", dto));
     }
 
     @ApiOperation("회원의 기념일 전체 조회")
@@ -353,7 +352,7 @@ public class UserController {
         List<AnniversaryResponseDto> dto = userService.readAnniversaryList(userNo);
 
         return ResponseEntity.status(200)
-                .body(resWithData("ANNIVERSARY_FOUND", "회원의 기념일 전체 조회 완료", dto));
+                .body(DefaultResponseDto.from("ANNIVERSARY_FOUND", "회원의 기념일 전체 조회 완료", dto));
     }
 
 
@@ -373,7 +372,7 @@ public class UserController {
         List<UserResponseDto> dto = userService.readAll();
 
         return ResponseEntity.status(200)
-                .body(resWithData("USERS_FOUND", "전체 회원 조회 완료", dto));
+                .body(DefaultResponseDto.from("USERS_FOUND", "전체 회원 조회 완료", dto));
     }
 
 
@@ -401,7 +400,7 @@ public class UserController {
         List<GiftSimpleDto> dto =  userService.readGiftListByName(userNo, giftName);
 
         return ResponseEntity.status(200)
-                .body(resWithData("GIFTS_BY_NAME_FOUND", "이름으로 회원 선물 조회 완료", dto));
+                .body(DefaultResponseDto.from("GIFTS_BY_NAME_FOUND", "이름으로 회원 선물 조회 완료", dto));
     }
 
     @ApiOperation("카테고리로 회원 선물 조회")
@@ -427,7 +426,7 @@ public class UserController {
         List<GiftSimpleDto> dto =  userService.readGiftListByCategory(userNo, giftCategory);
 
         return ResponseEntity.status(200)
-                .body(resWithData("GIFTS_BY_CATEGORY_FOUND", "카테고리로 회원 선물 조회 완료", dto));
+                .body(DefaultResponseDto.from("GIFTS_BY_CATEGORY_FOUND", "카테고리로 회원 선물 조회 완료", dto));
     }
 
     @ApiOperation("감정으로 회원 선물 조회")
@@ -453,7 +452,7 @@ public class UserController {
         List<GiftSimpleDto> dto =  userService.readGiftListByEmotion(userNo, emotion);
 
         return ResponseEntity.status(200)
-                .body(resWithData("GIFTS_BY_CATEGORY_FOUND", "감정으로 회원 선물 조회 완료", dto));
+                .body(DefaultResponseDto.from("GIFTS_BY_CATEGORY_FOUND", "감정으로 회원 선물 조회 완료", dto));
     }
 
     @ApiOperation("아이디로 회원 조회")
@@ -476,7 +475,7 @@ public class UserController {
         UserResponseDto dto = userService.readUserInfo(user.getUserNo());
 
         return ResponseEntity.status(200)
-                .body(resWithData("USER_BY_ID_FOUND", "아이디로 회원 조회 완료", dto));
+                .body(DefaultResponseDto.from("USER_BY_ID_FOUND", "아이디로 회원 조회 완료", dto));
     }
 
     @ApiOperation("유저가 준 선물 전체 조회")
@@ -498,7 +497,7 @@ public class UserController {
         List<GiftSimpleDto> dto = userService.readGivenGiftList(userNo);
 
         return ResponseEntity.status(200)
-                .body(resWithData("GIVEN_GIFTS_FOUND", "유저가 준 선물 전체 조회 완료", dto));
+                .body(DefaultResponseDto.from("GIVEN_GIFTS_FOUND", "유저가 준 선물 전체 조회 완료", dto));
     }
 
     @ApiOperation("유저가 받은 선물 전체 조회")
@@ -520,7 +519,7 @@ public class UserController {
         List<GiftSimpleDto> dto = userService.readReceivedGiftList(userNo);
 
         return ResponseEntity.status(200)
-                .body(resWithData("RECEIVED_GIFTS_FOUND", "유저가 받은 선물 전체 조회 완료", dto));
+                .body(DefaultResponseDto.from("RECEIVED_GIFTS_FOUND", "유저가 받은 선물 전체 조회 완료", dto));
     }
 
 }

@@ -12,7 +12,6 @@ import java.time.LocalDate;
 
 @Getter
 @NoArgsConstructor
-@AllArgsConstructor
 public class AnniversaryRequestDto {
     @ApiModelProperty(position = 1, required = true, value = "제목", example = "제목")
     private String anniversaryTitle;

@@ -12,6 +12,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import static com.favor.favor.exception.ExceptionCode.*;
 
@@ -25,52 +26,80 @@ public class AnniversaryService {
     private final FriendRepository friendRepository;
 
     @Transactional
-    public Anniversary createAnniversary(AnniversaryRequestDto anniversaryRequestDto, Long userNo){
+    public AnniversaryResponseDto createAnniversary(Long userNo, AnniversaryRequestDto anniversaryRequestDto){
+        isExistingUserNo(userNo);
         User user = findUserByUserNo(userNo);
-        Anniversary anniversary = anniversaryRepository.save(anniversaryRequestDto.toEntity(anniversaryRequestDto.getAnniversaryTitle(), user));
-        return anniversaryRepository.save(anniversary);
+
+        Anniversary anniversary = anniversaryRequestDto.toEntity(anniversaryRequestDto.getAnniversaryTitle(), user);
+        anniversaryRepository.save(anniversary);
+
+        return AnniversaryResponseDto.from(anniversary);
+    }
+
+    public AnniversaryResponseDto readAnniversary(Long anniversaryNo) {
+        isExistingAnniversaryNo(anniversaryNo);
+        Anniversary anniversary = findAnniversaryByAnniversaryNo(anniversaryNo);
+
+        return AnniversaryResponseDto.from(anniversary);
     }
 
     @Transactional
-    public void updateAnniversary(AnniversaryUpdateRequestDto dto, Anniversary anniversary){
-        anniversary.setAnniversaryTitle(dto.getAnniversaryTitle());
-        anniversary.setAnniversaryDate(LocalDate.parse(dto.getAnniversaryDate()));
-        anniversary.setCategory(dto.getAnniversaryCategory());
+    public AnniversaryResponseDto updateAnniversary(Long anniversaryNo, AnniversaryUpdateRequestDto anniversaryUpdateRequestDto){
+        isExistingAnniversaryNo(anniversaryNo);
+        Anniversary anniversary = findAnniversaryByAnniversaryNo(anniversaryNo);
+
+        anniversary.updateAnniversaryTitle(anniversaryUpdateRequestDto.getAnniversaryTitle());
+        anniversary.updateAnniversaryDate(LocalDate.parse(anniversaryUpdateRequestDto.getAnniversaryDate()));
+        anniversary.updateCategory(anniversaryUpdateRequestDto.getAnniversaryCategory());
 
         anniversaryRepository.save(anniversary);
+
+        return AnniversaryResponseDto.from(anniversary);
     }
 
     @Transactional
-    public void updateIsPinned(Anniversary anniversary){
-        anniversary.setIsPinned(anniversary.getIsPinned() == true ? false : true);
+    public AnniversaryResponseDto updateIsPinned(Long anniversaryNo){
+        isExistingAnniversaryNo(anniversaryNo);
+        Anniversary anniversary = findAnniversaryByAnniversaryNo(anniversaryNo);
+
+        anniversary.updateIsPinned(anniversary.getIsPinned() == true ? false : true);
         anniversaryRepository.save(anniversary);
+
+        return AnniversaryResponseDto.from(anniversary);
     }
+
+//    @Transactional
+//    public void deleteAnniversary(Long anniversaryNo){
+//        List<Friend> friendList = findAnniversaryByAnniversaryNo(anniversaryNo).getUser().getFriendList();
+//        for(Friend friend : friendList){
+//            if(friend.getAnniversaryNoList().contains(anniversaryNo)){
+//                friend.getAnniversaryNoList().remove(anniversaryNo);
+//                friendRepository.save(friend);
+//            }
+//        }
+//
+//        anniversaryRepository.deleteByAnniversaryNo(anniversaryNo);
+//    }
 
     @Transactional
     public void deleteAnniversary(Long anniversaryNo){
-        List<Friend> friendList = findAnniversaryByAnniversaryNo(anniversaryNo).getUser().getFriendList();
-        for(Friend friend : friendList){
-            if(friend.getAnniversaryNoList().contains(anniversaryNo)){
-                friend.getAnniversaryNoList().remove(anniversaryNo);
-                friendRepository.save(friend);
-            }
-        }
+        List<Friend> updateRequiredFriends = findAnniversaryByAnniversaryNo(anniversaryNo).getUser().getFriendList().stream()
+                .filter(friend -> friend.getAnniversaryNoList().contains(anniversaryNo))
+                .peek(friend -> friend.getAnniversaryNoList().remove(anniversaryNo))
+                .collect(Collectors.toList());
 
+        friendRepository.saveAll(updateRequiredFriends);
         anniversaryRepository.deleteByAnniversaryNo(anniversaryNo);
     }
 
     public List<AnniversaryResponseDto> readAll(){
-        List<AnniversaryResponseDto> a_List = new ArrayList<>();
-        for(Anniversary a : anniversaryRepository.findAll()){
-            AnniversaryResponseDto dto = new AnniversaryResponseDto(a);
-            a_List.add(dto);
-        }
-        return a_List;
+        return anniversaryRepository.findAll().stream()
+                .map(AnniversaryResponseDto::from)
+                .collect(Collectors.toList());
     }
 
-
-    public User findUserByUserNo(Long userNo){
-        User user = null;
+    private User findUserByUserNo(Long userNo){
+        User user;
         try{
             user = userRepository.findByUserNo(userNo).orElseThrow(
                     () -> new RuntimeException()
@@ -80,8 +109,9 @@ public class AnniversaryService {
         }
         return user;
     }
-    public Anniversary findAnniversaryByAnniversaryNo(Long anniversaryNo){
-        Anniversary anniversary = null;
+
+    private Anniversary findAnniversaryByAnniversaryNo(Long anniversaryNo){
+        Anniversary anniversary;
         try{
             anniversary = anniversaryRepository.findAnniversaryByAnniversaryNo(anniversaryNo).orElseThrow(
                     () -> new RuntimeException()
@@ -93,12 +123,8 @@ public class AnniversaryService {
     }
 
 
-    public AnniversaryResponseDto returnDto(Anniversary anniversary){
-        return new AnniversaryResponseDto(anniversary);
-    }
-
-    public void isExistingAnniversaryNo(Long anniversaryNo){
-        Boolean isExistingNo = null;
+    private void isExistingAnniversaryNo(Long anniversaryNo){
+        Boolean isExistingNo;
         try{
             isExistingNo = anniversaryRepository.existsByAnniversaryNo(anniversaryNo);
         }catch(RuntimeException e){
@@ -109,8 +135,8 @@ public class AnniversaryService {
         }
     }
 
-    public void isExistingUserNo (Long userNo){
-        Boolean isExistingNo = null;
+    private void isExistingUserNo (Long userNo){
+        Boolean isExistingNo;
         try{
             isExistingNo = userRepository.existsByUserNo(userNo);
         } catch(RuntimeException e){

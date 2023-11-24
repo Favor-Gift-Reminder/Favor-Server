@@ -19,22 +19,26 @@ public class Anniversary extends TimeStamped {
     private Long anniversaryNo;
 
     private String anniversaryTitle;
-    public void setAnniversaryTitle(String anniversaryTitle){ this.anniversaryTitle = anniversaryTitle; }
 
     private LocalDate anniversaryDate;
-    public void setAnniversaryDate(LocalDate anniversaryDate){ this.anniversaryDate = anniversaryDate; }
 
     private Integer category;
-    public void setCategory(AnniversaryCategory anniversaryCategory){
-        this.category = anniversaryCategory.getType();
-    }
 
     private Boolean isPinned;
-    public void setIsPinned(Boolean isPinned){ this.isPinned = isPinned; }
 
     @ManyToOne(cascade = CascadeType.REFRESH, fetch = FetchType.EAGER)
     @JoinColumn(name = "user_user_no")
     private User user;
+
+    public void updateAnniversaryTitle(String anniversaryTitle){ this.anniversaryTitle = anniversaryTitle; }
+
+    public void updateAnniversaryDate(LocalDate anniversaryDate){ this.anniversaryDate = anniversaryDate; }
+
+    public void updateCategory(AnniversaryCategory anniversaryCategory){
+        this.category = anniversaryCategory.getType();
+    }
+
+    public void updateIsPinned(Boolean isPinned){ this.isPinned = isPinned; }
 
     @Builder
     public Anniversary(String anniversaryTitle, LocalDate anniversaryDate, Integer category, Boolean isPinned, User user) {
