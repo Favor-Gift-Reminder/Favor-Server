@@ -3,7 +3,6 @@ package com.favor.favor.friend;
 import com.favor.favor.anniversary.AnniversaryResponseDto;
 import com.favor.favor.common.enums.Favor;
 import com.favor.favor.photo.UserPhoto;
-import com.favor.favor.reminder.ReminderResponseDto;
 import com.favor.favor.reminder.ReminderSimpleDto;
 import com.favor.favor.user.User;
 import lombok.*;
@@ -29,7 +28,9 @@ public class FriendResponseDto {
 
     private Long userNo;
     private String friendId;
-    private UserPhoto photo;
+    private UserPhoto userPhoto;
+
+    private UserPhoto userBackgroundPhoto;
 
     @Builder
     public FriendResponseDto(Friend friend,
@@ -51,6 +52,7 @@ public class FriendResponseDto {
         this.totalGift = giftInfo.get("total");
         this.userNo = friend.getFriendUserNo();
         this.friendId = friendId;
-        this.photo = friendUser.getUserProfilePhoto();
+        this.userPhoto = friendUser.getUserProfilePhoto();
+        this.userBackgroundPhoto = friendUser.getUserBackgroundPhoto();
     }
 }
