@@ -301,7 +301,7 @@ public class UserService {
     public List<AnniversaryResponseDto> readAnniversaryList(Long userNo) {
         User user = findUserByUserNo(userNo);
         return user.getAnniversaryList().stream()
-                .map(AnniversaryResponseDto::new).collect(Collectors.toList());
+                .map(AnniversaryResponseDto::from).collect(Collectors.toList());
     }
 
     public List<Favor> readFavorList(Long userNo) {
