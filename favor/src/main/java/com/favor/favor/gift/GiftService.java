@@ -184,8 +184,7 @@ public class GiftService {
             Friend friend = findFriendByFriendNo(friendNo);
             User friendUser = findUserByUserNo(friend.getFriendUserNo());
             UserPhoto photo = friendUser.getUserProfilePhoto();
-            FriendSimpleDto friendResponseDto = new FriendSimpleDto(friend, friendUser, photo);
-            friendResponseDtoList.add(friendResponseDto);
+            friendResponseDtoList.add(FriendSimpleDto.from(friend, photo));
         }
 
         giftRepository.save(gift);

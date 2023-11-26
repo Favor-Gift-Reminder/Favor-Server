@@ -176,7 +176,7 @@ public class FriendService {
             if(reminderFriend != null) {
                 User reminderFriendUser = findUserByUserNo(reminderFriend.getFriendUserNo());
                 UserPhoto photo = reminderFriendUser.getUserProfilePhoto();
-                friendsimpleDto = new FriendSimpleDto(reminderFriend, reminderFriendUser, photo);
+                friendsimpleDto = FriendSimpleDto.from(reminderFriend, photo);
             }
             reminderDtoList.add(new ReminderSimpleDto(r, friendsimpleDto));
         }

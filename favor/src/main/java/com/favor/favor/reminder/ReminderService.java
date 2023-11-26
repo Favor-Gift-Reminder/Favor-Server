@@ -91,7 +91,7 @@ public class ReminderService {
             if(friend != null) {
                 User friendUser = findUserByUserNo(friend.getFriendUserNo());
                 UserPhoto photo = friendUser.getUserProfilePhoto();
-                friendsimpleDto = new FriendSimpleDto(friend, friendUser, photo);
+                friendsimpleDto = FriendSimpleDto.from(friend, photo);
             }
             ReminderSimpleDto dto = new ReminderSimpleDto(r, friendsimpleDto);
             r_List.add(dto);
@@ -170,7 +170,7 @@ public class ReminderService {
         if(friend != null) {
             User friendUser = findUserByUserNo(friend.getFriendUserNo());
             UserPhoto photo = friendUser.getUserProfilePhoto();
-            dto = new FriendSimpleDto(friend, friendUser, photo);
+            dto = FriendSimpleDto.from(friend, photo);
         }
         return new ReminderResponseDto(reminder, dto);
     }
