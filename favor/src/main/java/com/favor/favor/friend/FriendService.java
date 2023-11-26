@@ -186,7 +186,7 @@ public class FriendService {
         }
         List<AnniversaryResponseDto> anniversaryList = new ArrayList<>();
         for(Anniversary a : friendUser.getAnniversaryList()){
-            anniversaryList.add(new AnniversaryResponseDto(a));
+            anniversaryList.add(AnniversaryResponseDto.from(a));
         }
         HashMap<String, Integer> giftInfo = returnGiftInfo(friend.getFriendNo());
 

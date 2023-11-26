@@ -13,11 +13,10 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
-import javax.transaction.Transactional;
 import java.util.List;
 
-import static com.favor.favor.common.DefaultResponseDto.resWithData;
-import static com.favor.favor.common.DefaultResponseDto.resWithoutData;
+import static com.favor.favor.common.DefaultResponseDto.from;
+import static com.favor.favor.common.DefaultResponseDto.from;
 
 @Api(tags = "Gift-Photo")
 @RestController
@@ -54,7 +53,7 @@ public class GiftPhotoController {
         List<GiftPhoto> dto = giftPhotoService.getGiftPhotoList(giftNo);
 
         return ResponseEntity.status(201)
-                .body(resWithData("GIFT_PHOTO_LIST_ADDED", "선물 사진 추가", dto));
+                .body(DefaultResponseDto.from("GIFT_PHOTO_LIST_ADDED", "선물 사진 추가", dto));
     }
 
     @ApiOperation("선물 사진 목록 조회")
@@ -77,7 +76,7 @@ public class GiftPhotoController {
         List<GiftPhoto> dto = giftPhotoService.getGiftPhotoList(giftNo);
 
         return ResponseEntity.status(200)
-                .body(resWithData("GIFT_PHOTO_LIST_FOUND", "선물 사진 목록 조회 완료", dto));
+                .body(DefaultResponseDto.from("GIFT_PHOTO_LIST_FOUND", "선물 사진 목록 조회 완료", dto));
     }
 
     @ApiOperation("선물 사진 삭제")
@@ -100,6 +99,6 @@ public class GiftPhotoController {
         giftPhotoService.deleteGiftPhoto(giftNo, fileUrl);
 
         return ResponseEntity.status(200)
-                .body(resWithoutData("GIFT_PHOTO_DELETED", "선물 사진 삭제 완료"));
+                .body(from("GIFT_PHOTO_DELETED", "선물 사진 삭제 완료"));
     }
 }

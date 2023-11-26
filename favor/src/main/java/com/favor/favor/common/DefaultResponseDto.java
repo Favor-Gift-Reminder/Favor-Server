@@ -23,14 +23,14 @@ public class DefaultResponseDto <T> {
         this.data = data;
     }
 
-    public static <T> DefaultResponseDto<T> resWithoutData(final String responseCode, final String responseMessage){
+    public static <T> DefaultResponseDto<T> from(String responseCode, String responseMessage){
         return DefaultResponseDto.<T>builder()
                 .responseCode(responseCode)
                 .responseMessage(responseMessage)
                 .build();
     }
 
-    public static <T> DefaultResponseDto<T> resWithData(final String responseCode, final String responseMessage, final T data){
+    public static <T> DefaultResponseDto<T> from(String responseCode, String responseMessage, T data){
         return DefaultResponseDto.<T>builder()
                 .responseCode(responseCode)
                 .responseMessage(responseMessage)

@@ -8,15 +8,14 @@ import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
-import static com.favor.favor.common.DefaultResponseDto.resWithData;
-import static com.favor.favor.common.DefaultResponseDto.resWithoutData;
+import static com.favor.favor.common.DefaultResponseDto.from;
+import static com.favor.favor.common.DefaultResponseDto.from;
 
 @Api(tags = "Gift")
 @RestController
@@ -38,7 +37,6 @@ public class GiftController {
             @ApiResponse(code = 500,
                     message = "SERVER_ERROR")
     })
-    @ResponseStatus(HttpStatus.CREATED)
     @PostMapping
     public ResponseEntity<DefaultResponseDto<Object>> createGift(
             @RequestBody GiftRequestDto giftRequestDto,
@@ -55,7 +53,7 @@ public class GiftController {
         GiftResponseDto dto = giftService.returnDto(gift);
 
         return ResponseEntity.status(201)
-                .body(resWithData("GIFT_CREATED", "선물 생성 완료", dto));
+                .body(DefaultResponseDto.from("GIFT_CREATED", "선물 생성 완료", dto));
     }
 
     @ApiOperation("선물 조회")
@@ -70,7 +68,6 @@ public class GiftController {
             @ApiResponse(code = 500,
                     message = "SERVER_ERROR")
     })
-    @ResponseStatus(HttpStatus.OK)
     @GetMapping("/{giftNo}")
     public ResponseEntity<DefaultResponseDto<Object>> readGift(
             @PathVariable Long giftNo){
@@ -82,7 +79,7 @@ public class GiftController {
         log.info("[Controller] [readGift] DTO 반환");
 
         return ResponseEntity.status(200)
-                .body(resWithData("GIFT_FOUND", "선물 조회 완료", dto));
+                .body(DefaultResponseDto.from("GIFT_FOUND", "선물 조회 완료", dto));
     }
 
     @ApiOperation("선물 수정")
@@ -97,7 +94,6 @@ public class GiftController {
             @ApiResponse(code = 500,
                     message = "SERVER_ERROR")
     })
-    @ResponseStatus(HttpStatus.OK)
     @PatchMapping("/{giftNo}")
     public ResponseEntity<DefaultResponseDto<Object>> updateGift(
             @RequestBody GiftUpdateRequestDto giftUpdateRequestDto,
@@ -111,7 +107,7 @@ public class GiftController {
         GiftResponseDto dto = giftService.returnDto(gift);
 
         return ResponseEntity.status(200)
-                .body(resWithData("GIFT_UPDATED", "선물 수정 완료", dto));
+                .body(DefaultResponseDto.from("GIFT_UPDATED", "선물 수정 완료", dto));
     }
 
     @ApiOperation("선물 임시친구목록 수정")
@@ -126,7 +122,6 @@ public class GiftController {
             @ApiResponse(code = 500,
                     message = "SERVER_ERROR")
     })
-    @ResponseStatus(HttpStatus.OK)
     @PatchMapping("/temp-friend-list/{giftNo}")
     public ResponseEntity<DefaultResponseDto<Object>> updateTempFriendListGift(
             @PathVariable Long giftNo,
@@ -141,7 +136,7 @@ public class GiftController {
         GiftResponseDto dto = giftService.returnDto(gift);
 
         return ResponseEntity.status(200)
-                .body(resWithData("GIFT_TEMP_FRIEND_LIST_UPDATED", "선물 임시친구목록 수정 완료", dto));
+                .body(DefaultResponseDto.from("GIFT_TEMP_FRIEND_LIST_UPDATED", "선물 임시친구목록 수정 완료", dto));
     }
 
     @ApiOperation("선물 핀 여부 수정")
@@ -156,7 +151,6 @@ public class GiftController {
             @ApiResponse(code = 500,
                     message = "SERVER_ERROR")
     })
-    @ResponseStatus(HttpStatus.OK)
     @PatchMapping("/pin/{giftNo}")
     public ResponseEntity<DefaultResponseDto<Object>> updateIsPinned(
             @PathVariable Long giftNo){
@@ -169,7 +163,7 @@ public class GiftController {
         GiftResponseDto dto = giftService.returnDto(gift);
 
         return ResponseEntity.status(200)
-                .body(resWithData("GIFT_PIN_UPDATED", "선물 핀 여부 수정 완료", dto));
+                .body(DefaultResponseDto.from("GIFT_PIN_UPDATED", "선물 핀 여부 수정 완료", dto));
     }
 
     @ApiOperation("선물 삭제")
@@ -184,7 +178,6 @@ public class GiftController {
             @ApiResponse(code = 500,
                     message = "SERVER_ERROR")
     })
-    @ResponseStatus(HttpStatus.OK)
     @DeleteMapping("/{giftNo}")
     public ResponseEntity<DefaultResponseDto<Object>> deleteGift(
             @PathVariable Long giftNo){
@@ -203,7 +196,7 @@ public class GiftController {
         log.info("[SYSTEM] giftService.deleteGift(giftNo) 완료");
 
         return ResponseEntity.status(200)
-                .body(resWithoutData("GIFT_DELETED", "선물 삭제 완료"));
+                .body(from("GIFT_DELETED", "선물 삭제 완료"));
     }
 
     @ApiOperation("전체 선물 조회")
@@ -216,14 +209,13 @@ public class GiftController {
             @ApiResponse(code = 500,
                     message = "SERVER_ERROR")
     })
-    @ResponseStatus(HttpStatus.OK)
     @GetMapping("/admin")
     public ResponseEntity<DefaultResponseDto<Object>> readAll(){
 
         List<GiftResponseDto> dto = giftService.readAll();
 
         return ResponseEntity.status(200)
-                .body(resWithData("GIFTS_FOUND", "전체 선물 조회 완료", dto));
+                .body(DefaultResponseDto.from("GIFTS_FOUND", "전체 선물 조회 완료", dto));
 
     }
 }

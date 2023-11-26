@@ -7,7 +7,6 @@ import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
@@ -37,7 +36,6 @@ public class UserPhotoController {
             @ApiResponse(code = 500,
                     message = "SERVER_ERROR")
     })
-    @ResponseStatus(HttpStatus.CREATED)
     @PostMapping("/profile")
     public ResponseEntity<DefaultResponseDto<Object>> updateUserProfilePhoto(
             @ModelAttribute MultipartFile file,
@@ -50,7 +48,7 @@ public class UserPhotoController {
         UserPhoto dto = user.getUserProfilePhoto();
 
         return ResponseEntity.status(201)
-                .body(resWithData("USER_PROFILE_PHOTO_UPDATED", "회원 사진 수정 완료", dto));
+                .body(DefaultResponseDto.from("USER_PROFILE_PHOTO_UPDATED", "회원 사진 수정 완료", dto));
     }
 
     @ApiOperation("회원 프로필 사진 조회")
@@ -65,7 +63,6 @@ public class UserPhotoController {
             @ApiResponse(code = 500,
                     message = "SERVER_ERROR")
     })
-    @ResponseStatus(HttpStatus.OK)
     @GetMapping("/profile")
     public ResponseEntity<DefaultResponseDto<Object>> getUserProfilePhoto(
             @AuthenticationPrincipal User loginUser
@@ -73,7 +70,7 @@ public class UserPhotoController {
         UserPhoto dto = userPhotoService.getUserProfilePhoto(loginUser.getUserNo());
 
         return ResponseEntity.status(200)
-                .body(resWithData("USER_PROFILE_PHOTO_FOUND", "회원 사진 조회 완료", dto));
+                .body(DefaultResponseDto.from("USER_PROFILE_PHOTO_FOUND", "회원 사진 조회 완료", dto));
     }
 
     @ApiOperation("회원 프로필 사진 삭제")
@@ -88,7 +85,6 @@ public class UserPhotoController {
             @ApiResponse(code = 500,
                     message = "SERVER_ERROR")
     })
-    @ResponseStatus(HttpStatus.OK)
     @DeleteMapping("/profile")
     public ResponseEntity<DefaultResponseDto<Object>> deleteUserProfilePhoto(@AuthenticationPrincipal User loginUser)
     {
@@ -97,7 +93,7 @@ public class UserPhotoController {
         userPhotoService.deleteUserProfilePhoto(userNo);
 
         return ResponseEntity.status(200)
-                .body(resWithoutData("USER_PROFILE_PHOTO_DELETED", "회원 사진 삭제 완료"));
+                .body(from("USER_PROFILE_PHOTO_DELETED", "회원 사진 삭제 완료"));
 
     }
 
@@ -115,7 +111,6 @@ public class UserPhotoController {
             @ApiResponse(code = 500,
                     message = "SERVER_ERROR")
     })
-    @ResponseStatus(HttpStatus.CREATED)
     @PostMapping("/background")
     public ResponseEntity<DefaultResponseDto<Object>> updateUserBackgroundPhoto(
             @ModelAttribute MultipartFile file,
@@ -128,7 +123,7 @@ public class UserPhotoController {
         UserPhoto dto = user.getUserBackgroundPhoto();
 
         return ResponseEntity.status(201)
-                .body(resWithData("USER_BACKGROUND_PHOTO_UPDATED", "회원 배경 사진 수정 완료", dto));
+                .body(DefaultResponseDto.from("USER_BACKGROUND_PHOTO_UPDATED", "회원 배경 사진 수정 완료", dto));
     }
 
     @ApiOperation("회원 배경 사진 조회")
@@ -143,7 +138,6 @@ public class UserPhotoController {
             @ApiResponse(code = 500,
                     message = "SERVER_ERROR")
     })
-    @ResponseStatus(HttpStatus.OK)
     @GetMapping("/background")
     public ResponseEntity<DefaultResponseDto<Object>> getUserBackgroundPhoto(
             @AuthenticationPrincipal User loginUser
@@ -151,7 +145,7 @@ public class UserPhotoController {
         UserPhoto dto = userPhotoService.getUserBackgroundPhoto(loginUser.getUserNo());
 
         return ResponseEntity.status(200)
-                .body(resWithData("USER_BACKGROUND_PHOTO_FOUND", "회원 배경 사진 조회 완료", dto));
+                .body(DefaultResponseDto.from("USER_BACKGROUND_PHOTO_FOUND", "회원 배경 사진 조회 완료", dto));
     }
 
     @ApiOperation("회원 배경 사진 삭제")
@@ -166,7 +160,6 @@ public class UserPhotoController {
             @ApiResponse(code = 500,
                     message = "SERVER_ERROR")
     })
-    @ResponseStatus(HttpStatus.OK)
     @DeleteMapping("/background")
     public ResponseEntity<DefaultResponseDto<Object>> deleteUserBackgroundPhoto(
             @AuthenticationPrincipal User loginUser
@@ -176,6 +169,6 @@ public class UserPhotoController {
         userPhotoService.deleteUserBackgroundPhoto(userNo);
 
         return ResponseEntity.status(200)
-                .body(resWithoutData("USER_BACKGROUND_PHOTO_DELETED", "회원 배경 사진 수정 완료"));
+                .body(from("USER_BACKGROUND_PHOTO_DELETED", "회원 배경 사진 수정 완료"));
     }
 }
