@@ -160,10 +160,7 @@ public class UserController {
             @AuthenticationPrincipal User loginUser,
             @RequestBody @Valid UserUpdateRequestDto userUpdateRequestDto
     ){
-
         Long userNo = loginUser.getUserNo();
-        userService.isExistingUserNo(userNo);
-        userService.isExistingUserId(userUpdateRequestDto.getUserId());
         UserResponseDto dto = userService.updateUser(userNo, userUpdateRequestDto);
 
         return ResponseEntity.status(200)

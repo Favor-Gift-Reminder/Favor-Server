@@ -99,6 +99,10 @@ public class UserService {
 
     @Transactional
     public UserResponseDto updateUser(Long userNo, UserUpdateRequestDto userUpdateRequestDto){
+
+        isExistingUserNo(userNo);
+        isExistingUserId(userUpdateRequestDto.getUserId());
+
         User user = findUserByUserNo(userNo);
         user.setName(userUpdateRequestDto.getName());
         user.setUserId(userUpdateRequestDto.getUserId());
