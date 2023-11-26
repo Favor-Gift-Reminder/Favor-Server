@@ -21,6 +21,7 @@ public class FriendSimpleDto {
 
     public static FriendSimpleDto from(Friend friend, UserPhoto userPhoto){
         return FriendSimpleDto.builder()
+                .friendNo(friend.getFriendNo())
                 .friendUserNo(friend.getFriendUserNo())
                 .friendName(friend.getFriendName())
                 .userPhoto(userPhoto)
