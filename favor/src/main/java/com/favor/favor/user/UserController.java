@@ -163,6 +163,7 @@ public class UserController {
 
         Long userNo = loginUser.getUserNo();
         userService.isExistingUserNo(userNo);
+        userService.isExistingUserId(userUpdateRequestDto.getUserId());
         UserResponseDto dto = userService.updateUser(userNo, userUpdateRequestDto);
 
         return ResponseEntity.status(200)
