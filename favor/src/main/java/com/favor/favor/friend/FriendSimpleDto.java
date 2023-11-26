@@ -1,22 +1,30 @@
 package com.favor.favor.friend;
 
 import com.favor.favor.photo.UserPhoto;
-import com.favor.favor.user.User;
-import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 
 @Getter
-@AllArgsConstructor
 public class FriendSimpleDto {
     private Long friendNo;
+    private Long friendUserNo;
     private String friendName;
-    private UserPhoto photo;
+    private UserPhoto userPhoto;
 
     @Builder
-    public FriendSimpleDto(Friend friend, User friendUser, UserPhoto photo){
-        this.friendNo = friend.getFriendNo();
-        this.friendName = friendUser.getName();
-        this.photo = photo;
+    private FriendSimpleDto(Long friendNo, Long friendUserNo, String friendName, UserPhoto userPhoto){
+        this.friendNo = friendNo;
+        this.friendUserNo = friendUserNo;
+        this.friendName = friendName;
+        this.userPhoto = userPhoto;
+    }
+
+    public static FriendSimpleDto from(Friend friend, UserPhoto userPhoto){
+        return FriendSimpleDto.builder()
+                .friendNo(friend.getFriendNo())
+                .friendUserNo(friend.getFriendUserNo())
+                .friendName(friend.getFriendName())
+                .userPhoto(userPhoto)
+                .build();
     }
 }

@@ -99,6 +99,10 @@ public class UserService {
 
     @Transactional
     public UserResponseDto updateUser(Long userNo, UserUpdateRequestDto userUpdateRequestDto){
+
+        isExistingUserNo(userNo);
+        isExistingUserId(userUpdateRequestDto.getUserId());
+
         User user = findUserByUserNo(userNo);
         user.setName(userUpdateRequestDto.getName());
         user.setUserId(userUpdateRequestDto.getUserId());
@@ -243,7 +247,7 @@ public class UserService {
                     if (friend != null) {
                         User friendUser = findUserByUserNo(friend.getFriendUserNo());
                         UserPhoto photo = friendUser != null ? friendUser.getUserProfilePhoto() : null;
-                        friendDto = new FriendSimpleDto(friend, friendUser, photo);
+                        friendDto = FriendSimpleDto.from(friend, photo);
                     }
                     return new ReminderSimpleDto(reminder, friendDto);
                 })
@@ -281,7 +285,7 @@ public class UserService {
                     if (friend != null) {
                         User friendUser = findUserByUserNo(friend.getFriendUserNo());
                         UserPhoto photo = friendUser != null ? friendUser.getUserProfilePhoto() : null;
-                        friendDto = new FriendSimpleDto(friend, friendUser, photo);
+                        friendDto = FriendSimpleDto.from(friend, photo);
                     }
                     return new ReminderSimpleDto(reminder, friendDto);
                 }).collect(Collectors.toList());
@@ -292,8 +296,9 @@ public class UserService {
         User user = findUserByUserNo(userNo);
         return user.getFriendList().stream()
                 .map(friend -> {
-                    User friendUser = findUserByUserNo(friend.getFriendUserNo()); // Retrieve the user associated with the friend
-                    return new FriendSimpleDto(friend, friendUser, friendUser.getUserProfilePhoto());
+                    User friendUser = findUserByUserNo(friend.getFriendUserNo());
+                    UserPhoto photo = friendUser != null ? friendUser.getUserProfilePhoto() : null;
+                    return  FriendSimpleDto.from(friend, photo);
                 })
                 .collect(Collectors.toList());
     }
