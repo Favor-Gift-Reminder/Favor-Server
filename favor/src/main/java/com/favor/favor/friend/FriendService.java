@@ -135,7 +135,7 @@ public class FriendService {
         List<Gift> giftList = giftRepository.findGiftsByFriendNoListContains(friendNo);
         List<GiftSimpleDto> giftResponseDtoList = new ArrayList<>();
         for(Gift gift : giftList){
-            GiftSimpleDto dto = new GiftSimpleDto(gift);
+            GiftSimpleDto dto = GiftSimpleDto.from(gift);
             giftResponseDtoList.add(dto);
         }
         return giftResponseDtoList;
@@ -145,7 +145,7 @@ public class FriendService {
         List<GiftSimpleDto> giftResponseDtoList = new ArrayList<>();
         for(Gift gift : giftList){
             if(gift.getIsGiven()){
-                GiftSimpleDto dto = new GiftSimpleDto(gift);
+                GiftSimpleDto dto = GiftSimpleDto.from(gift);
                 giftResponseDtoList.add(dto);
             }
         }
@@ -156,7 +156,7 @@ public class FriendService {
         List<GiftSimpleDto> giftResponseDtoList = new ArrayList<>();
         for(Gift gift : giftList){
             if(!gift.getIsGiven()){
-                GiftSimpleDto dto = new GiftSimpleDto(gift);
+                GiftSimpleDto dto = GiftSimpleDto.from(gift);
                 giftResponseDtoList.add(dto);
             }
         }

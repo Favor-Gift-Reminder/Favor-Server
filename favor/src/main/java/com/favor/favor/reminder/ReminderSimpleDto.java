@@ -18,15 +18,6 @@ public class ReminderSimpleDto {
     private Long userNo;
     private FriendSimpleDto friendSimpleDto;
 
-//    @Builder
-//    public ReminderSimpleDto(Reminder reminder){
-//        this.reminderNo = reminder.getReminderNo();
-//        this.reminderTitle = reminder.getReminderTitle();
-//        this.reminderDate = reminder.getReminderDate();
-//        this.isAlarmSet = reminder.getIsAlarmSet();
-//        this.userNo = reminder.getUser().getUserNo();
-//        this.friendSimpleDto = null;
-//    }
     @Builder
     public ReminderSimpleDto(Reminder reminder, FriendSimpleDto dto){
         this.reminderNo = reminder.getReminderNo();
