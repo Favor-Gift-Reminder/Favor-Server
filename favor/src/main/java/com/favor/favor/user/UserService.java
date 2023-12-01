@@ -143,14 +143,14 @@ public class UserService {
         User user = findUserByUserNo(userNo);
 
         return giftRepository.findGiftsByUser(user).stream()
-                .map(GiftSimpleDto::new).collect(Collectors.toList());
+                .map(GiftSimpleDto::from).collect(Collectors.toList());
     }
 
     public List<GiftSimpleDto> readGiftListByName(Long userNo, String giftName){
         User user = findUserByUserNo(userNo);
 
         return giftRepository.findGiftsByUserAndGiftNameContains(user, giftName).stream()
-                .map(GiftSimpleDto::new).collect(Collectors.toList());
+                .map(GiftSimpleDto::from).collect(Collectors.toList());
     }
 
     public List<GiftSimpleDto> readGiftListByCategory(Long userNo, GiftCategory giftCategory){
@@ -158,7 +158,7 @@ public class UserService {
         Integer categoryNo = giftCategory.getType();
 
         return giftRepository.findGiftsByUserAndCategory(user, categoryNo).stream()
-                .map(GiftSimpleDto::new)
+                .map(GiftSimpleDto::from)
                 .collect(Collectors.toList());
     }
 
@@ -167,7 +167,7 @@ public class UserService {
         Integer emotionNo = emotion.getType();
 
         return giftRepository.findGiftsByUserAndEmotion(user, emotionNo).stream()
-                .map(GiftSimpleDto::new)
+                .map(GiftSimpleDto::from)
                 .collect(Collectors.toList());
     }
 
@@ -265,14 +265,14 @@ public class UserService {
     public List<GiftSimpleDto> readGivenGiftList(Long userNo){
         User user = findUserByUserNo(userNo);
         return giftRepository.findGiftsByUser(user).stream()
-                .map(GiftSimpleDto::new)
+                .map(GiftSimpleDto::from)
                 .collect(Collectors.toList());
     }
 
     public List<GiftSimpleDto> readReceivedGiftList(Long userNo){
         User user = findUserByUserNo(userNo);
         return giftRepository.findGiftsByUser(user).stream()
-                .map(GiftSimpleDto::new)
+                .map(GiftSimpleDto::from)
                 .collect(Collectors.toList());
     }
 
