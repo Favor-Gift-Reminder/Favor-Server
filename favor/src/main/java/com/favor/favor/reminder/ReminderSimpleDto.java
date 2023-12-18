@@ -6,6 +6,7 @@ import lombok.Builder;
 import lombok.Getter;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 @Getter
 @AllArgsConstructor
@@ -15,6 +16,7 @@ public class ReminderSimpleDto {
     private String reminderTitle;
     private LocalDate reminderDate;
     private boolean isAlarmSet;
+    private LocalDateTime alarmTime;
     private Long userNo;
     private FriendSimpleDto friendSimpleDto;
 
@@ -24,6 +26,7 @@ public class ReminderSimpleDto {
         this.reminderTitle = reminder.getReminderTitle();
         this.reminderDate = reminder.getReminderDate();
         this.isAlarmSet = reminder.getIsAlarmSet();
+        this.alarmTime = reminder.getAlarmTime();
         this.userNo = reminder.getUser().getUserNo();
         this.friendSimpleDto = dto;
     }
