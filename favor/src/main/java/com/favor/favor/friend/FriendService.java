@@ -15,9 +15,11 @@ import com.favor.favor.user.User;
 import com.favor.favor.user.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import static com.favor.favor.exception.ExceptionCode.*;
 
@@ -33,13 +35,20 @@ public class FriendService {
     @Transactional
     public Friend addFriend(FriendRequestDto dto, Long userNo){
         User user = findUserByUserNo(userNo);
+        isExistingUserNo(userNo);
+
         Long friendUserNo = dto.getFriendUserNo();
+        isExistingFriendUserNo(friendUserNo);
+
         User friendUser = findUserByUserNo(friendUserNo);
 
         if(isDuplicateFriendUser(user, friendUser)) {
             throw new CustomException(null, DUPLICATE_FRIEND);
         }
-        return save(dto.toEntity(user, friendUser));
+        Friend friend = dto.toEntity(user, friendUser);
+        save(friend);
+
+        return friend;
     }
 
     public Boolean isDuplicateFriendUser(User user, User friendUser){
@@ -56,7 +65,7 @@ public class FriendService {
 
     @Transactional
     public void updateMemo(Friend friend, MemoUpdateRequestDto memoUpdateRequestDto){
-        friend.setFriendMemo(memoUpdateRequestDto.getMemo());
+        friend.updateFriendMemo(memoUpdateRequestDto.getMemo());
         friendRepository.save(friend);
 
     }
@@ -78,10 +87,14 @@ public class FriendService {
     }
 
     public List<FriendResponseDto> readAll(){
-        List<FriendResponseDto> f_List = new ArrayList<>();
-        List<Friend> friendList = friendRepository.findAll();
-        for(Friend f : friendList) f_List.add(returnDto(f));
-        return f_List;
+//        List<FriendResponseDto> f_List = new ArrayList<>();
+//        List<Friend> friendList = friendRepository.findAll();
+//        for(Friend f : friendList) f_List.add(returnDto(f));
+//        return f_List;
+
+        return friendRepository.findAll().stream()
+                .map(friend -> returnDto(friend))
+                .collect(Collectors.toList());
     }
 
 
@@ -132,35 +145,40 @@ public class FriendService {
         return friend;
     }
     public List<GiftSimpleDto> findGiftListByFriendNo(Long friendNo){
-        List<Gift> giftList = giftRepository.findGiftsByFriendNoListContains(friendNo);
-        List<GiftSimpleDto> giftResponseDtoList = new ArrayList<>();
-        for(Gift gift : giftList){
-            GiftSimpleDto dto = GiftSimpleDto.from(gift);
-            giftResponseDtoList.add(dto);
-        }
-        return giftResponseDtoList;
+        return giftRepository.findGiftsByFriendNoListContains(friendNo).stream()
+                .map(GiftSimpleDto::from)
+                .collect(Collectors.toList());
     }
     public List<GiftSimpleDto> findGivenGiftList(Long friendNo){
-        List<Gift> giftList = giftRepository.findGiftsByFriendNoListContains(friendNo);
-        List<GiftSimpleDto> giftResponseDtoList = new ArrayList<>();
-        for(Gift gift : giftList){
-            if(gift.getIsGiven()){
-                GiftSimpleDto dto = GiftSimpleDto.from(gift);
-                giftResponseDtoList.add(dto);
-            }
-        }
-        return giftResponseDtoList;
+//        List<Gift> giftList = giftRepository.findGiftsByFriendNoListContains(friendNo);
+//        List<GiftSimpleDto> giftResponseDtoList = new ArrayList<>();
+//        for(Gift gift : giftList){
+//            if(gift.getIsGiven()){
+//                GiftSimpleDto dto = GiftSimpleDto.from(gift);
+//                giftResponseDtoList.add(dto);
+//            }
+//        }
+//        return giftResponseDtoList;
+        return giftRepository.findGiftsByFriendNoListContains(friendNo).stream()
+                .filter(gift -> gift.getIsGiven())
+                .map(GiftSimpleDto::from)
+                .collect(Collectors.toList());
     }
     public List<GiftSimpleDto> findReceivedGiftList(Long friendNo){
-        List<Gift> giftList = giftRepository.findGiftsByFriendNoListContains(friendNo);
-        List<GiftSimpleDto> giftResponseDtoList = new ArrayList<>();
-        for(Gift gift : giftList){
-            if(!gift.getIsGiven()){
-                GiftSimpleDto dto = GiftSimpleDto.from(gift);
-                giftResponseDtoList.add(dto);
-            }
-        }
-        return giftResponseDtoList;
+//        List<Gift> giftList = giftRepository.findGiftsByFriendNoListContains(friendNo);
+//        List<GiftSimpleDto> giftResponseDtoList = new ArrayList<>();
+//        for(Gift gift : giftList){
+//            if(!gift.getIsGiven()){
+//                GiftSimpleDto dto = GiftSimpleDto.from(gift);
+//                giftResponseDtoList.add(dto);
+//            }
+//        }
+//        return giftResponseDtoList;
+
+        return giftRepository.findGiftsByFriendNoListContains(friendNo).stream()
+                .filter(gift -> !gift.getIsGiven())
+                .map(GiftSimpleDto::from)
+                .collect(Collectors.toList());
     }
 
 
@@ -215,7 +233,7 @@ public class FriendService {
 
     //IS_EXISTING
     public void isExistingUserNo (Long userNo){
-        Boolean isExistingNo = null;
+        Boolean isExistingNo;
         try{
             isExistingNo = userRepository.existsByUserNo(userNo);
         } catch(RuntimeException e){
@@ -227,7 +245,7 @@ public class FriendService {
     }
 
     public void isExistingFriendUserNo (Long userNo){
-        Boolean isExistingNo = null;
+        Boolean isExistingNo;
         try{
             isExistingNo = userRepository.existsByUserNo(userNo);
         } catch(RuntimeException e){

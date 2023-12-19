@@ -51,7 +51,7 @@ public class GiftService {
 
             if(!giftNoList.contains(giftNo)) giftNoList.add(giftNo);
 
-            friend.setGiftNoList(giftNoList);
+            friend.updateGiftNoList(giftNoList);
         }
     }
 
