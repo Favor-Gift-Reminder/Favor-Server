@@ -11,7 +11,6 @@ import java.util.HashMap;
 import java.util.List;
 
 @Getter
-@AllArgsConstructor
 public class FriendResponseDto {
 
     private Long friendNo;

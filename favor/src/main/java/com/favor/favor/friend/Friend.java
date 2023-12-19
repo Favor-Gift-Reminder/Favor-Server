@@ -1,7 +1,6 @@
 package com.favor.favor.friend;
 
 
-import com.favor.favor.common.enums.Favor;
 import lombok.*;
 
 import com.favor.favor.common.TimeStamped;
@@ -9,15 +8,12 @@ import com.favor.favor.reminder.Reminder;
 import com.favor.favor.user.User;
 
 import javax.persistence.*;
-import javax.transaction.Transactional;
 import java.util.ArrayList;
 import java.util.List;
 
 @Entity
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-@AllArgsConstructor
-@Builder
 public class Friend extends TimeStamped {
 
     @Id
@@ -27,33 +23,39 @@ public class Friend extends TimeStamped {
     private String friendName;
 
     private String friendMemo;
-    public void setFriendMemo(String friendMemo) {
-        this.friendMemo = friendMemo;
-    }
 
-
-    @ManyToOne(cascade = CascadeType.PERSIST, fetch = FetchType.EAGER)
+    @ManyToOne(cascade = CascadeType.PERSIST, fetch = FetchType.LAZY)
     @JoinColumn(name = "user_user_no")
     private User user;
 
-
-    @Builder.Default
     @OneToMany(mappedBy = "friend", orphanRemoval = true)
     private List<Reminder> reminderList = new ArrayList<>();
 
     private Long friendUserNo;
 
-    @Builder.Default
     @ElementCollection
     private List<Long> giftNoList = new ArrayList<>();
-    public void setGiftNoList(List<Long> giftNoList){
+
+    @ElementCollection
+    private List<Long> anniversaryNoList = new ArrayList<>();
+
+    public void updateFriendMemo(String friendMemo) {
+        this.friendMemo = friendMemo;
+    }
+
+    public void updateGiftNoList(List<Long> giftNoList){
         this.giftNoList = giftNoList;
     }
 
-    @Builder.Default
-    @ElementCollection
-    private List<Long> anniversaryNoList = new ArrayList<>();
-    public void setAnniversaryNoList(List<Long> anniversaryNoList){
+    @Builder
+    public Friend(Long friendNo, String friendName, String friendMemo, User user, List<Reminder> reminderList, Long friendUserNo, List<Long> giftNoList, List<Long> anniversaryNoList) {
+        this.friendNo = friendNo;
+        this.friendName = friendName;
+        this.friendMemo = friendMemo;
+        this.user = user;
+        this.reminderList = reminderList;
+        this.friendUserNo = friendUserNo;
+        this.giftNoList = giftNoList;
         this.anniversaryNoList = anniversaryNoList;
     }
 }

@@ -46,14 +46,11 @@ public class FriendController {
 
         Long userNo = loginUser.getUserNo();
 
-        friendService.isExistingUserNo(userNo);
-        friendService.isExistingFriendUserNo(friendRequestDto.getFriendUserNo());
-
         Friend friend = friendService.addFriend(friendRequestDto, userNo);
-        FriendResponseDto dto = friendService.returnDto(friend);
+        FriendResponseDto friendResponseDto = friendService.returnDto(friend);
 
         return ResponseEntity.status(201)
-                .body(DefaultResponseDto.from("FRIEND_ADDED", "친구 추가 완료", dto));
+                .body(DefaultResponseDto.from("FRIEND_ADDED", "친구 추가 완료", friendResponseDto));
     }
 
     @ApiOperation("친구 조회")
