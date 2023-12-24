@@ -25,7 +25,6 @@ import org.springframework.transaction.annotation.Transactional;
 import java.time.LocalDate;
 import java.util.HashMap;
 import java.util.List;
-import java.util.Objects;
 import java.util.stream.Collectors;
 
 import static com.favor.favor.exception.ExceptionCode.*;
@@ -61,8 +60,8 @@ public class UserService {
     public UserResponseDto createProfile(ProfileDto profileDto, Long userNo) {
         User user = findUserByUserNo(userNo);
 
-        user.setName(profileDto.getName());
-        user.setUserId(profileDto.getUserId());
+        user.updateName(profileDto.getName());
+        user.updateUserId(profileDto.getUserId());
         save(user);
 
         return user.toDto(user, readReminderList(user.getUserNo()), readFriendList(user.getUserNo()), readFavorList(user.getUserNo()), readAnniversaryList(user.getUserNo()), getGiftInfo(user.getUserNo()));
@@ -99,14 +98,22 @@ public class UserService {
 
     @Transactional
     public UserResponseDto updateUser(Long userNo, UserUpdateRequestDto userUpdateRequestDto){
-
+        //user 존재여부 확인
         isExistingUserNo(userNo);
-        isExistingUserId(userUpdateRequestDto.getUserId());
 
+        //user 의 기존 닉네임 확인
         User user = findUserByUserNo(userNo);
-        user.setName(userUpdateRequestDto.getName());
-        user.setUserId(userUpdateRequestDto.getUserId());
-        user.setFavorList(userUpdateRequestDto.getFavorList());
+        String beforeUserId = user.getUserId();
+        String newUserId = userUpdateRequestDto.getUserId();
+
+        //닉네임 변경 시 중복 체크
+        if(!beforeUserId.equals(newUserId)){
+            isExistingUserId(userUpdateRequestDto.getUserId());
+        }
+
+        user.updateName(userUpdateRequestDto.getName());
+        user.updateUserId(userUpdateRequestDto.getUserId());
+        user.updateFavorList(userUpdateRequestDto.getFavorList());
         save(user);
 
         return user.toDto(user, readReminderList(user.getUserNo()), readFriendList(user.getUserNo()), readFavorList(user.getUserNo()), readAnniversaryList(user.getUserNo()), getGiftInfo(user.getUserNo()));
@@ -121,7 +128,7 @@ public class UserService {
     @Transactional
     public UserResponseDto updatePassword(String email, String password){
         User user = findUserByEmail(email);
-        user.setPassword(passwordEncoder.encode(password));
+        user.updatePassword(passwordEncoder.encode(password));
         save(user);
 
         return user.toDto(user, readReminderList(user.getUserNo()), readFriendList(user.getUserNo()), readFavorList(user.getUserNo()), readAnniversaryList(user.getUserNo()), getGiftInfo(user.getUserNo()));
