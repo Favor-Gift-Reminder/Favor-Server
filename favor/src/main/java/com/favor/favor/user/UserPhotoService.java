@@ -10,7 +10,6 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.net.URL;
-import java.util.Optional;
 import java.util.UUID;
 
 import static com.favor.favor.exception.ExceptionCode.SERVER_ERROR;
@@ -45,7 +44,7 @@ public class UserPhotoService {
             throw new CustomException(e, SERVER_ERROR);
         }
 
-        user.setUserProfilePhoto(userPhoto);
+        user.updateUserProfilePhoto(userPhoto);
         return userRepository.save(user);
     }
 
@@ -60,7 +59,7 @@ public class UserPhotoService {
 
         User user = userService.findUserByUserNo(userNo);
         String fileName = extractProfilePhotoFileName(user);
-        user.setUserProfilePhoto(null);
+        user.updateUserProfilePhoto(null);
         photoService.deleteFileFromS3(fileName);
     }
 
@@ -86,7 +85,7 @@ public class UserPhotoService {
             throw new CustomException(e, SERVER_ERROR);
         }
 
-        user.setUserBackgroundPhoto(userPhoto);
+        user.updateUserBackgroundPhoto(userPhoto);
         return userRepository.save(user);
     }
 
@@ -101,7 +100,7 @@ public class UserPhotoService {
 
         User user = userService.findUserByUserNo(userNo);
         String fileName = extractBackgroundPhotoFileName(user);
-        user.setUserBackgroundPhoto(null);
+        user.updateUserBackgroundPhoto(null);
         photoService.deleteFileFromS3(fileName);
     }
 

@@ -1,6 +1,5 @@
 package com.favor.favor.user;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.favor.favor.anniversary.Anniversary;
 import com.favor.favor.anniversary.AnniversaryResponseDto;
 import com.favor.favor.common.enums.Favor;
@@ -34,32 +33,13 @@ public class User extends TimeStamped implements UserDetails {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long userNo;
     private String email;
-
     private String password;
-    public void setPassword(String password){ this.password = password; }
-
     private String userId;
-    public void setUserId(String userId){
-        this.userId = userId;
-    }
-
     private String name;
-    public void setName(String name) {
-        this.name = name;
-    }
-
 
     @Builder.Default
     @ElementCollection
     private List<Integer> favorList = new ArrayList<>();
-    @Transactional
-    public void setFavorList(List<Favor> favorList) {
-        ArrayList<Integer> favorTypeList = new ArrayList<>();
-        for(Favor favor : favorList){
-            favorTypeList.add(favor.getType());
-        }
-        this.favorList = favorTypeList;
-    }
 
     @Builder.Default
     @OneToMany(mappedBy = "user", orphanRemoval = true)
@@ -79,17 +59,34 @@ public class User extends TimeStamped implements UserDetails {
 
     @OneToOne(cascade = CascadeType.ALL)
     private UserPhoto userProfilePhoto;
-    public void setUserProfilePhoto(UserPhoto userPhoto) {
-        this.userProfilePhoto = userPhoto;
-    }
 
     @OneToOne(cascade = CascadeType.ALL)
     private UserPhoto userBackgroundPhoto;
-    public void setUserBackgroundPhoto(UserPhoto userPhoto) {
-        this.userBackgroundPhoto = userPhoto;
-    }
 
     private Role role;
+
+
+    public void updatePassword(String password){ this.password = password; }
+    public void updateUserId(String userId){
+        this.userId = userId;
+    }
+    public void updateName(String name) {
+        this.name = name;
+    }
+    @Transactional
+    public void updateFavorList(List<Favor> favorList) {
+        ArrayList<Integer> favorTypeList = new ArrayList<>();
+        for(Favor favor : favorList){
+            favorTypeList.add(favor.getType());
+        }
+        this.favorList = favorTypeList;
+    }
+    public void updateUserProfilePhoto(UserPhoto userPhoto) {
+        this.userProfilePhoto = userPhoto;
+    }
+    public void updateUserBackgroundPhoto(UserPhoto userPhoto) {
+        this.userBackgroundPhoto = userPhoto;
+    }
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {return null;}
